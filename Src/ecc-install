@@ -1,0 +1,154 @@
+#!/bin/sh
+# ecc is the driver for the epsc compiler.
+#All variables have capital letters. The {\tt EC} variable
+#is the name of the compiler itself, and should be set to
+#a complete path name including the ec program itself.
+#
+# The default configuration is to place the compiler
+# binaries and include file in the source directory.
+# The following lines must be changed if the
+# compiler binaries and include file are placed
+# in a directory different from the source directory.
+#
+#-----Change the two lines below-------------------
+#
+#EC=./epsc  #Default location of eps binary
+#INC=.      #Default location of system include files
+EC=$EPS/Bin/epsc #Location of eps binary
+INC=$EPS/Inc     #Location of system include files
+#
+#-----Do not change below this line----------------
+#
+#The script is a simple driver for the epsc compiler.
+#The epsc compiler binaries can be 
+#invoked as a stand alone program:
+#
+# epsc [-a -b -t -p -e -s -nt -nb -g] inputfile > output file
+#
+#The script first initializes several single letter variables.
+#The single letter variables {\tt A,B,T,P,E,S,N,M,G} correspond
+#to the options {\tt -a, -b -t, -p, -e, -s -nt -nb -g} and {\tt -C}.
+#The {\tt SP} variable contains only a single Space.
+#\begin{verbatim}
+  H=
+  A=
+  B= 
+  T=
+  P=
+  E=-e 
+  S=
+  N="-nt 1024"
+  M="-nb 1024"
+  C=
+  G=
+  PG=
+  CG=
+  SP=" "
+#
+# Loop over all command line arguments
+#
+  while getopts "OhcabtspgCn:m:" arg; do
+    case $arg in
+      h)
+        H=h;;
+
+      c)   
+        CG=-c ;;
+
+      a)
+        A=-a
+        c= 
+        CG=-c
+        E= ;; 
+
+      b)
+        B=-b ;;
+
+      t)
+        T=-t
+        c= 
+        CG=-c
+        E= ;; 
+
+      s)
+        S=-s
+        E=  
+        CG=-c
+        c= ;;
+
+      p)
+        P=-p
+        c= 
+        CG=-c
+        E= ;;
+
+      n)
+        N="-nt "${OPTARG}
+        ;;
+
+      m)   
+        M="-nb "${OPTARG}
+        ;;
+    
+      g)
+        CG=-g
+        G=-g;;    
+
+      O)
+        O=" -O3 ";;
+
+      C)
+        C=-C;;
+    esac
+  done 
+
+  case $H in h)
+    echo "ecc [-c -t -a -p -s -g -O -C -n -m -h] [file]"
+    echo "-h : Show help"
+    echo "-c : Invoke the epsc compiler and generate CUDA code" 
+    echo "     but do not compile the CUDA code" 
+    echo "-t : Output parse tree on stdout, no semantic check"
+    echo "-a : Output annotated parse tree on stdout with semantic check."
+    echo "-p : Parsing and type checking performed, no code generated"
+    echo "-s : Parsing and type checking performed, no code generated"
+    echo "-g : Generate debug information"
+    echo "-O : Optimize code"
+    echo "-C : Perform run-time array bounds check"
+    echo "-n : No of threads"
+    echo "-m : No of thread blocks"
+    exit
+   ;;
+  esac
+
+
+# Set the options for the epsc compiler
+  EFLAGS=$A$SP$B$SP$T$SP$P$SP$E$SP$S$SP$C$SP$G$SP$N$SP$M
+
+# Set the options for the C-compiler
+  SPECIAL=" -c -x "'cu' 
+  CCFLAGS=$O$SP$G$SP$SPECIAL
+
+# Set input and output file names
+  #get the last parameter (input file name)
+  for i in $@; do :; done
+  last=$i
+  name=`basename $last  \.e`       
+  of=$name\.cpp
+  if
+    case $E in
+      -e)
+        $EC $EFLAGS  $last >$of ;;
+       *)
+        $EC $EFLAGS  $last ;; 
+    esac
+  then
+    case $CG in
+      -g)
+        nvcc $CCFLAGS $of ;; 
+      -c)
+         ;; 
+      *)          
+        nvcc $CCFLAGS $of 
+        rm $of ;;
+    esac
+  fi
