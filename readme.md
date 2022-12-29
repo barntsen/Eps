@@ -5,9 +5,11 @@
 ## Compiler Usage
 There are three commands (shell scripts) for invoking the eps compilers:
 
-  1. eps  
-  2. epsc
-  3. epsh
+###  ec [-c -C -a -s -p -t ] file.e 
+
+  - c: Generate c-code 
+  - C: Generate code for arry index checking
+  - a: Print annotated parse tree on standard output
 
 ## The Epsilon language
 

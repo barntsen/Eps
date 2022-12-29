@@ -4,35 +4,7 @@
 # The script essentially sets up options for
 # the eps compiler and the C-compiler.
 #
-# The driver accepts the following options
-#  -c 
-#         Generate C-code, but do not invoke
-#         the C compiler for compilation.
-#  -t 
-#         Only parsing of the input source is performed,
-#         and the output will be a text representation of
-#         the internal abstract syntax tree. 
-#         No type checking
-#         is performed.
-#  -a 
-#         Parsing and type checking is performed. The output
-#         will be a text representation of the internal 
-#         syntax tree. The tree is fully annotated.
-#  -p
-#         Parsing and type checking is performed. No output,
-#         except from error messages.
-#  -s
-#         Print the symbol table.
-#  -g
-#         Generate debug information.
-#  -O
-#         Optimize the code.
-#  -C
-#         Perform run-time array index check.
-#  -b
-#         Split all expressions
-#  -h     
-#         Show help for commands
+# The driver accepts a list of options (see below)
 # 
 # All variables have capital letters. The {\tt EC} variable
 # is the name of the compiler itself, and should be set to
@@ -46,22 +18,22 @@
 #
 #-----Change the two lines below-------------------
 #
-#EC=./epsc  #Default location of eps binary
-#INC=.      #Default location of system include files
+#EC=./epsc      #Default location of eps binary
+#INC=.          #Default location of system include files
 EC=$EPS/Bin/eps #Location of eps binary
-INC=$EPS/Inc     #Location of system include files
+INC=$EPS/Inc    #Location of system include files
 #
 #-----Do not change below this line----------------
 #
-# The script is a simple driver for the epsc compiler.
-# The epsc compiler binaries can be 
+# The script is a simple driver for the eps compiler.
+# The eps compiler binaries can be 
 # invoked as a stand alone program:
 #
-# epsc [-a -b -t -p -e -s -nt -nb -g] inputfile > output file
+# eps [-a -b -t -p -e -s -nt -nb -g] inputfile > output file
 #
 # The script first initializes several single letter variables.
 # The single letter variables {\tt A,B,T,P,E,S,N,M,G} correspond
-# to the options {\tt -a, -b -t, -p, -e, -s -nt -nb -g} and {\tt -C}.
+# to the options {\tt -a, -b -t, -p, -e, -s, -nt, -nb, -g} and {\tt -C}.
 # The {\tt SP} variable contains only a single Space.
   H=
   A=
@@ -77,10 +49,11 @@ INC=$EPS/Inc     #Location of system include files
   PG=
   CG=
   SP=" "
+  F=" "
 #
 # Loop over all command line arguments
 #
-  while getopts "OhcabtspgCn:m:" arg; do
+  while getopts "fOhcabtspgCn:m:" arg; do
     case $arg in
       h)
         H=h;;
@@ -132,11 +105,14 @@ INC=$EPS/Inc     #Location of system include files
 
       C)
         C=-C;;
+
+      f)
+        F=" -fopen" ;;
     esac
   done 
 
   case $H in h)
-    echo "eph [-c -t -a -p -s -g -O -C -h] [file]"
+    echo "eph [-c -t -a -p -s -g -O -C -f -h] [file]"
     echo "-h : Show help"
     echo "-c : Invoke the eps compiler and generate c code" 
     echo "     but do not compile the c code" 
@@ -146,7 +122,9 @@ INC=$EPS/Inc     #Location of system include files
     echo "-s : Output symbol table on stdout"
     echo "-g : Generate debug information"
     echo "-O : Optimize code"
-    echo "-C : Perform run-time array bounds check"
+    echo "-C : perform run-time array bounds check"
+    echo "-f : Generate OpenMP code"
+    
     exit
    ;;
   esac
@@ -157,7 +135,7 @@ INC=$EPS/Inc     #Location of system include files
 
 # Set the options for the C-compiler
   SPECIAL=" -c " 
-  CCFLAGS=$O$SP$G$SP$SPECIAL
+  CCFLAGS=$F$O$SP$G$SP$SPECIAL
 
 # Set input and output file names
   #get the last parameter (input file name)
