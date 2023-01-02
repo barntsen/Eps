@@ -97,14 +97,14 @@ int  ParseMatch(int t){}
 
 int lookahead;            // Look ahead token 
 
-//ParseIniparse -- Initialize the parser 
+//ParseIniparse initializes the parser. 
 int ParseIniparse()
 {
  lookahead = ScanGetok();
  return(OK);
 }
 
-//Parse is the entry point for the eps parser
+//Parse is the entry point for the eps parser.
 struct tree ParseParse()
 {
   struct tree np;
