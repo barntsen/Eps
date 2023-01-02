@@ -1,8 +1,8 @@
-//# Parse is the module containing all parser routines
+//Parse is the module containing all parser routines.
 //
-//## Eps grammar
-// The complete grammar of the epsilon language is given below using the
-// EBNF notation. 
+//Eps grammar
+//The complete grammar of the epsilon language is given below using the
+//EBNF notation. 
 //
 //    extdecl         = type ( '{' structdeclar | 
 //                  ID ([idseq] | [ '(' fdecl ]) )
