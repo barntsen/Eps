@@ -27,9 +27,7 @@
     CCFLAGS= -g
     LDFLAGS=
 
-#
 # The eps target
-#  --------------
 eps:    main.o scan.o parse.o ptree.o sem.o sym.o code-cpu.o \
         err.o scanpath.o libe.o runcpu.o	
 		ar rcs libecpu.a libe.o runcpu.o
@@ -53,9 +51,7 @@ code-cpu.o:  code-cpu.e
 		./ec $(ECFLAGS) code-cpu.e 
 err.o:		err.e
 		./ec $(ECFLAGS) err.e 
-#
 # Libraries
-# ---------
 lib:       libcpu.a 
 libcpu.a:  libe.o runcpu.o
 		ar rcs libecpu.a libe.o runcpu.o 
@@ -65,9 +61,7 @@ runcpu.o:  runcpu.e
 		cp runcpu.e runcpu.c
 		gcc -c $(CCFLAGS) runcpu.c
 
-#
 # The install target
-# ------------------
 install: eps
 	cp eps $(BIN)
 	cp ec-install  $(BIN)/ec
@@ -75,9 +69,7 @@ install: eps
 	cp libecpu.a $(LIB)
 	cp libe.i $(INC)
 
-#
 # The genboot target
-# ------------------
 genboot:	main.c scan.c scanpath.c parse.c ptree.c sem.c sym.c code-cpu.c    \
 		err.c libe.c runcpu.c 
 		cp main.c scan.c scanpath.c parse.c ptree.c sem.c sym.c code-cpu.c \
@@ -106,16 +98,12 @@ libe.c:     libe.e
 runcpu.c:   runcpu.e
 		cp runcpu.e runcpu.c
 
-#
 # The boot target
-# ---------------
 boot: 
 	cp ../Arch/Boot-cpu/*.c .
 	gcc -c *.c
 	gcc -o eps -lm *.o
 
-#
 # The clean target
-# ----------------
 clean: 
 	rm -f *.a *.o *.c *.cpp

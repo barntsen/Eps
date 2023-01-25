@@ -14,20 +14,17 @@ at a time and collects them into groups called
 ``3.14159''.
 \begin{verbatim}
 */
-include "libe.i"      /* Library interface           */
-include "scan.i"      /* Lexical scanner interface   */
-include "ptree.i"     /* Lexical scanner interface   */
-include "err.i"       /* Error routines interface    */
-/*
-\end{verbatim}
-The datastructures of {\tt Scan} are very simple and
-consists of two character arrays; {\tt ScanText} and
-{\tt ScanBuffer}. The former is used to hold a string
-literal associated with the current token.
-The latter is used as a simple buffer to hold 
-intermediate strings.
-\begin{verbatim}
-*/
+include "libe.i"      // Library module   
+include "scan.i"      // Lexical scanner interface 
+include "ptree.i"     // Parse tree  module  
+include "err.i"       // Error routines module
+
+//The datastructures of {\tt Scan} are very simple and
+//consists of two character arrays; {\tt ScanText} and
+// ScanBuffer. The former is used to hold a string
+//literal associated with the current token.
+//The latter is used as a simple buffer to hold 
+//intermediate strings.
 char [*] ScanText;     /* Lexical value of token      */
 char [*] ScanBuffer;   /* Temporary array             */
 int ScanLine;          /* line number                 */

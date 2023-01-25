@@ -1,13 +1,4 @@
-/*
-%=============================================================
-\section{Scan.i -- interface for the Scan module}
-%=============================================================
-The scanner reads a source file and groups the characters into
-groups, or 'tokens'. The most important entrys point are the 
-function {\tt ScanGetok} which returns an integer defining
-the next token available. The token values are defined below:
-\begin{verbatim}
-*/
+//This file contains exported functions and variables  for the scanner.
 const ID  =    1;         /* The Identifier token   */
 const RARROW = 2;         /* The '->'       token   */
 const EQ =     3;         /* The '=='       token   */
@@ -42,33 +33,22 @@ const RE      = 28;       /* The re      keyword    */
 const LEN     = 29;       /* The len     keyword    */
 const CONST   = 431;      /* The const   keyword    */
 const INCLUDE = 432;        /* The include keyword    */
-/*
-\end{verbatim}
-The functions supported by the Scan module is defined as 
-follows:
-%=============================================================
-\section{ScanInit -- initialize the scanner}
-%=============================================================
-{\tt ScanInit} takes the input file name as argumnet 
-and must be called once
-before any other calls to functions in the Scan module are made.
-\begin{verbatim}
-*/
+
+// ScanInit initialize the scanner.
+// ScanInit takes the input file name as argumnet 
+// and must be called once
+// before any other calls to functions in the Scan module are made.
 int ScanInit(char [*] infile){}
-/*
-\end{verbatim}
-%=============================================================
-\section{ScanGetok -- get the next token}
-%=============================================================
-Each call of {\tt ScanGetok} returns a new token read from
-the standard input. The token values are listed above.
-If no more characters can be read,
-the {\tt STOP} token is returned.
-{\tt ScanGetext} returns a string literal associated with
-the token.
-\begin{verbatim}
-*/
+
+// ScanGetok gets the next token.
+//Each call of {\tt ScanGetok} returns a new token read from
+//the standard input. The token values are listed above.
+//If no more characters can be read,
+//the STOP token is returned.
+// ScanGetext} returns a string literal associated with
+// the token.
 int ScanGetok(){}     
+
 /*
 \end{verbatim}
 %=============================================================

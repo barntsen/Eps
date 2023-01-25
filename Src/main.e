@@ -1,7 +1,7 @@
 // Main is the main module for the eps compiler.
 //
 // 
-//
+//Import modules 
 include "libe.i"        // Libray for eps
 include "ptree.i"       // Parse tree managment
 include "scan.i"        // Lexical scanner
@@ -13,11 +13,14 @@ include "code.i"        // Code generator
 
 int Main(struct MainArg [*] MainArgs)
 {
-  int i, btree, atree, table;
+  int btree;        // Flag for emitting parse tre. 
+  int atree;        // Flag for emitting annotated parse tree
+  int table;        // Flag for emitting symbol table
   int parse, semantic, emit;
   int nt, nb;      // No of threads and no of blocks
   struct tree p;
   char [*] infile;
+  int i;
 
   LibeInit();        // Initialize io package 
 

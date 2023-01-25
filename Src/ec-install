@@ -1,6 +1,5 @@
 #!/bin/sh
 # ec is the driver for the eps compiler.
-#
 # The script essentially sets up options for
 # the eps compiler and the C-compiler.
 #
@@ -11,9 +10,9 @@
 # a complete path name including the ec program itself.
 #
 # The default configuration is to place the compiler
-# binaries and include file in the source directory.
+# binaries, library and include file in the source directory.
 # The following lines must be changed if the
-# compiler binaries and include file are placed
+# compiler binaries, library and include file are placed
 # in a directory different from the source directory.
 #
 #-----Change the two lines below-------------------
@@ -112,7 +111,7 @@ INC=$EPS/Inc    #Location of system include files
   done 
 
   case $H in h)
-    echo "eph [-c -t -a -p -s -g -O -C -f -h] [file]"
+    echo "ec [-c -t -a -p -s -g -O -C -f -h] [file]"
     echo "-h : Show help"
     echo "-c : Invoke the eps compiler and generate c code" 
     echo "     but do not compile the c code" 

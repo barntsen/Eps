@@ -1,11 +1,11 @@
-#  Compiler (translators) for the Epsilon mini language
+#  Compiler (eps-to-c translator) for the Epsilon mini language
 
 ## Installation
 
 ## Compiler Usage
 There are three commands (shell scripts) for invoking the eps compilers:
 
-###  ec [-c -C -a -s -p -t ] file.e 
+###  ec [-c -C -a -s -p -t -f] file.e 
 
   - c: Generate c-code 
   - C: Generate code for arry index checking
