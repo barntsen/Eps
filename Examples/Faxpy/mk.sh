@@ -1,9 +1,9 @@
 #!/bin/sh
 
-ec -c faxpy.e
+ec faxpy.e
 el -o faxpycpu faxpy.o 
 
-ecc -c faxpy.e
+ecc faxpy.e
 elc -o faxpygpu faxpy.o 
 
 

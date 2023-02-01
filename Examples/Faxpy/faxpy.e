@@ -1,20 +1,20 @@
 // Faxpy is a simple vector addition test 
 
 
-include <libe.i>                 /* Library interface                 */
+include <libe.i>                 // Library interface   
 
 int faxpy(float [*] a, float [*] x, float [*] y){}
 
 int Main(struct MainArg [*] MainArgs)
 {
-  int nx;
+  int      nx;
   float [*] x;
   float [*] y;
   float [*] a;
   int i;
   int niter;
 
-  LibeInit();
+  LibeInit(); // Initialize library for io etc..
 
   nx = 1001*20001;
   x = new(float[nx]);
