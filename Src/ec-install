@@ -110,6 +110,7 @@ INC=$EPS/Inc    #Location of system include files
     esac
   done 
 
+# Output help list
   case $H in h)
     echo "ec [-c -t -a -p -s -g -O -C -f -h] [file]"
     echo "-h : Show help"

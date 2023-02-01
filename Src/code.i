@@ -71,28 +71,6 @@ int CodeArraycheckon(){}
 int CodeArraycheckoff(){}
 /*
 \end{verbatim}
-%------------------------------------------------------------
-\subsection*{CodeBreakexpr -- Test for expression break} 
-%------------------------------------------------------------
-\begin{verbatim}
-*/
-int CodeBreakexpr(){}
-/*
-\end{verbatim}
-%------------------------------------------------------------
-\subsection*{CodeBreakexpron -- Turn expression break on} 
-%------------------------------------------------------------
-\begin{verbatim}
-*/
-int CodeBreakexpron(){}
-/*
-\end{verbatim}
-%------------------------------------------------------------
-\subsection*{CodeBreakexproff -- Turn expression break off} 
-%------------------------------------------------------------
-\begin{verbatim}
-*/
-int CodeBreakexproff(){}
 /*
 %------------------------------------------------------------
 \subsection*{CodeDebug -- Test for debug flag} 

@@ -1,6 +1,4 @@
 // Main is the main module for the eps compiler.
-//
-// 
 //Import modules 
 include "libe.i"        // Libray for eps
 include "ptree.i"       // Parse tree managment
@@ -26,7 +24,7 @@ int Main(struct MainArg [*] MainArgs)
 
   btree  = atree = table = emit = ERR;
   parse  = semantic = ERR;
-  PtreeInit(); CodeBreakexproff();
+  PtreeInit(); 
   CodeArraycheckoff();
   CodeDebugoff();
   i = 1;
@@ -80,16 +78,10 @@ int Main(struct MainArg [*] MainArgs)
       semantic = OK; parse = OK;
     }
 
-    // Split expressions always 
-
-    if(LibeStrcmp(MainArgs[i].arg, "-b") == OK){      
-      CodeBreakexpron();
-    }
 
     // Turn on array check  
 
     if(LibeStrcmp(MainArgs[i].arg, "-C") == OK){      
-      CodeBreakexpron();
       CodeArraycheckon();
     }
 
