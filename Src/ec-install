@@ -106,7 +106,7 @@ INC=$EPS/Inc    #Location of system include files
         C=-C;;
 
       f)
-        F=" -fopen" ;;
+        F=" -fopenmp" ;;
     esac
   done 
 
