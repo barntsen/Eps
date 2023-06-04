@@ -1951,7 +1951,7 @@ This section contains time and date functions.
 %---------------------------------------------------------------
 \subsection{LibeClock -- elapsed time}
 %---------------------------------------------------------------
-{\tt LibeTime} returns the elapsed time since the program started.
+{\tt LibeClock} returns the elapsed time since the program started.
 \begin{verbatim}
 */
 float LibeClock()
