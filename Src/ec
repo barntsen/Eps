@@ -59,7 +59,7 @@ INC=.      #Default location of system include files
 #The eps compiler binaries can be 
 #invoked as a stand alone program:
 #
-# eps [-a -b -t -p -e -s -f -nt -nb -g] inputfile > output file
+# eps [-a -b -t -p -s -f -g] inputfile > output file
 #
 #The script first initializes several single letter variables.
 #The single letter variables {\tt A,B,T,P,E,S,N,M,G} correspond

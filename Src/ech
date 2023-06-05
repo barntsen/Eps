@@ -1,39 +1,5 @@
 #!/bin/sh
-# ech is the driver for the epsh compiler.
-#
-# The script essentially sets up options for
-# the epsh compiler and the C-compiler.
-#
-# The driver accepts the following options
-#  -c 
-#         Generate C-code, but do not invoke
-#         the C compiler for compilation.
-#  -t 
-#         Only parsing of the input source is performed,
-#         and the output will be a text representation of
-#         the internal abstract syntax tree. 
-#         No type checking
-#         is performed.
-#  -a 
-#         Parsing and type checking is performed. The output
-#         will be a text representation of the internal 
-#         syntax tree. The tree is fully annotated.
-#  -p
-#         Parsing and type checking is performed. No output,
-#         except from error messages.
-#  -s
-#         Print the symbol table.
-#  -g
-#         Generate debug information.
-#  -O
-#         Optimize the code.
-#  -C
-#         Perform run-time array index check.
-#  -b
-#         Split all expressions
-#  -h     
-#         Show help for commands
-# 
+# ecc is the driver for the epsh compiler.
 #All variables have capital letters. The {\tt EC} variable
 #is the name of the compiler itself, and should be set to
 #a complete path name including the ec program itself.
@@ -71,8 +37,8 @@ INC=.      #Default location of system include files
   P=
   E=-e 
   S=
-  N="-nt 128"
-  M="-nb 8192"
+  N="-nt 1024"
+  M="-nb 1024"
   C=
   G=
   PG=
@@ -137,18 +103,20 @@ INC=.      #Default location of system include files
   done 
 
   case $H in h)
-    echo "eph [-c -t -a -p -s -g -O -C -n -m -h] [file]"
+    echo "ecc [-c -t -a -p -s -g -O -C -n -m -h] [file]"
     echo "-h : Show help"
-    echo "-c : Invoke the epsh compiler and generate hip code" 
-    echo "     but do not compile the hip code" 
+    echo "-c : Invoke the epsh compiler and generate CUDA code" 
+    echo "     but do not compile the CUDA code" 
     echo "-t : Output parse tree on stdout, no semantic check"
     echo "-a : Output annotated parse tree on stdout with semantic check."
     echo "-p : Parsing and type checking performed, no code generated"
+    echo "-s : Parsing and type checking performed, no code generated"
     echo "-g : Generate debug information"
     echo "-O : Optimize code"
     echo "-C : Perform run-time array bounds check"
     echo "-n : No of threads"
     echo "-m : No of thread blocks"
+    exit
    ;;
   esac
 
@@ -157,7 +125,7 @@ INC=.      #Default location of system include files
   EFLAGS=$A$SP$B$SP$T$SP$P$SP$E$SP$S$SP$C$SP$G$SP$N$SP$M
 
 # Set the options for the C-compiler
-  SPECIAL=" -c" 
+  SPECIAL=" -c " 
   CCFLAGS=$O$SP$G$SP$SPECIAL
 
 # Set input and output file names
@@ -176,7 +144,7 @@ INC=.      #Default location of system include files
   then
     case $CG in
       -g)
-      hipcc $CCFLAGS $of ;; 
+        hipcc $CCFLAGS $of ;; 
       -c)
          ;; 
       *)          
