@@ -248,43 +248,6 @@ int CodeArraycheckoff()
 /*
 \end{verbatim}
 %======================================================================
-\section{CodeBreakexpr  -- test for the break expression flag}
-%======================================================================
-\begin{verbatim}
-*/
-int CodeBreakexprflag ;    /* Global to hold  flag */
-
-int CodeBreakexpr()
-{ 
-  return(CodeBreakexprflag);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{CodeBreakexpron  -- turn on the break expression flag}
-%======================================================================
-\begin{verbatim}
-*/
-int CodeBreakexpron()
-{ 
-  CodeBreakexprflag = OK;
-  return(OK);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{CodeBreakexproff  -- turn off the break expression flag}
-%======================================================================
-\begin{verbatim}
-*/
-int CodeBreakexproff()
-{ 
-  CodeBreakexprflag = ERR;
-  return(OK);
-} 
-/*
-\end{verbatim}
-%======================================================================
 \section{CodeDebug  -- test for the debug flag}
 %======================================================================
 \begin{verbatim}

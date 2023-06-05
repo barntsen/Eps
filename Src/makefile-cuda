@@ -100,6 +100,7 @@ runcudac.o:	runcudac.e
 #\begin{verbatim}
 install: epsc libecuda.a
 	cp epsc $(BIN)
+	./eccedit.sh
 	cp ecc-install  $(BIN)/ecc
 	cp elc-install  $(BIN)/elc
 	cp libecuda.a $(LIB)

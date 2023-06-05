@@ -8,7 +8,7 @@
 #3. install - installation of compiler 
 #4. genboot - Generate c-code for bootstrapping
 #5. boot    - Bootstrap from c-code
-#6. Clean   - remove intermediate files
+#6. clean   - remove intermediate files
 #    
 # The compiler is self-hosting so the compiler binary eps is
 # to be regarded as source code. Backup copy is found in
@@ -64,6 +64,7 @@ runcpu.o:  runcpu.e
 # The install target
 install: eps
 	cp eps $(BIN)
+	./ecedit.sh
 	cp ec-install  $(BIN)/ec
 	cp el-install  $(BIN)/el
 	cp libecpu.a $(LIB)

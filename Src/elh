@@ -1,11 +1,15 @@
 #!/bin/sh
-#
-# elh is a script to drive the loader
-#
-LIB=$EPS/Lib
+
+#el is a script to drive the hipcc loader.
+
+#Set library locations
+LOCALLIB=.
+EPSLIB=$EPS/Lib
+LIB=$LOCALLIB
+
 FILES=" "
 for i in $*
 do
   FILES="$FILES $i" ;
 done 
-hipcc -L$LIB $FILES -lehip 
+hipcc -L$LIB $FILES -lehip
