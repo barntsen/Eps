@@ -17,7 +17,7 @@
 # Path names for binaries and include files
  LOCALBIN=./eps
  LOCALINC=.
- EPSBIN=$EPS/Bin
+ EPSBIN=$EPS/Bin/eps
  EPSINC=$EPS/Inc
 
  EC=$LOCALBIN  #Location of eps binary

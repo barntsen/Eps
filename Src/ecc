@@ -17,7 +17,7 @@
 # Path names for binaries and include files
  LOCALBIN=./epsc
  LOCALINC=.
- EPSBIN=$EPS/Bin
+ EPSBIN=$EPS/Bin/epsc
  EPSINC=$EPS/Inc
 
  EC=$LOCALBIN  #Location of epsc binary
@@ -140,7 +140,7 @@
   fi
 
   name=`basename $last  \.e`       
-  of=$name\.c
+  of=$name\.cpp
 
   if
     case $E in

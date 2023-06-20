@@ -6,8 +6,10 @@
 #Edit ec script for installation
 sed 's/INC=$LOCALINC/INC=$EPSINC/'  ec  >xaa.txt
 sed 's/EC=$LOCALBIN/EC=$EPSBIN/'    xaa.txt >ec-install     
+chmod +x ec-install
 
 rm xaa.txt
 
 #Edit el script for installation
 sed 's/LIB=$LOCALLIB/LIB=$EPSLIB/'  el  >el-install
+chmod +x el-install

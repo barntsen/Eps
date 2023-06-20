@@ -11,6 +11,7 @@ int Main(struct MainArg [*] MainArgs)
   float [*] x;
   float [*] y;
   float [*] a;
+  float [*] c;
   int i;
   int niter;
   float b;
@@ -36,6 +37,7 @@ int Main(struct MainArg [*] MainArgs)
   // Start timer
   t0=LibeClock();
   for(i=0; i<niter; i=i+1){
+    b=cast(float,i);
     faxpy(a,x,y,b);
   }
   t = LibeClock()-t0;
@@ -52,6 +54,9 @@ int Main(struct MainArg [*] MainArgs)
   LibePuts(stderr,"\n");
   LibePuts(stderr,"Gflop: ");
   LibePutf(stderr,gflops);
+  LibePuts(stderr,"\n");
+  LibePuts(stderr,"a: ");
+  LibePutf(stderr,a[0]);
   LibePuts(stderr,"\n");
   LibeFlush(stderr);
   
