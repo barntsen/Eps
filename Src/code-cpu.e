@@ -38,6 +38,7 @@ int CodeStmnt(struct tree p){}
 int CodeWhilestmnt(struct tree p){}  
 int CodeForstmnt(struct tree p){}    
 int CodeParallelstmnt(struct tree p){}    
+int CodeParallelfor(struct tree p, int rank){}    
 int CodeIfstmnt(struct tree p){}    
 int CodeReturnstmnt(struct tree p){} 
 char [*] CodeExpr(struct tree p){}  
@@ -2148,13 +2149,8 @@ int CodeEd(int d)
   LibePuti(stdout, d);
   return(OK);
 } 
-/*
-%================================================================================
-\subsection{CodeParallelstmnt  -- generate code for simple "parallel" statement}
-%================================================================================
-\begin{verbatim}
-*/
- int CodeParallelstmnt(struct tree p)
+
+int CodeParallelstmnt(struct tree p)
 { 
   struct tree sp,rp,rrp,qp;
   int rank;
@@ -2165,40 +2161,11 @@ int CodeEd(int d)
   rank = PtreeGetrank(sp);          /* Get no of slices */
   p = PtreeMvchild(p);              /* Move to sliceseq */
   p = PtreeMvchild(p);              /* Move to first slice    */
-  
-  for(i=0; i<rank; i=i+1){ 
-    rp = PtreeMvchild(p);           /* Move to inital expr of slice   */
-    qp = PtreeMvchild(rp);          /* Get the index variable         */
-    qp = PtreeMvchild(qp);           
-    index = PtreeGetdef(qp);
-    init  = CodeBinexpr(PtreeMvsister(qp));
-    rrp=PtreeMvsister(rp);
-    cond=CodeExpr(rrp); 
-    if(i==0){CodeEs(rp, "\n #pragma omp parallel for\n");}
-    //CodeExpr(rp);                   /* Emit inital expr        */
-    CodeEs(rp,"for(");              /* Emit inital part of for */
-    CodeEs(rp,index);
-    CodeEs(rp,"=");
-    CodeEs(rp,init);
-    CodeEs(rp,";");
-    rp = PtreeMvsister(rp);         /* Move to second part of slice */
-    CodeEs(rp,index); CodeEs(rp,"<");     /* Emit condition               */ 
-    CodeEs(p,cond);
-    CodeEs(rp,";");                  /* End of second part of slice  */
-    if((rp=PtreeMvsister(rp))!= NULL){ /* Emit increment expression   */ 
-      CodeEs(rp,index); CodeEs(rp,"=");    
-      CodeEs(rp,index); CodeEs(rp,"+"); 
-      CodeExpr(rp); 
-    }
-    else{
-      CodeEs(rp,index); CodeEs(rp,"=");    
-      CodeEs(rp,index); CodeEs(rp,"+"); 
-      CodeEs(rp,"1");
-    }
-    CodeEs(rp,"){");
-    p=PtreeMvsister(p);
-  } 
+  CodeEs(p, "\n #pragma omp parallel for\n");  // Emit OMP pragma
 
+  // Generate the loop code
+  CodeParallelfor(p,rank);
+  // Emit body of loop
   sp = PtreeMvchild(sp);
   sp = PtreeMvsister(sp);
   CodeStmnt(sp); 
@@ -2207,11 +2174,56 @@ int CodeEd(int d)
   }
   return(OK);
 } 
-/*
-\end{verbatim}
-Global to hold no of threads and blocks
-\begin{verbatim}
-*/
+
+//
+//
+int CodeParallelfor(struct tree p , int rank)
+{
+  int i;
+  struct tree pp,sp,rp,qp,rrp;
+  char[*] index,init,cond;
+
+  sp=p;  // Save the current node
+
+  // End of tree
+  if(p==NULL)
+  {
+    return(OK);
+  }
+  p=PtreeMvsister(p);           // Next node until end of tree
+  CodeParallelfor(p , rank);  
+
+  rp = PtreeMvchild(sp);        // Move to inital expr of slice  
+  qp = PtreeMvchild(rp);        // Move to binary expression
+  qp = PtreeMvchild(qp);        // Move to index variable      
+  index = PtreeGetdef(qp);      // Get index variable
+  init  = CodeBinexpr(PtreeMvsister(qp)); //Find the inital expression
+  rrp=PtreeMvsister(rp);        // Find end condition
+  cond=CodeExpr(rrp);           // Get end condition
+  CodeEs(rp,"for(");            // Emit inital part of for 
+  CodeEs(rp,index);             // Emit index variable
+  CodeEs(rp,"=");               
+  CodeEs(rp,init);              // Emit inital expression
+  CodeEs(rp,";");
+  rp = PtreeMvsister(rp);            // Move to second part of slice 
+  CodeEs(rp,index); CodeEs(rp,"<");  // Emit condition           
+  CodeEs(p,cond);
+  CodeEs(rp,";");                    // End of second part of slice  
+  if((rp=PtreeMvsister(rp))!= NULL){ // Emit increment expression    
+    CodeEs(rp,index); CodeEs(rp,"=");    
+    CodeEs(rp,index); CodeEs(rp,"+"); 
+    CodeExpr(rp); 
+  }
+  else{
+    CodeEs(rp,index); CodeEs(rp,"=");    
+    CodeEs(rp,index); CodeEs(rp,"+"); 
+    CodeEs(rp,"1");
+  }
+  CodeEs(rp,"){");
+  return(OK);
+}
+//
+//Global to hold no of threads and blocks
 int CodeNt;
 int CodeNb;
 /*
