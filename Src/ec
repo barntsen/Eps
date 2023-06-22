@@ -127,7 +127,7 @@
   EFLAGS=$A$SP$T$SP$P$SP$E$SP$S$SP$C$SP$G$SP$N$SP$M
 
 # Set the options for the C-compiler
-  SPECIAL=" -c" 
+  SPECIAL=" -c -ffast-math" 
   CCFLAGS=$O$SP$G$SP$F$SPECIAL
 
 # Set input and output file names
