@@ -67,9 +67,9 @@ int faxpy2d(float [*,*] a, float [*,*] x, float [*,*] y, float b){
   
   nx=len(x,0);
   ny=len(x,1);
-//  parallel(i=0:nx,j=0:ny){
-  for(i=0; i<nx; i=i+1){
-    for(j=0; j<ny; j=j+1){
+  parallel(i=0:nx,j=0:ny){
+//  for(i=0; i<nx; i=i+1){
+//    for(j=0; j<ny; j=j+1){
       //LibePuts(stderr,"i,j,a: ");
       //LibePuti(stderr,i);
       //LibePuti(stderr,j);
@@ -78,7 +78,7 @@ int faxpy2d(float [*,*] a, float [*,*] x, float [*,*] y, float b){
       //LibePuts(stderr,"\n");
       //LibeFlush(stderr);
       a[i,j] = b*y[i,j]+x[i,j];
-    }
+ //   }
   }
   return(OK);
 }

@@ -40,7 +40,7 @@ int main()
   df=DiffNew(l); 
   dx=10.0;
   // Perform the vector addition 1000 times
-  niter = 100;
+  niter = 1501;
 
   for(i=0; i<niter; i=i+1){
     DiffDxplus(df,x,y,dx,nx,ny);

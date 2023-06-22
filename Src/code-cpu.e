@@ -2161,7 +2161,6 @@ int CodeParallelstmnt(struct tree p)
   rank = PtreeGetrank(sp);          /* Get no of slices */
   p = PtreeMvchild(p);              /* Move to sliceseq */
   p = PtreeMvchild(p);              /* Move to first slice    */
-  CodeEs(p, "\n #pragma omp parallel for\n");  // Emit OMP pragma
 
   // Generate the loop code
   CodeParallelfor(p,rank);
@@ -2200,6 +2199,7 @@ int CodeParallelfor(struct tree p , int rank)
   init  = CodeBinexpr(PtreeMvsister(qp)); //Find the inital expression
   rrp=PtreeMvsister(rp);        // Find end condition
   cond=CodeExpr(rrp);           // Get end condition
+  CodeEs(p, "\n #pragma omp parallel for\n");  // Emit OMP pragma
   CodeEs(rp,"for(");            // Emit inital part of for 
   CodeEs(rp,index);             // Emit index variable
   CodeEs(rp,"=");               

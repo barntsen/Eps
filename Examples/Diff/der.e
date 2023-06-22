@@ -11,7 +11,9 @@ int Main(struct MainArg [*] MainArgs)
   int      nx,ny;
   float [*,*] x;
   float [*,*] y;
+  float [*,*] z;
   float [*,*] a;
+  float [*,*] b;
   int i,j,k;
   int niter;
   float dx;
@@ -27,28 +29,31 @@ int Main(struct MainArg [*] MainArgs)
   ny = 1001;
   x = new(float[nx,ny]);
   y = new(float[nx,ny]);
+  z = new(float[nx,ny]);
   a = new(float[nx,ny]);
+  b = new(float[nx,ny]);
 
   for(i=0; i<nx; i=i+1){
     for(j=0; j<ny; j=j+1){
-      x[i,j] = 1.0;
-      y[i,j] = 1.0;
+      x[i,j] = 1.0*cast(float,i)*cast(float,j);
+      y[i,j] = 1.0*cast(float,i)*cast(float,j);
+      z[i,j] = 1.0*cast(float,i)*cast(float,j);
     }
   }
 
   // Perform the test a number of times
-  niter = 100;
+  niter = 1501;
   l=8;
   df = DiffNew(l);
   dx=10.0;
   // Start timer
   t0=LibeClock();
   for(i=0; i<niter; i=i+1){
-    y[i,i] = 0.0;
+    y[i,i] = cast(float,i);
     DiffDxminus(df, x, y, dx);
-    DiffDxplus(df, x, y, dx);
-    DiffDyminus(df, x, y, dx);
-    DiffDyplus(df, x, y, dx);
+    DiffDxplus(df, y, z, dx);
+    DiffDyminus(df, z, y, dx);
+    DiffDyplus(df, y, x, dx);
   }
   t = LibeClock()-t0;
   // End timer
