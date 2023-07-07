@@ -1521,17 +1521,16 @@ char [*] CodePrimexpr(struct tree p)
   else
     return CodeBinexpr(p);
 }
-/*
-\end{verbatim}
-%=====================================================================
-\subsection{CodeIdent  -- Generate code for identifier}
-%=====================================================================
-\begin{verbatim}
-*/
+
+// CodeIdent generates code for identifier
 char [*] CodeIdent(struct tree p)
 { 
-   char [*] qual;
-   char [*] selector;
+   // An identifier consists of a qualifier and a name.
+   // Both qualifier and name may be arrays.
+   // The generated c-code is different if the 
+   // qualifier is a struct versus basic type. 
+   char [*] qual; // Qualifier 
+   char [*] name; // name of identifier
    struct symbol tp, up, uup;
    struct tree np;
    
@@ -1550,27 +1549,37 @@ char [*] CodeIdent(struct tree p)
         return(qual);
     }
     if(LibeStrcmp(PtreeGetarray(np),"array")==OK){
-      tp = SymGetltp();
-      up = SymGetetp();
-      uup = SymLook(PtreeGetdef(p));
-      uup = SymLook(SymGetype(uup));
-      SymSetltp(SymGetable(uup));
-      selector = CodeArray(np,qual, "->");
+      tp = SymGetltp(); // Save local symbol table
+      up = SymGetetp(); // Save external symbol table
+      uup = SymLook(PtreeGetdef(p)); // Find name in symbol table
+      uup = SymLook(SymGetype(uup)); // Get the type
+      SymSetltp(SymGetable(uup));    // Set the local symbol
+                                     // table to the sub-table containing 
+                                     // the qualifier and name.
+                                     // Needed when generating code for arrays
+      if(LibeStrcmp(PtreeGetarray(p),"array")==OK){
+        name = CodeArray(np,qual, ".");
+      }
+      else{
+        name = CodeArray(np,qual, "->");
+      }
+      // Restore the symbol tables
       SymSetltp(tp);
       SymSetetp(up);
     }
     else{
-      selector = PtreeGetdef(np);
+      name = PtreeGetdef(np);
     }
+
     if(LibeStrcmp(PtreeGetarray(p),"array")==OK)
-      return (CodeQident(qual, selector));
+      return (CodeQident(qual, name));
     else
-      return (CodeQident2(qual, selector));
+      return (CodeQident2(qual, name));
   }     
   else if(LibeStrcmp(PtreeGetarray(p),"array")==OK){
-    selector = NULL;
+    name = NULL;
     qual = NULL;
-    qual = CodeArray(p,qual,selector);
+    qual = CodeArray(p,qual,name);
     return(qual);
   }
   else
@@ -2101,13 +2110,8 @@ char [*] CodeArray(struct tree p, char [*] qual, char [*] sel)
   LibeStrcat("]",rval);
   return (rval);
 }
-/*
-\end{verbatim}
-%=====================================================================
-\subsection{CodeArrayex  -- Generate code for arry exception}
-%=====================================================================
-\begin{verbatim}
-*/
+
+// CodeArrayex  generates code for array index check
 int CodeArrayex(int line, char [*] qual, char [*] sel, char [*] name, 
                 char [*] ival, int index)
 { 
@@ -2121,38 +2125,20 @@ int CodeArrayex(int line, char [*] qual, char [*] sel, char [*] name,
   CodeEs(p,")||(");
   CodeEs(p,ival);
   CodeEs(p,">=");
+
   if(qual != NULL){
     CodeEs(p,qual);
     CodeEs(p,sel);
+    CodeEs(p,name);
+    CodeEs(p,"->d[");
+    CodeEd(index);
+    CodeEs(p,"])){\n");
+  }else{
+    CodeEs(p,name);
+    CodeEs(p,"->d[");
+    CodeEd(index);
+    CodeEs(p,"])){\n");
   }
-  CodeEs(p,name);
-  CodeEs(p,"->d[");
-  CodeEd(index);
-  CodeEs(p,"])){\n");
-  CodeEs(p,"nctempchar1 nctempstringk = {0, NULL};\n");
-  CodeEs(p,"nctempchar1 *nctempstringkp;\n");
-  CodeEs(p,"nctempstringkp = &nctempstringk;\n");
-
-  CodeEs(p,"nctempstringkp->a=(char*)");
-  CodeEs(p,"\"");
-  if(qual != NULL){
-    CodeEs(p,qual);
-    CodeEs(p,sel);
-  }
-  CodeEs(p,name);
-  CodeEs(p,"\"");
-  CodeEs(p,";\n");
-
-  CodeEs(p,"nctempstringkp->d[0]=");
-  CodeEs(p,"strlen(\"");
-  if(qual != NULL){
-    CodeEs(p,qual);
-    CodeEs(p,sel);
-  }
-  CodeEs(p,name);
-  CodeEs(p,"\")+1;");
-  CodeEs(p,"\n");
-
   
   CodeEs(p,"printf(\"Array index out of bound at line no: %d \\n\", ");
   CodeEd(PtreeGetline(p)); 
@@ -2169,21 +2155,28 @@ int CodeArrayex(int line, char [*] qual, char [*] sel, char [*] name,
   CodeEs(p,ival);
   CodeEs(p,");\n");
 
+  CodeEs(p,"printf(\"Index bound: 0- %d \\n\",");
+
   if(qual != NULL){
     CodeEs(p,qual);
     CodeEs(p,sel);
-  }
-
-  CodeEs(p,"printf(\"Index bound: 0- %d \\n\",");
-  CodeEs(p,name);
-  CodeEs(p,"->d[");
-  CodeEd(index);
-  CodeEs(p,"]);\n");
-  if(CodeGetparallel() == OK){
-    CodeEs(p,"return;\n");
-  }
-
-  CodeEs(p,"}\n");
+    CodeEs(p,name);
+    CodeEs(p,"->d[");
+    CodeEd(index);
+    CodeEs(p,"]);\n");
+    if(CodeGetparallel() == OK){
+      CodeEs(p,"return;\n");
+    }
+  }else{
+    CodeEs(p,name);
+    CodeEs(p,"->d[");
+    CodeEd(index);
+    CodeEs(p,"]);\n");
+    if(CodeGetparallel() == OK){
+      CodeEs(p,"return;\n");
+    }
+ }
+ CodeEs(p,"}\n");
 
   return(OK);
 }

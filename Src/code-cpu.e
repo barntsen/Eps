@@ -1,35 +1,23 @@
-/*
-\begin{document}
-%
-%         ***********************************************
-%         *                                             *
-          \chapter{Code -- code generation}
-%         *                                             *
-%         ***********************************************
-%
-%======================================================================
-\section{Introduction}
-%======================================================================
-\begin{verbatim}
-*/
-include "libe.i"
-include "sym.i"    /* Include symbol table interface        */
-include "ptree.i"  /* Include parse tree interface          */
-include "err.i"    /* Include interface to error routines   */
-include "code.i"   /* Include interface for code generation */
+// Code is a module for c-code generation
 
-char [*] CodeItemp(int cntrl){}                  /* Initialize temporary generation */  
-char [*] CodeMktemp(){}                          /* Make a temporary variable       */
-char [*] CodeMkstring(struct tree p){}           /* Make string temporaries         */   
-char [*] CodeNewtemp(char [*] type){}            /* Generate temporaries            */
-struct symbol CodeNewsymbol(char [*] type, char [*] name){}          /* Generate new symbol             */
-int CodeDeclarations(struct tree p, struct symbol tp){} /* Generate declarations           */
-int CodeWdeclaration(struct tree p){} 
-int CodeWdeclarations(struct tree p){}
-int CodeGdeclarations(struct tree p, struct symbol tp){}
-int CodeStructdef(struct tree p, struct symbol tp){}    
-int CodeFdeclaration(struct tree p, struct symbol tp){}  
-int CodeFdeclkernel(struct tree p){}
+include "libe.i"   // Include library
+include "sym.i"    // Include symbol table interface 
+include "ptree.i"  // Include parse tree interface  
+include "err.i"    // Include interface to error routines
+include "code.i"   // Include interface for code generation
+
+char [*] CodeItemp(int cntrl){}                  // Initialize temporary generation 
+char [*] CodeMktemp(){}                          // Make a temporary variable 
+char [*] CodeMkstring(struct tree p){}           // Make string temporaries  
+char [*] CodeNewtemp(char [*] type){}            // Generate temporaries    
+struct symbol CodeNewsymbol(char [*] type, char [*] name){}  // Generate new symbol
+int CodeDeclarations(struct tree p, struct symbol tp){}      // Declarations  
+int CodeWdeclaration(struct tree p){}                        // Walk declaration nodes
+int CodeWdeclarations(struct tree p){}                       // Walk declarations nodes
+int CodeGdeclarations(struct tree p, struct symbol tp){}     // Generate declarations
+int CodeStructdef(struct tree p, struct symbol tp){}         // Generate structure definition
+int CodeFdeclaration(struct tree p, struct symbol tp){}      // Generate function declaration
+int CodeFdeclkernel(struct tree p){}                         // Generate function declaration kernel
 int CodeIdeclaration(struct tree p, struct symbol tp){}  
 int CodeIdlist(struct tree p, struct symbol tp){}     
 int CodeFdef(struct tree p){}  
@@ -38,7 +26,7 @@ int CodeStmnt(struct tree p){}
 int CodeWhilestmnt(struct tree p){}  
 int CodeForstmnt(struct tree p){}    
 int CodeParallelstmnt(struct tree p){}    
-int CodeParallelfor(struct tree p, int rank){}    
+int CodeParallelfor(struct tree p, int level, int rank){}    
 int CodeIfstmnt(struct tree p){}    
 int CodeReturnstmnt(struct tree p){} 
 char [*] CodeExpr(struct tree p){}  
@@ -1306,17 +1294,16 @@ char [*] CodePrimexpr(struct tree p)
   else
     return CodeBinexpr(p);
 }
-/*
-\end{verbatim}
-%=====================================================================
-\subsection{CodeIdent  -- Generate code for identifier}
-%=====================================================================
-\begin{verbatim}
-*/
+
+// CodeIdent generates code for identifier
 char [*] CodeIdent(struct tree p)
 { 
-   char [*] qual;
-   char [*] selector;
+   // Identifier consists of a qualifier and a name.
+   // Both qualifier and name may be arrays.
+   // The generated c-code is different if the 
+   // qualifier is a struct versus basic type. 
+   char [*] qual; // Qualifier 
+   char [*] name; // name of identifier
    struct symbol tp, up, uup;
    struct tree np;
    
@@ -1335,32 +1322,43 @@ char [*] CodeIdent(struct tree p)
         return(qual);
     }
     if(LibeStrcmp(PtreeGetarray(np),"array")==OK){
-      tp = SymGetltp();
-      up = SymGetetp();
-      uup = SymLook(PtreeGetdef(p));
-      uup = SymLook(SymGetype(uup));
-      SymSetltp(SymGetable(uup));
-      selector = CodeArray(np,qual, "->");
+      tp = SymGetltp(); // Save local symbol table
+      up = SymGetetp(); // Save external symbol table
+      uup = SymLook(PtreeGetdef(p)); // Find name in symbol table
+      uup = SymLook(SymGetype(uup)); // Get the type
+      SymSetltp(SymGetable(uup));    // Set the local symbol
+                                     // table to the sub-table containing 
+                                     // the qualifier and name.
+                                     // Needed when generating code for arrays
+      if(LibeStrcmp(PtreeGetarray(p),"array")==OK){
+        name = CodeArray(np,qual, ".");
+      }
+      else{
+        name = CodeArray(np,qual, "->");
+      }
+      // Restore the symbol tables
       SymSetltp(tp);
       SymSetetp(up);
     }
     else{
-      selector = PtreeGetdef(np);
+      name = PtreeGetdef(np);
     }
+
     if(LibeStrcmp(PtreeGetarray(p),"array")==OK)
-      return (CodeQident(qual, selector));
+      return (CodeQident(qual, name));
     else
-      return (CodeQident2(qual, selector));
+      return (CodeQident2(qual, name));
   }     
   else if(LibeStrcmp(PtreeGetarray(p),"array")==OK){
-    selector = NULL;
+    name = NULL;
     qual = NULL;
-    qual = CodeArray(p,qual,selector);
+    qual = CodeArray(p,qual,name);
     return(qual);
   }
   else
     return PtreeGetdef(p);
 }
+
 /*
 \end{verbatim}
 %=====================================================================
@@ -2163,7 +2161,7 @@ int CodeParallelstmnt(struct tree p)
   p = PtreeMvchild(p);              /* Move to first slice    */
 
   // Generate the loop code
-  CodeParallelfor(p,rank);
+  CodeParallelfor(p,0,rank);
   // Emit body of loop
   sp = PtreeMvchild(sp);
   sp = PtreeMvsister(sp);
@@ -2176,13 +2174,14 @@ int CodeParallelstmnt(struct tree p)
 
 //
 //
-int CodeParallelfor(struct tree p , int rank)
+int CodeParallelfor(struct tree p , int level, int rank)
 {
   int i;
   struct tree pp,sp,rp,qp,rrp;
   char[*] index,init,cond;
 
   sp=p;  // Save the current node
+  level=level+1;
 
   // End of tree
   if(p==NULL)
@@ -2190,7 +2189,7 @@ int CodeParallelfor(struct tree p , int rank)
     return(OK);
   }
   p=PtreeMvsister(p);           // Next node until end of tree
-  CodeParallelfor(p , rank);  
+  CodeParallelfor(p , level, rank);  
 
   rp = PtreeMvchild(sp);        // Move to inital expr of slice  
   qp = PtreeMvchild(rp);        // Move to binary expression
@@ -2199,7 +2198,10 @@ int CodeParallelfor(struct tree p , int rank)
   init  = CodeBinexpr(PtreeMvsister(qp)); //Find the inital expression
   rrp=PtreeMvsister(rp);        // Find end condition
   cond=CodeExpr(rrp);           // Get end condition
-  CodeEs(p, "\n #pragma omp parallel for\n");  // Emit OMP pragma
+  if(level == rank)
+  {
+    CodeEs(p, "\n #pragma omp parallel for\n");  // Emit OMP pragma
+  }
   CodeEs(rp,"for(");            // Emit inital part of for 
   CodeEs(rp,index);             // Emit index variable
   CodeEs(rp,"=");               

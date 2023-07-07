@@ -1,8 +1,8 @@
-//Parse is the module containing all parser routines.
+// Parse is the module containing all parser routines.
 //
-//Eps grammar
-//The complete grammar of the epsilon language is given below using the
-//EBNF notation. 
+// Eps grammar
+// The complete grammar of the epsilon language is given below using the
+// EBNF notation. 
 //
 //    extdecl         = type ( '{' structdeclar | 
 //                  ID ([idseq] | [ '(' fdecl ]) )
@@ -57,8 +57,8 @@ include "err.i"      /* Error routines interface      */
 include "scan.i"     /* Lexical scanner interface     */
 include "parse.i"    /* Parse interface               */
 
-struct tree ParseExtdecl(){}       
-struct tree ParseType(){}    
+struct tree ParseExtdecl(){}              // Parse external declarations
+struct tree ParseType(){}                 // Parse type statement
 int  ParseConstdecl(struct tree p){}  
 int  ParseStructdeclar(struct tree p){}  
 int  ParseIdseq(struct tree p){}         
@@ -97,14 +97,14 @@ int  ParseMatch(int t){}
 
 int lookahead;            // Look ahead token 
 
-//ParseIniparse initializes the parser. 
+// ParseIniparse initializes the parser. 
 int ParseIniparse()
 {
  lookahead = ScanGetok();
  return(OK);
 }
 
-//Parse is the entry point for the eps parser.
+// Parse is the entry point for the eps parser.
 struct tree ParseParse()
 {
   struct tree np;
@@ -130,45 +130,36 @@ int ParseGetlookahead()
 {
   return (lookahead);       /* Return lookahead token    */
 }
-/*
-\end{verbatim}
-%=====================================================================
-\section{ParseExtdecl -- parse external declaration}      
-%=====================================================================
-The following part of the grammar is implemented:
-\begin{verbatim}
-extdecl    = type [( '{' structdeclar | ID ( [idseq] ";" | '(' fdecl ] ))]
-\end{verbatim}
-In the code below I have clues as to what is parsed in the
-short comments on some of the lines.
-The nonterminal eps is the null-production.
-\begin{verbatim}
-*/
+//
+// ParseExtdecl parses external declaration      
+// The following part of the grammar is implemented:
+//    extdecl    = type [( '{' structdeclar | ID ( [idseq] ";" | '(' fdecl ] ))]
+//The nonterminal eps is the null-production.
 struct tree ParseExtdecl()
 {
   struct tree mp, np, sp;
 
-  np = ParseType();                  /* type */
+  np = ParseType();                  
   if(np != NULL){
     sp = PtreeMknode("extdecl", "void");
     PtreeAddchild(sp,np);
-    if(lookahead == LBR){            /* "{"  */
+    if(lookahead == LBR){            // "{"  
       ParseMatch(lookahead);
       ParseStructdeclar(np);
     }
-    else if(lookahead == ID){        /* ID    */
+    else if(lookahead == ID){        // ID  
       mp=PtreeMknode("identifier", ScanGetext());  
       PtreeAddchild(np,mp);
       ParseMatch(lookahead);
-      if(lookahead == COMMA){        /* idseq */
+      if(lookahead == COMMA){        // idseq 
         ParseIdseq(np);
         ParseMatch(SEMICOLON);
       }
-      else if(lookahead==LP){       /* "("    */
+      else if(lookahead==LP){       // "("    
         ParseMatch(LP);
         ParseFdecl(mp);
       }       
-      else if(lookahead == ASSIGN){ /* Constant  */
+      else if(lookahead == ASSIGN){ // Constant  
        ParseMatch(lookahead);
        ParseConstdecl(mp);
       }
@@ -176,7 +167,7 @@ struct tree ParseExtdecl()
        ParseMatch(SEMICOLON);
     }  
   }else
-    sp = NULL;                      /* eps    */  
+    sp = NULL;                      // eps    
 
   return (sp);
 }  
@@ -1249,27 +1240,21 @@ struct tree ParsePrimexpr(struct tree p)
     ParseMatch(RP); 
   }
   else
-    ErrError("Syntax error");              /* No match          */
+    ErrError("Syntax error");              // No match  
   return sp;
 }
-/*
-\end{verbatim}
-%=============================================================*
-\subsection{ParseIdent -- parse identifier}
-%=============================================================*
-The following part of the grammar is implemented:
-\begin{verbatim}
-ident         =  ID  [ '['exprlist ']' ] 
-\end{verbatim}
-*/
+
+// ParseIdent parses identifier
+//The following part of the grammar is implemented:
+//ident         =  ID  [ '['exprlist ']' ] 
 struct tree ParseIdent()
 {
   struct tree np, sp;
 
   if(lookahead == ID){
-    sp = PtreeMknode("identifier", ScanGetext()); /* Identifier          */
+    sp = PtreeMknode("identifier", ScanGetext()); 
     ParseMatch(ID); 
-    if(lookahead == LB){                 /* Array Reference     */
+    if(lookahead == LB){                 
       ParseMatch(lookahead);
       PtreeSetarray(sp, "array");
       np = ParseExprlist();
@@ -1281,23 +1266,12 @@ struct tree ParseIdent()
     sp = NULL;
   return sp;
 }
-/*
-\end{verbatim}
-%=============================================================
-\section{Pmatch -- match a token and read lookahead token} 
-%=============================================================
-\begin{verbatim}
-*/
+
+// Pmatch matches a token and read lookahead token
 int ParseMatch(int t)
 {
   if(lookahead == t){
     lookahead = ScanGetok();
-    /*
-    LibePuts(stderr,"Token :");
-    LibePuti(stderr,lookahead);
-    LibePuts(stderr,"\n");
-    LibeFlush(stderr);
-    */
   }        
   else {
     ErrError("syntax error");
@@ -1305,6 +1279,3 @@ int ParseMatch(int t)
   }
   return(OK);
 }
-/*
-\end{verbatim}
-*/

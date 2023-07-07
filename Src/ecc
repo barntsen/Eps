@@ -41,6 +41,7 @@
   P=
   E=-e 
   S=
+  R=
   N="-nt 256"
   M="-nb 64000"
   C=
@@ -76,6 +77,12 @@
         CG=-c
         c= ;;
 
+      r)
+        R=-r
+        E=  
+        CG=-c
+        c= ;;
+
       p)
         P=-p
         c= 
@@ -105,13 +112,14 @@
   done 
 
   case $H in h)
-    echo "epsc [-h -c -a -t -s -p -n -m -g -O -C ] [file]"
+    echo "epsc [-h -c -a -t -s -r -p -n -m -g -O -C ] [file]"
     echo "-h : Show help"
     echo "-c : Invoke the eps compiler and generate c code" 
     echo "     but do not compile the c-code." 
     echo "-a : Output annotated parse tree on stdout with semantic check."
     echo "-t : Output parse tree on stdout, no semantic check"
-    echo "-s : Dump symbol table, no code generated"
+    echo "-s : Dump local symbol table, no code generated"
+    echo "-r : Dump external symbol table, no code generated"
     echo "-p : Parsing and type checking performed, no code generated"
     echo "-n : No of threads"
     echo "-m : No of thread blocks"
@@ -122,8 +130,8 @@
   esac
 
 
-# Set the options for the eps compiler
-  EFLAGS=$A$SP$T$SP$P$SP$E$SP$S$SP$C$SP$G$SP$N$SP$M
+# Set the options for the epsc compiler
+  EFLAGS=$A$SP$T$SP$P$SP$E$SP$S$SP$R$SP$C$SP$G$SP$N$SP$M
 
 # Set the options for the C-compiler
   SPECIAL=" -c -x "'cu'

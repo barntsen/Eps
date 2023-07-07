@@ -13,7 +13,8 @@ int Main(struct MainArg [*] MainArgs)
 {
   int btree;        // Flag for emitting parse tre. 
   int atree;        // Flag for emitting annotated parse tree
-  int table;        // Flag for emitting symbol table
+  int table;        // Flag for emitting local symbol tables
+  int etable;       // Flag for emitting external symbol table
   int parse, semantic, emit;
   int nt, nb;      // No of threads and no of blocks
   struct tree p;
@@ -22,7 +23,7 @@ int Main(struct MainArg [*] MainArgs)
 
   LibeInit();        // Initialize io package 
 
-  btree  = atree = table = emit = ERR;
+  btree  = atree = table = etable = emit = ERR;
   parse  = semantic = ERR;
   PtreeInit(); 
   CodeArraycheckoff();
@@ -54,10 +55,16 @@ int Main(struct MainArg [*] MainArgs)
       atree = OK; semantic = OK; parse = OK;
     }
 
-    // Print Symbol table 
+    // Print local symbol table 
 
     if(LibeStrcmp(MainArgs[i].arg, "-s") == OK ){  
       table = OK; parse = OK; semantic = OK;
+    }
+
+    // Print external symbol table 
+
+    if(LibeStrcmp(MainArgs[i].arg, "-r") == OK ){  
+      etable = OK; parse = OK; semantic = OK;
     }
 
     // Emit code         
@@ -185,10 +192,13 @@ int Main(struct MainArg [*] MainArgs)
      ErrError("Parsing ended before reaching EOF");
 
   // Print external symbol table
-  if(table == OK)
+  if(etable == OK){
+    LibePuts(stderr,"*************Should not happen!\n");
+    LibeFlush(stderr);
     if(SymGetetp() != NULL){
       SymPrsym(SymGetetp(),0);
     }
+  }
   LibeFlush(stdout);
 
   return(OK);   // Successfull Return 

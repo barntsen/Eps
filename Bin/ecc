@@ -125,6 +125,8 @@
 # Set the options for the eps compiler
   EFLAGS=$A$SP$T$SP$P$SP$E$SP$S$SP$C$SP$G$SP$N$SP$M
 
+  echo $EFLAGS
+
 # Set the options for the C-compiler
   SPECIAL=" -c -x "'cu'
   CCFLAGS=$O$SP$G$SP$F$SPECIAL

@@ -171,10 +171,13 @@ int RunRead(int fd, int lbuff, nctempchar1 *buffer)
 {
   int rval;
   rval = (int)read(fd, (void *)buffer->a, (size_t)lbuff);
-  if(rval == 0)
+  if(rval == 0){
     rval=EOF;
-  else if(rval == -1)
+  }
+  else if(rval == -1){
     rval = ERR;
+  }
+
   return(rval);
 }
 /*

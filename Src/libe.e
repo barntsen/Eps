@@ -752,7 +752,7 @@ int LibeRead(int fp, int n, char [*] buffer)
     LibeErrstr = "read error";
     LibeErrno = ERR;
     LibeFarr[fp].errflg = ERR;
-    rval = EOF;
+    rval = ERR;
   }              
   return (rval);
 }
