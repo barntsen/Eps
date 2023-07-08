@@ -17,7 +17,7 @@ struct tree {        /* Basic node            */
   char [*] tempi;    /* Temp imaginary value  */  
   char [*] lval;     /* Lval field            */
   char [*] array;    /* Array field           */
-  char [*] paral;     /* Parallel field        */
+  char [*] paral;    /* Parallel field        */
   char [*] global;   /* global field        */
   char [*] ref;      /* Eef  field            */
   int rank;          /* Array rank field      */ 

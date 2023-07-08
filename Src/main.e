@@ -1,5 +1,6 @@
-// Main is the main module for the eps compiler.
-//Import modules 
+// main is the main module for the eps compiler.
+
+// Imported modules
 include "libe.i"        // Libray for eps
 include "ptree.i"       // Parse tree managment
 include "scan.i"        // Lexical scanner

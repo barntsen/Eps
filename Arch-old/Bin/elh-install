@@ -1,0 +1,34 @@
+#!/bin/sh
+#\documentstyle{article}
+#\begin{document}
+#%
+#%         ***********************************************
+#%         *                                             *
+#          \title{El -- Driver for the eps loader}
+#%         *                                             *
+#%         ***********************************************
+#%
+#\author{B\o rge Arntsen}
+#\maketitle
+#\tableofcontents
+#\abstract{{\tt El [loader flags]}}
+#
+#%============================================================
+#\section{Introduction}  
+#%============================================================
+# This is a script to drive the unix ld loader.
+# The script essentially sets up options for
+# the loader.
+#%============================================================
+#\section{The script}
+#%============================================================
+#LIB=.
+LIB=$EPS/Lib
+FILES=" "
+for i in $*
+do
+  FILES="$FILES $i" ;
+done 
+hipcc -L$LIB $FILES -lecuda
+#gcc -L$LIB -L/usr/X11R6/lib $FILES \
+#    -le -lng -lXg -lXt -lX11
