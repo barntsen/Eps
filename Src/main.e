@@ -157,7 +157,7 @@ int Main(struct MainArg [*] MainArgs)
 
   // Create string table     
 
-  SymSetstp(SymMktable()); 
+  //SymSetstp(SymMktable()); 
 
   if(parse == OK)
     p = ParseParse();    // Parse first unit of code     
@@ -194,7 +194,6 @@ int Main(struct MainArg [*] MainArgs)
 
   // Print external symbol table
   if(etable == OK){
-    LibePuts(stderr,"*************Should not happen!\n");
     LibeFlush(stderr);
     if(SymGetetp() != NULL){
       SymPrsym(SymGetetp(),0);

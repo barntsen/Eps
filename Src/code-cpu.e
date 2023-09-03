@@ -1599,6 +1599,9 @@ char [*] CodeDelete(struct tree p)
     CodeEs(p, "free(");
     CodeEs(p, tmp);
     CodeEs(p, "->a);\n");
+    CodeEs(p, "free(");
+    CodeEs(p, tmp);
+    CodeEs(p, ");\n");
   }
   return(tmp);
 }
