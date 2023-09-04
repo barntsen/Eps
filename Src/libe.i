@@ -151,6 +151,7 @@ int Main(struct MainArg [*] MainArgs){}
 \begin{verbatim}
 */
 int   LibeInit(){}               
+int   LibeDelete(){}
 int   LibeExit(){}
 char[*] LibeGetenv(char [*] name){}
 /*
@@ -162,6 +163,7 @@ and sets the error flag to {\tt IOINITERR}.
 {\tt LibeExit} cleans up and exits and never returns.
 {\tt LibeGetenv} returns the value of the
 environment variable contained in {\tt name}.
+LibeDelete cleans up and removes allocated memory.
 %============================================================
 \section{I/O-routines}
 %============================================================

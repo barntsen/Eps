@@ -1115,8 +1115,9 @@ char [*] LibeStrsave(char [*] s)
   tmp=NULL;
   l=0;
 
-  l=len(s,0);
-  tmp = new(char [l]);
+  //l=len(s,0);
+  l=LibeStrlen(s);
+  tmp = new(char [l+1]);
   if(tmp != NULL)
     LibeStrcpy(s,tmp);
   return(tmp);
