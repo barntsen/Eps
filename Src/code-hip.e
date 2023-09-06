@@ -68,6 +68,8 @@ char [*] CodeQident(char [*] qual, char [*] ident){}
 char [*] CodeQident2(char [*] qual, char [*] ident){}   
 int CodeEs(struct tree p, char [*] s){}   
 int CodeEd(int d){}    
+int CodeEc(int c){}
+int CodeEsr(char[*] s){}
 int CodeSetparallel(int flag){}
 int CodeGetparallel(){}
 /*
@@ -444,16 +446,11 @@ char [*] CodeMkstring(struct tree p)
   SymSetarray(sp,"array");
   return(tmp);
 } 
-/*
-\end{verbatim}
-%====================================================================*
-\subsection{CodeSconstant  -- generate code for strings}  
-%=====================================================================*
- \begin{verbatim}
-*/
+
+// CodeSconstant implements code for string literals
 char [*] CodeSconstant(struct tree p)
-{ 
-  char [*] tmp, tmp2;
+{
+  char [*] tmp, eos,tmp2;
   int l;
 
   /* Set the length  of the string */
@@ -463,18 +460,22 @@ char [*] CodeSconstant(struct tree p)
   CodeEs(p, tmp2);
   CodeEs(p,";\n");
   tmp = CodeNewtemp("char");
-  CodeEs(p, "struct nctempchar1 ");
+  CodeEs(p, "static struct nctempchar1 ");
   CodeEs(p, tmp);
   CodeEs(p, " = ");
-  CodeEs(p, "{{ "); 
+  CodeEs(p, "{{ ");
   l = LibeStrlen(PtreeGetdef(p))-1;
   CodeEd(l);
-  CodeEs(p, "}, (char*)"); 
-  CodeEs(p, PtreeGetdef(p));
+  CodeEs(p, "}, (char*)");
+  CodeEc(DFN);
+  CodeEsr(PtreeGetdef(p));
+  CodeEc(92); CodeEc(48);
+  CodeEc(DFN);
   CodeEs(p, "};\n");
   CodeEs(p,tmp2); CodeEs(p,"=&"); CodeEs(p,tmp); CodeEs(p,";\n");
   return (tmp2);
 }
+
 /*
 \end{verbatim}
 %=====================================================================
@@ -2499,16 +2500,11 @@ char [*] CodeQident2(char [*] qual, char [*] ident)
 
   return(name);
 } 
-/*
-\end{verbatim}
-%=====================================================================
-\subsection{CodeEs  -- emit string}
-%=====================================================================
-This is a primitive routine emitting a string {\tt s}.
-The {\tt line} argument must contain the current line number,
-usuallay obtained through a call of {\tt PtreeGetline}.
-\begin{verbatim}
-*/
+
+// CodeEs emits a string
+// This is a primitive routine emitting a string {\tt s}.
+// The {\tt line} argument must contain the current line number,
+// usuallay obtained through a call of {\tt PtreeGetline}.
 int CodeEs(struct tree p, char [*] s)
 { 
   if(CodeDebug()==OK){
@@ -2529,21 +2525,30 @@ int CodeEs(struct tree p, char [*] s)
   LibePuts(stdout, s);
   return(OK);
 } 
-/*
-\end{verbatim}
-%=====================================================================
-\subsection{CodeEd  -- emit decimal}
-%=====================================================================
-No comments, really needed, the routine emits a decimal
-number, and that's it.
-\begin{verbatim}
-*/
+
+// CodeEd emits a number
 int CodeEd(int d)
 { 
   LibePuti(stdout, d);
   return(OK);
 } 
-/*
-\end{verbatim}
-*/
+
+//CodeEc emits a character
+int CodeEc(int d)
+{
+  LibePutc(stdout, d);
+  return(OK);
+}
+// CodeEsr emits a string without "
+int CodeEsr(char [*] s)
+{
+  int i,l;
+
+  l=LibeStrlen(s);
+  for(i=1; i<l-1; i=i+1){
+    LibePutc(stdout,cast(int,s[i]));
+  }
+  LibeFlush(stdout);
+  return(OK);
+}
 
