@@ -19,3 +19,7 @@ const FBITS   = 8;
 /*
 \end{verbatim}
 */
+
+// No of threads and blocks
+const NB = 1024; // No of Blocks
+const NT = 1024; // No of threads

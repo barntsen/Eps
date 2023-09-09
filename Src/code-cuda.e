@@ -179,13 +179,15 @@ int CodePreamble()
   CodeEs(p, 
     "#include <string.h>\n");
   CodeEs(p,"}\n");
-  CodeEs(p, 
-    "#define NBLOCKS ");
-  CodeEd(CodeGetnb());
-  CodeEs(p,"\n");
-  CodeEs(p, 
-    "#define NTHREADS ");
-  CodeEd(CodeGetnt());
+
+  //CodeEs(p, 
+  //  "#define NBLOCKS ");
+  //CodeEd(CodeGetnb());
+  //CodeEs(p,"\n");
+  //CodeEs(p, 
+  //  "#define NTHREADS ");
+  //CodeEd(CodeGetnt());
+
   CodeEs(p,"\n");
   CodeEs(p, 
     "void *GpuNew(int n);\n");
@@ -454,7 +456,7 @@ char [*] CodeMkstring(struct tree p)
 */
 char [*] CodeSconstant(struct tree p)
 { 
-  char [*] tmp, eos,tmp2;
+  char [*] tmp,tmp2;
   int l;
 
   /* Set the length  of the string */
@@ -883,7 +885,7 @@ int CodeFdewrappergpu(struct tree p)
   tp=toptp;
   CodeEs(p, "  kernel_"); 
   CodeEs(p, SymGetname(tp)); 
-  CodeEs(p, "<<<NBLOCKS,NTHREADS>>>(");
+  CodeEs(p, "<<< LibeGetnb(),LIbeGetnt() >>>(");
 
   p = PtreeMvchild(p);    
   if(LibeStrcmp(PtreeGetname(p), "arglist") == OK){

@@ -42,8 +42,6 @@
   E=-e 
   S=
   R=
-  N="-nt 1024"
-  M="-nb 1024"
   C=
   G=
   CG=
@@ -88,15 +86,6 @@
         c= 
         CG=-c
         E= ;;
-
-      n)
-        N="-nt "${OPTARG}
-        ;;
-
-      m)   
-        M="-nb "${OPTARG}
-        ;;
-    
       g)
         CG=-g
         G=-g;;    
@@ -131,7 +120,7 @@
 
 
 # Set the options for the epsc compiler
-  EFLAGS=$A$SP$T$SP$P$SP$E$SP$S$SP$R$SP$C$SP$G$SP$N$SP$M
+  EFLAGS=$A$SP$T$SP$P$SP$E$SP$S$SP$R$SP$C$SP$G$SP$SP
 
 # Set the options for the C-compiler
   SPECIAL=" -c -x "'cu'

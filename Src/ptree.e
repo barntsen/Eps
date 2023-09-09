@@ -212,9 +212,6 @@ int PtreeSetdef(struct tree p, char [*] def)
 */
 char [*] PtreeGetdef(struct tree p)  
 {
-
-  int l;
-  l=len(p.def,0);
   return(p.def);
 }  
 /*

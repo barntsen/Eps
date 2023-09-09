@@ -164,6 +164,8 @@ int LibeInit()
   rval = LibeErrinit();  /* Error initialization routine */
   rval = LibeIoinit();
   rval = LibeMathinit();
+  rval = LibeSetnb(NB);
+  rval = LibeSetnt(NT);
   return(rval);
 }
 
@@ -2004,6 +2006,42 @@ float LibeClock()
 {
   return(RunClock());
 }
+
+//
+// Blocks and Threads for GPU
+//
+
+// Globals for no of blocks and threads
+int NBLOCKS;
+int NTHREADS;
+
+// LibeSetnb sets the number of blocks
+int LibeSetnb(int nb)
+{
+  NBLOCKS = nb;
+  return(OK);
+}
+
+// LibeSetnt sets the number of threads
+int LibeSetnt(int nt)
+{
+  NTHREADS = nt;
+  return(OK);
+}
+
+// LibeGetnb gets the number of blocks
+int LibeGetnb()
+{
+  return(NBLOCKS);
+}
+
+// LibeGetnt gets the number of threads
+int LibeGetnt()
+{
+  return(NTHREADS);
+}
+
+
 /*
 \end{verbatim}
 %===============================================================
