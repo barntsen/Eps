@@ -885,7 +885,7 @@ int CodeFdewrappergpu(struct tree p)
   tp=toptp;
   CodeEs(p, "  kernel_"); 
   CodeEs(p, SymGetname(tp)); 
-  CodeEs(p, "<<< LibeGetnb(),LIbeGetnt() >>>(");
+  CodeEs(p, "<<< LibeGetnb(),LibeGetnt() >>>(");
 
   p = PtreeMvchild(p);    
   if(LibeStrcmp(PtreeGetname(p), "arglist") == OK){

@@ -90,7 +90,7 @@ int CodeLine;
 */
 int CodeInit()
 {    
-  CodeSetntnb(128,4096);
+  CodeSetntnb(1024,1024);
   CodeSetparallel(ERR);
   CodeLine=0;
   CodeItemp(-1);  /* Initialize temporaries    */
@@ -179,13 +179,8 @@ int CodePreamble()
   CodeEs(p, 
     "#include <string.h>\n");
   CodeEs(p,"}\n");
-  CodeEs(p, 
-    "#define NBLOCKS ");
-  CodeEd(CodeGetnb());
-  CodeEs(p,"\n");
-  CodeEs(p, 
-    "#define NTHREADS ");
-  CodeEd(CodeGetnt());
+
+  CodeEs(p,"#include \"hip/hip_runtime.h\" \n");
   CodeEs(p,"\n");
   CodeEs(p, 
     "void *GpuNew(int n);\n");
@@ -193,7 +188,6 @@ int CodePreamble()
     "void *GpuDelete(void *f);\n");
   CodeEs(p, 
     "void *GpuError();\n");
-  CodeEs(p,"#include \"hip/hip_runtime.h\" \n");
 
   return (OK);
 }
@@ -446,11 +440,16 @@ char [*] CodeMkstring(struct tree p)
   SymSetarray(sp,"array");
   return(tmp);
 } 
-
-// CodeSconstant implements code for string literals
+/*
+\end{verbatim}
+%====================================================================*
+\subsection{CodeSconstant  -- generate code for strings}  
+%=====================================================================*
+ \begin{verbatim}
+*/
 char [*] CodeSconstant(struct tree p)
-{
-  char [*] tmp, eos,tmp2;
+{ 
+  char [*] tmp,tmp2;
   int l;
 
   /* Set the length  of the string */
@@ -463,10 +462,10 @@ char [*] CodeSconstant(struct tree p)
   CodeEs(p, "static struct nctempchar1 ");
   CodeEs(p, tmp);
   CodeEs(p, " = ");
-  CodeEs(p, "{{ ");
+  CodeEs(p, "{{ "); 
   l = LibeStrlen(PtreeGetdef(p))-1;
   CodeEd(l);
-  CodeEs(p, "}, (char*)");
+  CodeEs(p, "}, (char*)"); 
   CodeEc(DFN);
   CodeEsr(PtreeGetdef(p));
   CodeEc(92); CodeEc(48);
@@ -475,7 +474,6 @@ char [*] CodeSconstant(struct tree p)
   CodeEs(p,tmp2); CodeEs(p,"=&"); CodeEs(p,tmp); CodeEs(p,";\n");
   return (tmp2);
 }
-
 /*
 \end{verbatim}
 %=====================================================================
@@ -633,12 +631,6 @@ int CodeFdeclaration(struct tree p, struct symbol tp)
 */
 int CodeIdeclaration(struct tree p, struct symbol tp)
 { 
-  /* DEBUG
-  if(LibeStrcmp(SymGetglobal(tp),"global") == OK){
-    CodeEs(p, "extern ");
-  }
-  */
-
   if(LibeStrcmp(SymGetstruct(tp),"structdef") == OK){
     CodeEs(p, "struct ");
   }
@@ -884,9 +876,9 @@ int CodeFdewrappergpu(struct tree p)
 
   p=top;
   tp=toptp;
-  CodeEs(p, "hipLaunchKernelGGL(kernel_"); 
+  CodeEs(p, "  kernel_"); 
   CodeEs(p, SymGetname(tp)); 
-  CodeEs(p, ", NBLOCKS,NTHREADS,0,0,");
+  CodeEs(p, "<<< LibeGetnb(),LibeGetnt() >>>(");
 
   p = PtreeMvchild(p);    
   if(LibeStrcmp(PtreeGetname(p), "arglist") == OK){
@@ -1526,7 +1518,7 @@ char [*] CodePrimexpr(struct tree p)
 // CodeIdent generates code for identifier
 char [*] CodeIdent(struct tree p)
 { 
-   // An identifier consists of a qualifier and a name.
+   // Identifier consists of a qualifier and a name.
    // Both qualifier and name may be arrays.
    // The generated c-code is different if the 
    // qualifier is a struct versus basic type. 
@@ -2500,11 +2492,16 @@ char [*] CodeQident2(char [*] qual, char [*] ident)
 
   return(name);
 } 
-
-// CodeEs emits a string
-// This is a primitive routine emitting a string {\tt s}.
-// The {\tt line} argument must contain the current line number,
-// usuallay obtained through a call of {\tt PtreeGetline}.
+/*
+\end{verbatim}
+%=====================================================================
+\subsection{CodeEs  -- emit string}
+%=====================================================================
+This is a primitive routine emitting a string {\tt s}.
+The {\tt line} argument must contain the current line number,
+usuallay obtained through a call of {\tt PtreeGetline}.
+\begin{verbatim}
+*/
 int CodeEs(struct tree p, char [*] s)
 { 
   if(CodeDebug()==OK){
@@ -2525,23 +2522,29 @@ int CodeEs(struct tree p, char [*] s)
   LibePuts(stdout, s);
   return(OK);
 } 
-
-// CodeEd emits a number
+/*
+\end{verbatim}
+%=====================================================================
+\subsection{CodeEd  -- emit decimal}
+%=====================================================================
+No comments, really needed, the routine emits a decimal
+number, and that's it.
+\begin{verbatim}
+*/
 int CodeEd(int d)
 { 
   LibePuti(stdout, d);
   return(OK);
 } 
-
 //CodeEc emits a character
 int CodeEc(int d)
-{
+{ 
   LibePutc(stdout, d);
   return(OK);
-}
-// CodeEsr emits a string without "
+} 
+//CodeEsr emits a string without "
 int CodeEsr(char [*] s)
-{
+{ 
   int i,l;
 
   l=LibeStrlen(s);
@@ -2550,5 +2553,9 @@ int CodeEsr(char [*] s)
   }
   LibeFlush(stdout);
   return(OK);
-}
+} 
+
+/*
+\end{verbatim}
+*/
 
