@@ -42,8 +42,6 @@
   E=-e 
   S=
   R=
-  N="-nt 256"
-  M="-nb 64000"
   C=
   G=
   CG=
@@ -90,14 +88,6 @@
         CG=-c
         E= ;;
 
-      n)
-        N="-nt "${OPTARG}
-        ;;
-
-      m)   
-        M="-nb "${OPTARG}
-        ;;
-    
       g)
         CG=-g
         G=-g;;    
@@ -133,7 +123,7 @@
 
 
 # Set the options for the eps compiler
-  EFLAGS=$R$SP$A$SP$T$SP$P$SP$E$SP$S$SP$C$SP$G$SP$N$SP$M
+  EFLAGS=$R$SP$A$SP$T$SP$P$SP$E$SP$S$SP$C$SP$G
 
 # Set the options for the C-compiler
   SPECIAL=" -c -ffast-math" 

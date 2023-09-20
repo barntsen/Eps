@@ -86,7 +86,7 @@ libecuda.a:	libe.o runcuda.o
 		ar rcs libecuda.a libe.o runcuda.o 
 
 libe.o:		libe.e
-			./ecc $(ECFLAGS) libe.e 
+			./ecc -O $(ECFLAGS) libe.e 
 runcuda.o:	runcuda.e
 			cp runcuda.e runcuda.cpp
 			nvcc -c -x cu $(CCFLAGS) runcuda.cpp

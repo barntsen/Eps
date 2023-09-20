@@ -1,14 +1,14 @@
 ## The eps compiler makefile
 
-#This makefile creates and install the eps compiler.
-#The main targets are:
+# This makefile creates and install the eps compiler.
+# The main targets are:
 
-#1. eps - compiles the eps compiler
-#2. lib - compiles the eps library
-#3. install - installation of compiler 
-#4. genboot - Generate c-code for bootstrapping
-#5. boot    - Bootstrap from c-code
-#6. clean   - remove intermediate files
+# 1. eps - compiles the eps compiler
+# 2. lib - compiles the eps library
+# 3. install - installation of compiler 
+# 4. genboot - Generate c-code for bootstrapping
+# 5. boot    - Bootstrap from c-code
+# 6. clean   - remove intermediate files
 #    
 # The compiler is self-hosting so the compiler binary eps is
 # to be regarded as source code. Backup copy is found in
@@ -16,10 +16,10 @@
 #
 ## Definitions
 
-#This section defines pathnames for the directories where
-#the compiler driver (ec), compiler binary (eps), library 
-#file (libecpu.a) , include file (libe.i) and loader 
-#driver el are to be installed. 
+# This section defines pathnames for the directories where
+# the compiler driver (ec), compiler binary (eps), library 
+# file (libecpu.a) , include file (libe.i) and loader 
+# driver el are to be installed. 
     BIN=../Bin
     LIB=../Lib
     INC=../Inc
