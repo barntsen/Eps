@@ -199,6 +199,7 @@ char  [*] PtreeGetname(struct tree p)
 */
 int PtreeSetdef(struct tree p, char [*] def)
 {
+
   p.def=PtreeSetfield(p.def, def);
   return(OK);
 }  

@@ -68,6 +68,8 @@ char [*] CodeQident(char [*] qual, char [*] ident){}
 char [*] CodeQident2(char [*] qual, char [*] ident){}   
 int CodeEs(struct tree p, char [*] s){}   
 int CodeEd(int d){}    
+int CodeEc(int c){}
+int CodeEsr(char[*] s){}
 int CodeSetparallel(int flag){}
 int CodeGetparallel(){}
 /*
@@ -88,7 +90,7 @@ int CodeLine;
 */
 int CodeInit()
 {    
-  CodeSetntnb(128,4096);
+  CodeSetntnb(1024,1024);
   CodeSetparallel(ERR);
   CodeLine=0;
   CodeItemp(-1);  /* Initialize temporaries    */
@@ -177,13 +179,8 @@ int CodePreamble()
   CodeEs(p, 
     "#include <string.h>\n");
   CodeEs(p,"}\n");
-  CodeEs(p, 
-    "#define NBLOCKS ");
-  CodeEd(CodeGetnb());
-  CodeEs(p,"\n");
-  CodeEs(p, 
-    "#define NTHREADS ");
-  CodeEd(CodeGetnt());
+
+  CodeEs(p,"#include \"hip/hip_runtime.h\" \n");
   CodeEs(p,"\n");
   CodeEs(p, 
     "void *GpuNew(int n);\n");
@@ -191,7 +188,6 @@ int CodePreamble()
     "void *GpuDelete(void *f);\n");
   CodeEs(p, 
     "void *GpuError();\n");
-  CodeEs(p,"#include \"hip/hip_runtime.h\" \n");
 
   return (OK);
 }
@@ -453,7 +449,7 @@ char [*] CodeMkstring(struct tree p)
 */
 char [*] CodeSconstant(struct tree p)
 { 
-  char [*] tmp, tmp2;
+  char [*] tmp,tmp2;
   int l;
 
   /* Set the length  of the string */
@@ -463,14 +459,17 @@ char [*] CodeSconstant(struct tree p)
   CodeEs(p, tmp2);
   CodeEs(p,";\n");
   tmp = CodeNewtemp("char");
-  CodeEs(p, "struct nctempchar1 ");
+  CodeEs(p, "static struct nctempchar1 ");
   CodeEs(p, tmp);
   CodeEs(p, " = ");
   CodeEs(p, "{{ "); 
   l = LibeStrlen(PtreeGetdef(p))-1;
   CodeEd(l);
   CodeEs(p, "}, (char*)"); 
-  CodeEs(p, PtreeGetdef(p));
+  CodeEc(DFN);
+  CodeEsr(PtreeGetdef(p));
+  CodeEc(92); CodeEc(48);
+  CodeEc(DFN);
   CodeEs(p, "};\n");
   CodeEs(p,tmp2); CodeEs(p,"=&"); CodeEs(p,tmp); CodeEs(p,";\n");
   return (tmp2);
@@ -632,12 +631,6 @@ int CodeFdeclaration(struct tree p, struct symbol tp)
 */
 int CodeIdeclaration(struct tree p, struct symbol tp)
 { 
-  /* DEBUG
-  if(LibeStrcmp(SymGetglobal(tp),"global") == OK){
-    CodeEs(p, "extern ");
-  }
-  */
-
   if(LibeStrcmp(SymGetstruct(tp),"structdef") == OK){
     CodeEs(p, "struct ");
   }
@@ -883,9 +876,9 @@ int CodeFdewrappergpu(struct tree p)
 
   p=top;
   tp=toptp;
-  CodeEs(p, "hipLaunchKernelGGL(kernel_"); 
+  CodeEs(p, "  kernel_"); 
   CodeEs(p, SymGetname(tp)); 
-  CodeEs(p, ", NBLOCKS,NTHREADS,0,0,");
+  CodeEs(p, "<<< LibeGetnb(),LibeGetnt() >>>(");
 
   p = PtreeMvchild(p);    
   if(LibeStrcmp(PtreeGetname(p), "arglist") == OK){
@@ -1525,7 +1518,7 @@ char [*] CodePrimexpr(struct tree p)
 // CodeIdent generates code for identifier
 char [*] CodeIdent(struct tree p)
 { 
-   // An identifier consists of a qualifier and a name.
+   // Identifier consists of a qualifier and a name.
    // Both qualifier and name may be arrays.
    // The generated c-code is different if the 
    // qualifier is a struct versus basic type. 
@@ -2543,6 +2536,25 @@ int CodeEd(int d)
   LibePuti(stdout, d);
   return(OK);
 } 
+//CodeEc emits a character
+int CodeEc(int d)
+{ 
+  LibePutc(stdout, d);
+  return(OK);
+} 
+//CodeEsr emits a string without "
+int CodeEsr(char [*] s)
+{ 
+  int i,l;
+
+  l=LibeStrlen(s);
+  for(i=1; i<l-1; i=i+1){
+    LibePutc(stdout,cast(int,s[i]));
+  }
+  LibeFlush(stdout);
+  return(OK);
+} 
+
 /*
 \end{verbatim}
 */

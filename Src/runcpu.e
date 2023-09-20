@@ -55,6 +55,11 @@ int main(int argc, char ** argv)
   else
     rval = 0;
 
+  for(i=0; i<argc; i=i+1){
+    free(cmlargs->a[i].arg); 
+  }
+  free(cmlargs->a);
+  free(cmlargs);
   return(rval);
 }
 /*

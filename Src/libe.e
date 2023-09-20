@@ -164,7 +164,17 @@ int LibeInit()
   rval = LibeErrinit();  /* Error initialization routine */
   rval = LibeIoinit();
   rval = LibeMathinit();
+  rval = LibeSetnb(NB);
+  rval = LibeSetnt(NT);
   return(rval);
+}
+
+int LibeIodelete(){} //Clean up Io  
+// LibeDelete removes allocated memory
+int LibeDelete()
+{
+  LibeIodelete();
+  return(OK);
 }
 /*
 \end{verbatim}
@@ -320,6 +330,45 @@ int LibeIoinit()
     return(ERR);
   }
   return(OK);
+}
+
+// LibeIodelete closes all 
+// open files and deletes all buffers.
+int LibeIodelete()
+{
+  int stat;
+  int fd;
+  int i;
+
+  // Delete string temporary
+  delete(LibeTmpstr);
+
+  // Flush all remaining buffers,
+  // close files and delete buffers.
+  // Standard input standard output and stderr
+  // are not closed.
+  stat=OK;
+  for(i=0; i<LIBEFMAX; i=i+1){
+    if(LibeFarr[i].base != NULL)
+    {
+      if(i > 4)         // Close file except 
+      {                 // stdio,stdout and stderr
+        fd = LibeFarr[i].fd;
+        stat = RunClose(fd);
+        if(stat==ERR){
+          LibeErrstr = "Could not close file";
+          LibeErrno = CLOSERR;
+        }
+      }
+      stat=LibeFlush(i);
+      delete(LibeFarr[i].base);
+    }
+  }
+
+  // Delete array of structs to hold file state info
+  delete(LibeFarr);
+
+  return(stat);
 }
 /*
 \end{verbatim}
@@ -734,7 +783,6 @@ int LibeRead(int fp, int n, char [*] buffer)
   if(LibeFarr[fp].readflg != OK){
     LibeErrstr = "File not open for reading";
     LibeErrno = FNOREADERR;
-    LibeErrno=ERR;
     return (EOF);
   }
   if(n > len(buffer,0)){
@@ -940,15 +988,11 @@ int LibeFlushbuff(int fp)
 Here is a collection of simple routines for character and
 string handling. A string is implemented as a character
 array terminated by an EOS character.
-%---------------------------------------------------------------
-\subsection{LibeStrlen -- the length of a string} 
-%---------------------------------------------------------------
-{\tt LibeStrlen} returns the length of a string contained 
-in the array {\tt s}. 
-If the string is unterminated, the
-lenght of the array is returned.
-\begin{verbatim}
 */
+
+// LibeStrlen returns the length of a string
+// If the string is unterminated, the
+// lenght of the array is returned.
 int LibeStrlen(char [*] s)
 {   
   int ls; /* Length of s    */
@@ -962,7 +1006,6 @@ int LibeStrlen(char [*] s)
   return(i);
 }
 /*
-\end{verbatim}
 %---------------------------------------------------------------
 \subsection{LibeStrcmp -- compare two strings} 
 %---------------------------------------------------------------
@@ -1069,9 +1112,14 @@ and returns a reference to the new string.
 */
 char [*] LibeStrsave(char [*] s)
 { 
+  int l;
   char [*] tmp;
+  tmp=NULL;
+  l=0;
 
-  tmp = new(char [LibeStrlen(s)+1]);
+  //l=len(s,0);
+  l=LibeStrlen(s);
+  tmp = new(char [l+1]);
   if(tmp != NULL)
     LibeStrcpy(s,tmp);
   return(tmp);
@@ -1958,6 +2006,42 @@ float LibeClock()
 {
   return(RunClock());
 }
+
+//
+// Blocks and Threads for GPU
+//
+
+// Globals for no of blocks and threads
+int NBLOCKS;
+int NTHREADS;
+
+// LibeSetnb sets the number of blocks
+int LibeSetnb(int nb)
+{
+  NBLOCKS = nb;
+  return(OK);
+}
+
+// LibeSetnt sets the number of threads
+int LibeSetnt(int nt)
+{
+  NTHREADS = nt;
+  return(OK);
+}
+
+// LibeGetnb gets the number of blocks
+int LibeGetnb()
+{
+  return(NBLOCKS);
+}
+
+// LibeGetnt gets the number of threads
+int LibeGetnt()
+{
+  return(NTHREADS);
+}
+
+
 /*
 \end{verbatim}
 %===============================================================
@@ -2496,7 +2580,3 @@ int LibeMod(int n, int r)
   if(r==0) return (n);
   return ( n - (n/r) * r );
 }
-/*
-\end{verbatim}
-\end{document}
-*/

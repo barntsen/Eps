@@ -151,6 +151,7 @@ int Main(struct MainArg [*] MainArgs){}
 \begin{verbatim}
 */
 int   LibeInit(){}               
+int   LibeDelete(){}
 int   LibeExit(){}
 char[*] LibeGetenv(char [*] name){}
 /*
@@ -162,6 +163,7 @@ and sets the error flag to {\tt IOINITERR}.
 {\tt LibeExit} cleans up and exits and never returns.
 {\tt LibeGetenv} returns the value of the
 environment variable contained in {\tt name}.
+LibeDelete cleans up and removes allocated memory.
 %============================================================
 \section{I/O-routines}
 %============================================================
@@ -320,6 +322,19 @@ the base is equal to 10.
 \begin{verbatim}
 */
 float LibeClock(){}
+
+// Threads and Blocks for GPU
+
+// LibeSetnb sets the number of blocks
+int LibeSetnb(int n){}
+// LibeSetnt sets the number of threads
+int LibeSetnt(int n){}
+
+// LibeGetnb gets the number of blocks
+int LibeGetnb(){}
+// LibeGetnt gets the number of threads
+int LibeGetnt(){}
+
 /*
 \end{verbatim}
 %============================================================

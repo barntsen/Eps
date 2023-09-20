@@ -17,7 +17,6 @@ int Main(struct MainArg [*] MainArgs)
   int table;        // Flag for emitting local symbol tables
   int etable;       // Flag for emitting external symbol table
   int parse, semantic, emit;
-  int nt, nb;      // No of threads and no of blocks
   struct tree p;
   char [*] infile;
   int i;
@@ -41,7 +40,6 @@ int Main(struct MainArg [*] MainArgs)
     LibeFlush(stderr);
     LibeExit();
   }
-
   while((MainArgs[i].arg[0] ==cast(char,'-'))  == OK){      
     if(LibeStrcmp(MainArgs[i].arg, "-t") == OK){  
 
@@ -98,22 +96,6 @@ int Main(struct MainArg [*] MainArgs)
     if(LibeStrcmp(MainArgs[i].arg, "-g") == OK){      
       CodeDebugon();
     }
-
-    // Set no of threads
-    if(LibeStrcmp(MainArgs[i].arg, "-nt") == OK){      
-      nb=CodeGetnb();
-      i=i+1;
-      nt=LibeAtoi(MainArgs[i].arg);
-      CodeSetntnb(nt,nb);
-    }
-    // Set no of blocks
-    if(LibeStrcmp(MainArgs[i].arg, "-nb") == OK){      
-      nt=CodeGetnt();
-      i=i+1;
-      nb=LibeAtoi(MainArgs[i].arg);
-      CodeSetntnb(nt,nb);
-    }
-
     i = i + 1;
   }
 
@@ -129,6 +111,7 @@ int Main(struct MainArg [*] MainArgs)
   }
   else 
     infile=MainArgs[i].arg;
+
 
   // Initialize the scanner 
 
@@ -157,7 +140,7 @@ int Main(struct MainArg [*] MainArgs)
 
   // Create string table     
 
-  SymSetstp(SymMktable()); 
+  //SymSetstp(SymMktable()); 
 
   if(parse == OK)
     p = ParseParse();    // Parse first unit of code     
@@ -194,7 +177,6 @@ int Main(struct MainArg [*] MainArgs)
 
   // Print external symbol table
   if(etable == OK){
-    LibePuts(stderr,"*************Should not happen!\n");
     LibeFlush(stderr);
     if(SymGetetp() != NULL){
       SymPrsym(SymGetetp(),0);
