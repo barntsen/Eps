@@ -14,6 +14,7 @@ are wrappers to unix system calls and math functions.
 #include<time.h>
 #include<stdlib.h>
 #include<string.h>
+#include<math.h>
 
 #define OK   1
 #define ERR  0
@@ -258,7 +259,8 @@ int RunExit()
   exit(-1);
   return(OK);
 }
-/*
-\end{verbatim}
-\end{document}
-*/
+// RunExp - exponential
+float RunExp(float x)
+{
+  return(exp(x));
+}

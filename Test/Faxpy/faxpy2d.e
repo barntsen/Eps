@@ -20,8 +20,8 @@ int Main(struct MainArg [*] MainArgs)
 
   LibeInit(); // Initialize library for io etc..
 
-  nx = 20000;
-  ny = 20000;
+  nx = 8000;
+  ny = 8000;
   x = new(float[nx,ny]);
   y = new(float[nx,ny]);
   a = new(float[nx,ny]);
@@ -35,7 +35,7 @@ int Main(struct MainArg [*] MainArgs)
   }
 
   // Perform the vector addition 1000 times
-  niter = 100;
+  niter = 1000;
 
   // Start timer
   t0=LibeClock();
@@ -68,17 +68,10 @@ int faxpy2d(float [*,*] a, float [*,*] x, float [*,*] y, float b){
   nx=len(x,0);
   ny=len(x,1);
   parallel(i=0:nx,j=0:ny){
-//  for(i=0; i<nx; i=i+1){
-//    for(j=0; j<ny; j=j+1){
-      //LibePuts(stderr,"i,j,a: ");
-      //LibePuti(stderr,i);
-      //LibePuti(stderr,j);
-      //LibePuts(stderr," a:");
-      //LibePutf(stderr,a[i,j]);
-      //LibePuts(stderr,"\n");
-      //LibeFlush(stderr);
-      a[i,j] = b*y[i,j]+x[i,j];
- //   }
+  //for(i=0; i<nx; i=i+1){
+  //  for(j=0; j<ny; j=j+1){
+        a[i,j] = b*y[i,j]+x[i,j];
+    //}
   }
   return(OK);
 }

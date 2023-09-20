@@ -56,7 +56,7 @@ lib:       libcpu.a
 libcpu.a:  libe.o runcpu.o
 		ar rcs libecpu.a libe.o runcpu.o 
 libe.o:    libe.e
-		./ec $(ECFLAGS) libe.e 
+		./ec -O $(ECFLAGS) libe.e 
 runcpu.o:  runcpu.e
 		cp runcpu.e runcpu.c
 		gcc -c $(CCFLAGS) runcpu.c
