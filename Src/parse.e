@@ -50,7 +50,6 @@
 //   ident             =  ID  [ '['exprlist ']' ] 
 
 // Definitions     
-// -----------
 include "libe.i"     /* Library interface             */
 include "ptree.i"    /* Parse Tree routines interface */
 include "err.i"      /* Error routines interface      */

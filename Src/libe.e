@@ -980,15 +980,10 @@ int LibeFlushbuff(int fp)
     return (OK);
   }
 }
-/*
-\end{verbatim}
-%===============================================================
-\section{String routines} 
-%===============================================================
-Here is a collection of simple routines for character and
-string handling. A string is implemented as a character
-array terminated by an EOS character.
-*/
+// String routines 
+//Here is a collection of simple routines for character and
+//string handling. A string is implemented as a character
+//array terminated by an EOS character.
 
 // LibeStrlen returns the length of a string
 // If the string is unterminated, the
@@ -1005,16 +1000,11 @@ int LibeStrlen(char [*] s)
   }
   return(i);
 }
-/*
-%---------------------------------------------------------------
-\subsection{LibeStrcmp -- compare two strings} 
-%---------------------------------------------------------------
-\begin{verbatim}
-{\tt LibeStrcmp} compares to strings contained in the
-{\tt s} and {\tt t} arrays. If the two strings are
-equal {\tt OK} is returned, in all other cases is
-{\tt ERR} returned.
-*/
+
+// LibeStrcmp compares to strings contained in the
+// s and t arrays. If the two strings are
+// equal OK is returned, in all other cases is
+// ERR returned.
 int LibeStrcmp(char [*] s, char [*] t)
 {   
   int ls; /* Length of s    */

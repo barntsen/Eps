@@ -17,6 +17,7 @@ include "sym.i"    /* Include symbol table interface        */
 include "ptree.i"  /* Include parse tree interface          */
 include "err.i"    /* Include interface to error routines   */
 include "code.i"   /* Include interface for code generation */
+include "run.i" // Include runtime functions
 
 char [*] CodeItemp(int cntrl){}                  /* Initialize temporary generation */  
 char [*] CodeMktemp(){}                          /* Make a temporary variable       */
@@ -129,11 +130,6 @@ int CodePreamble()
     "typedef struct nctempcomplex1 { int d[1]; complex *a;} nctempcomplex1; \n");
   PtreeSetline(p,8);
 
-  //if(CodeArraycheck() == OK){
-  //  CodeEs(p, 
-  //  "static struct nctempchar1 nctempstring = {0, NULL};\n");
-  //  PtreeSetline(p,8);
-  //}
   CodeEs(p, 
     "typedef struct nctempfloat2 { int d[2]; float *a;} nctempfloat2; \n");
   PtreeSetline(p,10);
@@ -180,14 +176,6 @@ int CodePreamble()
     "#include <string.h>\n");
   CodeEs(p,"}\n");
 
-  //CodeEs(p, 
-  //  "#define NBLOCKS ");
-  //CodeEd(CodeGetnb());
-  //CodeEs(p,"\n");
-  //CodeEs(p, 
-  //  "#define NTHREADS ");
-  //CodeEd(CodeGetnt());
-
   CodeEs(p,"\n");
   CodeEs(p, 
     "void *GpuNew(int n);\n");
@@ -195,6 +183,19 @@ int CodePreamble()
     "void *GpuDelete(void *f);\n");
   CodeEs(p, 
     "void *GpuError();\n");
+
+  CodeEs(p, 
+    "void *RunMalloc();\n");
+  CodeEs(p, 
+    "void * RunFree();\n");
+  CodeEs(p, 
+    "void * RunSync();\n");
+
+  CodeEs(p, 
+    "int RunGetnt();\n");
+  CodeEs(p, 
+    "int RunGetnb();\n");
+
 
   return (OK);
 }
@@ -885,7 +886,7 @@ int CodeFdewrappergpu(struct tree p)
   tp=toptp;
   CodeEs(p, "  kernel_"); 
   CodeEs(p, SymGetname(tp)); 
-  CodeEs(p, "<<< LibeGetnb(),LibeGetnt() >>>(");
+  CodeEs(p, "<<< RunGetnb(),RunGetnt() >>>(");
 
   p = PtreeMvchild(p);    
   if(LibeStrcmp(PtreeGetname(p), "arglist") == OK){

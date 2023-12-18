@@ -245,6 +245,47 @@ nctempchar1 *RunGetenv(nctempchar1* str)
   rval->d[0] = strlen(rval->a);
   return(rval);
 }
+// RunGetnt gets number of threads from
+// the NTHREADS environment variable
+int RunGetnt() 
+{
+ int nt;
+ char * ntstring;
+
+ char *s = (char *)malloc(sizeof(char)*(strlen("NTHREADS")+1));
+ s[strlen("NTHREADS")] = '\0';
+ strcpy(s,"NTHREADS");
+ ntstring = getenv(s);
+ if(ntstring == NULL){
+   printf("RunGetnt: Environmental variable NTHREADS must be set to no. of threads\n");
+   exit(-1);
+ }
+ nt = atoi(ntstring); 
+
+ return(nt); 
+}
+
+// RunGetnb gets number of blocks from
+// the NBLOCKS environment variable
+int RunGetnb() 
+{
+ int nb;
+ char * nbstring;
+
+ char *s = (char *)malloc(sizeof(char)*(strlen("NBLOCKS")+1));
+ s[strlen("NBLOCKS")] = '\0';
+ strcpy(s,"NBLOCKS");
+ nbstring = getenv(s);
+ if(nbstring == NULL){
+   printf("RunGetnb: Environmental variable NBLOCKS must be set to no. of blocks\n");
+   exit(-1);
+ }
+ nb = atoi(nbstring); 
+
+ return(nb); 
+}
+
+
 /*
 \end{verbatim}
 %============================================================

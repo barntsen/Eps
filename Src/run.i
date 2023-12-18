@@ -105,6 +105,15 @@ char [*] RunGetenv(char [*] name){}
 \end{verbatim}
 {\tt RunGetenv} returns the value of the environment
 variable contained in the string {\tt name}.
+
+// RunGetnt gets the number of threads from the
+// environment variable NTHREADS.
+int RunGetnt(){}
+
+// RunGetnb gets the number of threads from the
+// environment variable NTHREADS.
+int RunGetnb(){}
+
 %============================================================
 \section{RunStrcmp -- compare strings}
 %============================================================
