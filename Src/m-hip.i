@@ -17,7 +17,7 @@ const FBITS   = 8;
 const CPU     = 1;
 const CUDA    = 2;
 const HIP     = 3;
-const ARCH    = 2;
+const ARCH    = 3;
 
 const NB      = 1024;
 const NT      = 1024;

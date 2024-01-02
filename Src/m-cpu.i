@@ -14,6 +14,11 @@ const LIMIT   = 2.4414062E-4;
 const MBITS   = 24;
 const FBITS   = 8;
 
-// No of threads and blocks
-const NB = 1024; // No of Blocks
-const NT = 1024; // No of threads
+const CPU     = 1;
+const CUDA    = 2;
+const HIP     = 3;
+const ARCH    = 1;
+
+const NB      = 1024;
+const NT      = 1024;
+
