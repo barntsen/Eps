@@ -367,5 +367,7 @@ float  LibeArctan( float x){}
 float  LibePow(float base, float exponent){}
 /*
 \end{verbatim}
-\end{document}
 */
+// LibeSystem executes a shell command
+int LibeSystem(char [*] cmd){}
+

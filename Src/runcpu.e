@@ -69,9 +69,9 @@ int main(int argc, char ** argv)
 %============================================================
 \begin{verbatim}
 */
-char * RunMalloc(int nb)
+void * RunMalloc(int nb)
 {
-    return((char *)malloc(nb));
+    return((void *)malloc(nb));
 }
 /*
 \end{verbatim}
@@ -80,7 +80,7 @@ char * RunMalloc(int nb)
 %============================================================
 \begin{verbatim}
 */
-int RunFree(char* p)
+int RunFree(void* p)
 {
     free(p);
     return(OK);
@@ -269,3 +269,11 @@ float RunExp(float x)
 {
   return(exp(x));
 }
+// RunSystem executes a shell command
+int RunSystem (nctempchar1 *cmd)
+{
+  int rval;
+  rval = system(cmd->a);
+  return(rval);
+}
+  

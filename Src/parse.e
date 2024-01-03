@@ -16,7 +16,7 @@
 //    argseq         = ',' [ID]  argseq  
 //    declarations   = declaration [declarations]
 //    declaration    = type ID idseq ';'
-//    compstmnt      = '{' declarations stmntlist '}' 
+//    compstmnt      = '{' declarations  stmntlist '}' 
 //    stmntlist      = stmnt | stmnt stmntlist   
 //    stmnt          = (ifstmnt| compstmnt| whilestmnt| forstmnt 
 //                             | parallelstmnt|return| expr) ';'
@@ -56,8 +56,8 @@ include "err.i"      /* Error routines interface      */
 include "scan.i"     /* Lexical scanner interface     */
 include "parse.i"    /* Parse interface               */
 
-struct tree ParseExtdecl(){}              // Parse external declarations
-struct tree ParseType(){}                 // Parse type statement
+struct tree ParseExtdecl(){}              
+struct tree ParseType(){}                 
 int  ParseConstdecl(struct tree p){}  
 int  ParseStructdeclar(struct tree p){}  
 int  ParseIdseq(struct tree p){}         

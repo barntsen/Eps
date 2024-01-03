@@ -1,11 +1,12 @@
 #!/bin/sh
 
-#el is a script to drive the gcc loader.
+#el is a script to drive the loader using gcc
 
-#Set library locations
-LOCALLIB=.
-EPSLIB=$EPS/Lib
-LIB=$LOCALLIB
+# Use one of these options for library location
+#LIB=$EPS/Lib
+#LIB=.
+
+LIB=.
 
 FILES=" "
 for i in $*

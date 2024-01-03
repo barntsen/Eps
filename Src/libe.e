@@ -2570,3 +2570,12 @@ int LibeMod(int n, int r)
   if(r==0) return (n);
   return ( n - (n/r) * r );
 }
+// LibeSystem executes a shell command
+int LibeSystem(char [*] cmd)
+{
+  int rval;
+  
+  rval = RunSystem(cmd);
+
+  return(rval);
+}  

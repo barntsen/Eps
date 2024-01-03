@@ -67,7 +67,7 @@ int CodeArrayex(int line, char [*] qual, char [*] sel,
                 char [*] name, char [*] ival, int index){}
 char [*] CodeQident(char [*] qual, char [*] ident){}   
 char [*] CodeQident2(char [*] qual, char [*] ident){}   
-int CodeEs(struct tree p, char [*] s){}   
+//int CodeEs(struct tree p, char [*] s){}   
 int CodeEd(int d){}    
 int CodeEc(int c){}
 int CodeEsr(char[*] s){}

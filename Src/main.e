@@ -9,38 +9,216 @@ include "parse.i"       // Parsing of source code
 include "sym.i"         // Symbol table managment
 include "sem.i"         // Semantic checking
 include "code.i"        // Code generator
+include "m.i"
 
+int MainHelp(){}
+
+int MainHelp(){
+  LibePuts(stderr,"Command\n");
+  LibePuts(stderr,"\n");
+  LibePuts(stderr,"  ec [-t -a ] file.e \n");
+  LibePuts(stderr,"\n");
+  LibePuts(stderr,"  The ec command (without options) compiles an eps file\n");
+  LibePuts(stderr,"  with extension .e into an object file with extension .o\n");
+  LibePuts(stderr,"\n");
+  LibePuts(stderr,"  options: \n");
+  LibePuts(stderr,"   -t : Print parse tree \n");
+  LibePuts(stderr,"   -a : Print annotated parse tree \n");
+  LibePuts(stderr,"   -s : Print local symbol table   \n");
+  LibePuts(stderr,"   -r : Print external symbol table   \n");
+  LibePuts(stderr,"   -e : Emit code \n");
+  LibePuts(stderr,"   -p : Perform only syntax check, no code generated \n");
+  LibePuts(stderr,"   -q : Perform syntax and semantic check, no code generated \n");
+  LibePuts(stderr,"   -C : Array index check \n");
+  LibePuts(stderr,"   -c : Produce c-code but do not invoke gcc\n");
+  LibePuts(stderr,"   -g : Generate debug info \n");
+  LibePuts(stderr,"   -d : Show the gcc command line  \n");
+  LibePuts(stderr,"   -O : Optimize code\n");
+  LibePuts(stderr,"   -f : Generate code for openmp \n");
+  LibeFlush(stderr);
+}
+char [*] MainFout(char [*] file){}
+
+// Mainfout checks the input file name
+// and creates an output file name with extension '.c'
+// The argument to the function is the input file name and
+// the return value is the output file name. 
+char [*] MainFout(char [*] infile){
+  int fd;
+  char [*] outfile; // Output file name (holding c-code)
+  int l;            // Temp varibale to hold string length of 
+                    // input file name
+
+  l=len(infile,0);
+  if(l < 3){
+    LibePuts(stderr," Illegal file name\n");
+    LibeFlush(stderr);
+    LibeExit();
+  }
+  if(infile[l-2] != cast(char,'e')){
+    LibePuts(stderr," File extension have to be .e \n");
+    LibeFlush(stderr);
+    LibeExit();
+  }
+  outfile=new(char [l]);
+  LibeStrcpy(infile,outfile);
+  outfile[l-2] = cast(char,'c');
+
+  return(outfile);
+}    
+
+int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show){}
+int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show){}
+
+// MainCcompcpu invokes the c-compiler to generate object code for cpu.
+int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show){
+  int fd;
+  char [*] tmp;         // String temporary 
+  char [*] cmd;     // Command line for compiling
+  int l;            // Temp varibale to hold string length of 
+                    // input file name
+  l=len(file,0);
+  tmp= "gcc -c ";
+  cmd = new(char[len(tmp,0)+l+2]);
+  LibeStrcpy(tmp,cmd);
+
+  if(debug == OK){
+    LibeStrcat(" -g ",cmd);
+  }
+
+  if(optimize == OK){
+    LibeStrcat(" -O ",cmd);
+  }
+
+  if(openmp == OK){
+    LibeStrcat(" -fopenmp ",cmd);
+  }
+
+  LibeStrcat(file,cmd);
+  LibeStrcat("\n",cmd);
+  if(show == OK){
+    LibePuts(stderr,cmd);
+    LibeFlush(stderr);
+  }
+  LibeSystem(cmd);
+  delete(cmd);
+  cmd = new(char[len("rm ",0)+l+2]);
+  LibeStrcpy("rm ",cmd);
+  LibeStrcat(file,cmd);
+  LibeStrcat("\n",cmd);
+  if(show == OK){
+    LibePuts(stderr,cmd);
+    LibeFlush(stderr);
+  }
+  LibeSystem(cmd);
+  delete(cmd);
+  return(OK);
+}    
+
+// MainCcompcuda invokes the c-compiler to generate object code for cpu.
+int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show){
+  int fd;
+  char [*] tmp;         // String temporary 
+  char [*] cmd;     // Command line for compiling
+  int l;            // Temp varibale to hold string length of 
+                    // input file name
+  l=len(file,0);
+  tmp= "nvcc -c -x cu ";
+  cmd = new(char[len(tmp,0)+l+2]);
+  LibeStrcpy(tmp,cmd);
+
+  if(debug == OK){
+    LibeStrcat(" -g ",cmd);
+  }
+
+  if(optimize == OK){
+    LibeStrcat(" -O ",cmd);
+  }
+
+  if(openmp == OK){
+    LibeStrcat(" -fopenmp ",cmd);
+  }
+
+  LibeStrcat(file,cmd);
+  LibeStrcat("\n",cmd);
+  if(show == OK){
+    LibePuts(stderr,cmd);
+    LibeFlush(stderr);
+  }
+  LibeSystem(cmd);
+  delete(cmd);
+  cmd = new(char[len("rm ",0)+l+2]);
+  LibeStrcpy("rm ",cmd);
+  LibeStrcat(file,cmd);
+  LibeStrcat("\n",cmd);
+  if(show == OK){
+    LibePuts(stderr,cmd);
+    LibeFlush(stderr);
+  }
+  LibeSystem(cmd);
+  delete(cmd);
+  return(OK);
+}    
 int Main(struct MainArg [*] MainArgs)
 {
   int btree;        // Flag for emitting parse tre. 
   int atree;        // Flag for emitting annotated parse tree
   int table;        // Flag for emitting local symbol tables
   int etable;       // Flag for emitting external symbol table
-  int parse, semantic, emit;
-  struct tree p;
-  char [*] infile;
-  int i;
+  int parse;        // Flag to perform parsing
+  int semantic;     // Flag to perform semantic check
+  int emit;         // Flag for emitting c-code
+  int optimize;     // Flag to optimize cod3
+  int openmp;       // Flag for openmp
+  int debug;        // Flag for debug
+  int show;         // Flag for displaying compiler command line
+  int obj;          // Flag for producing object code
+
+ 
+  int fd;           // Input file descriptor
+  struct tree p;    // Parse tree node
+  char [*] infile;  // Input file name
+  char [*] outfile; // Output file name
+
+  int i,l,loop;     // Loop variables 
 
   LibeInit();        // Initialize io package 
 
+  // Turn off all flags
+  show=debug=optimize=openmp=ERR;
   btree  = atree = table = etable = emit = ERR;
   parse  = semantic = ERR;
+  obj = OK;
+
+  // Initialize the parse tree 
   PtreeInit(); 
-  CodeArraycheckoff();
-  CodeDebugoff();
-  i = 1;
+
   // Initialize the code generator    
 
-    CodeInit();    
+  CodeInit();    
+  CodeArraycheckoff();
+  CodeDebugoff();
+  CodeSetarch(ARCH);
+
    
   // Command line option processing : 
 
-  if(len(MainArgs,0)==1){
+  l = len(MainArgs,0);
+  if(l<=1){
     LibePuts(stderr,"Missing input file name\n");
     LibeFlush(stderr);
     LibeExit();
   }
-  while((MainArgs[i].arg[0] ==cast(char,'-'))  == OK){      
+
+  i=1;
+  loop=OK;
+  while(loop==OK){
+
+    if(LibeStrcmp(MainArgs[i].arg, "-h") == OK){  
+      MainHelp();
+      LibeExit();
+    }
+
     if(LibeStrcmp(MainArgs[i].arg, "-t") == OK){  
 
     // Print parse tree  
@@ -94,12 +272,40 @@ int Main(struct MainArg [*] MainArgs)
     // Turn on debug flag  
 
     if(LibeStrcmp(MainArgs[i].arg, "-g") == OK){      
+      debug=OK;
       CodeDebugon();
     }
-    i = i + 1;
+
+    if(LibeStrcmp(MainArgs[i].arg, "-d") == OK){      
+      show=OK;
+    }
+
+    // Set flag for optimization
+
+    if(LibeStrcmp(MainArgs[i].arg, "-O") == OK){      
+       optimize=OK;
+    }
+
+    // Set flag for openmp
+    if(LibeStrcmp(MainArgs[i].arg, "-f") == OK){      
+       openmp=OK;
+    }
+    if(LibeStrcmp(MainArgs[i].arg, "-c") == OK){      
+       obj=ERR;
+    }
+    if(i+1<l){
+      if((MainArgs[i].arg[0] ==cast(char,'-')) == OK){
+        loop=OK;
+        i=i+1;
+      } else {
+        loop=ERR;
+      } 
+    }else {
+      loop=ERR;
+    }
   }
 
-  // Choose the default case
+  // Set the default case
 
   if((parse == ERR) && (semantic == ERR) && (emit == ERR)){
     parse=semantic=emit=OK;
@@ -107,12 +313,20 @@ int Main(struct MainArg [*] MainArgs)
 
   if(i>=len(MainArgs,0)){
     LibePuts(stderr,"Missing input file name\n");
+    LibeFlush(stderr);
     LibeExit();
   }
   else 
     infile=MainArgs[i].arg;
 
-
+  // Set the output file for holding c-code
+  if(emit == OK){
+    outfile=MainFout(infile);
+    // Open output file for c-code
+    fd = LibeOpen(outfile,"w");
+    CodeSetfdout(fd);
+  }    
+  
   // Initialize the scanner 
 
   if(ScanInit(infile) == ERR){        
@@ -127,20 +341,12 @@ int Main(struct MainArg [*] MainArgs)
 
   ParseIniparse();        
 
-  // Initialize the code generator 
-
-    //CodeInit();    
-
-    if(emit==OK)
-      CodePreamble();
+  if(emit==OK)
+    CodePreamble();
 
   // Create external symbol table 
 
   SymSetetp(SymMktable()); 
-
-  // Create string table     
-
-  //SymSetstp(SymMktable()); 
 
   if(parse == OK)
     p = ParseParse();    // Parse first unit of code     
@@ -182,6 +388,21 @@ int Main(struct MainArg [*] MainArgs)
       SymPrsym(SymGetetp(),0);
     }
   }
+
+  // Compile the c-code
+
+  if ((emit == OK) && (obj == OK)){
+    if(ARCH == CPU){
+      MainCcompcpu(outfile,debug,optimize,openmp,show);
+    }
+
+  }
+
+  if(emit == OK){
+    delete(outfile);    
+    LibeClose(fd);
+  }
+
   LibeFlush(stdout);
 
   return(OK);   // Successfull Return 

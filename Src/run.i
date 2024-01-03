@@ -10,7 +10,7 @@ are unix system calls and math functions.
 %============================================================
 \begin{verbatim}
 */
-char [*] RunMalloc(int nb){}
+//char [*] RunMalloc(int nb){}
 /*
 \end{verbatim}
 %============================================================
@@ -18,7 +18,7 @@ char [*] RunMalloc(int nb){}
 %============================================================
 \begin{verbatim}
 */
-char [*] RunFree(int nb){}
+//char [*] RunFree(int nb){}
 /*
 \end{verbatim}
 %============================================================
@@ -141,4 +141,6 @@ int RunExit(){}
 {\tt RunExit} cleans up and exits.
 \end{document}
 */
+// RunSystem
+int RunSystem(char [*] cmd){}
 

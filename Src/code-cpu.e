@@ -20,7 +20,7 @@ int CodeFdeclaration(struct tree p, struct symbol tp){}      // Generate functio
 int CodeFdeclkernel(struct tree p){}                         // Generate function declaration kernel
 int CodeIdeclaration(struct tree p, struct symbol tp){}  
 int CodeIdlist(struct tree p, struct symbol tp){}     
-int CodeFdef(struct tree p){}  
+int CodeFdefcpu(struct tree p){}  
 int CodeCompstmnt(struct tree p){}  
 int CodeStmnt(struct tree p){}  
 int CodeWhilestmnt(struct tree p){}  
@@ -76,95 +76,9 @@ int CodeLine;
 */
 int CodeInit()
 {    
-  CodeSetntnb(0,0);
   CodeSetparallel(ERR);
   CodeLine=0;
   CodeItemp(-1);  /* Initialize temporaries    */
-  return (OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{CodePreamble -- Emit preamble}
-%======================================================================
-\begin{verbatim}
-*/
-int CodePreamble()
-{    
-  struct tree p;
-
-  p = PtreeMknode("dummy", "dummy");
-
-  PtreeSetline(p,1);
-  CodeEs(p, "/*  Translated by epsc  version December 2021 */\n");
-  PtreeSetline(p,2);
-  PtreeSetline(p,3);
-  CodeEs(p, 
-    "#include <stddef.h>\n");
-  CodeEs(p, 
-    "typedef struct { float r; float i;} complex; \n");
-  PtreeSetline(p,3);
-  CodeEs(p, 
-    "typedef struct nctempfloat1 { int d[1]; float *a;} nctempfloat1; \n");
-  PtreeSetline(p,5);
-  CodeEs(p, 
-    "typedef struct nctempint1 { int d[1]; int *a;} nctempint1; \n");
-  PtreeSetline(p,7);
-  CodeEs(p, 
-    "typedef struct nctempchar1 { int d[1]; char *a;} nctempchar1; \n");
-  PtreeSetline(p,7);
-  CodeEs(p, 
-    "typedef struct nctempcomplex1 { int d[1]; complex *a;} nctempcomplex1; \n");
-  PtreeSetline(p,8);
-
-  if(CodeArraycheck() == OK){
-    CodeEs(p, 
-    "static struct nctempchar1 nctempstringx = {0, NULL};\n");
-    CodeEs(p,
-    "static struct nctempchar1 *nctempstring = &nctempstringx;\n");
-    PtreeSetline(p,8);
-  }
-  CodeEs(p, 
-    "typedef struct nctempfloat2 { int d[2]; float *a;} nctempfloat2; \n");
-  PtreeSetline(p,10);
-  CodeEs(p, 
-    "typedef struct nctempint2 { int d[2]; int *a;} nctempint2; \n");
-  PtreeSetline(p,10);
-  CodeEs(p, 
-    "typedef struct nctempchar2 { int d[2]; char *a;} nctempchar2; \n");
-  PtreeSetline(p,12);
-  CodeEs(p, 
-    "typedef struct nctempcomplex2 { int d[2]; complex *a;} nctempcomplex2; \n");
-
-  PtreeSetline(p,13);
-  CodeEs(p, 
-    "typedef struct nctempfloat3 { int d[3]; float *a;} nctempfloat3; \n");
-  PtreeSetline(p,14);
-  CodeEs(p, 
-    "typedef struct nctempint3 { int d[3]; int *a;} nctempint3; \n");
-  PtreeSetline(p,15);
-  CodeEs(p, 
-    "typedef struct nctempchar3 { int d[3]; char *a;} nctempchar3; \n");
-  PtreeSetline(p,16);
-  CodeEs(p, 
-    "typedef struct nctempcomplex3 { int d[3]; complex *a;} nctempcomplex3; \n");
-
-  PtreeSetline(p,17);
-  CodeEs(p, 
-    "typedef struct nctempfloat4 { int d[4]; float *a;} nctempfloat4; \n");
-  PtreeSetline(p,18);
-  CodeEs(p, 
-    "typedef struct nctempint4 { int d[4]; int *a;} nctempint4; \n");
-  PtreeSetline(p,19);
-  CodeEs(p, 
-    "typedef struct nctempchar4 { int d[4]; char *a;} nctempchar4; \n");
-  PtreeSetline(p,20);
-  CodeEs(p, 
-    "typedef struct nctempcomplex4 { int d[4]; complex *a;} nctempcomplex4; \n");
-  CodeEs(p, 
-    "#include <stdlib.h>\n");
-  CodeEs(p, 
-    "#include <string.h>\n");
   return (OK);
 }
 /*
@@ -641,64 +555,11 @@ int CodeWdeclaration(struct tree p)
   np = PtreeMvchild(p); 
   while(np != NULL){ 
     if(LibeStrcmp(PtreeGetname(np), "fdef") == OK)
-      CodeFdef(np); 
+      CodeFdefcpu(np); 
     np = PtreeMvsister(np);
   }
   return(OK);
 } 
-/*
-\end{verbatim}
-%=====================================================================
-\subsection*{CodeFdef -- Generate fdef definition}  
-%=====================================================================
- \begin{verbatim}
-*/
-int CodeFdef(struct tree p)
-{ 
-  struct symbol tp;
-  int noarg;
-
-  noarg=0;
-  tp = SymLookup(PtreeGetdef(p), SymGetetp());
-  SymSetltp(SymGetable(tp));
-  if(LibeStrcmp(SymGetstruct(tp),"struct") == OK){
-    CodeEs(p, "struct ");
-  }
-  if(LibeStrcmp(SymGetarray(tp),"array") == OK){
-    CodeEs(p, "nctemp");
-  }
-  CodeEs(p, SymGetype(tp));
-  if(LibeStrcmp(SymGetarray(tp),"array") == OK){
-    CodeEd(SymGetrank(tp));
-    CodeEs(p," *");
-  }
-  if(LibeStrcmp(SymGetstruct(tp),"struct")==OK){
-    CodeEs(p,"*");
-  }
-  CodeEs(p, " ");
-  CodeEs(p, SymGetname(tp)); 
-  CodeEs(p, " (");
-  p = PtreeMvchild(p);    
-  if(LibeStrcmp(PtreeGetname(p), "arglist") == OK){
-    tp = SymGetable(tp);
-    tp = SymLookup("#arglist", tp);       
-    tp = SymGetable(tp);
-    while((tp=SymMvnext(tp))!=NULL){
-      CodeIdeclaration(p, tp);
-      if(SymMvnext(tp)!=NULL){
-        CodeEs(p,",");
-      }
-      noarg=noarg+1;
-    }
-  }
-  CodeEs(p, ")\n");
-  if(PtreeMvsister(p) != NULL)
-    CodeCompstmnt(PtreeMvsister(p));
-  else
-    CodeCompstmnt(p);
-
-  return(OK);
-}
 /*
 \end{verbatim}
 %=====================================================================
@@ -2174,6 +2035,90 @@ int CodeEsr(char [*] s)
   return(OK);
 } 
 
+// Cpu code generation 
+// The code below performs code generation for single/multicore cpu's.
+
+// CodePreamble() emits declarations needed for each compilation unit
+int CodePreamble()
+{    
+  struct tree p;
+
+  p = PtreeMknode("dummy", "dummy");
+
+  PtreeSetline(p,1);
+  CodeEs(p, "/*  Translated by epsc  version December 2021 */\n");
+  PtreeSetline(p,2);
+  PtreeSetline(p,3);
+  CodeEs(p, 
+    "#include <stddef.h>\n");
+  CodeEs(p, 
+    "typedef struct { float r; float i;} complex; \n");
+  PtreeSetline(p,3);
+  CodeEs(p, 
+    "typedef struct nctempfloat1 { int d[1]; float *a;} nctempfloat1; \n");
+  PtreeSetline(p,5);
+  CodeEs(p, 
+    "typedef struct nctempint1 { int d[1]; int *a;} nctempint1; \n");
+  PtreeSetline(p,7);
+  CodeEs(p, 
+    "typedef struct nctempchar1 { int d[1]; char *a;} nctempchar1; \n");
+  PtreeSetline(p,7);
+  CodeEs(p, 
+    "typedef struct nctempcomplex1 { int d[1]; complex *a;} nctempcomplex1; \n");
+  PtreeSetline(p,8);
+
+  if(CodeArraycheck() == OK){
+    CodeEs(p, 
+    "static struct nctempchar1 nctempstringx = {0, NULL};\n");
+    CodeEs(p,
+    "static struct nctempchar1 *nctempstring = &nctempstringx;\n");
+    PtreeSetline(p,8);
+  }
+  CodeEs(p, 
+    "typedef struct nctempfloat2 { int d[2]; float *a;} nctempfloat2; \n");
+  PtreeSetline(p,10);
+  CodeEs(p, 
+    "typedef struct nctempint2 { int d[2]; int *a;} nctempint2; \n");
+  PtreeSetline(p,10);
+  CodeEs(p, 
+    "typedef struct nctempchar2 { int d[2]; char *a;} nctempchar2; \n");
+  PtreeSetline(p,12);
+  CodeEs(p, 
+    "typedef struct nctempcomplex2 { int d[2]; complex *a;} nctempcomplex2; \n");
+
+  PtreeSetline(p,13);
+  CodeEs(p, 
+    "typedef struct nctempfloat3 { int d[3]; float *a;} nctempfloat3; \n");
+  PtreeSetline(p,14);
+  CodeEs(p, 
+    "typedef struct nctempint3 { int d[3]; int *a;} nctempint3; \n");
+  PtreeSetline(p,15);
+  CodeEs(p, 
+    "typedef struct nctempchar3 { int d[3]; char *a;} nctempchar3; \n");
+  PtreeSetline(p,16);
+  CodeEs(p, 
+    "typedef struct nctempcomplex3 { int d[3]; complex *a;} nctempcomplex3; \n");
+
+  PtreeSetline(p,17);
+  CodeEs(p, 
+    "typedef struct nctempfloat4 { int d[4]; float *a;} nctempfloat4; \n");
+  PtreeSetline(p,18);
+  CodeEs(p, 
+    "typedef struct nctempint4 { int d[4]; int *a;} nctempint4; \n");
+  PtreeSetline(p,19);
+  CodeEs(p, 
+    "typedef struct nctempchar4 { int d[4]; char *a;} nctempchar4; \n");
+  PtreeSetline(p,20);
+  CodeEs(p, 
+    "typedef struct nctempcomplex4 { int d[4]; complex *a;} nctempcomplex4; \n");
+  CodeEs(p, 
+    "#include <stdlib.h>\n");
+  CodeEs(p, 
+    "#include <string.h>\n");
+  return (OK);
+}
+
+// CodeParallelstmnt  generates code for the cpu parallel statement
 int CodeParallelstmnt(struct tree p)
 { 
   struct tree sp,rp,rrp,qp;
@@ -2198,8 +2143,7 @@ int CodeParallelstmnt(struct tree p)
   return(OK);
 } 
 
-//
-//
+// CodeParallelfor -- generate code for the cpu parallel for
 int CodeParallelfor(struct tree p , int level, int rank)
 {
   int i;
@@ -2250,44 +2194,50 @@ int CodeParallelfor(struct tree p , int level, int rank)
   CodeEs(rp,"){");
   return(OK);
 }
-//
-//Global to hold no of threads and blocks
-int CodeNt;
-int CodeNb;
-/*
-%======================================================================
-\section{CodeSetntnb  -- set no of threads and blocks}
-%======================================================================
-\begin{verbatim}
-*/
-int CodeSetntnb(int nt, int nb)
+// CodeFdefcpu defines a regular function for the cpu architecture
+int CodeFdefcpu(struct tree p)
 { 
-  CodeNt = nt;
-  CodeNb = nb;
+  struct symbol tp;
+  int noarg;
+
+  noarg=0;
+  tp = SymLookup(PtreeGetdef(p), SymGetetp());
+  SymSetltp(SymGetable(tp));
+  if(LibeStrcmp(SymGetstruct(tp),"struct") == OK){
+    CodeEs(p, "struct ");
+  }
+  if(LibeStrcmp(SymGetarray(tp),"array") == OK){
+    CodeEs(p, "nctemp");
+  }
+  CodeEs(p, SymGetype(tp));
+  if(LibeStrcmp(SymGetarray(tp),"array") == OK){
+    CodeEd(SymGetrank(tp));
+    CodeEs(p," *");
+  }
+  if(LibeStrcmp(SymGetstruct(tp),"struct")==OK){
+    CodeEs(p,"*");
+  }
+  CodeEs(p, " ");
+  CodeEs(p, SymGetname(tp)); 
+  CodeEs(p, " (");
+  p = PtreeMvchild(p);    
+  if(LibeStrcmp(PtreeGetname(p), "arglist") == OK){
+    tp = SymGetable(tp);
+    tp = SymLookup("#arglist", tp);       
+    tp = SymGetable(tp);
+    while((tp=SymMvnext(tp))!=NULL){
+      CodeIdeclaration(p, tp);
+      if(SymMvnext(tp)!=NULL){
+        CodeEs(p,",");
+      }
+      noarg=noarg+1;
+    }
+  }
+  CodeEs(p, ")\n");
+  if(PtreeMvsister(p) != NULL)
+    CodeCompstmnt(PtreeMvsister(p));
+  else
+    CodeCompstmnt(p);
+
   return(OK);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{CodeGetnt  -- get no of threads}
-%======================================================================
-\begin{verbatim}
-*/
-int CodeGetnt()
-{ 
-  return(CodeNt);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{CodeGetnb  -- get no of blocks}
-%======================================================================
-\begin{verbatim}
-*/
-int CodeGetnb()
-{ 
-  return(CodeNb);
-} 
-/*
-\end{verbatim}
-*/
+}

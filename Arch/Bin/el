@@ -1,31 +1,15 @@
 #!/bin/sh
-#\documentstyle{article}
-#\begin{document}
-#%
-#%         ***********************************************
-#%         *                                             *
-#          \title{El -- Driver for the eps loader}
-#%         *                                             *
-#%         ***********************************************
-#%
-#\author{B\o rge Arntsen}
-#\maketitle
-#\tableofcontents
-#\abstract{{\tt El [loader flags]}}
-#
-#%============================================================
-#\section{Introduction}  
-#%============================================================
-# This is a script to drive the unix ld loader.
-# The script essentially sets up options for
-# the loader.
-#%============================================================
-#\section{The script}
-#%============================================================
-LIB=$EPS/Lib
+
+#el is a script to drive the gcc loader.
+
+#Set library locations
+LOCALLIB=.
+EPSLIB=$EPS/Lib
+LIB=$EPSLIB
+
 FILES=" "
 for i in $*
 do
   FILES="$FILES $i" ;
 done 
-gcc -L$LIB $FILES -lecpu
+gcc -L$LIB $FILES -lecpu -ffast-math -lm
