@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# elh is a script to drive the loader
+#
+LIB=$EPS/Lib
+FILES=" "
+for i in $*
+do
+  FILES="$FILES $i" ;
+done 
+hipcc -L$LIB $FILES -lehip 

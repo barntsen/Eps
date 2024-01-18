@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#el is a script to drive the loader using gcc
+
+# Use one of these options for library location
+#LIB=$EPS/Lib
+#LIB=.
+
+LIB=$EPS/Lib
+
+FILES=" "
+for i in $*
+do
+  FILES="$FILES $i" ;
+done 
+nvcc -L$LIB $FILES -lecuda -lcudart
