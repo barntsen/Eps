@@ -228,6 +228,7 @@ int CodeFdout;
 // Set output file descriptor
 int CodeSetfdout(int fd){
   CodeFdout = fd;
+  return(OK);
 }
 
 // Get output file descriptor
@@ -1336,7 +1337,7 @@ char [*] CodeNew(struct tree p)
     CodeEs(p,pointer);
     CodeEs(p,"=");
     CodeEs(p,"("); CodeEs(p,"struct "); CodeEs(p,type); CodeEs(p,"*)");
-    CodeEs(p,"malloc(");
+    CodeEs(p,"RunMalloc(");
     CodeEs(p,"sizeof(");
     CodeEs(p,"struct ");
     CodeEs(p,type);
@@ -1364,7 +1365,7 @@ char [*] CodeNew(struct tree p)
     CodeEs(p,type);
     CodeEd(rank);
     CodeEs(p,"*)");
-    CodeEs(p, "malloc(");
+    CodeEs(p, "RunMalloc(");
     CodeEs(p, "sizeof(struct nctemp");
     CodeEs(p, type);
     CodeEd(rank);
@@ -1392,7 +1393,7 @@ char [*] CodeNew(struct tree p)
       CodeEs(sp,"(struct ");
       CodeEs(sp,type);
       CodeEs(sp,"*)");
-      CodeEs(sp,"malloc(sizeof(");
+      CodeEs(sp,"RunMalloc(sizeof(");
       CodeEs(sp,"struct ");
       CodeEs(sp,type);
       CodeEs(sp,")");
@@ -1424,7 +1425,7 @@ char [*] CodeNew(struct tree p)
     CodeEs(p,type);
     CodeEd(rank);
     CodeEs(p,"*)");
-    CodeEs(p, "malloc(");
+    CodeEs(p, "RunMalloc(");
     CodeEs(p, "sizeof(nctemp");
     CodeEs(p, type);
     CodeEd(rank);
@@ -1450,7 +1451,7 @@ char [*] CodeNew(struct tree p)
     CodeEs(p,"=(");
     CodeEs(p,type);
     CodeEs(p," *)");
-    CodeEs(p,"malloc(sizeof(");
+    CodeEs(p,"RunMalloc(sizeof(");
     CodeEs(p,type);
     CodeEs(p,")");
     CodeEs(p,"*");
@@ -1470,7 +1471,7 @@ int CodeNewdescr(struct tree p, char[*] pointer)
 { 
   CodeEs(p, pointer);
   CodeEs(p, "=");
-  CodeEs(p, "malloc(");
+  CodeEs(p, "RunMalloc(");
   CodeEs(p, "sizeof(");
   CodeEs(p, pointer);
   CodeEs(p, "));\n");
@@ -1491,10 +1492,10 @@ char [*] CodeDelete(struct tree p)
   p = PtreeMvchild(p);
   tmp = CodeBinexpr(p);
   if(LibeStrcmp(PtreeGetref(p),"aref")){
-    CodeEs(p, "free(");
+    CodeEs(p, "RunFree(");
     CodeEs(p, tmp);
     CodeEs(p, "->a);\n");
-    CodeEs(p, "free(");
+    CodeEs(p, "RunFree(");
     CodeEs(p, tmp);
     CodeEs(p, ");\n");
   }
@@ -2178,6 +2179,10 @@ int CodePreamblecpu()
   CodeEs(p, 
     "void *RunMalloc(int n); \n");
   return (OK);
+
+  CodeEs(p, 
+    "int RunFree(void *n); \n");
+  return (OK);
 }
 
 // CodeParallelstmnt
@@ -2714,11 +2719,11 @@ int CodePreamblecuda()
     "void *GpuError();\n");
 
   CodeEs(p, 
-    "void *RunMalloc();\n");
+    "void *RunMalloc(int n);\n");
   CodeEs(p, 
-    "void * RunFree();\n");
+    "int RunFree(void * );\n");
   CodeEs(p, 
-    "void * RunSync();\n");
+    "int RunSync();\n");
 
   CodeEs(p, 
     "int RunGetnt();\n");

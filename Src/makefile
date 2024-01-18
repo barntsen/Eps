@@ -3,25 +3,29 @@
 
 # Comment out for the ecc (cuda version) compiler
     ARCH=cuda
-    C=nvcc
+    C=nvcc -x cu 
     EXEC=ecc
+    EL=nvcc -L. -lecuda -lcudart
     EXEL=elc
+    EXT=c
 
 # Comment out for the ech (hip version) compiler
 #   ARCH=hip
 #   C=hipcc
-#   EXEC=ech
+#   EXEC=./ech
+#   EL=hipcc
 #   EXEL=elh
+#   EXT=cpp
 
 # Comment out for the ec (cpu version) compiler
 #   ARCH=cpu
 #   C=gcc
 #   EXEC=ec
-#   EXEL=el
+#   EL=el
+#   EXT=c
 
 # Definitions
     EC=./$(EXEC)
-    EL=./$(EXEL)
     BIN=../Bin
     LIB=../Lib
     INC=../Inc
@@ -31,7 +35,7 @@
 # The compiler executable
 $(ARCH):    main.o scan.o parse.o ptree.o sem.o sym.o code.o \
             err.o scanpath.o lib$(ARCH).a
-	    $(EL) $(LDFLAGS) -o $(EXEC) main.o scan.o parse.o ptree.o sem.o code.o \
+	    $(EL) $(LDFLAGS) -o $(EXEC)1 main.o scan.o parse.o ptree.o sem.o code.o \
             sym.o err.o scanpath.o
 
 main.o:      main.e m.i 
@@ -68,12 +72,12 @@ libe.o:        libe.e
 	       $(EC)  $(ECFLAGS) libe.e 
 
 run$(ARCH).o : 
-	       cp run$(ARCH).e run$(ARCH).c
-	       $(C) -c $(CCFLAGS) run$(ARCH).c
+	       cp run$(ARCH).e run$(ARCH).$(EXT)
+	       $(C) -c $(CCFLAGS) run$(ARCH).$(EXT)
 
-run$(ARCH)c.o : 
-	       cp run$(ARCH)c.e runc$(ARCH)c.c
-	       $(C) -c $(CCFLAGS) run$(ARCH).c
+#run$(ARCH)c.o : 
+#       cp run$(ARCH)c.e runc$(ARCH)c.$(EXT)
+#       $(C) -c $(CCFLAGS) run$(ARCH).$(EXT)
 
 # The install target
 install : 

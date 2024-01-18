@@ -36,6 +36,7 @@ int MainHelp(){
   LibePuts(stderr,"   -O : Optimize code\n");
   LibePuts(stderr,"   -f : Generate code for openmp \n");
   LibeFlush(stderr);
+  return(OK);
 }
 char [*] MainFout(char [*] file){}
 
@@ -51,14 +52,10 @@ char [*] MainFout(char [*] infile){
 
   l=len(infile,0);
   if(l < 3){
-    LibePuts(stderr," Illegal file name\n");
-    LibeFlush(stderr);
-    LibeExit();
+    ErrPanic(" Illegal file name");
   }
   if(infile[l-2] != cast(char,'e')){
-    LibePuts(stderr," File extension have to be .e \n");
-    LibeFlush(stderr);
-    LibeExit();
+    ErrPanic("File extension have to be .e");
   }
   outfile=new(char [l]);
   LibeStrcpy(infile,outfile);
@@ -205,9 +202,7 @@ int Main(struct MainArg [*] MainArgs)
 
   l = len(MainArgs,0);
   if(l<=1){
-    LibePuts(stderr,"Missing input file name\n");
-    LibeFlush(stderr);
-    LibeExit();
+    ErrPanic("Missing input file name");
   }
 
   i=1;
@@ -312,9 +307,7 @@ int Main(struct MainArg [*] MainArgs)
   }
 
   if(i>=len(MainArgs,0)){
-    LibePuts(stderr,"Missing input file name\n");
-    LibeFlush(stderr);
-    LibeExit();
+    ErrPanic("Missing input file name");
   }
   else 
     infile=MainArgs[i].arg;
@@ -394,8 +387,11 @@ int Main(struct MainArg [*] MainArgs)
   if ((emit == OK) && (obj == OK)){
     if(ARCH == CPU){
       MainCcompcpu(outfile,debug,optimize,openmp,show);
+    } else if(ARCH==CUDA){
+      MainCcompcuda(outfile,debug,optimize,openmp,show);
+    }else {
+      ErrPanic("Unknown architecture");
     }
-
   }
 
   if(emit == OK){
