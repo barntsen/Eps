@@ -14,6 +14,7 @@ are wrappers to unix system calls and math functions.
 #include<time.h>
 #include<stdlib.h>
 #include<string.h>
+#include<math.h>
 
 #define OK   1
 #define ERR  0
@@ -54,6 +55,11 @@ int main(int argc, char ** argv)
   else
     rval = 0;
 
+  for(i=0; i<argc; i=i+1){
+    free(cmlargs->a[i].arg); 
+  }
+  free(cmlargs->a);
+  free(cmlargs);
   return(rval);
 }
 /*
@@ -63,9 +69,9 @@ int main(int argc, char ** argv)
 %============================================================
 \begin{verbatim}
 */
-char * RunMalloc(int nb)
+void * RunMalloc(int nb)
 {
-    return((char *)malloc(nb));
+    return((void *)malloc(nb));
 }
 /*
 \end{verbatim}
@@ -74,7 +80,7 @@ char * RunMalloc(int nb)
 %============================================================
 \begin{verbatim}
 */
-int RunFree(char* p)
+int RunFree(void* p)
 {
     free(p);
     return(OK);
@@ -171,10 +177,13 @@ int RunRead(int fd, int lbuff, nctempchar1 *buffer)
 {
   int rval;
   rval = (int)read(fd, (void *)buffer->a, (size_t)lbuff);
-  if(rval == 0)
+  if(rval == 0){
     rval=EOF;
-  else if(rval == -1)
+  }
+  else if(rval == -1){
     rval = ERR;
+  }
+
   return(rval);
 }
 /*
@@ -255,7 +264,17 @@ int RunExit()
   exit(-1);
   return(OK);
 }
-/*
-\end{verbatim}
-\end{document}
-*/
+// RunExp - exponential
+float RunExp(float x)
+{
+  return(exp(x));
+}
+
+// RunSystem executes a shell command
+int RunSystem (nctempchar1 *cmd)
+{
+  int rval;
+  rval = system(cmd->a);
+  return(rval);
+}
+  

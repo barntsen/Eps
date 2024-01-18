@@ -16,12 +16,12 @@ int MainHelp(){}
 int MainHelp(){
   LibePuts(stderr,"Command\n");
   LibePuts(stderr,"\n");
-  LibePuts(stderr,"  ec [-t -a ] file.e \n");
+  LibePuts(stderr,"  ec [-t -a -s -r -e -p -q -C -c -g -d -O -f] file.e \n");
   LibePuts(stderr,"\n");
   LibePuts(stderr,"  The ec command (without options) compiles an eps file\n");
   LibePuts(stderr,"  with extension .e into an object file with extension .o\n");
   LibePuts(stderr,"\n");
-  LibePuts(stderr,"  options: \n");
+  LibePuts(stderr,"  Options: \n");
   LibePuts(stderr,"   -t : Print parse tree \n");
   LibePuts(stderr,"   -a : Print annotated parse tree \n");
   LibePuts(stderr,"   -s : Print local symbol table   \n");
@@ -30,7 +30,7 @@ int MainHelp(){
   LibePuts(stderr,"   -p : Perform only syntax check, no code generated \n");
   LibePuts(stderr,"   -q : Perform syntax and semantic check, no code generated \n");
   LibePuts(stderr,"   -C : Array index check \n");
-  LibePuts(stderr,"   -c : Produce c-code but do not invoke gcc\n");
+  LibePuts(stderr,"   -c : Produce c-code but do not generate object code\n");
   LibePuts(stderr,"   -g : Generate debug info \n");
   LibePuts(stderr,"   -d : Show the gcc command line  \n");
   LibePuts(stderr,"   -O : Optimize code\n");
@@ -112,7 +112,7 @@ int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show){
   return(OK);
 }    
 
-// MainCcompcuda invokes the c-compiler to generate object code for cpu.
+// MainCcompcuda invokes the nvcc compiler to generate object code for nvidia gpus.
 int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show){
   int fd;
   char [*] tmp;         // String temporary 

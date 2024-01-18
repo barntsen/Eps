@@ -2,12 +2,12 @@
 
 
 # Comment out for the ecc (cuda version) compiler
-    ARCH=cuda
-    C=nvcc -x cu 
-    EXEC=ecc
-    EL=nvcc -L. -lecuda -lcudart
-    EXEL=elc
-    EXT=c
+#   ARCH=cuda
+#   C=nvcc -x cu 
+#   EXEC=ecc
+#   EL=nvcc -L. -lecuda -lcudart
+#   EXEL=elc
+#   EXT=c
 
 # Comment out for the ech (hip version) compiler
 #   ARCH=hip
@@ -18,11 +18,12 @@
 #   EXT=cpp
 
 # Comment out for the ec (cpu version) compiler
-#   ARCH=cpu
-#   C=gcc
-#   EXEC=ec
-#   EL=el
-#   EXT=c
+    ARCH=cpu
+    C=gcc
+    EXEC=ec
+    EL=gcc 
+    EXEL=el
+    EXT=c
 
 # Definitions
     EC=./$(EXEC)
@@ -36,7 +37,7 @@
 $(ARCH):    main.o scan.o parse.o ptree.o sem.o sym.o code.o \
             err.o scanpath.o lib$(ARCH).a
 	    $(EL) $(LDFLAGS) -o $(EXEC)1 main.o scan.o parse.o ptree.o sem.o code.o \
-            sym.o err.o scanpath.o
+            sym.o err.o scanpath.o libe.o run$(ARCH).o -lm
 
 main.o:      main.e m.i 
 	     $(EC) $(ECFLAGS) main.e 
@@ -60,13 +61,10 @@ err.o:	     err.e
 	     $(EC) $(ECFLAGS) err.e 
 
 # Libraries
-lib:           lib$(ARCH).a  lib$(ARCH)c.a
+lib:           lib$(ARCH).a  
 
 lib$(ARCH).a:  libe.o run$(ARCH).o
 	       ar rcs libe$(ARCH).a libe.o run$(ARCH).o 
-
-lib$(ARCH)c.a: libe.o run$(ARCH)c.o
-	       ar rcs libe$(ARCH)c.a libe.o run$(ARCH)c.o 
 
 libe.o:        libe.e
 	       $(EC)  $(ECFLAGS) libe.e 
@@ -75,16 +73,14 @@ run$(ARCH).o :
 	       cp run$(ARCH).e run$(ARCH).$(EXT)
 	       $(C) -c $(CCFLAGS) run$(ARCH).$(EXT)
 
-#run$(ARCH)c.o : 
-#       cp run$(ARCH)c.e runc$(ARCH)c.$(EXT)
-#       $(C) -c $(CCFLAGS) run$(ARCH).$(EXT)
 
 # The install target
 install : 
+	   cp -r ../Bin/* ../Arch/Bin
 	   cp $(EC) $(BIN)/
 	   cp libe.i $(INC)/
 	   cp libe$(ARCH).a $(LIB)
-	   cp $(EXEL)-install $(BIN)/$(EXEL)
+	   cp $(EXEL) $(BIN)/
 
 # The clean target
 clean: 

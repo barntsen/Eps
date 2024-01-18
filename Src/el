@@ -6,7 +6,7 @@
 #LIB=$EPS/Lib
 #LIB=.
 
-LIB=.
+LIB=$EPS/Lib
 
 FILES=" "
 for i in $*

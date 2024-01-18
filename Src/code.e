@@ -2178,10 +2178,9 @@ int CodePreamblecpu()
     "#include <string.h>\n");
   CodeEs(p, 
     "void *RunMalloc(int n); \n");
-  return (OK);
-
   CodeEs(p, 
     "int RunFree(void *n); \n");
+
   return (OK);
 }
 
