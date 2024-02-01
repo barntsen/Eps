@@ -10,20 +10,20 @@
 #   EXT=c
 
 # Comment out for the ech (hip version) compiler
-#   ARCH=hip
-#   C=hipcc
-#   EXEC=./ech
-#   EL=hipcc
-#   EXEL=elh
-#   EXT=cpp
+   ARCH=hip
+   C=hipcc
+   EXEC=ech
+   EL=hipcc
+   EXEL=elh
+   EXT=cpp
 
 # Comment out for the ec (cpu version) compiler
-    ARCH=cpu
-    C=gcc
-    EXEC=ec
-    EL=gcc 
-    EXEL=el
-    EXT=c
+#   ARCH=cpu
+#   C=gcc
+#   EXEC=ec
+#   EL=gcc 
+#   EXEL=el
+#   EXT=c
 
 # Definitions
     EC=./$(EXEC)
@@ -35,9 +35,9 @@
 
 # The compiler executable
 $(ARCH):    main.o scan.o parse.o ptree.o sem.o sym.o code.o \
-            err.o scanpath.o lib$(ARCH).a
+            err.o scanpath.o libe.o run$(ARCH)c.o
 	    $(EL) $(LDFLAGS) -o $(EXEC)1 main.o scan.o parse.o ptree.o sem.o code.o \
-            sym.o err.o scanpath.o libe.o run$(ARCH).o -lm
+            sym.o err.o scanpath.o libe.o run$(ARCH)c.o -lm
 
 main.o:      main.e m.i 
 	     $(EC) $(ECFLAGS) main.e 
@@ -72,6 +72,10 @@ libe.o:        libe.e
 run$(ARCH).o : 
 	       cp run$(ARCH).e run$(ARCH).$(EXT)
 	       $(C) -c $(CCFLAGS) run$(ARCH).$(EXT)
+
+run$(ARCH)c.o : 
+	       cp run$(ARCH)c.e run$(ARCH)c.$(EXT)
+	       $(C) -c $(CCFLAGS) run$(ARCH)c.$(EXT)
 
 
 # The install target

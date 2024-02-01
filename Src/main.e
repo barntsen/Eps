@@ -11,14 +11,26 @@ include "sem.i"         // Semantic checking
 include "code.i"        // Code generator
 include "m.i"
 
-int MainHelp(){}
+int MainHelp(int arch){}
 
-int MainHelp(){
+int MainHelp(int arch){
   LibePuts(stderr,"Command\n");
   LibePuts(stderr,"\n");
-  LibePuts(stderr,"  ec [-t -a -s -r -e -p -q -C -c -g -d -O -f] file.e \n");
-  LibePuts(stderr,"\n");
-  LibePuts(stderr,"  The ec command (without options) compiles an eps file\n");
+  if(arch == CPU){
+    LibePuts(stderr,"  ec [-t -a -s -r -e -p -q -C -c -g -d -O -f] file.e \n");
+    LibePuts(stderr,"\n");
+    LibePuts(stderr,"  The ec command (without options) compiles an eps file\n");
+  }else if(arch == CUDA){
+    LibePuts(stderr,"  ecc [-t -a -s -r -e -p -q -C -c -g -d -O -f] file.e \n");
+    LibePuts(stderr,"\n");
+    LibePuts(stderr,"  The ecc command (without options) compiles an eps file\n");
+  }else if(arch == HIP){
+    LibePuts(stderr,"  ech [-t -a -s -r -e -p -q -C -c -g -d -O -f] file.e \n");
+    LibePuts(stderr,"\n");
+    LibePuts(stderr,"  The ech command (without options) compiles an eps file\n");
+  }else{
+    ErrPanic("Unknown architecture");
+  }
   LibePuts(stderr,"  with extension .e into an object file with extension .o\n");
   LibePuts(stderr,"\n");
   LibePuts(stderr,"  Options: \n");
@@ -30,21 +42,30 @@ int MainHelp(){
   LibePuts(stderr,"   -p : Perform only syntax check, no code generated \n");
   LibePuts(stderr,"   -q : Perform syntax and semantic check, no code generated \n");
   LibePuts(stderr,"   -C : Array index check \n");
-  LibePuts(stderr,"   -c : Produce c-code but do not generate object code\n");
+  if(arch == CPU){
+    LibePuts(stderr,"   -c : Produce c-code but do not generate object code\n");
+  }else if(arch == CUDA){
+    LibePuts(stderr,"   -c : Produce c++/cuda-code but do not generate object code\n");
+  }else if(arch == HIP){
+    LibePuts(stderr,"   -c : Produce c++/hip-code but do not generate object code\n");
+  }else {
+    ErrPanic("Unknown architecture");
+  }
   LibePuts(stderr,"   -g : Generate debug info \n");
-  LibePuts(stderr,"   -d : Show the gcc command line  \n");
+  LibePuts(stderr,"   -d : Show the host compiler command line  \n");
   LibePuts(stderr,"   -O : Optimize code\n");
   LibePuts(stderr,"   -f : Generate code for openmp \n");
   LibeFlush(stderr);
   return(OK);
 }
-char [*] MainFout(char [*] file){}
+char [*] MainFout(char [*] file,int arch){}
 
 // Mainfout checks the input file name
 // and creates an output file name with extension '.c'
+// or '.cpp'
 // The argument to the function is the input file name and
 // the return value is the output file name. 
-char [*] MainFout(char [*] infile){
+char [*] MainFout(char [*] infile, int arch){
   int fd;
   char [*] outfile; // Output file name (holding c-code)
   int l;            // Temp varibale to hold string length of 
@@ -57,15 +78,32 @@ char [*] MainFout(char [*] infile){
   if(infile[l-2] != cast(char,'e')){
     ErrPanic("File extension have to be .e");
   }
-  outfile=new(char [l]);
-  LibeStrcpy(infile,outfile);
-  outfile[l-2] = cast(char,'c');
+  if(arch == CPU){
+    outfile=new(char [l]);
+    LibeStrcpy(infile,outfile);
+    outfile[l-2] = cast(char,'c');
+  }else if(arch == CUDA){
+    outfile=new(char [l+2]);
+    LibeStrcpy(infile,outfile);
+    outfile[l-2] = cast(char,'c');
+    outfile[l-1] = cast(char,'p');
+    outfile[l-0] = cast(char,'p');
+ }else if(arch == HIP){
+    outfile=new(char [l+2]);
+    LibeStrcpy(infile,outfile);
+    outfile[l-2] = cast(char,'c');
+    outfile[l-1] = cast(char,'p');
+    outfile[l-0] = cast(char,'p');
+ }else{
+    ErrPanic("Unknow architecture");
+ }
 
   return(outfile);
 }    
 
 int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show){}
 int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show){}
+int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show){}
 
 // MainCcompcpu invokes the c-compiler to generate object code for cpu.
 int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show){
@@ -156,6 +194,51 @@ int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show){
   delete(cmd);
   return(OK);
 }    
+// MainCcomphip invokes the hipcc compiler to generate object code for amd gpus.
+int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show){
+  int fd;
+  char [*] tmp;         // String temporary 
+  char [*] cmd;     // Command line for compiling
+  int l;            // Temp varibale to hold string length of 
+                    // input file name
+  l=len(file,0);
+  tmp= "hipcc -c ";
+  cmd = new(char[len(tmp,0)+l+2]);
+  LibeStrcpy(tmp,cmd);
+
+  if(debug == OK){
+    LibeStrcat(" -g ",cmd);
+  }
+
+  if(optimize == OK){
+    LibeStrcat(" -O ",cmd);
+  }
+
+  if(openmp == OK){
+    LibeStrcat(" -fopenmp ",cmd);
+  }
+
+  LibeStrcat(file,cmd);
+  LibeStrcat("\n",cmd);
+  if(show == OK){
+    LibePuts(stderr,cmd);
+    LibeFlush(stderr);
+  }
+  LibeSystem(cmd);
+  delete(cmd);
+  cmd = new(char[len("rm ",0)+l+2]);
+  LibeStrcpy("rm ",cmd);
+  LibeStrcat(file,cmd);
+  LibeStrcat("\n",cmd);
+  if(show == OK){
+    LibePuts(stderr,cmd);
+    LibeFlush(stderr);
+  }
+  LibeSystem(cmd);
+  delete(cmd);
+  return(OK);
+}    
+// Main is the main function.
 int Main(struct MainArg [*] MainArgs)
 {
   int btree;        // Flag for emitting parse tre. 
@@ -210,7 +293,7 @@ int Main(struct MainArg [*] MainArgs)
   while(loop==OK){
 
     if(LibeStrcmp(MainArgs[i].arg, "-h") == OK){  
-      MainHelp();
+      MainHelp(ARCH);
       LibeExit();
     }
 
@@ -314,7 +397,7 @@ int Main(struct MainArg [*] MainArgs)
 
   // Set the output file for holding c-code
   if(emit == OK){
-    outfile=MainFout(infile);
+    outfile=MainFout(infile,ARCH);
     // Open output file for c-code
     fd = LibeOpen(outfile,"w");
     CodeSetfdout(fd);
@@ -389,6 +472,8 @@ int Main(struct MainArg [*] MainArgs)
       MainCcompcpu(outfile,debug,optimize,openmp,show);
     } else if(ARCH==CUDA){
       MainCcompcuda(outfile,debug,optimize,openmp,show);
+    } else if(ARCH==HIP){
+      MainCcomphip(outfile,debug,optimize,openmp,show);
     }else {
       ErrPanic("Unknown architecture");
     }
@@ -398,7 +483,6 @@ int Main(struct MainArg [*] MainArgs)
     delete(outfile);    
     LibeClose(fd);
   }
-
   LibeFlush(stdout);
 
   return(OK);   // Successfull Return 

@@ -1,34 +1,29 @@
-/*
-%
-%       *******************************************
-%       *                                         * 
-            \chapter{Symtab -- the symbol table}      
-%       *                                         *
-%       *******************************************
-%======================================================================
-\section{Introduction}
-%======================================================================
-\begin{verbatim}
-*/
+// The Sym imodule manages the symbol table.
+//
+//   
+//    Table level 1
+//   -------------------     
+//   |                 |
+//   |   ----------    |         Table level 2
+//   |   |        |    |       ----------------
+//   |   |        |----------> | 
+//   |   |        |    |       | -----------
+//   |   ----------    |       |
+//   |       |         |       |
+//   |       v         |       |
+//   |                 |       |
+//   |                 |       |
+//   -------------------       ---------------- 
+
 include "libe.i"
 include "ptree.i"
 include "err.i"
 include "sym.i"
-/*
-\end{verbatim}
-%----------------------------------------------------------------------
-\subsection{SymEtp -- external symbol table}
-%----------------------------------------------------------------------
-\begin{verbatim}
-*/
+
+// SymEtp is the external Symbol Table
 struct symbol SymEtp;       
-/*
-\end{verbatim}
-%----------------------------------------------------------------------
-\subsection{SymLtp -- local symbol table}
-%----------------------------------------------------------------------
-\begin{verbatim}
-*/
+
+// SymLtp is the local symbol table
 struct symbol SymLtp;       
 /*
 \end{verbatim}

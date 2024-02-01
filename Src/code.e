@@ -2062,7 +2062,7 @@ int CodeEc(int d)
   LibePutc(fdo, d);
   return(OK);
 } 
-//CodeEsr emits a string without "
+//CodeEsr emits a string without 
 int CodeEsr(char [*] s)
 { 
   int i,l;
@@ -2280,6 +2280,13 @@ int CodeFdef(struct tree p){
   if(CodeGetarch() == CPU){
     CodeFdefcpu(p);
   }else if(CodeGetarch() == CUDA){
+    if(LibeStrcmp(PtreeGetparallel(p),"parallel")==OK){
+      CodeFdefgpu(p);
+      CodeFdewrappergpu(p);
+    }else{
+    CodeFdefcpu(p);
+    }
+  }else if(CodeGetarch() == HIP){
     if(LibeStrcmp(PtreeGetparallel(p),"parallel")==OK){
       CodeFdefgpu(p);
       CodeFdewrappergpu(p);
@@ -2819,6 +2826,10 @@ int CodePreamblehip()
     "void *GpuDelete(void *f);\n");
   CodeEs(p, 
     "void *GpuError();\n");
+  CodeEs(p, 
+    "void *RunMalloc(int n);\n");
+  CodeEs(p, 
+    "int RunFree(void *p);\n");
 
   return (OK);
 }

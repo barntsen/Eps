@@ -1,4 +1,4 @@
-// run contains runtime functions for the ech compiler
+// run contains runtime functions for the ecc compiler
 
 //Note that this file is a c++ file, but
 //stored in a file with extension .e to prevent
@@ -6,7 +6,7 @@
 //The run time library is written in C++
 //Most of the routines in the library
 //are wrappers to unix system calls and the cuda api.
-#include "hip/hip_runtime.h"
+
 extern "C" {
 #include<unistd.h>
 #include<sys/types.h>
@@ -58,10 +58,10 @@ int main(int argc, char ** argv)
 // GpuNew allocates memory on cpu host and gpu device
 void * GpuNew(int n){
   void *f;
-  hipError_t cerr;
-  cerr = hipMallocManaged(&f, n);
-  if(cerr != hipSuccess){
-    fprintf(stderr,"GpuNew:%s\n ", hipGetErrorString(cerr)) ;
+  cudaError_t cerr;
+  cerr = cudaMallocManaged(&f, n);
+  if(cerr != cudaSuccess){
+    fprintf(stderr,"GpuNew:%s\n ", cudaGetErrorString(cerr)) ;
     exit(1);
   }
   return(f);
@@ -69,27 +69,27 @@ void * GpuNew(int n){
 
 // GpuDelete deletes memory on cpu host and gpu device
 void GpuDelete(void *f){
-  hipError_t cerr;
+  cudaError_t cerr;
 
-  cerr=hipFree(f);
-  if(cerr != hipSuccess){
-    fprintf(stderr,"GpuDelete:%s\n ", hipGetErrorString(cerr)) ;
+  cerr=cudaFree(f);
+  if(cerr != cudaSuccess){
+    fprintf(stderr,"GpuDelete:%s\n ", cudaGetErrorString(cerr)) ;
     exit(1);
   }
-  cerr=hipDeviceSynchronize();
-  if(cerr != hipSuccess){
-    fprintf(stderr,"GpuDelete:%s\n ", hipGetErrorString(cerr)) ;
+  cerr=cudaDeviceSynchronize();
+  if(cerr != cudaSuccess){
+    fprintf(stderr,"GpuDelete:%s\n ", cudaGetErrorString(cerr)) ;
     exit(1);
   }
 }
 
 // GpuError checks for error on gpu and perform sync
 void GpuError(){
-  hipDeviceSynchronize();
-  hipError_t cerr;
-  cerr = hipGetLastError();
-  if(cerr != hipSuccess){
-    fprintf(stderr,"%s\n",hipGetErrorString(cerr));
+  cudaDeviceSynchronize();
+  cudaError_t cerr;
+  cerr = cudaGetLastError();
+  if(cerr != cudaSuccess){
+    fprintf(stderr,"%s\n",cudaGetErrorString(cerr));
     exit(1);
   }
 }
@@ -97,13 +97,13 @@ void GpuError(){
 // RunMalloc allocates memory
 void * RunMalloc(int nb)
 {
-    return((void *)GpuNew(nb));
+    return((void *)malloc(nb));
 }
 
 // Runfree delete memory
 int RunFree(void* p)
 {
-    GpuDelete(p);
+    free(p);
     return(OK);
 }
 
