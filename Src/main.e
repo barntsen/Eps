@@ -66,7 +66,6 @@ char [*] MainFout(char [*] file,int arch){}
 // The argument to the function is the input file name and
 // the return value is the output file name. 
 char [*] MainFout(char [*] infile, int arch){
-  int fd;
   char [*] outfile; // Output file name (holding c-code)
   int l;            // Temp varibale to hold string length of 
                     // input file name
@@ -107,7 +106,6 @@ int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show){}
 
 // MainCcompcpu invokes the c-compiler to generate object code for cpu.
 int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show){
-  int fd;
   char [*] tmp;         // String temporary 
   char [*] cmd;     // Command line for compiling
   int l;            // Temp varibale to hold string length of 
@@ -152,7 +150,6 @@ int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show){
 
 // MainCcompcuda invokes the nvcc compiler to generate object code for nvidia gpus.
 int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show){
-  int fd;
   char [*] tmp;         // String temporary 
   char [*] cmd;     // Command line for compiling
   int l;            // Temp varibale to hold string length of 
@@ -196,7 +193,6 @@ int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show){
 }    
 // MainCcomphip invokes the hipcc compiler to generate object code for amd gpus.
 int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show){
-  int fd;
   char [*] tmp;         // String temporary 
   char [*] cmd;     // Command line for compiling
   int l;            // Temp varibale to hold string length of 

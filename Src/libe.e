@@ -1,49 +1,30 @@
-/*
-\documentstyle{article}
-\begin{document}
-%
-%         ***********************************************
-%         *                                             *
-           \title{Libe -- library for the eps compiler}
-%         *                                             *
-%         ***********************************************
-%
-\author{B\o rge Arntsen}
-\maketitle
-\tableofcontents
-\abstract{This file contain documentation and source code 
-          for a small library meant to support the eps 
-          compiler.}
-%============================================================
-\section{Introduction}  
-%============================================================
-The ``libe'' library contain a small number of functions to
-support the eps translator/compiler. 
-The include file {\tt libe.i} contains the definition
-of the public interface of the library, while the include
-file {\tt m.i} contain machine specific constants.
-The runtime library {\tt run.e} declares it's public interface
-in the {\tt run.i} include file.
-\begin{verbatim}
-*/
+// Libe
+// The libe module is a small library to support the eps 
+// compilers.
+
+// The ``libe'' library contain a small number of functions to
+// support the eps translator/compiler. 
+// The include file {\tt libe.i} contains the definition
+// of the public interface of the library, while the include
+// file {\tt m.i} contain machine specific constants.
+// The runtime library {\tt run.e} declares it's public interface
+//  in the {\tt run.i} include file.
+
 include"libe.i"
 include"m.i"
 include"run.i"
-/*
-\end{verbatim}
-%============================================================
-\section{Error routines}  
-%============================================================
-The routines provided in this section reports
-error numbers and strings containing the error messages.
-The two global and private variables {\tt LibeErrno}
-and {\tt LibeErrstr} is used for communication between
-the routines. For definition of possible error numbers
-and strings see the {\tt libe.i} include file.
-\begin{verbatim}
-*/
-int      LibeErrno;   /* Error return number */
-char [*] LibeErrstr;  /* Error message       */
+//
+// Error routines  
+// The routines provided in this section reports
+// error numbers and strings containing the error messages.
+// The two global and private variables {\tt LibeErrno}
+// and {\tt LibeErrstr} is used for communication between
+// the routines. For definition of possible error numbers
+// and strings see the {\tt libe.i} include file.
+int      LibeErrno;   // Error return number 
+char [*] LibeErrstr;  // Error message      
+
+
 /*
 %-----------------------------------------------------------
 \subsection{LibeErrinit -- Initialize error routines}
@@ -699,19 +680,33 @@ int LibePutc(int fp, int c)      /*  Write a character  */
      return (OK);
   }
 }
-/*
-\end{verbatim}
-%---------------------------------------------------------------
-\subsection{LibePuts -- write a string}  
-%---------------------------------------------------------------
-The {\tt LibePuts} routine outputs a string to a file
-via the {\tt fp} EFILE reference. 
-The routine is uncomplicated and uses the LibePutc
-routine to perform the output.
-The return value is normaly zero, but equal to
-{\tt ERR} in case of write errors.
-\begin{verbatim}
-*/
+
+// LibePs prints a string to standard output.
+int LibePs(char [*] s){
+  LibePuts(stdout,s);  
+  return(OK);
+}
+
+// LibePi prints an integer to standard output.
+int LibePi(int n){
+  LibePuti(stdout,n);  
+  return(OK);
+}
+
+// LibePf prints a float to standard output.
+int LibePf(float r){
+  LibePutf(stdout,r,"g");  
+  return(OK);
+}
+
+//
+// LibePuts writes a string to a file.
+// The {\tt LibePuts} routine outputs a string to a file
+// via the {\tt fp} EFILE reference. 
+// The routine is uncomplicated and uses the LibePutc
+// routine to perform the output.
+// The return value is normaly zero, but equal to
+// {\tt ERR} in case of write errors.
 int LibePuts(int fp, char [*] s)      
 {
   int ls; /* String lenght  */
@@ -728,8 +723,11 @@ int LibePuts(int fp, char [*] s)
     else
       i = i + 1;
   }
+  // Flush buffer
+  LibeFlushbuff(fp);
   return(OK);
 }
+
 /*
 \end{verbatim}
 %---------------------------------------------------------------
@@ -759,9 +757,9 @@ routines to perform the output. The {\tt LibeTmpstr} is
 used for temporary storage.
 \begin{verbatim}
 */
-int LibePutf(int fp, float fval)      
+int LibePutf(int fp, float fval, char[*] form)      
 {
-  LibeFtoa(fval,"g", LibeTmpstr);
+  LibeFtoa(fval,form, LibeTmpstr);
   return (LibePuts(fp, LibeTmpstr));
 }
 /*

@@ -2,28 +2,29 @@
 
 
 # Comment out for the ecc (cuda version) compiler
-#   ARCH=cuda
-#   C=nvcc -x cu 
-#   EXEC=ecc
-#   EL=nvcc -L. -lecuda -lcudart
-#   EXEL=elc
-#   EXT=c
-
-# Comment out for the ech (hip version) compiler
-   ARCH=hip
-   C=hipcc
-   EXEC=ech
-   EL=hipcc
-   EXEL=elh
+   ARCH=cuda
+   C=nvcc -x cu 
+   EXEC=ecc
+   #EL=nvcc -L. -lecuda -lcudart
+   EL=nvcc -L. 
+   EXEL=elc
    EXT=cpp
 
+# Comment out for the ech (hip version) compiler
+#  ARCH=hip
+#  C=hipcc
+#  EXEC=ech
+#  EL=hipcc
+#  EXEL=elh
+#  EXT=cpp
+
 # Comment out for the ec (cpu version) compiler
-#   ARCH=cpu
-#   C=gcc
-#   EXEC=ec
-#   EL=gcc 
-#   EXEL=el
-#   EXT=c
+#  ARCH=cpu
+#  C=gcc
+#  EXEC=ec
+#  EL=gcc 
+#  EXEL=el
+#  EXT=c
 
 # Definitions
     EC=./$(EXEC)
@@ -34,10 +35,11 @@
     LDFLAGS=
 
 # The compiler executable
-$(ARCH):    main.o scan.o parse.o ptree.o sem.o sym.o code.o \
+$(ARCH):    main.o scan.o parse.o ptree.o sem.o sym.o code.o   \
             err.o scanpath.o libe.o run$(ARCH)c.o
-	    $(EL) $(LDFLAGS) -o $(EXEC)1 main.o scan.o parse.o ptree.o sem.o code.o \
-            sym.o err.o scanpath.o libe.o run$(ARCH)c.o -lm
+	    $(EL) $(LDFLAGS) -o $(EXEC)1 main.o scan.o parse.o \
+            ptree.o sem.o code.o sym.o err.o scanpath.o libe.o \
+            run$(ARCH)c.o -lm
 
 main.o:      main.e m.i 
 	     $(EC) $(ECFLAGS) main.e 
@@ -79,12 +81,13 @@ run$(ARCH)c.o :
 
 
 # The install target
-install : 
+install :  lib $(EC) $(EXEL)-install
 	   cp -r ../Bin/* ../Arch/Bin
 	   cp $(EC) $(BIN)/
-	   cp libe.i $(INC)/
 	   cp libe$(ARCH).a $(LIB)
-	   cp $(EXEL) $(BIN)/
+	   cp libe.i $(INC)
+	   cp $(EXEL)-install $(BIN)/$(EXEL)
+           
 
 # The clean target
 clean: 

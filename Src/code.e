@@ -335,7 +335,7 @@ char [*] CodeMkstring(struct tree p)
 */
 char [*] CodeSconstant(struct tree p)
 { 
-  char [*] tmp, eos,tmp2;
+  char [*] tmp,tmp2;
   int l;
 
   /* Set the length  of the string */
@@ -2201,10 +2201,9 @@ int CodeParallelstmnt(struct tree p){
 // CodeParallelstmntcpu  generates code for the cpu parallel statement
 int CodeParallelstmntcpu(struct tree p)
 { 
-  struct tree sp,rp,rrp,qp;
+  struct tree sp;
   int rank;
   int i;
-  char[*] index, cond, init;
 
   sp = p;                           /* Save top node    */
   rank = PtreeGetrank(sp);          /* Get no of slices */
@@ -2226,8 +2225,7 @@ int CodeParallelstmntcpu(struct tree p)
 // CodeParallelfor generates code for the cpu parallel for loop.
 int CodeParallelfor(struct tree p , int level, int rank)
 {
-  int i;
-  struct tree pp,sp,rp,qp,rrp;
+  struct tree sp,rp,qp,rrp;
   char[*] index,init,cond;
 
   sp=p;  // Save the current node
