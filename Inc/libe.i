@@ -225,6 +225,7 @@ int LibeStrev( char [*] s){}
 char [*] LibeStrsave( char [*] s){}
 int LibeStrcpy( char [*] s, char [*] t){}
 int LibeStrcat( char [*] s, char [*] t){}
+char [*] LibeStradd( char [*] t, char [*] s){}
 int LibeIsalpha(int c){}
 int LibeIsdigit(int c){}
 int LibeIsalnum(int c){}
