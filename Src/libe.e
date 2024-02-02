@@ -2,8 +2,6 @@
 // The libe module is a small library to support the eps 
 // compilers.
 
-// The ``libe'' library contain a small number of functions to
-// support the eps translator/compiler. 
 // The include file {\tt libe.i} contains the definition
 // of the public interface of the library, while the include
 // file {\tt m.i} contain machine specific constants.
@@ -1088,6 +1086,27 @@ int LibeStrcat(char [*] s, char [*] t)
   }
   t[ls+lt] = cast(char, EOS);
   return(OK);
+}
+
+//Stradd add a string s to the string t and returns a new string.
+char [*] LibeStradd(char [*] t, char [*] s)
+{ 
+  int ls, lt; // String lengths
+  char [*] r; // Output string
+  int i;      // Index variable
+
+  ls = LibeStrlen(s);
+  lt = LibeStrlen(t);
+  r = new(char[lt+ls+1]);
+  
+  for(i=0; i<lt; i=i+1){
+    r[i] = t[i];
+  }
+  for(i=lt; i<ls+lt;i=i+1){
+    r[i] = s[i-lt];
+  }
+  r[ls+lt] = cast(char, EOS);
+  return(r);
 }
 /*
 \end{verbatim}
