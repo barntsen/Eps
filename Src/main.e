@@ -104,6 +104,7 @@ int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show){}
 int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show){}
 int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show){}
 
+const CMDLEN=80;     // Length of command line
 // MainCcompcpu invokes the c-compiler to generate object code for cpu.
 int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show){
   char [*] tmp;         // String temporary 
@@ -112,7 +113,7 @@ int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show){
                     // input file name
   l=len(file,0);
   tmp= "gcc -c ";
-  cmd = new(char[len(tmp,0)+l+2]);
+  cmd = new(char[CMDLEN]);
   LibeStrcpy(tmp,cmd);
 
   if(debug == OK){
@@ -156,7 +157,7 @@ int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show){
                     // input file name
   l=len(file,0);
   tmp= "nvcc -c -x cu ";
-  cmd = new(char[len(tmp,0)+l+2]);
+  cmd = new(char[CMDLEN]);
   LibeStrcpy(tmp,cmd);
 
   if(debug == OK){
@@ -164,7 +165,7 @@ int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show){
   }
 
   if(optimize == OK){
-    LibeStrcat(" -O ",cmd);
+    LibeStrcat(" -O3 ",cmd);
   }
 
   if(openmp == OK){
@@ -199,7 +200,7 @@ int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show){
                     // input file name
   l=len(file,0);
   tmp= "hipcc -c ";
-  cmd = new(char[len(tmp,0)+l+2]);
+  cmd = new(char[CMDLEN]);
   LibeStrcpy(tmp,cmd);
 
   if(debug == OK){
@@ -207,7 +208,7 @@ int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show){
   }
 
   if(optimize == OK){
-    LibeStrcat(" -O ",cmd);
+    LibeStrcat(" -O3 ",cmd);
   }
 
   if(openmp == OK){
