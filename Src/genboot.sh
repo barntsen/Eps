@@ -2,9 +2,9 @@
 
 # Generate c-code for boostrapping of the compiler
 
-#Uncommen for cpu
-EC=ec
-ARCH=cpu
+#Uncomment for cpu
+#EC=ec
+#ARCH=cpu
 
 #Uncomment for cuda 
 #EC=ecc

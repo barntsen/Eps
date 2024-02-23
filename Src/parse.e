@@ -42,7 +42,8 @@
 //    multexprseq    = ['*'|'/' unexpr multexprseq] 
 //    unexpr         = primexpr | '-' unexpr 
 //    primexpr       = ID ['[' exprlist ']'] 
-//                     | '(' exprlist ')'] ) | ['.' ident]
+//                     | '(' exprlist ')'] ) 
+//                     |  ['.' ident]
 //                     | CAST '(' type ',' asgexpr ')'  
 //                     | SCONST | ICONST | RCONST | NEW '(' type ')'  
 //                     | CMPLX '(' expr ')' 
