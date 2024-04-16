@@ -4,10 +4,8 @@
 // The complete grammar of the epsilon language is given below using the
 // EBNF notation. 
 //
-//    extdecl         = type ( '{' structdeclar | 
-//                  ID ([idseq] | [ '(' fdecl ]) )
-//    type            = ( INT | REAL | COMPLEX | CHAR  | STRUCT ID ) 
-//                   [ '['arrayarg']' ]
+//    extdecl         = type   '{' structdeclar | ID  [idseq] | [ '(' fdecl ]  
+//    type            = INT | REAL | COMPLEX | CHAR  | STRUCT ID   [ '['arrayarg']' ]
 //    structdeclar   = declarations '}'
 //    idseq          = ',' ID  [idseq] 
 //    fdecl          = [arglist] ')' [compstmnt]
