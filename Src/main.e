@@ -462,6 +462,10 @@ int Main(struct MainArg [*] MainArgs)
     }
   }
 
+  if(emit == OK){ 
+    CodePostamble();
+  }
+
   // Compile the c-code
 
   if ((emit == OK) && (obj == OK)){

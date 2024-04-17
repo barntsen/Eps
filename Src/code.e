@@ -2062,7 +2062,7 @@ int CodeEc(int d)
   LibePutc(fdo, d);
   return(OK);
 } 
-//CodeEsr emits a string without 
+//CodeEsr emits a string 
 int CodeEsr(char [*] s)
 { 
   int i,l;
@@ -2091,6 +2091,20 @@ int CodePreamble(){
     return(OK);
   }else if(CodeGetarch() == HIP){
     CodePreamblehip();
+    return(OK);
+  } else {
+    return(ERR);
+  }
+}  
+int CodePostamble(){
+  int fdo;
+
+  fdo = CodeGetfdout();
+  if(CodeGetarch() == CUDA){
+    LibePuts(fdo,"}\n");
+    return(OK);
+  }else if(CodeGetarch() == HIP){
+    LibePuts(fdo,"}\n");
     return(OK);
   } else {
     return(ERR);
@@ -2652,6 +2666,10 @@ int CodePreamblecuda()
   CodeEs(p, "/*  Translated by epsc  version December 2021 */\n");
   PtreeSetline(p,2);
   PtreeSetline(p,3);
+
+// Start of extern "C"
+  CodeEs(p, "extern \"C\" {\n"); 
+
   CodeEs(p, 
     "typedef struct { float r; float i;} complex; \n");
   PtreeSetline(p,3);
@@ -2672,7 +2690,7 @@ int CodePreamblecuda()
     "typedef struct nctempfloat2 { int d[2]; float *a;} nctempfloat2; \n");
   PtreeSetline(p,10);
   CodeEs(p, 
-    "typedef struct nctempint2 { int d[2]; int *a;} nctempint2; \n");
+    "typedef struct nctempint2 { int d[2]; int *a;} nctempint2; \n");           
   PtreeSetline(p,10);
   CodeEs(p, 
     "typedef struct nctempchar2 { int d[2]; char *a;} nctempchar2; \n");
@@ -2705,14 +2723,14 @@ int CodePreamblecuda()
   PtreeSetline(p,20);
   CodeEs(p, 
     "typedef struct nctempcomplex4 { int d[4]; complex *a;} nctempcomplex4; \n");
-  CodeEs(p, 
-    "#include <stdio.h>\n");
-  CodeEs(p, "extern \"C\" {\n"); 
+ CodeEs(p, 
+   "#include <stdio.h>\n");
+//  CodeEs(p, "extern \"C\" {\n"); 
   CodeEs(p, 
     "#include <stdlib.h>\n");
   CodeEs(p, 
     "#include <string.h>\n");
-  CodeEs(p,"}\n");
+//  CodeEs(p,"}\n");
 
   CodeEs(p,"\n");
   CodeEs(p, 

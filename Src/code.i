@@ -16,4 +16,5 @@ int CodeSetfdout(int fd){}
 int CodeGetfdout(){}
 int CodeSetarch(int arch){}
 int CodeGetarch(){}
+int CodePostamble(){}
 

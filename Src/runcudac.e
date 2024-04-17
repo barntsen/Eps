@@ -16,7 +16,6 @@ extern "C" {
 #include<stdlib.h>
 #include<string.h>
 #include<stdio.h>
-}
 //#include<cuda_runtime.h> 
 #define OK   1
 #define ERR  0
@@ -31,6 +30,8 @@ struct MainArg {nctempchar1 *arg;};
 struct nctempMainArg1 {int d[MAXRANK]; struct MainArg *a; };
 int Main (struct nctempMainArg1 *MainArgs);
 
+//End extern "C"
+}
 // main is the startup code always called by the eps Main function.
 int main(int argc, char ** argv)
 {
@@ -55,6 +56,7 @@ int main(int argc, char ** argv)
   return(rval);
 }
   
+extern "C" {
 // GpuNew allocates memory on cpu host and gpu device
 void * GpuNew(int n){
   void *f;
@@ -289,4 +291,6 @@ int RunSystem (nctempchar1 *cmd)
   int rval;
   rval = system(cmd->a);
   return(rval);
+}
+// End extern "C"
 }
