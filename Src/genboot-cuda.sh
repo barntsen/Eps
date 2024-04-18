@@ -3,12 +3,12 @@
 # Generate c-code for boostrapping of the compiler
 
 #Uncomment for cpu
-EC=ec
-ARCH=cpu
+#EC=ec
+#ARCH=cpu
 
 #Uncomment for cuda 
-#EC=ecc
-#ARCH=cuda
+EC=ecc
+ARCH=cuda
 
 #Uncomment for hip
 #EC=ech
@@ -35,12 +35,12 @@ $EC -c code.e
 
 
 #Copy c-code to bootstrap directory
-cp main.c $dest
-cp parse.c $dest
-cp sem.c   $dest
-cp ptree.c $dest
-cp libe.c  $dest
-cp err.c   $dest
-cp code.c  $dest
-cp run$ARCH.c $dest
+cp main.cpp $dest
+cp parse.cpp $dest
+cp sem.cpp   $dest
+cp ptree.cpp $dest
+cp libe.cpp  $dest
+cp err.cpp   $dest
+cp code.cpp  $dest
+cp run$ARCH.cpp $dest
 

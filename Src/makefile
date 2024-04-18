@@ -2,13 +2,13 @@
 
 
 # Comment out for the ecc (cuda version) compiler
-  ARCH=cuda
-  C=nvcc -x cu 
-  EXEC=ecc
-  #EL=nvcc -L. -lecuda -lcudart
-  EL=nvcc -L. 
-  EXEL=elc
-  EXT=cpp
+#  ARCH=cuda
+#  C=nvcc -x cu 
+#  EXEC=ecc
+#  EL=nvcc -L. -lecuda -lcudart
+#  EL=nvcc -L. 
+#  EXEL=elc
+#  EXT=cpp
 
 # Comment out for the ech (hip version) compiler
 #  ARCH=hip
@@ -19,12 +19,12 @@
 #  EXT=cpp
 
 # Comment out for the ec (cpu version) compiler
-# ARCH=cpu
-# C=gcc
-# EXEC=ec
-# EL=gcc 
-# EXEL=el
-# EXT=c
+ ARCH=cpu
+ C=gcc
+ EXEC=ec
+ EL=gcc 
+ EXEL=el
+ EXT=c
 
 # Definitions
     EC=./$(EXEC)
@@ -87,8 +87,9 @@ install :  lib $(EC) $(EXEL)-install
 	   cp libe$(ARCH).a $(LIB)
 	   cp libe.i $(INC)
 	   cp $(EXEL)-install $(BIN)/$(EXEL)
+	   ./genboot-$(ARCH).sh
            
 
 # The clean target
 clean: 
-	    rm -f *.a *.o *.c *.cpp m.i
+	    rm -f *.a *.o *.c *.cpp ec1 ecc1 ech1 
