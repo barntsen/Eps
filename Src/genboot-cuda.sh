@@ -47,5 +47,7 @@ cp ptree.cpp $dest
 cp libe.cpp  $dest
 cp err.cpp   $dest
 cp code.cpp  $dest
-cp run$ARCH.cpp $dest
+c=c
+cp run$ARCH$c.cpp $dest
+cp run$ARCH.cpp $dest/run$ARCH.cu
 

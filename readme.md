@@ -22,7 +22,7 @@ The Fortran compiler uses the `DOCONCURRENT` keyword to replace nested `DO`
 loops and generate parallel code for NVIDIA gpu's.
 Experiences so far with this compiler is encouraging. 
 However, the market for scientific computation is small, so it is not likely
-that we will see compilers for other gpu's anytime soon.
+that we will see compilers for new gpu's anytime soon.
 
 In the mean time I needed to incorporate gpu acceleration into legacy C/C++ 
 code for at least three gpu architectures, NVIDIA, AMD and Mac M1. And probably
@@ -44,93 +44,110 @@ the top of the source directory.
 
 For example, if the source tree is located at `/home/barn/Src/Eps`
 type
-
      export EPS=/home/barn/Src/Eps
 
 Then put the Bin directory on your path variable as
 
      PATH=$PATH:$EPS/Bin
 
-The ec and ecc commands uses precompiled binaries (eps,epsc) for ubuntu 20.04
-If the binaries does not work they have to be recreated using the
-makefiles found in the $EPS/Src directory. The code for the binaries
-is written in eps, so the first step is to create preliminary
-binaries by using the boot c-files. This will
-recreate the eps binary
+The ec, ecc and ech commands uses precompiled binaries for ubuntu 20.04 and the
+cray LUMI machine.
+If the binaries does not work they have to be recreated by running the mk.sh script
+found in the Src-c/cpu, Src-c/cuda or Src-c/hip directories. 
+Each directory contains machine generated c/cuda/hip code.
+The code is unreadable but by compiling and linking, a binary and library is generated. There
+are no dependencies except the standard C/C++ library and cuda/hip runtime libraries.
 
-    make  -f makefile-cpu boot
+The Src directory contain the source code for the compilers in eps.
+If any changes to the eps (.e) files are made, the compilers must be bootstrapped
+by running the makefile. 
+First edit the makefile to select either ec, ecc or ech as target.
+Then run make two times;
 
-Then remove the object files and type
+First clear everything by running
 
-    make -f makefile-cpu 
+> make clean
 
-Remove all object files again and retype
+Then run
+  
+> make
 
-    make -f makefile-cpu 
+Now move ec1, ecc1 or ech1 to ec, ecc or ech.
 
-If this works without any major errors (ignore compiler warnings)
-install the binaries by
+> mv ec1 ec  
 
-    make -f makefile-cpu install
+Then clean up again
+
+> make clean
+
+and
+
+> make
+
+Again move ec1, ecc1 or ech1 to ec, ecc or ech
+
+> mv ec1 ec  
 
 
-## Compiler Usage
+If everything went well (ignore warnings) then type
 
-**ec [-c -C -a -s -p -t -f]** file.e 
+> make install
+
+Binaries should now have been installed in the Bin directory.
+
+
+# Compiler Usage
+
+**ec [-h -t -a -s -r -e -p i-q -C -c -g -d -O -f]** file.e 
 
   If no options are given, ec compiles an eps file (.e) 
   into a cpu object file (.o).
-  
-  The following options can be used 
-    
-  - -c: Generate c-code 
-  - -C: Generate code for array index checking
-  - -t: Print parse tree on standard output
-  - -a: Print annotated parse tree on standard output
-  - -s: Print symbol table
-  - -g: Generate debug info
-  - -O: optimize code
-  - -f: Generate openMP code
 
-**ecc [-c -C -a -s -p -t -f]** file.e 
+**ecc [-h -t -a -s -r -e -p i-q -C -c -g -d -O -f]** file.e 
 
   If no options are given, ecc compiles an eps file (.e) 
   into an nvidia object file (.o)
-  
-  The following options can be used 
-    
-  - -c: Generate cuda-code 
-  - -C: Generate code for array index checking
-  - -t: Print parse tree on standard output
-  - -a: Print annotated parse tree on standard output
-  - -s: Print symbol table
-  - -g: Generate debug info
-  - -O: optimize code
-  - -f: Generate openMP code
-  - -nt: Set the number CUDA threads (default is 1024)
-  - -nb: Set the number CUDA blcoks  (default is 1024)
 
-**ech [-c -C -a -s -p -t -f]** file.e 
+**ech [-h -t -a -s -r -e -p i-q -C -c -g -d -O -f]** file.e 
 
   If no options are given, ecc compiles an eps file (.e) 
   into an amd object file (.o)
-  
-  The following options can be used 
+
+  All compilers takes the options:
+
+Options: 
+
+ -   -h : prints this help list
+ -   -t : Print parse tree 
+ -   -a : Print annotated parse tree 
+ -   -s : Print local symbol table   
+ -   -r : Print external symbol table   
+ -   -e : Emit code 
+ -   -p : Perform only syntax check, no code generated 
+ -   -q : Perform syntax and semantic check, no code generated 
+ -   -C : Array index check 
+ -   -c : Produce c-code but do not generate object code
+ -   -g : Generate debug info 
+ -   -d : Show the host compiler command line  
+ -   -O : Optimize code
+ -   -f : Generate code for openmp 
     
-  - -c: Generate cuda-code 
-  - -C: Generate code for array index checking
-  - -t: Print parse tree on standard output
-  - -a: Print annotated parse tree on standard output
-  - -s: Print symbol table
-  - -g: Generate debug info
-  - -O: optimize code
-  - -f: Generate openMP code
-  - -nt: Set the number hip threads (default is 1024)
-  - -nb: Set the number hip blcoks  (default is 1024)
+  ec, ecc and ech uses the gcc, nvcc and hipcc compilers
+  to create the object files from machine generated c/cuda/hip code.
 
 ## Loaders
 
-**el,elc,elh [-o file ]** file1.o file2.o ...
+**el [-o file ]** file1.o file2.o ...
+
+   Loader script for ec
+
+**elc [-o file ]** file1.o file2.o ...
+
+   Loader script for ecc
+
+**elh [-o file ]** file1.o file2.o ...
+
+   Loader script for ech
 
 The loader scripts are simple wrappers for    
 the normal unix loader
@@ -163,7 +180,7 @@ be executed on a GPU (when using ecc,ech) or executed using OpenMP
 
 See the $EPS/Src/Examples directory and the PyAc2d repo for eps example code.
 
-## BUGS
+## Bugs
 There are an infinite numbers of bugs, the compilers have only been
 tested by compiling themselves. 
 

@@ -1,0 +1,207 @@
+<h1>Eps - mini-language for portable gpu acceleration</h1>
+
+<p>This project is an experiment to find out if a mini language 
+can be made in order to write (limited) code for
+scientific calculations which can run on normal cpu's or
+execute with gpu acceleration
+by a simple recompile without any need to touch the source code.
+Also the language (although simple) should be sufficiently high
+level to avoid the need for detailed knowledge about gpu hardware.
+It should also be close to what the average scientist is familiar with, 
+i.e. languages like C/C++, Fortran, Python, Go, etc...</p>
+
+<p>Numerous languages have been constructed for this purpose, most of them
+Domain Specific Languages like Firedrake. The main problem with most of these
+languages are that they are too specific and forces the scientist to
+use a particular set of methods. They are also often complicated and difficult
+to learn.</p>
+
+<p>There are exceptions to this, Nvidia have made Fortran and C/C++ compilers
+available which can do gpu acceleration by setting the <code>-stdpar</code> option.
+The Fortran compiler uses the <code>DOCONCURRENT</code> keyword to replace nested <code>DO</code> 
+loops and generate parallel code for NVIDIA gpu's.
+Experiences so far with this compiler is encouraging. 
+However, the market for scientific computation is small, so it is not likely
+that we will see compilers for new gpu's anytime soon.</p>
+
+<p>In the mean time I needed to incorporate gpu acceleration into legacy C/C++ 
+code for at least three gpu architectures, NVIDIA, AMD and Mac M1. And probably
+more in the near future as gpus are integrated with cpus.
+I took a small compiler for a c-like toy language I made many years ago 
+and modified it to 
+generate cpu, CUDA or hip code. I added a new <code>parallel</code> keyword (aka <code>DOCONCURRENT</code>)
+to accommodate gpu acceleration.
+The output from the toy compiler is fed to the nvidia <code>nvcc</code> compiler or 
+AMD's <code>hipcc</code> compiler. Initial testing seems to indicate that the speedup obtained is
+similar to the nvidia fortran compiler, at least for simple grid data structures.
+See the Examples directory and the PyAc2d repo.</p>
+
+<h2>Installation</h2>
+
+<p>Clone the git project to your local computer.
+To use the scripts set the environment variable EPS to
+the top of the source directory.</p>
+
+<p>For example, if the source tree is located at <code>/home/barn/Src/Eps</code>
+type
+     export EPS=/home/barn/Src/Eps</p>
+
+<p>Then put the Bin directory on your path variable as</p>
+
+<pre><code> PATH=$PATH:$EPS/Bin
+</code></pre>
+
+<p>The ec, ecc and ech commands uses precompiled binaries for ubuntu 20.04 and the
+cray LUMI machine.
+If the binaries does not work they have to be recreated by running the mk.sh script
+found in the Src-c/cpu, Src-c/cuda or Src-c/hip directories. 
+Each directory contains machine generated c/cuda/hip code.
+The code is unreadable but by compiling and linking, a binary and library is generated. There
+are no dependencies except the standard C/C++ library and cuda/hip runtime libraries.</p>
+
+<p>The Src directory contain the source code for the compilers in eps.
+If any changes to the eps (.e) files are made, the compilers must be bootstrapped
+by running the makefile. 
+First edit the makefile to select either ec, ecc or ech as target.
+Then run make two times;</p>
+
+<p>First clear everything by running</p>
+
+<blockquote>
+  <p>make clean</p>
+</blockquote>
+
+<p>Then run</p>
+
+<blockquote>
+  <p>make</p>
+</blockquote>
+
+<p>Now move ec1, ecc1 or ech1 to ec, ecc or ech.</p>
+
+<blockquote>
+  <p>mv ec1 ec  </p>
+</blockquote>
+
+<p>Then clean up again</p>
+
+<blockquote>
+  <p>make clean</p>
+</blockquote>
+
+<p>and</p>
+
+<blockquote>
+  <p>make</p>
+</blockquote>
+
+<p>Again move ec1, ecc1 or ech1 to ec, ecc or ech</p>
+
+<blockquote>
+  <p>mv ec1 ec  </p>
+</blockquote>
+
+<p>If everything went well (ignore warnings) then type</p>
+
+<blockquote>
+  <p>make install</p>
+</blockquote>
+
+<p>Binaries should now have been installed in the Bin directory.</p>
+
+<h1>Compiler Usage</h1>
+
+<p><strong>ec [-h -t -a -s -r -e -p i-q -C -c -g -d -O -f]</strong> file.e </p>
+
+<p>If no options are given, ec compiles an eps file (.e) 
+  into a cpu object file (.o).</p>
+
+<p><strong>ecc [-h -t -a -s -r -e -p i-q -C -c -g -d -O -f]</strong> file.e </p>
+
+<p>If no options are given, ecc compiles an eps file (.e) 
+  into an nvidia object file (.o)</p>
+
+<p><strong>ech [-h -t -a -s -r -e -p i-q -C -c -g -d -O -f]</strong> file.e </p>
+
+<p>If no options are given, ecc compiles an eps file (.e) 
+  into an amd object file (.o)</p>
+
+<p>All compilers takes the options:</p>
+
+<p>Options: </p>
+
+<ul>
+<li>-h : prints this help list</li>
+<li>-t : Print parse tree </li>
+<li>-a : Print annotated parse tree </li>
+<li>-s : Print local symbol table   </li>
+<li>-r : Print external symbol table   </li>
+<li>-e : Emit code </li>
+<li>-p : Perform only syntax check, no code generated </li>
+<li>-q : Perform syntax and semantic check, no code generated </li>
+<li>-C : Array index check </li>
+<li>-c : Produce c-code but do not generate object code</li>
+<li>-g : Generate debug info </li>
+<li>-d : Show the host compiler command line  </li>
+<li>-O : Optimize code</li>
+<li><p>-f : Generate code for openmp </p>
+
+<p>ec, ecc and ech uses the gcc, nvcc and hipcc compilers
+to create the object files from machine generated c/cuda/hip code.</p></li>
+</ul>
+
+<h2>Loaders</h2>
+
+<p><strong>el [-o file ]</strong> file1.o file2.o ...</p>
+
+<p>Loader script for ec</p>
+
+<p><strong>elc [-o file ]</strong> file1.o file2.o ...</p>
+
+<p>Loader script for ecc</p>
+
+<p><strong>elh [-o file ]</strong> file1.o file2.o ...</p>
+
+<p>Loader script for ech</p>
+
+<p>The loader scripts are simple wrappers for <br />
+the normal unix loader
+but including necessary library paths. </p>
+
+<h2>The Epsilon language</h2>
+
+<p>The idea with creating the mini language eps is
+to be able to write (limited) code for 
+scientific calculations which can run on normal cpu's or
+execute with gpu acceleration 
+by a simple recompile without any need to touch the source code.</p>
+
+<p>The eps language is a tiny subset of c, but with
+support for multidimensional dynamic arrays and 
+a new and delete operator for memory management.
+c-style arrays does not exist. 
+Only  a few basic data types are supported; int, float and char.
+Dynamic struct's is supported, static structs do not exist. 
+The most important extension is the parallel statement:</p>
+
+<pre><code>int n;
+n=1000000;
+parallel (i=0:n){
+  a[i] = b[i] + c[i];
+}
+</code></pre>
+
+<p>If this statement occurs in a function, that function will
+be executed on a GPU (when using ecc,ech) or executed using OpenMP
+(using ec).</p>
+
+<p>See the $EPS/Src/Examples directory and the PyAc2d repo for eps example code.</p>
+
+<h2>BUGS</h2>
+
+<p>There are an infinite numbers of bugs, the compilers have only been
+tested by compiling themselves. </p>
+
+<h2>Examples</h2>
+
+<p>The $EPS/Src/Examples and the PyAc2d repo contains a few examples of eps (.e) code.</p>
