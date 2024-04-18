@@ -26,6 +26,8 @@ dest=../Src-c/$ARCH
 #Generate c-code
 $EC -c main.e
 $EC -c parse.e
+$EC -c scan.e
+$EC -c scanpath.e
 $EC -c sem.e
 $EC -c sym.e
 $EC -c ptree.e
@@ -37,7 +39,10 @@ $EC -c code.e
 #Copy c-code to bootstrap directory
 cp main.c $dest
 cp parse.c $dest
+cp scan.c  $dest
+cp scanpath.c  $dest
 cp sem.c   $dest
+cp sym.c   $dest
 cp ptree.c $dest
 cp libe.c  $dest
 cp err.c   $dest
