@@ -48,11 +48,11 @@ int Main(struct MainArg [*] MainArgs)
 
   // Print results
   LibePuts(stderr,"Time: ");
-  LibePutf(stderr,t);
+  LibePutf(stderr,t,"g");
   LibePuts(stderr,"\n");
   LibePuts(stderr,"a: ");
   k=1;
-  LibePutf(stderr,a[k,k]);
+  LibePutf(stderr,a[k,k],"g");
   LibePuts(stderr,"\n");
   LibeFlush(stderr);
 
@@ -73,5 +73,4 @@ int faxpy2d(float [*,*] a, float [*,*] x, float [*,*] y, float b){
         a[i,j] = b*y[i,j]+x[i,j];
     //}
   }
-  return(OK);
 }
