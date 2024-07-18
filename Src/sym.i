@@ -121,7 +121,7 @@ int SymRmtable(struct symbol p){}
 /*
 \end{verbatim}
 %----------------------------------------------------------------------
-\subsection{SymRmsubtables -- remove a table}
+\subsection{SymRmsubtables -- remove a sub table}
 %----------------------------------------------------------------------
 \begin{verbatim}
 */
