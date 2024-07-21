@@ -5,8 +5,6 @@ include <libe.i>
 include "sym.i"
 include "ptree.i"
 
-int Symgetline(int fp, struct symbol tbl){}
-
 int Main(struct MainArg [*] MainArgs)
 {
   struct symbol tp; // Symbol table

@@ -174,10 +174,13 @@ int   LibeClose(int fp ){}
 int   LibeGetc(int fp ){}   
 int   LibeUngetc(int fp ){}
 int   LibeGetw(int fp, char [*] text ){}   
+int   LibePs(char [*] s){}
+int   LibePi(int n){}
+int   LibePf(float r){}
+int   LibePutf(int fp, float r, char [*] form){}  
 int   LibePutc(int fp, int c){}     
 int   LibePuts(int fp, char [*] s){} 
 int   LibePuti(int fp, int ival){} 
-int   LibePutf(int fp, float fval){} 
 int   LibeRead(int fp, int n, char [*] array){} 
 int   LibeWrite(int fp, int n, char [*] array){} 
 int   LibeSeek(int fp, int pos, int flag){} 
@@ -222,6 +225,7 @@ int LibeStrev( char [*] s){}
 char [*] LibeStrsave( char [*] s){}
 int LibeStrcpy( char [*] s, char [*] t){}
 int LibeStrcat( char [*] s, char [*] t){}
+char [*] LibeStradd( char [*] t, char [*] s){}
 int LibeIsalpha(int c){}
 int LibeIsdigit(int c){}
 int LibeIsalnum(int c){}

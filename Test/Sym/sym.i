@@ -17,9 +17,10 @@ struct symbol { /* basic table entry */
       char [*] global;             /* Global field */
       char [*] ref;                /* Flag for  reference         */
       int  emit;                   /* The emit flag               */
-      struct symbol tbl;            /* next table                  */
-      struct symbol next;           /* next entry in chain         */
-      struct symbol last;           /* last entry in chain         */
+      struct symbol tbl;            /* Next table                 */
+      struct symbol prevtbl;        /* Previous table             */
+      struct symbol next;           /* next entry in chain        */
+      struct symbol last;           /* last entry in chain        */
 } 
 
 /*
@@ -355,5 +356,7 @@ int SymCpytble(struct symbol tp, struct symbol up){}
 */
 
 // 
-const NTBL=1024;
+const NTBL=80;
+const NFIELDS=15;
 int SymReadsym(int fp, struct symbol tp){}
+int Symgetline(int fp, struct symbol tp){}
