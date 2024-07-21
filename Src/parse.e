@@ -3,10 +3,11 @@
 // Eps grammar
 // The complete grammar of the epsilon language is given below using the
 // EBNF notation. 
-//
-//    extdecl         = type   '{' structdeclar | ID  [idseq] | [ '(' fdecl ]  
-//    type            = INT | REAL | COMPLEX | CHAR  | STRUCT ID   [ '['arrayarg']' ]
-//    structdeclar   = declarations '}'
+//    module         = def|extdecl
+//    def            = DEF '(' fdecl ]  
+//    extdecl        = type   ':' structdeclar | ID  [idseq] | [ '(' fdecl ]  
+//    type           = INT | REAL | COMPLEX | CHAR  | STRUCT ID [ '['arrayarg']' ]
+//    structdeclar   = declarations END
 //    idseq          = ',' ID  [idseq] 
 //    fdecl          = [arglist] ')' [compstmnt]
 //    arrayarg       = * | ',' arrayarg
@@ -14,7 +15,7 @@
 //    argseq         = ',' [ID]  argseq  
 //    declarations   = declaration [declarations]
 //    declaration    = type ID idseq ';'
-//    compstmnt      = '{' declarations  stmntlist '}' 
+//    compstmnt      = ':' declarations  stmntlist END 
 //    stmntlist      = stmnt | stmnt stmntlist   
 //    stmnt          = (ifstmnt| compstmnt| whilestmnt| forstmnt 
 //                             | parallelstmnt|return| expr) ';'
