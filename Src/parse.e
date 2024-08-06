@@ -3,9 +3,10 @@
 // Eps grammar
 // The complete grammar of the epsilon language is given below using the
 // EBNF notation. 
-//    module         = def|extdecl
+//    module         = def|extdecl|import
 //    def            = DEF '(' fdecl ]  
 //    extdecl        = type   ':' structdeclar | ID  [idseq] | [ '(' fdecl ]  
+//    import         = IMPORT ID '.' ID
 //    type           = INT | REAL | COMPLEX | CHAR  | STRUCT ID [ '['arrayarg']' ]
 //    structdeclar   = declarations END
 //    idseq          = ',' ID  [idseq] 

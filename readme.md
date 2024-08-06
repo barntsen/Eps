@@ -185,6 +185,7 @@ There are an infinite numbers of bugs, the compilers have only been
 tested by compiling themselves. 
 
 ## Examples
-The $EPS/Src/Examples and the PyAc2d repo contains a few examples of eps (.e) code.
+The $EPS/Src/Examples and the PyAc2d and PyEl2d repos contains a few examples of 
+eps (.e) code.
 
 
