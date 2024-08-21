@@ -3,12 +3,10 @@
 // Eps grammar
 // The complete grammar of the epsilon language is given below using the
 // EBNF notation. 
-//    module         = def|extdecl|import
-//    def            = DEF '(' fdecl ]  
-//    extdecl        = type   ':' structdeclar | ID  [idseq] | [ '(' fdecl ]  
-//    import         = IMPORT ID '.' ID
-//    type           = INT | REAL | COMPLEX | CHAR  | STRUCT ID [ '['arrayarg']' ]
-//    structdeclar   = declarations END
+//
+//    extdecl         = type   ':' structdeclar | ID  [idseq] | [ '(' fdecl ]  
+//    type            = INT | REAL | COMPLEX | CHAR  | STRUCT ID   [ '['arrayarg']' ]
+//    structdeclar   = declarations 'END'
 //    idseq          = ',' ID  [idseq] 
 //    fdecl          = [arglist] ')' [compstmnt]
 //    arrayarg       = * | ',' arrayarg
@@ -16,7 +14,7 @@
 //    argseq         = ',' [ID]  argseq  
 //    declarations   = declaration [declarations]
 //    declaration    = type ID idseq ';'
-//    compstmnt      = ':' declarations  stmntlist END 
+//    compstmnt      = ':' declarations | stmntlist 'END' 
 //    stmntlist      = stmnt | stmnt stmntlist   
 //    stmnt          = (ifstmnt| compstmnt| whilestmnt| forstmnt 
 //                             | parallelstmnt|return| expr) ';'
@@ -143,7 +141,7 @@ struct tree ParseExtdecl()
   if(np != NULL){
     sp = PtreeMknode("extdecl", "void");
     PtreeAddchild(sp,np);
-    if(lookahead == LBR){            // "{"  
+    if(lookahead == COLON){            // "{"  
       ParseMatch(lookahead);
       ParseStructdeclar(np);
     }
@@ -255,7 +253,7 @@ int ParseStructdeclar(struct tree p)
   PtreeAddchild(p,np);
   sp = ParseDeclarations();
   PtreeAddchild(np,sp);
-  ParseMatch(RBR);
+  ParseMatch(END);
   return (OK);
 }
 /*
@@ -489,23 +487,23 @@ struct tree ParseDeclaration()
 %============================================================* 
 This function implements the production
 \begin{verbatim}
- compstmnt    = '{' declarations stmntlist '}'
+ compstmnt    = '{' declarations | stmntlist '}'
 \end{verbatim}
 \begin{verbatim}
 */
 struct tree ParseCompstmnt()
 { 
   struct tree np, sp;
-  if(lookahead == LBR){                            /*  '{'            */ 
+  if(lookahead == COLON){                            /*  '{'            */ 
     np = PtreeMknode("compstmnt","void");
-    ParseMatch(LBR);                     
+    ParseMatch(COLON);                     
     sp = ParseDeclarations();                     /* declarations   */
     if(sp != NULL)
       PtreeAddchild(np, sp);
       sp = ParseStmntlist();                        /* stmntlist      */
       if(sp != NULL)
         PtreeAddchild(np, sp);
-      ParseMatch(RBR);                              /* '}'            */
+      ParseMatch(END);                              /* '}'            */
   }
   else
     np = NULL;
@@ -568,7 +566,7 @@ struct tree ParseStmnt()
     ParseMatch(lookahead);
     return (PtreeMknode("void", "void"));
   }
-  else if(lookahead == RBR){
+  else if(lookahead == END){
     return (np=NULL);
   }
   else{ 

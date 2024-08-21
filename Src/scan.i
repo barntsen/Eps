@@ -13,6 +13,7 @@ const STRUCT  = 11;       /* The 'struct'  keyword  */
 const WHILE   = 12;       /* The 'while'   keyword  */
 const FOR     = 26;       /* The 'for'     keyword  */
 const PARALLEL= 31;       /* The 'parallel' keyword  */
+const END     = 531;      /* The 'end'     keyword  */
 const RETURN  = 30;       /* The 'return'  keyword  */
 const IF      = 14;       /* The 'if'      keyword  */
 const ELSE    = 15;       /* The 'else'    keyword  */

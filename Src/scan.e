@@ -387,6 +387,8 @@ int ScanLex()
       rval = FOR;
     else if(LibeStrcmp(ScanText,"parallel"))
       rval = PARALLEL;
+    else if(LibeStrcmp(ScanText,"end"))
+      rval = END;
     else
       rval = ID;
   }
