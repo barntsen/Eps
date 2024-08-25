@@ -132,26 +132,11 @@ int ScanLex()
 
   comments = OK;
   while(comments==OK){
-    if(c=='/'){
-      c = ScanGetch();
-      if(c == '*'){
-        ScanComment();
-        ScanWhite();
-        c = ScanGetch();
-        ScanText[p] = cast(char, c);
-      }
-      else if(c=='/'){
-        ScanLcomment();
-        ScanWhite();
-        c=ScanGetch();
-        ScanText[p] = cast(char, c);
-        /* comments=ERR; */
-      }
-      else{
-        ScanUngetch();
-        c = '/';
-        comments = ERR;
-      }
+    if(c=='#'){
+      ScanLcomment();
+      ScanWhite();
+      c=ScanGetch();
+      ScanText[p] = cast(char, c);
     }
     else
       comments=ERR;

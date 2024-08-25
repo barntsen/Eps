@@ -1,155 +1,112 @@
-// The Sym imodule manages the symbol table.
-//
-//   
-//    Table level 1
-//   -------------------     
-//   |                 |
-//   |   ----------    |         Table level 2
-//   |   |        |    |       ----------------
-//   |   |        |----------> | 
-//   |   |        |    |       | -----------
-//   |   ----------    |       |
-//   |       |         |       |
-//   |       v         |       |
-//   |                 |       |
-//   |                 |       |
-//   -------------------       ---------------- 
+# The Sym imodule manages the symbol table.
+#
+#   
+#    Table level 1
+#   -------------------     
+#   |                 |
+#   |   ----------    |         Table level 2
+#   |   |        |    |       ----------------
+#   |   |        |----------> | 
+#   |   |        |    |       | -----------
+#   |   ----------    |       |
+#   |       |         |       |
+#   |       v         |       |
+#   |                 |       |
+#   |                 |       |
+#   -------------------       ---------------- 
 
 include "libe.i"
 include "ptree.i"
 include "err.i"
 include "sym.i"
 
-// SymEtp is the external Symbol Table
+char [*] SymSetfield(char [*] field, char[*] value):end
+
+# SymEtp is the external Symbol Table
 struct symbol SymEtp;       
 
-// SymLtp is the local symbol table
+# SymLtp is the local symbol table
 struct symbol SymLtp;       
-/*
-\end{verbatim}
-%----------------------------------------------------------------------
-\subsection{SymStp -- string table}
-%----------------------------------------------------------------------
-\begin{verbatim}
-*/
+
+# SymStp is the string table (not used)
 struct symbol SymStp;      
-/*
-\end{verbatim}
-%======================================================================
-\subsection{SymGetetp -- Get symbol table}                 
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol SymGetetp()
-{
+ 
+struct symbol SymGetetp() :
+
+  # SymGetetp gets the symbol table.                 
+
   return(SymEtp);
-}
-/*
-\end{verbatim}
-%======================================================================
-\subsection{SymSetetp -- Set symbol table}                 
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol SymSetetp( struct symbol etp)
-{
+end
+ 
+struct symbol SymSetetp( struct symbol etp) :
+
+  # SymSetetp sets the symbol tableend                 
+
   SymEtp = etp;
   return(SymEtp);
-}
-/*
-\end{verbatim}
-%======================================================================
-\subsection{SymGetltp -- Get local symbol table}                 
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol SymGetltp()
-{
+end
+
+struct symbol SymGetltp() :
+
+  # SymGetltp gets the local symbol table.                 
+ 
   return(SymLtp);
-}
-/*
-\end{verbatim}
-%======================================================================
-\subsection{SymSetltp -- Set local symbol table}                 
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol SymSetltp( struct symbol ltp)
-{
+end
+
+struct symbol SymSetltp( struct symbol ltp) :
+
+  # SymSetltp sets the local symbol table.                 
+ 
   SymLtp = ltp;
   return(SymLtp);
-}
-/*
-\end{verbatim}
-%======================================================================
-\subsection{SymGetstp -- Get string table}                 
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol SymGetstp()
-{
+end
+
+struct symbol SymGetstp() :
+
+ # SymGetstp gets the string table.                 
+ 
   return(SymStp);
-}
-/*
-\end{verbatim}
-%======================================================================
-\subsection{SymSetstp -- Set string table}                 
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol SymSetstp( struct symbol stp)
-{
+end
+ 
+struct symbol SymSetstp( struct symbol stp) :
+
+  # SymSetstp -- sets the string table.                 
+
   SymStp = stp;
   return(SymStp);
-}
-/*
-\end{verbatim}
-%======================================================================
-\subsection{SymSetfield -- set a field}                 
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymSetfield(char [*] field, char[*] value){}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymLookup -- look for s}                 
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol SymLookup(char [*] s, struct symbol tp)
-{
+end
+
+struct symbol SymLookup(char [*] s, struct symbol tp) :
+
+  # SymLookup looks for name s                 
+ 
   struct symbol np;
       
   np = tp;
-  while(np != NULL){ 
+  while(np != NULL): 
     if (LibeStrcmp(s, np.name) == OK)
-      return(np);       /* found it */
+      return(np);       # found it  
     np = np.next;
-  }
-  return(np=NULL);       /* not found */
- }
-/*
-\end{verbatim}
-%======================================================================
-\section{SymMkname -- make a name}     
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol SymMkname(char [*] name, struct symbol tp)
-{
+  end
+  return(np=NULL);       # not found  
+ end
+ 
+struct symbol SymMkname(char [*] name, struct symbol tp) :
+
+  # SymMkname makes a name.     
+
   struct symbol np, lp;
 
-  if((np = SymLookup(name, tp)) == NULL) {  /* not found */
+  if((np = SymLookup(name, tp)) == NULL) :  # not found  
     np = new(struct symbol);
-    if (np == NULL){
+    if (np == NULL):
       ErrPanic("Out of memory");
       return(np);
-    }
-    if((np.name = LibeStrsave(name)) == NULL){
+    end
+    if((np.name = LibeStrsave(name)) == NULL):
       ErrPanic("Out of memory");    
       return(np=NULL);
-    }
+    end
     lp = tp.last;
     lp.next = np;
     tp.last = np;
@@ -166,34 +123,31 @@ struct symbol SymMkname(char [*] name, struct symbol tp)
     np.descr = LibeStrsave("void");
     np.global = LibeStrsave("void");
     np.emit = OK;
-  } 
+  end 
   else
     np = NULL;
-    return(np);          /* Return pointer to node */
-  }     
-/*
-\end{verbatim}
-%======================================================================
-\section{SymRmname -- remove a name}     
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol SymRmname(char [*] name, struct symbol tp)
-{
+
+  return(np);          # Return pointer to node  
+end     
+
+struct symbol SymRmname(char [*] name, struct symbol tp) :
+
+  # SymRmname removes a name.     
+ 
   struct symbol np, sp, prev;
   np = tp;
   sp = NULL;
   prev = np;
-  while(np != NULL){ 
-    if (LibeStrcmp(name, np.name) == OK){
+  while(np != NULL): 
+    if (LibeStrcmp(name, np.name) == OK):
       sp = np;
       np = NULL;
-    }
-    else{
+    end
+    else:
       prev = np;
       np = np.next;
-    }
-  } 
+    end
+  end 
  np = sp;
  if(np == NULL) 
    return(np);
@@ -212,34 +166,26 @@ struct symbol SymRmname(char [*] name, struct symbol tp)
    delete(np.ref);
    delete(np.descr);
   return(prev);
-}     
-/*
-\end{verbatim}
-%======================================================================
-\section{SymGetname -- get name}
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymGetname(struct symbol np)
-{
+end     
+ 
+char [*] SymGetname(struct symbol np) :
+
+  # SymGetname gets a name.
+
   return(np.name);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymMktable -- make a new symbol table}     
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol SymMktable()
-{
-  struct symbol tp;   /* Table pointer */
+end
+ 
+struct symbol SymMktable() :
+
+  # SymMktable  makes a new symbol table.     
+
+  struct symbol tp;   # Table pointer  
 
   tp = new(struct symbol);
-  if (tp == NULL){
+  if (tp == NULL):
     ErrPanic("Out of memory");
     return(tp);
-  }
+  end
   tp.name =  LibeStrsave("#first");
   tp.type =  LibeStrsave("void");
   tp.tbl =   NULL;
@@ -255,321 +201,217 @@ struct symbol SymMktable()
   tp.next =  NULL;
   tp.last = tp;
 
-  return(tp);           /* Return pointer to first node */
-}     
-/*
-\end{verbatim}
-%======================================================================
-\section{SymMvnext -- move to next node}     
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol  SymMvnext(struct symbol np)
-{
+  return(tp);           # Return pointer to first node  
+end     
+ 
+struct symbol  SymMvnext(struct symbol np) :
+
+ # SymMvnext moves to next node.     
+
   if(np == NULL)
     return(np) ;
   else
     return (np.next);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetable -- set table}     
-%======================================================================
-\begin{verbatim}
-*/
- struct symbol SymSetable(struct symbol np, struct symbol tp)
-{
+end
+ 
+struct symbol SymSetable(struct symbol np, struct symbol tp) :
+
+  # SymSetable sets a table.     
+
   np.tbl = tp;
   return(np);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymGetable -- get table}
-%======================================================================
-\begin{verbatim}
-*/
-struct symbol SymGetable(struct symbol np)
-{
+end
+ 
+struct symbol SymGetable(struct symbol np) :
+
+  # SymGetable gets a table.
+
   return(np.tbl);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetype -- set type}     
-%======================================================================
-\begin{verbatim}
-*/
-int SymSetype(struct symbol np, char [*] type)
-{
+end
+ 
+int SymSetype(struct symbol np, char [*] type) :
+
+  # SymSetype sets type.     
+
   np.type = SymSetfield(np.type, type);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymGetype -- get type}
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymGetype(struct symbol np)
-{
+end
+ 
+char [*] SymGetype(struct symbol np) :
+
+  # SymGetype gets type.
+
   return(np.type);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetfunc -- set the function field}     
-%======================================================================
-\begin{verbatim}
-*/
-int SymSetfunc(struct symbol np, char [*] func)
-{
+end
+ 
+int SymSetfunc(struct symbol np, char [*] func) :
+
+  # SymSetfunc sets the function field.     
+
   np.func = SymSetfield(np.func, func);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymGetfunc -- get the function field}
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymGetfunc(struct symbol np)
-{
+end
+ 
+char [*] SymGetfunc(struct symbol np) :
+
+  # SymGetfunc gets the function field.
+
   return(np.func);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetarray -- set the array field}     
-%======================================================================
-\begin{verbatim}
-*/
-int SymSetarray(struct symbol np, char [*] array)
-{
+end
+ 
+int SymSetarray(struct symbol np, char [*] array) :
+
+  # SymSetarray sets the array field.     
+
   np.array = SymSetfield(np.array, array);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymGetarray -- get the array field}
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymGetarray(struct symbol np)
-{
+end
+ 
+char [*] SymGetarray(struct symbol np) :
+
+  # SymGetarray gets the array field.
+
   return(np.array);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetstruct -- set the structure field}     
-%======================================================================
-\begin{verbatim}
-*/
-int SymSetstruct(struct symbol np, char [*] structure)
-{
+end
+
+int SymSetstruct(struct symbol np, char [*] structure) :
+
+ # SymSetstruct sets the structure field.     
+ 
   np.structure = SymSetfield(np.structure, structure);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymGetstruct -- get the structure field}
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymGetstruct(struct symbol np)
-{
+end
+ 
+char [*] SymGetstruct(struct symbol np) :
+
+ # SymGetstruct gets the structure field.
+
  return(np.structure);
 
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetident -- set the identifier field}     
-%======================================================================
-\begin{verbatim}
-*/
- int SymSetident(struct symbol np, char [*] ident)
-{
+end
+ 
+int SymSetident(struct symbol np, char [*] ident) :
+
+  # SymSetident sets the identifier field.     
+
   np.ident = SymSetfield(np.ident, ident);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymGetident -- get the identifier field}
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymGetident(struct symbol np)
-{
+end
+
+char [*] SymGetident(struct symbol np) :
+
+  # SymGetident gets the identifier field.
+ 
   return(np.ident);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetlval -- set the lval field}     
-%======================================================================
-\begin{verbatim}
-*/
- int SymSetlval(struct symbol np, char [*] lval)
-{
+end
+ 
+int SymSetlval(struct symbol np, char [*] lval) :
+
+  # SymSetlval sets the lval field.     
+
   np.lval = SymSetfield(np.lval, lval);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymGetlval -- get the lval field}
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymGetlval(struct symbol np)
-{
-     return(np.lval);
- }
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetrank -- set the rank field}     
-%======================================================================
-\begin{verbatim}
-*/
-int SymSetrank(struct symbol np, int rank)
-{
+end
+ 
+char [*] SymGetlval(struct symbol np) :
+
+  #SymGetlval -- get the lval field.
+
+  return(np.lval);
+end
+ 
+int SymSetrank(struct symbol np, int rank) :
+
+  #SymSetrank sets the rank field.     
+
   np.rank = rank;
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymGetrank -- get the rank field}
-%======================================================================
-\begin{verbatim}
-*/
-int SymGetrank(struct symbol np)
-{
+end
+
+int SymGetrank(struct symbol np) :
+
+  # SymGetrank gets the rank field.
+ 
      return(np.rank);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetemit -- set the emit field}     
-%======================================================================
-\begin{verbatim}
-*/
-int SymSetemit(struct symbol np, int emit)
-{
-    np.emit = emit;
-    return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymGetrank -- get the rank field}
-%======================================================================
-\begin{verbatim}
-*/
-int SymGetemit(struct symbol np)
-{
-     return(np.emit);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetref -- set the ref field}     
-%======================================================================
-\begin{verbatim}
-*/
-int SymSetref(struct symbol np, char  [*] ref)
-{
+end
+ 
+int SymSetemit(struct symbol np, int emit) :
+
+  # SymSetemit sets the emit field.     
+
+   np.emit = emit;
+   return(OK);
+end
+ 
+int SymGetemit(struct symbol np) :
+
+  # SymGetrank gets the rank field.
+
+  return(np.emit);
+end
+ 
+int SymSetref(struct symbol np, char  [*] ref) :
+
+  # SymSetref sets the ref field.     
+
   np.ref = SymSetfield(np.ref, ref);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymGetref -- get the ref field}
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymGetref(struct symbol np)
-{
+end
+ 
+char [*] SymGetref(struct symbol np) :
+
+  # SymGetref  gets the ref field.
+
   return(np.ref);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetdescr -- set the descr field}     
-%======================================================================
-\begin{verbatim}
-*/
-int SymSetdescr(struct symbol np, char [*] descr)
-{
+end
+ 
+int SymSetdescr(struct symbol np, char [*] descr) :
+
+  # SymSetdescr sets the descr field.     
+
   np.descr = SymSetfield(np.descr, descr);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\subsection{SymGetdescr -- get the descr field}
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymGetdescr(struct symbol np)
-{
+end
+ 
+char [*] SymGetdescr(struct symbol np) :
+
+  # SymGetdescr gets the descr field.
+
   return(np.descr);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymSetglobal -- set the global field}     
-%======================================================================
-\begin{verbatim}
-*/
-int SymSetglobal(struct symbol np, char [*] global)
-{
+end
+
+int SymSetglobal(struct symbol np, char [*] global) :
+
+  # SymSetglobal sets the global field.     
+ 
   np.global = SymSetfield(np.global, global);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\subsection{SymGetdescr -- get the global field}
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymGetglobal(struct symbol np)
-{
+end
+ 
+char [*] SymGetglobal(struct symbol np) :
+
+  # SymGetdescr gets the global field.
+
   return(np.global);
-}
-/*
-\end{verbatim}
-%======================================================================
-\subsection{SymRmtable -- remove the symbol table}
-%======================================================================
-\begin{verbatim}
-*/
-int SymRmtable(struct symbol p)
-{ 
+end
+ 
+int SymRmtable(struct symbol p) :
+
+  # SymRmtable removes the symbol table.
+
   struct symbol next, prev;
 
   if(p==NULL)return(ERR);
   prev=NULL;
-  while(p != NULL){
+  while(p != NULL):
     next=p.next;
-    if(LibeStrcmp("#arglist", p.name)==ERR){    
-      if(LibeStrcmp("#self", p.name) == ERR){
-      if(LibeStrcmp("#first", p.name) == ERR){
-      if(p.tbl != NULL){
+    if(LibeStrcmp("#arglist", p.name)==ERR):    
+      if(LibeStrcmp("#self", p.name) == ERR):
+      if(LibeStrcmp("#first", p.name) == ERR):
+      if(p.tbl != NULL):
         SymRmtable(p.tbl);
         p.tbl=NULL;
-      }
+      end
       if(prev != NULL)
         prev.next = next;
       delete(p.name);
@@ -583,71 +425,59 @@ int SymRmtable(struct symbol p)
       delete(p.ref);
       delete(p.descr);
       delete(p);
-    }
-    }
-    }
+    end
+    end
+    end
     else
       prev=p;
     p=next;
-  }
+  end
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymLook  -- Find identifier}
-%======================================================================
- \begin{verbatim}
-*/
-struct symbol SymLook(char [*] name)
-{ 
+end
+
+struct symbol SymLook(char [*] name) :
+
+  # SymLook finds identifier.
+ 
   struct symbol tp, ap;
 
-  if((tp = SymLookup(name, SymEtp)) == NULL){
-    if((tp = SymLookup(name, SymLtp)) == NULL){
+  if((tp = SymLookup(name, SymEtp)) == NULL):
+    if((tp = SymLookup(name, SymLtp)) == NULL):
       tp = SymLookup("#arglist", SymLtp);
       if(tp==0) return(tp);
       ap = SymGetable(tp);
       if(ap==0) return(ap);
-      if((tp = SymLookup(name,ap)) == NULL){ 
+      if((tp = SymLookup(name,ap)) == NULL): 
         tp = SymLookup(name, SymEtp);
-      }
-    }
-  }
+      end
+    end
+  end
   return(tp);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{SymField -- set a character field}     
-%======================================================================
-\begin{verbatim}
-*/
-char [*] SymSetfield(char [*] field, char [*] value)
-{
+end 
+ 
+char [*] SymSetfield(char [*] field, char [*] value) :
+
+  # SymField sets a character field.     
+
   if(field != NULL)
     delete(field);
   if(value == NULL)
     field = NULL;
-  else if((field = LibeStrsave(value)) == NULL){
+  else if((field = LibeStrsave(value)) == NULL):
     ErrPanic("Out of memory");
     return(field);
-  }
+  end
   return (field);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SymCpytble  -- Copy table}
-%======================================================================
- \begin{verbatim}
-*/
-int SymCpytble(struct symbol tp, struct symbol up)
-{ 
+end
+
+int SymCpytble(struct symbol tp, struct symbol up) :
+
+ # SymCpytble copies table.
+ 
   struct symbol wp;
 
   tp = SymMvnext(tp);
-  while(tp != NULL){
+  while(tp != NULL):
     wp = SymMkname(SymGetname(tp),up); 
     SymSetype(wp,SymGetype(tp));
     SymSetfunc(wp,SymGetfunc(tp));
@@ -660,18 +490,14 @@ int SymCpytble(struct symbol tp, struct symbol up)
     SymSetdescr(wp,SymGetdescr(tp));
     SymSetemit(wp,SymGetemit(tp));
     tp = SymMvnext(tp);
-  }
+  end
   return(OK);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{SymPrsym -- print the symbol table}
-%======================================================================
-\begin{verbatim}
-*/
-int SymPrsym(struct symbol p, int level)
-{ 
+end 
+ 
+int SymPrsym(struct symbol p, int level) :
+
+  # SymPrsym prints the symbol table.
+
   int i;
   int fp;
   struct symbol tp;
@@ -679,12 +505,12 @@ int SymPrsym(struct symbol p, int level)
   fp = stdout;
   if(p == NULL)
     return(ERR);
-  while(p != NULL){
+  while(p != NULL):
     i = 0;
-    while(i <= level){
+    while(i <= level):
       LibePuts(fp, " ");
       i = i + 1;
-    }
+    end
     LibePuts(fp, p.name); LibePuts(fp, " ");    
     LibePuts(fp, p.type); LibePuts(fp, " ");    
     LibePuts(fp, p.func); LibePuts(fp, " ");    
@@ -700,15 +526,14 @@ int SymPrsym(struct symbol p, int level)
     LibePuts(fp,"\n");
     LibeFlush(fp);
 
-    if(p.tbl != NULL){
+    if(p.tbl != NULL):
        tp = p.tbl;
        level = level + 1;
        SymPrsym(tp, level);
        level = level - 1;
-    }
+    end
     p = p.next;
- }
+ end
     LibeFlush(fp);
     return(OK);
-}
-
+end

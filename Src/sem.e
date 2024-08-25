@@ -1,322 +1,312 @@
-/*
-%
-%     ***********************************************
-%     *                                             *
-       \chapter{Sem -- semantic checking}
-%     *                                             *
-%     ***********************************************
-%
-%======================================================================
-\section{Introduction}
-%======================================================================
-\end{verbatim}
-%---------------------------------------------------------------------
-\subsection{Definitions}
-%---------------------------------------------------------------------
-\begin{verbatim}
-*/
-include "libe.i"   /* Include library definitions     */
-include "sym.i"    /* Include symbol table interface  */
-include "ptree.i"  /* Include parse tree interface    */
-include "err.i"    /* Include interface to error      */
-include "sem.i"    /* Include interface to sem        */
-int SemExtdecl(struct tree p){}     /* Check external declarations   */
-int SemStructdecl(struct tree p, struct symbol tp){}   
-int SemFdecl(struct tree p, struct symbol tp){}        
-int SemDeclarations(struct tree p, struct symbol tp){}
-int SemDeclaration(struct tree p, struct symbol tp){}
-int SemCompstmnt(struct tree p){}
-int SemStmnt(struct tree p){}     
-int SemWhilestmnt(struct tree p){} 
-int SemForstmnt(struct tree p){}
-int SemParallelstmnt(struct tree p){}
-int SemIfstmnt(struct tree p){}
-int SemReturnstmnt(struct tree p){}
-struct tree SemExprlist(struct tree p){}   
-struct tree SemExpr(struct tree p){}     
-struct tree SemBinexpr(struct tree p){} 
-struct tree SemAsgexpr(struct tree p){}    /* Check assignment expressions  */
-struct tree SemRelexpr(struct tree p){}   
-struct tree SemAddexpr(struct tree p){}
-struct tree SemUnexpr(struct tree p){}    
-struct tree SemPrimexpr(struct tree p){}   
-int   SemId(struct tree p){}         
-int   SemFcall(struct tree p){}  
-int   SemStructure(struct tree p, struct symbol tp){}  
-int   SemArray(struct tree p, struct symbol tp){} 
-int   SemCast(struct tree p){}     
-int   SemNew(struct tree p){}
-int   SemDelete(struct tree p){}   
-int   SemLen(struct tree p){}
-int   SemSizeof(struct tree p){}
-int   SemCmplx(struct tree p){} 
-int   SemRe(struct tree p){}  
-int   SemIm(struct tree p){}    
-int   SemCopytype(struct tree p, struct tree np){}
-int   SemCopyparallel(struct tree p, struct tree np){}
-int   SemComparetype(struct tree p, struct tree np){}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemSem -- semantic checking of the syntax tree}
-%======================================================================
-The entry point of the semantic checking is this routine.
-\begin{verbatim}
-*/
-int SemSem(struct tree p, struct symbol tp)
-{    
+# Sem performs semantic checking of the parse tree 
+
+include "libe.i"   # Include library definitions      
+include "sym.i"    # Include symbol table interface   
+include "ptree.i"  # Include parse tree interface     
+include "err.i"    # Include interface to error       
+include "sem.i"    # Include interface to sem         
+
+int SemExtdecl(struct tree p):end 
+int SemStructdecl(struct tree p, struct symbol tp):end 
+int SemFdecl(struct tree p, struct symbol tp):end 
+int SemDeclarations(struct tree p, struct symbol tp):end 
+int SemDeclaration(struct tree p, struct symbol tp):end 
+int SemCompstmnt(struct tree p):end 
+int SemStmnt(struct tree p):end 
+int SemWhilestmnt(struct tree p):end 
+int SemForstmnt(struct tree p):end 
+int SemParallelstmnt(struct tree p):end 
+int SemIfstmnt(struct tree p):end 
+int SemReturnstmnt(struct tree p):end 
+struct tree SemExprlist(struct tree p):end 
+struct tree SemExpr(struct tree p):end 
+struct tree SemBinexpr(struct tree p):end 
+struct tree SemAsgexpr(struct tree p):end 
+struct tree SemRelexpr(struct tree p):end 
+struct tree SemAddexpr(struct tree p):end 
+struct tree SemUnexpr(struct tree p):end 
+struct tree SemPrimexpr(struct tree p):end 
+int   SemId(struct tree p):end 
+int   SemFcall(struct tree p):end 
+int   SemStructure(struct tree p, struct symbol tp):end 
+int   SemArray(struct tree p, struct symbol tp):end 
+int   SemCast(struct tree p):end 
+int   SemNew(struct tree p):end 
+int   SemDelete(struct tree p):end 
+int   SemLen(struct tree p):end 
+int   SemSizeof(struct tree p):end 
+int   SemCmplx(struct tree p):end 
+int   SemRe(struct tree p):end 
+int   SemIm(struct tree p):end 
+int   SemCopytype(struct tree p, struct tree np):end 
+int   SemCopyparallel(struct tree p, struct tree np):end 
+int   SemComparetype(struct tree p, struct tree np):end 
+
+int SemSem(struct tree p, struct symbol tp) :
+
+  # SemSem does semantic checking of the syntax tree.
+  # The entry point of the semantic checking is this routine.
+ 
   struct symbol ltp;
   SymSetetp(tp);          
   ltp= NULL; 
   SymSetltp(ltp);
-  SemExtdecl(p);  /* Check syntax tree pointed to by p       */
+  SemExtdecl(p);  # Check syntax tree pointed to by p        
   return (OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemExtdecl  -- Check external declaration list}  
-%======================================================================
-This is the start of the type checking and the routine
-performs type checking for external declarations, including
-structure and function definitions.
-\begin{verbatim}
-*/
-int SemExtdecl(struct tree p)
-{ 
+end 
+ 
+int SemExtdecl(struct tree p) :
+
+  # SemExtdecl checks external declaration list.  
+  # This is the start of the type checking and the routine
+  # performs type checking for external declarations, including
+  # structure and function definitions.
+ 
   struct tree sp, np;
 
-  if(LibeStrcmp(PtreeGetname(p), "extdecl")){         
+  if(LibeStrcmp(PtreeGetname(p), "extdecl")):         
     np = PtreeMvchild(p);
     PtreeSetglobal(np,"global");
 
-   /* Check structure declaration */
+   # Check structure declaration  
 
-    while(np!= NULL){
+    while(np!= NULL):
       sp = PtreeMvchild(np);
-      if(LibeStrcmp(PtreeGetarray(np),"array")){
+      if(LibeStrcmp(PtreeGetarray(np),"array")):
         sp = PtreeMvsister(sp);
-      }
+      end 
+ 
 
-      if(LibeStrcmp(PtreeGetname(sp), "structdec")){   
+      if(LibeStrcmp(PtreeGetname(sp), "structdec")):   
         SemStructdecl(np, SymGetetp()); 
-      }
+      end 
+ 
 
-   /* Check function declaration */
+   # Check function declaration  
 
-      else if(LibeStrcmp(PtreeGetname(sp), "fdecl")){
+      else if(LibeStrcmp(PtreeGetname(sp), "fdecl")):
           SemFdecl(np, SymGetetp());
-      } 
+      end 
+  
 
-   /* Check variable and array declaration */
+   # Check variable and array declaration  
 
       else
         SemDeclaration(np, SymGetetp());
       np = PtreeMvsister(np);
-    }
-  }
+    end 
+ 
+  end 
+ 
   return (OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemStructdecl  -- Check structure declarations}  
-%======================================================================
-\begin{verbatim}
-*/
-int SemStructdecl(struct tree p, struct symbol tp)
-{ 
+end 
+ 
+int SemStructdecl(struct tree p, struct symbol tp) :
+
+  # SemStructdecl checks structure declarations.  
+  # If not defined before the
+  # structure name is entered in the global
+  # symbol table together with all components.
+ 
   struct symbol up, uup;
   char [*] structure;
 
   structure = PtreeGetdef(p);
   p = PtreeMvchild(p);
   p = PtreeMvchild(p);
-  if(LibeStrcmp(PtreeGetname(p), "declarations")){
+  if(LibeStrcmp(PtreeGetname(p), "declarations")):
     up = SymMktable();
     if((uup = SymMkname(structure, tp)) == NULL)
       ErrSerror(p,"Multiple declaration", structure);
-    else {
+    else :
       SymSetable(uup, up);
       SymSetstruct(uup, "structdef");
       SymSetype(uup, structure);
       SemDeclarations(PtreeMvchild(p), up);
-    }
-  } 
+    end 
+ 
+  end 
+  
   return (OK);
-} 
-/*
-\end{verbatim}
-/*
-%======================================================================
-\section{SemFdecl  -- Check function declaration}  
-%======================================================================
-The interface of a function consists of the arguments of the
-function and their types. Both name and type are stored in the
-symbol table at this point. When the function definition is
-given, both names and types must be correctly declared.
-\begin{verbatim}
-*/
-int SemFdecl(struct tree p, struct symbol tp)
-{ 
+end 
+  
+int SemFdecl(struct tree p, struct symbol tp) :
+
+ # SemFdecl checks function declaration.  
+ #  The interface of a function consists of the arguments of the
+ #  function and their types. Both name and type are stored in the
+ #  symbol table at this point. When the function definition is
+ #  given, both names and types must be correctly declared.
+ 
   struct tree np, sp, tmp;
   struct symbol  up, uup, ltp;
   char [*] type;
   int rank;
   
-  // The  p node is a type node  
-  // Set type and rank for this function 
-  if(LibeStrcmp(PtreeGetarray(p), "array")){
+  # The  p node is a type node  
+  # Set type and rank for this function 
+  if(LibeStrcmp(PtreeGetarray(p), "array")):
     rank=1;
     np = PtreeMvchild(p);
     sp = PtreeMvchild(np);
     np = PtreeMvsister(np);
     while((sp = PtreeMvsister(sp))!= NULL)
       rank = rank+1;
-  }
-  else{
+  end 
+ 
+  else:
     rank = 0;
     np = PtreeMvchild(p); 
-  }
+  end 
+ 
   PtreeSetrank(p,rank);
   SemCopytype(p,np);
   PtreeSetype(np, PtreeGetdef(p));
 
-  //
-  // Move to the fdecl node 
+  #
+  # Move to the fdecl node 
   p = np;
 
-  np = PtreeMvchild(p);     // Arglist  
+  np = PtreeMvchild(p);     # Arglist  
   if(LibeStrcmp(PtreeGetname(np),"arglist"))
     tmp = PtreeMvchild(np);
   else
     tmp = NULL;
 
-  sp = PtreeMvsister(np);   /* Compound statement  */
-  if(sp==NULL){
+  sp = PtreeMvsister(np);   # Compound statement   
+  if(sp==NULL):
     sp = np;
     np = NULL;
-  }
+  end 
+ 
   else
-    np = PtreeMvchild(np);  /* Type (of arglist)   */
+    np = PtreeMvchild(np);  # Type (of arglist)    
 
-  /* Function declaration   */
+  # Function declaration    
 
-  if(PtreeMvchild(sp) == NULL){             
-    if((up = SymMkname(PtreeGetdef(p), tp)) == NULL){
+  if(PtreeMvchild(sp) == NULL):             
+    if((up = SymMkname(PtreeGetdef(p), tp)) == NULL):
       ErrSerror(np,"Multiple function prototype declaration"
              , PtreeGetdef(p));
-    }
+    end 
+ 
 
     SymSetype(up, PtreeGetype(p));
     SymSetstruct(up, PtreeGetstruct(p));
     SymSetarray(up, PtreeGetarray(p));
     SymSetrank(up, PtreeGetrank(p));
     SymSetfunc(up, "fdecl");
-    ltp = SymMktable();    /* Local symbol table     */
+    ltp = SymMktable();    # Local symbol table      
     SymSetable(up, ltp);
     up = SymMkname("#arglist", ltp);
     uup = SymMktable();
-    SymSetable(up, uup);   /* Argument list table    */
+    SymSetable(up, uup);   # Argument list table     
     if(np != NULL)
       SemDeclarations(np, uup); 
     up = SymMkname("#self", ltp);
     SymSetfunc(up, PtreeGetdef(p));
     SymSetemit(up,ERR);
-  }
+  end 
+ 
 
-  /* Function definition */
+  # Function definition  
 
-  else{                                     
-    if((up = SymLookup(PtreeGetdef(p), tp)) == NULL){
+  else:                                     
+    if((up = SymLookup(PtreeGetdef(p), tp)) == NULL):
       ErrSerror(p, "Undeclared function"
              , PtreeGetdef(p));
-    }      
-    else{
+    end 
+       
+    else:
       if(LibeStrcmp(SymGetfunc(up),"fdef"))
         ErrSerror(p, "Redefinition of function", PtreeGetdef(p));
-    }
+    end 
+ 
 
-    if(LibeStrcmp(SymGetype(up),PtreeGetype(p)) == ERR){ 
+    if(LibeStrcmp(SymGetype(up),PtreeGetype(p)) == ERR): 
       ErrSerror(p,"Function type does not match declaration"
              , PtreeGetdef(p));
-    }
-    if(LibeStrcmp(SymGetarray(up),PtreeGetarray(p)) == ERR){ 
+    end 
+ 
+    if(LibeStrcmp(SymGetarray(up),PtreeGetarray(p)) == ERR): 
       ErrSerror(p,"Function type does not match declaration"
              , PtreeGetdef(p));
-    }
+    end 
+ 
     SymSetfunc(up, "fdef");
     PtreeSetname(p, "fdef");
     up = SymGetable(up);
     SymSetltp(up);
-    if(up != NULL){
+    if(up != NULL):
       uup = SymLookup("#arglist", up);
-    }
+    end 
+ 
     if(uup != NULL)
       uup = SymGetable(uup);
-    while(np != NULL){
+    while(np != NULL):
       uup = SymMvnext(uup);
-      if(uup == NULL){
+      if(uup == NULL):
         ErrSerror(p,"Function definition does not match declaration"
              , PtreeGetdef(p));
-      } 
+      end 
+  
       type = SymGetype(uup);
       PtreeSetype(np, PtreeGetdef(np));
-      if(LibeStrcmp(type, PtreeGetype(np)) == ERR){
+      if(LibeStrcmp(type, PtreeGetype(np)) == ERR):
         ErrSerror(p,"Function definition does not match declaration"
              , PtreeGetdef(p));
-      } 
-      if(LibeStrcmp(SymGetarray(uup), PtreeGetarray(np)) == ERR){
+      end 
+  
+      if(LibeStrcmp(SymGetarray(uup), PtreeGetarray(np)) == ERR):
         ErrSerror(p,"Function definition does not match declaration"
              , PtreeGetdef(p));
-      } 
+      end 
+  
       np = PtreeMvsister(np);
-    }
-    if(SymMvnext(uup) != NULL){
+    end 
+ 
+    if(SymMvnext(uup) != NULL):
       ErrSerror(p,"Function definition does not match declaration"
            , PtreeGetdef(p));
-    } 
+    end 
+  
 
-    if(SymGetltp() != NULL){
+    if(SymGetltp() != NULL):
       up = SymLookup("#arglist", SymGetltp());
-    }
-    if(up != NULL){
+    end 
+ 
+    if(up != NULL):
       uup = SymGetable(up);
       SymRmtable(uup);
       uup = SymMktable();
       SymSetable(up, uup); 
       if(tmp != NULL)
         SemDeclarations(tmp, uup);  
-     }
+     end 
+ 
     SemCompstmnt(sp); 
     SemCopyparallel(p,sp);
-  }
+  end 
+ 
   return (OK);
-} 
-/*
-%======================================================================
-\section{SemDeclarations  -- Check declarations}  
-%======================================================================
-\begin{verbatim}
-\end{verbatim}
-*/
-int SemDeclarations(struct tree p, struct symbol tp)
-{ 
-  while(p != NULL) {
+end 
+  
+int SemDeclarations(struct tree p, struct symbol tp) :
+
+  # SemDeclarations checks declarations.  
+ 
+  while(p != NULL) :
     SemDeclaration(p,tp);
     p = PtreeMvsister(p);
-  }
+  end 
+ 
   return (OK);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{SemDeclaration  -- Check declaration}  
-%======================================================================
-\begin{verbatim}
-*/
-int SemDeclaration(struct tree p, struct symbol tp)
-{
+end 
+  
+int SemDeclaration(struct tree p, struct symbol tp) :
+
+  # SemDeclaration checks single declaration.  
+ 
   struct tree np,sp; 
   struct symbol up;
   int rank;
@@ -324,45 +314,48 @@ int SemDeclaration(struct tree p, struct symbol tp)
   char [*] s;
   char [*] global;
 
-  PtreeSetype(p, PtreeGetdef(p));       /* Set the type field */
+  PtreeSetype(p, PtreeGetdef(p));       # Set the type field  
   global = PtreeGetglobal(p);
 
-  /* Compute the rank if this was an array */
+  # Compute the rank if this was an array  
 
   rank = 0;
-  if(LibeStrcmp(PtreeGetarray(p),"array")){
+  if(LibeStrcmp(PtreeGetarray(p),"array")):
     np = PtreeMvchild(p);
     np = PtreeMvchild(np);
     rank=1;
     while((np=PtreeMvsister(np)) != NULL) 
       rank=rank+1;
-    np = PtreeMvchild(p);   /* Move to the list of identifiers */
+    np = PtreeMvchild(p);   # Move to the list of identifiers  
     np = PtreeMvsister(np);
-  }
-  else{
-    np = PtreeMvchild(p);  /* Move to the list of identifiers */
-  }
+  end 
+ 
+  else:
+    np = PtreeMvchild(p);  # Move to the list of identifiers  
+  end 
+ 
 
-  /* Process the list of identifiers */
+  # Process the list of identifiers  
 
-  while(np != NULL) {
-    PtreeSetype(np, PtreeGetype(p));    /* Set the type field */
+  while(np != NULL) :
+    PtreeSetype(np, PtreeGetype(p));    # Set the type field  
     if((up = SymMkname(PtreeGetdef(np), tp)) == NULL)
       ErrSerror(np,"Multiple declaration", PtreeGetdef(np));
                 
-    else{
+    else:
 
-     /* Record information in symbol table:  */ 
+     # Record information in symbol table:    
 
       SymSetident(up, "identifier");
       SymSetype(up, PtreeGetype(p));  
-      if(LibeStrcmp(global,"global")==OK){
+      if(LibeStrcmp(global,"global")==OK):
         SymSetglobal(up,"global");
-      }
-      if(LibeStrcmp(PtreeGetype(p),"const")==OK){
+      end 
+ 
+      if(LibeStrcmp(PtreeGetype(p),"const")==OK):
         sp = PtreeMvchild(np);
         sp = PtreeMvchild(sp);
-        if(LibeStrcmp(PtreeGetname(sp),"unexpr")==OK){
+        if(LibeStrcmp(PtreeGetname(sp),"unexpr")==OK):
           sp = PtreeMvchild(sp);
           l = LibeStrlen(PtreeGetdef(sp))+1+3;
           s = new(char[l]);
@@ -371,145 +364,160 @@ int SemDeclaration(struct tree p, struct symbol tp)
           LibeStrcat(")", s);
           PtreeSetdef(sp,s);
           delete(s);
-        }
+        end 
+ 
         SymSetype(up, PtreeGetname(sp));
         SymSetdescr(up, PtreeGetdef(sp)); 
         SymSetemit(up,ERR);
-      }
+      end 
+ 
       SymSetlval(up, "lval");
-      if(LibeStrcmp(PtreeGetstruct(p),"struct")){
+      if(LibeStrcmp(PtreeGetstruct(p),"struct")):
         if((SymLookup(PtreeGetype(p), SymGetetp())) == NULL)
           ErrSerror(p,"Undefined structure", PtreeGetype(p));
         SymSetstruct(up, PtreeGetstruct(p));
-      }
+      end 
+ 
       SymSetarray(up, PtreeGetarray(p));
       SymSetrank(up, rank);
       PtreeSetrank(np,rank);
-    }
+    end 
+ 
     np = PtreeMvsister(np);
-  }
+  end 
+ 
   return (OK);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{SemCompstmnt  -- Check compound statement}  
-%======================================================================
- \begin{verbatim}
-*/
- int SemCompstmnt(struct tree p)
-{ 
+end 
+  
+int SemCompstmnt(struct tree p) :
+
+  # SemCompstmnt checks compound statemenets.
+
   struct tree q;
   int parflag;
 
   parflag=ERR;
 
-  q = p; /* Save top node */
+  q = p; # Save top node  
   p = PtreeMvchild(p);    
-  if(p==NULL){   // If empty compund stament, accept it}
+  if(p==NULL):   # If empty compund stament, accept itend 
+ 
     return(OK);
-  }
-  if(LibeStrcmp(PtreeGetname(p), "declarations")){
+  end 
+ 
+  if(LibeStrcmp(PtreeGetname(p), "declarations")):
     SemDeclarations(PtreeMvchild(p), SymGetltp());
     p = PtreeMvsister(p);
-  }
-  while(p != NULL){
-    if(LibeStrcmp(PtreeGetname(p), "expr")){
+  end 
+ 
+  while(p != NULL):
+    if(LibeStrcmp(PtreeGetname(p), "expr")):
       SemExpr(p);
       PtreeSetopexpr(p,OK);
-    }
-    if(LibeStrcmp(PtreeGetname(p), "while")){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetname(p), "while")):
       SemWhilestmnt(p);
-    }
-    if(LibeStrcmp(PtreeGetname(p), "for")){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetname(p), "for")):
       SemForstmnt(p);
-    }
-    if(LibeStrcmp(PtreeGetname(p), "parallel")){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetname(p), "parallel")):
       SemParallelstmnt(p);
       PtreeSetparallel(p,"parallel");
-    }
-    if(LibeStrcmp(PtreeGetname(p), "if")){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetname(p), "if")):
       SemIfstmnt(p);
-    }
-    if(LibeStrcmp(PtreeGetname(p), "return")){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetname(p), "return")):
       SemReturnstmnt(p);
-    }
-    if(LibeStrcmp(PtreeGetparallel(p),"parallel")){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetparallel(p),"parallel")):
       parflag=OK;
-    }
+    end 
+ 
     p = PtreeMvsister(p);
-  }
+  end 
+ 
 
-  if(parflag == OK){
+  if(parflag == OK):
     PtreeSetparallel(q,"parallel"); 
-  }
+  end 
+ 
   return(OK);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{SemStmnt  -- Check statement}  
-%======================================================================
- \begin{verbatim}
-*/
-int SemStmnt(struct tree p)
-{ 
+end 
+  
+int SemStmnt(struct tree p) :
+
+  # SemStmnt checks statement.  
+ 
   struct tree q;
   int parflag;
 
   parflag=ERR;
-  q = p; /* Save top node */
+  q = p; # Save top node  
 
-  if(LibeStrcmp(PtreeGetname(p), "declarations")){
+  if(LibeStrcmp(PtreeGetname(p), "declarations")):
     SemDeclarations(p, SymGetltp());
     p = PtreeMvsister(p);
-  }
-  while(p != NULL){
-    if(LibeStrcmp(PtreeGetname(p), "expr")){
+  end 
+ 
+  while(p != NULL):
+    if(LibeStrcmp(PtreeGetname(p), "expr")):
       SemExpr(p);
       PtreeSetopexpr(p,OK);
-    }
-    if(LibeStrcmp(PtreeGetname(p), "compstmnt")){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetname(p), "compstmnt")):
       SemCompstmnt(p);
-    }
-    if(LibeStrcmp(PtreeGetname(p), "while")){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetname(p), "while")):
       SemWhilestmnt(p);
-    }
-    if(LibeStrcmp(PtreeGetname(p), "for")){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetname(p), "for")):
       SemForstmnt(p);
-    }
-    if(LibeStrcmp(PtreeGetname(p), "parallel")){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetname(p), "parallel")):
       parflag=OK;
-    }
-    if(LibeStrcmp(PtreeGetname(p), "if")){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetname(p), "if")):
       SemIfstmnt(p);
-    }
+    end 
+ 
 
-    if(LibeStrcmp(PtreeGetname(p), "return")){
+    if(LibeStrcmp(PtreeGetname(p), "return")):
       SemReturnstmnt(p);
-    }
+    end 
+ 
 
       p = PtreeMvsister(p);
-  }
+  end 
+ 
 
-  if(parflag == OK){
+  if(parflag == OK):
     PtreeSetparallel(q,"parallel");
-  }
+  end 
+ 
 
   return(OK);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{Whilestmnt  -- check while statement}  
-%======================================================================
- \begin{verbatim}
-*/
-int SemWhilestmnt(struct tree p)
-{ 
+end 
+  
+int SemWhilestmnt(struct tree p) :
+
+  # Whilestmnt checks while statement.  
+ 
   struct tree q;
 
-  q=p; //Save top node
+  q=p; #Save top node
   p = PtreeMvchild(p);    
   SemExpr(p);
   PtreeSetopexpr(p,OK);
@@ -517,19 +525,15 @@ int SemWhilestmnt(struct tree p)
   SemStmnt(p);
   SemCopyparallel(q,p);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemForstmnt  -- check for statement}  
-%======================================================================
- \begin{verbatim}
-*/
-int SemForstmnt(struct tree p)
-{ 
+end 
+ 
+int SemForstmnt(struct tree p) :
+
+  # SemForstmnt checks for statement.  
+ 
   struct tree q;
 
-  q=p;  //Save top node
+  q=p;  #Save top node
 
   p = PtreeMvchild(p);    
   SemExpr(p);
@@ -544,86 +548,76 @@ int SemForstmnt(struct tree p)
   SemStmnt(p);
   SemCopyparallel(q,p);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemParallelstmnt  -- check parallel statement}  
-%======================================================================
- \begin{verbatim}
-*/
-int SemParallelstmnt(struct tree p)
-{ 
+end 
+ 
+int SemParallelstmnt(struct tree p) :
+
+ # SemParallelstmnt checks parallel statement.  
+ 
   struct tree sp, rp;
   int rank;
-
 
   rank=0;
   sp = PtreeMvchild(p);    
   sp = PtreeMvchild(sp);
-  while(sp != NULL){
+  while(sp != NULL):
     rp=PtreeMvchild(sp);
     SemExpr(rp);
     PtreeSetopexpr(rp,OK);
     rp = PtreeMvsister(rp);
     SemExpr(rp);
     PtreeSetopexpr(rp,OK);
-    if((rp=PtreeMvsister(rp)) != NULL){
+    if((rp=PtreeMvsister(rp)) != NULL):
       SemExpr(rp);
       PtreeSetopexpr(rp,OK);
-    }
+    end 
+ 
     if(PtreeMvsister(sp) != NULL)
       rp = PtreeMvsister(sp);
     sp = PtreeMvsister(sp);
     rank=rank+1;
-  }
+  end 
+ 
   PtreeSetrank(p,rank);
   sp = PtreeMvchild(p);
   sp = PtreeMvsister(sp);
   SemStmnt(sp);
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemIfstmnt  -- check if statement}  
-%======================================================================
- \begin{verbatim}
-*/
-int SemIfstmnt(struct tree p)
-{ 
+end 
+ 
+int SemIfstmnt(struct tree p) :
+
+  # SemIfstmnt checks if statement.  
+ 
   struct tree q;
 
-  q = p; // Save top node
+  q = p; # Save top node
   p = PtreeMvchild(p);    
   SemExpr(p);
   PtreeSetopexpr(p,OK);
   p = PtreeMvsister(p);
   SemStmnt(p);
   SemCopyparallel(q,p);
-  if((p = PtreeMvsister(p)) != NULL){
-    if(LibeStrcmp(PtreeGetname(p), "else")){
+  if((p = PtreeMvsister(p)) != NULL):
+    if(LibeStrcmp(PtreeGetname(p), "else")):
       p = PtreeMvchild(p);
       SemStmnt(p);
-    }
-  }
-  return(OK);
-}
+    end 
  
-/*
-\end{verbatim}
-%======================================================================
-\section{Returnstmnt  -- check return statement}  
-%======================================================================
- \begin{verbatim}
-*/
- int SemReturnstmnt(struct tree p)
-{ 
+  end 
+ 
+  return(OK);
+end 
+ 
+int SemReturnstmnt(struct tree p) :
+
+  # Returnstmnt checks return statement.  
+ 
   struct tree sp;
   struct symbol up;
 
   sp = PtreeMvchild(p);    
-  if(sp != NULL){
+  if(sp != NULL):
     SemExpr(sp);
     PtreeSetopexpr(sp,OK);
     up = SymLookup("#self", SymGetltp());
@@ -633,51 +627,45 @@ int SemIfstmnt(struct tree p)
     PtreeSetarray(p, SymGetarray(up));
     PtreeSetref(p, PtreeGetref(sp));
     PtreeSetrank(p, SymGetrank(up));
-    if(SemComparetype(p, sp) == ERR){
+    if(SemComparetype(p, sp) == ERR):
       ErrSerror(p,"Return type is incorrect ", " ");
-    }
-  }
-  return(OK);
-}
+    end 
  
-/*
-\end{verbatim}
-%======================================================================
-\section{SemExpr  -- Check expression}
-%======================================================================
- \begin{verbatim}
-*/
-struct tree SemExpr(struct tree p)
-{ 
+  end 
+ 
+  return(OK);
+end 
+ 
+struct tree SemExpr(struct tree p) :
+
+  # SemExpr checks expressions.
+ 
   struct tree sp;    
 
   sp = PtreeMvchild(p);
   sp = SemBinexpr(sp);
   SemCopytype(sp, p);
   return p;
- } 
-/*
-\end{verbatim}
-%=============================================================
-\section{SemBinexpr  -- Check binary expression}
-%=============================================================
- \begin{verbatim}
-*/
-struct tree SemBinexpr(struct tree p)
-{ 
+end 
+  
+struct tree SemBinexpr(struct tree p) :
+
+  # SemBinexpr checks binary expression
+ 
   struct tree leftp, rightp, np;
 
   np = p;
-  if(LibeStrcmp(PtreeGetname(p), "binexpr")){
+  if(LibeStrcmp(PtreeGetname(p), "binexpr")):
     p = PtreeMvchild(p);    
     leftp = SemUnexpr(p);
     p = PtreeMvsister(p);    
     rightp = SemUnexpr(p);
-    if(SemComparetype(leftp, rightp) == ERR){
+    if(SemComparetype(leftp, rightp) == ERR):
       ErrSerror(p,"Type error", " ");
       return (p);
-    }
-    else{
+    end 
+ 
+    else:
       if((LibeStrcmp(PtreeGetdef(np), "=")))
         SemAsgexpr(np); 
       else if((LibeStrcmp(PtreeGetdef(np), "!=")) || 
@@ -687,218 +675,225 @@ struct tree SemBinexpr(struct tree p)
               (LibeStrcmp(PtreeGetdef(np), ">=")) || 
               (LibeStrcmp(PtreeGetdef(np), "<") )  || 
               (LibeStrcmp(PtreeGetdef(np), ">"))  || 
-              (LibeStrcmp(PtreeGetdef(np), "&&"))){
+              (LibeStrcmp(PtreeGetdef(np), "&&"))):
               SemRelexpr(np);               
-      }
+      end 
+ 
       else if((LibeStrcmp(PtreeGetdef(np), "+")) ||
              (LibeStrcmp(PtreeGetdef(np), "-")) ||
              (LibeStrcmp(PtreeGetdef(np), "*")) ||
-             (LibeStrcmp(PtreeGetdef(np), "/"))){
+             (LibeStrcmp(PtreeGetdef(np), "/"))):
               SemAddexpr(np);
-      }
+      end 
+ 
       return (np);
-    }
-  }
+    end 
+ 
+  end 
+ 
   else
     return (SemUnexpr(p));
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{SemAsgexpr  -- Check assign expression}
-%======================================================================
- \begin{verbatim}
-*/
-struct tree SemAsgexpr(struct tree p)
-{
+end 
+  
+struct tree SemAsgexpr(struct tree p) :
+  
+  # SemAsgexpr checks assignment expressions.
+ 
   struct tree np;
 
   np = PtreeMvchild(p);
-  if(LibeStrcmp(PtreeGetlval(np), "lval") == ERR){
+  if(LibeStrcmp(PtreeGetlval(np), "lval") == ERR):
      ErrSerror(np,"Not a left value", PtreeGetdef(np));
                 
-  }
+  end 
+ 
   else
     PtreeSetlval(p, "lval");
   SemCopytype(np, p);
   return(p);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemRelexpr  -- Check relational expressions}
-%======================================================================
- \begin{verbatim}
-*/
+end 
+ 
 struct tree SemRelexpr(struct tree p)
-{
+:
+
+  # SemRelexpr checks relational expression.
+ 
   struct tree np, rp;
 
   np = PtreeMvchild(p);
   rp = PtreeMvsister(np);
   
-  if(LibeStrcmp(PtreeGetdef(p),"==") == ERR){
-    if(LibeStrcmp(PtreeGetdef(p),"!=") == ERR){
+  if(LibeStrcmp(PtreeGetdef(p),"==") == ERR):
+    if(LibeStrcmp(PtreeGetdef(p),"!=") == ERR):
       if((LibeStrcmp(PtreeGetref(np),"aref"))||
-         (LibeStrcmp(PtreeGetref(np),"sref"))){
+         (LibeStrcmp(PtreeGetref(np),"sref"))):
         ErrSerror(p,"Illegal operation", " ");
-      } 
+      end 
+  
       else if((LibeStrcmp(PtreeGetref(rp),"aref"))||
-        (LibeStrcmp(PtreeGetref(np),"sref"))){
+        (LibeStrcmp(PtreeGetref(np),"sref"))):
          ErrSerror(p,"Illegal operation", " ");
-      }
-    } 
-    else if((LibeStrcmp(PtreeGetype(np), "complex"))){ 
+      end 
+ 
+    end 
+  
+    else if((LibeStrcmp(PtreeGetype(np), "complex"))): 
       ErrSerror(p,"Illegal operation", " ");
-    }
-  }
+    end 
+ 
+  end 
+ 
   PtreeSetype(p, "int");
   PtreeSetlval(p, "void");
   PtreeSetstruct(p, "void");
   return(p);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemAddexpr  -- Check add expressions}
-%======================================================================
-\begin{verbatim}
-*/
-struct tree SemAddexpr(struct tree p)
-{
+end 
+ 
+struct tree SemAddexpr(struct tree p) :
+
+  # SemAddexpr checks add expression.
+ 
   struct tree np, rp;
   
   np = PtreeMvchild(p);
   rp = PtreeMvsister(np);
-  if((LibeStrcmp(PtreeGetref(np),"sref"))){
+  if((LibeStrcmp(PtreeGetref(np),"sref"))):
     ErrSerror(np,"Illegal operation", " ");
-  } 
-  else if((LibeStrcmp(PtreeGetref(rp),"sref"))){
+  end 
+  
+  else if((LibeStrcmp(PtreeGetref(rp),"sref"))):
      ErrSerror(np,"Illegal operation", " ");
-  }
-  else{ 
+  end 
+ 
+  else: 
     SemCopytype(np, p);
     PtreeSetlval(p, "void");
-  }
+  end 
+ 
   return(p);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{Unexpr  -- Check unary expression}
-%======================================================================
- \begin{verbatim}
-*/
- struct tree SemUnexpr(struct tree p)
-{ 
+end 
+ 
+struct tree SemUnexpr(struct tree p) :
+
+  # Unexpr checks unary expression.
+ 
   struct tree np;
 
   np = p;
-  if(LibeStrcmp(PtreeGetname(p),"unexpr")){
+  if(LibeStrcmp(PtreeGetname(p),"unexpr")):
     p = PtreeMvchild(p);
     p = SemPrimexpr(p);
     SemCopytype(p, np);
     return (np);
-  }
+  end 
+ 
   else
     return SemPrimexpr(p);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemPrimexpr  -- Check primary expression}
-%======================================================================
-\begin{verbatim}
-*/
-struct tree SemPrimexpr(struct tree p)
-{ 
+end 
+ 
+struct tree SemPrimexpr(struct tree p) :
+
+   # SemPrimexpr checks primary expression.
+ 
      
-  if(LibeStrcmp(PtreeGetname(p),"identifier")){
+  if(LibeStrcmp(PtreeGetname(p),"identifier")):
     SemId(p);
     return(p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "fcall")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "fcall")):
     SemFcall(p);
     return (p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "cast")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "cast")):
     SemCast(p);
     return (p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "new")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "new")):
     SemNew(p);
     return (p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "delete")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "delete")):
     SemDelete(p);
     return (p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "cmplx")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "cmplx")):
     SemCmplx(p);
     return (p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "re")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "re")):
     SemRe(p);
     return (p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "len")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "len")):
     SemLen(p);
     return (p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "im")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "im")):
     SemIm(p);
     return (p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "sizeof")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "sizeof")):
     SemSizeof(p);
     return (p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "iconstant")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "iconstant")):
     PtreeSetype(p, "int");
     return (p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "rconstant")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "rconstant")):
     PtreeSetype(p, "float");
     return (p);
-  }
-  else if(LibeStrcmp(PtreeGetname(p), "sconstant")){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetname(p), "sconstant")):
     PtreeSetype(p, "char");
     PtreeSetref(p, "aref");
     PtreeSetrank(p,1);
     return (p);
-  }
+  end 
+ 
   else
     return SemBinexpr(p);
-}
-/*
-\end{verbatim}
-%=============================================================
-\section{SemId  -- Check identifier}
-%=============================================================
-\begin{verbatim}
-*/
-int SemId(struct tree p)
-{ 
+end 
+ 
+int SemId(struct tree p) :
+
+  # SemId checks identifier
+ 
   struct symbol  tp;
   struct tree np;
 
-  if((tp = SymLook(PtreeGetdef(p))) == NULL){
+  if((tp = SymLook(PtreeGetdef(p))) == NULL):
     ErrSerror(p,"Undeclared identifier", PtreeGetdef(p));
                
-  }
-  if(LibeStrcmp(SymGetype(tp),"iconstant")==OK){
+  end 
+ 
+  if(LibeStrcmp(SymGetype(tp),"iconstant")==OK):
     PtreeSetname(p,SymGetype(tp));
     PtreeSetdef(p,SymGetdescr(tp));
     PtreeSetype(p,"int");
     return(OK);
-  }
-  else if(LibeStrcmp(SymGetype(tp),"rconstant")==OK){
+  end 
+ 
+  else if(LibeStrcmp(SymGetype(tp),"rconstant")==OK):
     PtreeSetname(p,SymGetype(tp));
     PtreeSetdef(p,SymGetdescr(tp));
     PtreeSetype(p,"float");
     return(OK);
-  }
-  else if(LibeStrcmp(SymGetype(tp),"sconstant")==OK){
+  end 
+ 
+  else if(LibeStrcmp(SymGetype(tp),"sconstant")==OK):
     PtreeSetname(p,SymGetype(tp));
     PtreeSetdef(p,SymGetdescr(tp));
     PtreeSetype(p,"char");
@@ -906,11 +901,13 @@ int SemId(struct tree p)
     PtreeSetref(p,"aref");
     PtreeSetrank(p,1);
     return(OK);
-  }
-  if(LibeStrcmp(SymGetstruct(tp), "structdef")){
+  end 
+ 
+  if(LibeStrcmp(SymGetstruct(tp), "structdef")):
        ErrSerror(p,"Struct names can not be used as a variable", 
                 PtreeGetdef(p));
-  }
+  end 
+ 
   PtreeSetype(p, SymGetype(tp));
   PtreeSetarray(p, SymGetarray(tp));
   PtreeSetrank(p, SymGetrank(tp));
@@ -918,124 +915,134 @@ int SemId(struct tree p)
   PtreeSetlval(p, SymGetlval(tp));
 
   np = PtreeMvchild(p);
-  if(np != NULL){
-    if(LibeStrcmp(PtreeGetname(np), "exprlist")){
+  if(np != NULL):
+    if(LibeStrcmp(PtreeGetname(np), "exprlist")):
       SemArray(p,tp);
       if(PtreeMvsister(np) != NULL)
         SemStructure(p,tp);
-      else{
+      else:
         if(LibeStrcmp(PtreeGetstruct(p),"struct"))
           PtreeSetref(p,"sref");
-      } 
-    }
+      end 
+  
+    end 
+ 
     else if(LibeStrcmp(PtreeGetname(np), "selector"))
       SemStructure(p,tp);
-  }
-  else{
+  end 
+ 
+  else:
     if(LibeStrcmp(PtreeGetarray(p),"array"))
       PtreeSetref(p,"aref");
     else if(LibeStrcmp(PtreeGetstruct(p),"struct"))
       PtreeSetref(p,"sref");
-  }
+  end 
+ 
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{Semfcall  -- Check function call}
-%======================================================================
- \begin{verbatim}
-*/
-int SemFcall(struct tree p)
-{ 
+end 
+ 
+int SemFcall(struct tree p) :
+
+  # Semfcall checks function call.
+ 
   struct tree np;
   struct symbol tp;
   char[*] type;
     
-  if(LibeStrcmp(PtreeGetname(p),"fcall")){
-    if((tp = SymLookup(PtreeGetdef(p), SymGetetp())) == NULL){
+  if(LibeStrcmp(PtreeGetname(p),"fcall")):
+    if((tp = SymLookup(PtreeGetdef(p), SymGetetp())) == NULL):
        ErrSerror(p,"Undeclared function", 
                   PtreeGetdef(p));
        return(ERR);
-    }
+    end 
+ 
     if(LibeStrcmp(SymGetfunc(tp), "fdecl") == ERR)
-      if(LibeStrcmp(SymGetfunc(tp), "fdef") == ERR){
+      if(LibeStrcmp(SymGetfunc(tp), "fdef") == ERR):
          ErrSerror(p,"Not a function", PtreeGetdef(p));
          return(ERR);
-      }
+      end 
+ 
     PtreeSetype(p, SymGetype(tp));
     PtreeSetstruct(p, SymGetstruct(tp));
     PtreeSetarray(p, SymGetarray(tp));
     PtreeSetrank(p, SymGetrank(tp));
-    if(LibeStrcmp(PtreeGetarray(p),"array")){
+    if(LibeStrcmp(PtreeGetarray(p),"array")):
       PtreeSetref(p,"aref");
-    }
-    else if(LibeStrcmp(PtreeGetstruct(p),"struct")){
+    end 
+ 
+    else if(LibeStrcmp(PtreeGetstruct(p),"struct")):
       PtreeSetref(p,"sref");
-    }
+    end 
+ 
 
-    /* Get the symbol table for the function */
+    # Get the symbol table for the function  
 
     tp = SymGetable(tp);         
     tp = SymLookup("#arglist", tp); 
     if(tp != NULL)
       tp = SymGetable(tp);
 
-    if((np=PtreeMvchild(p))==0){
-      if((tp=SymMvnext(tp))!= NULL){
+    if((np=PtreeMvchild(p))==0):
+      if((tp=SymMvnext(tp))!= NULL):
         ErrSerror(p,"Function call does not match declaration"
           , PtreeGetdef(p));
         return(ERR);
-      }
-      return(OK);  /* No arguments to check */
-    }
+      end 
+ 
+      return(OK);  # No arguments to check  
+    end 
+ 
 
-    /* Start processing of the argument list */
+    # Start processing of the argument list  
 
     np = PtreeMvchild(PtreeMvchild(p));
-    while(np != NULL){
-      tp = SymMvnext(tp); /* Get the next table entry */
-      if(tp == NULL){
+    while(np != NULL):
+      tp = SymMvnext(tp); # Get the next table entry  
+      if(tp == NULL):
         ErrSerror(p,"Function call does not match declaration"
           , PtreeGetdef(p));
         return(ERR);
-      } 
+      end 
+  
       type = SymGetype(tp);
       SemExpr(np);
-      if(LibeStrcmp(type, PtreeGetype(np)) == ERR){
+      if(LibeStrcmp(type, PtreeGetype(np)) == ERR):
          ErrSerror(p,"Function call does not match declaration"
           , PtreeGetdef(p));
          return(ERR);
-      } 
-      if(LibeStrcmp(SymGetarray(tp), "array")){
-        if(LibeStrcmp(PtreeGetref(np),"aref") == ERR){
+      end 
+  
+      if(LibeStrcmp(SymGetarray(tp), "array")):
+        if(LibeStrcmp(PtreeGetref(np),"aref") == ERR):
            ErrSerror(p,"Function call does not match declaration"
                  , PtreeGetdef(p));
-        }
-        if(PtreeGetrank(np) != SymGetrank(tp)){
+        end 
+ 
+        if(PtreeGetrank(np) != SymGetrank(tp)):
            ErrSerror(p,"Illegal array rank in function call"
                  , PtreeGetdef(p));
-        }
-      } 
+        end 
+ 
+      end 
+  
       np = PtreeMvsister(np);
-    }
-    if(SymMvnext(tp) != NULL){
+    end 
+ 
+    if(SymMvnext(tp) != NULL):
       ErrSerror(p,"Function call does not match declaration"
        , PtreeGetdef(p));
       return(ERR);
-    } 
-  }
+    end 
+  
+  end 
+ 
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemCast  -- Check cast expressions}
-%======================================================================
- \begin{verbatim}
-*/
-int SemCast(struct tree p)
-{
+end 
+ 
+int SemCast(struct tree p) :
+
+  #SemCast checks cast expressions.
+ 
   struct tree sp, np;
   int resultrank;
   char [*] resultype, exptype;
@@ -1043,405 +1050,423 @@ int SemCast(struct tree p)
 
   resultref="void";
   expref = "void";
-  if(LibeStrcmp(PtreeGetname(p),"cast")){
+  if(LibeStrcmp(PtreeGetname(p),"cast")):
     np = PtreeMvchild(p);
-    resultype = PtreeGetdef(np);    /* The result basic type  */
+    resultype = PtreeGetdef(np);    # The result basic type   
     PtreeSetype(np, resultype);
 
     resultrank = 0;
-    if(LibeStrcmp(PtreeGetarray(np), "array")){
+    if(LibeStrcmp(PtreeGetarray(np), "array")):
       sp = PtreeMvchild(np);
       sp = PtreeMvchild(sp);
       sp = PtreeMvchild(sp);
       SemExprlist(sp);
       sp = PtreeMvchild(sp);
       resultrank=1;
-      while((sp=PtreeMvsister(sp)) != NULL){
+      while((sp=PtreeMvsister(sp)) != NULL):
         resultrank=resultrank+1;
-      }
+      end 
+ 
       PtreeSetrank(np, resultrank);
       PtreeSetrank(p, resultrank);
       PtreeSetref(np,"aref");
       resultref = LibeStrsave("aref");
-    }
-    else if(LibeStrcmp(PtreeGetstruct(np),"struct")){
+    end 
+ 
+    else if(LibeStrcmp(PtreeGetstruct(np),"struct")):
       PtreeSetref(np,"sref");
       resultref = LibeStrsave("sref");
-    }
+    end 
+ 
     else
       resultref = LibeStrsave("void");
 
     SemCopytype(np,p);
     
   
-    /* Process the expression to convert from */
+    # Process the expression to convert from  
 
     np = PtreeMvsister(np);
     SemExpr(np);
 
-    /* Save type of expression in exprtype:      */
+    # Save type of expression in exprtype:       
 
     exptype = PtreeGetype(np);
     expref  = PtreeGetref(np);
 
-    /* Check that conversions are legal:  */
+    # Check that conversions are legal:   
 
-    if(LibeStrcmp(resultref, expref) == ERR){
+    if(LibeStrcmp(resultref, expref) == ERR):
       ErrSerror(p,"Illegal conversion"," ");
       return(ERR);
-    }
+    end 
+ 
 
     if((LibeStrcmp(resultref,"aref") == ERR)||
-       (LibeStrcmp(resultref,"sref") == ERR)){
+       (LibeStrcmp(resultref,"sref") == ERR)):
       if(LibeStrcmp(resultype, "complex"))
         ErrSerror(p,"Illegal conversion", " ");
         return(ERR);
                      
-      if(LibeStrcmp(resultype,"int")){
+      if(LibeStrcmp(resultype,"int")):
         if(LibeStrcmp(exptype, "char") == ERR)
           if(LibeStrcmp(exptype, "float") == ERR)
             ErrSerror(p,"Illegal conversion", " ");
             return(ERR);
-      }
-      else if(LibeStrcmp(resultype,"char")){
+      end 
+ 
+      else if(LibeStrcmp(resultype,"char")):
         if(LibeStrcmp(exptype, "int") == ERR)
           ErrSerror(p,"Illegal conversion", " ");
           return(ERR);
-      }
-      else if(LibeStrcmp(resultype,"float")){
+      end 
+ 
+      else if(LibeStrcmp(resultype,"float")):
         if(LibeStrcmp(exptype, "int") == ERR)
           ErrSerror(np,"Illegal conversion", " ");
           return(ERR);
-      }
-    }
-  }
+      end 
+ 
+    end 
+ 
+  end 
+ 
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemNew  -- Check new operator}
-%======================================================================
-\begin{verbatim}
-*/
-int SemNew(struct tree p)
-{
+end 
+ 
+int SemNew(struct tree p) :
+
+  # SemNew checks new operator.
+ 
   struct tree np, sp;
   int rank;
 
 
-  if(LibeStrcmp(PtreeGetname(p),"new")){
+  if(LibeStrcmp(PtreeGetname(p),"new")):
     np = PtreeMvchild(p);
     PtreeGetdef(np);    
     PtreeSetype(np, PtreeGetdef(np));
     SemCopytype(np,p);
  
-    if(LibeStrcmp(PtreeGetarray(np),"array") == ERR){
-      if(LibeStrcmp(PtreeGetstruct(np),"struct") == ERR){
+    if(LibeStrcmp(PtreeGetarray(np),"array") == ERR):
+      if(LibeStrcmp(PtreeGetstruct(np),"struct") == ERR):
         ErrSerror(np,"Argument limited to array or structure type","  ");
-      }
-    } 
-    if(LibeStrcmp(PtreeGetarray(np), "array")){
+      end 
+ 
+    end 
+  
+    if(LibeStrcmp(PtreeGetarray(np), "array")):
       sp = PtreeMvchild(np);
       sp = PtreeMvchild(sp);
       sp = PtreeMvchild(sp);
       sp = PtreeMvchild(sp);
       rank=1;
-      if(sp==NULL){
+      if(sp==NULL):
         ErrSerror(np,"Missing array size in new operator"  , " ");
              
-      }
+      end 
+ 
       SemExpr(sp);
-      while((sp=PtreeMvsister(sp)) != NULL){
+      while((sp=PtreeMvsister(sp)) != NULL):
         SemExpr(sp);
         rank=rank+1;
-      }
+      end 
+ 
       PtreeSetrank(np, rank);
       PtreeSetrank(p, rank);
       PtreeSetref(p,"aref");
-    }
+    end 
+ 
     else
       PtreeSetref(p,"sref");
-  }
+  end 
+ 
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemDelete  -- Check delete operator}
-%======================================================================
-\begin{verbatim}
-*/
-int SemDelete(struct tree p)
-{
+end 
+ 
+int SemDelete(struct tree p) :
+
+  # SemDelete checks delete operator.
+ 
   struct tree np;
 
-  if(LibeStrcmp(PtreeGetname(p),"delete")){
+  if(LibeStrcmp(PtreeGetname(p),"delete")):
     np = PtreeMvchild(p);
     SemExpr(np);
-    if(LibeStrcmp(PtreeGetref(np),"aref") == ERR){
-      if(LibeStrcmp(PtreeGetref(np),"sref") == ERR){
+    if(LibeStrcmp(PtreeGetref(np),"aref") == ERR):
+      if(LibeStrcmp(PtreeGetref(np),"sref") == ERR):
         ErrSerror(p,"not a array or structure", 
                   PtreeGetdef(p));
-      }
-    }
-    else{
+      end 
+ 
+    end 
+ 
+    else:
       PtreeSetype(p, PtreeGetype(np));
       PtreeSetref(p, PtreeGetref(np));
-    }
-  }
+    end 
+ 
+  end 
+ 
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemSizeof  -- Check sizeof operator}
-%======================================================================
-\begin{verbatim}
-*/
-int SemSizeof(struct tree p)
-{
-  if(LibeStrcmp(PtreeGetname(p),"sizeof")){
+end 
+ 
+int SemSizeof(struct tree p) :
+
+  # SemSizeof checks sizeof operator.
+ 
+  if(LibeStrcmp(PtreeGetname(p),"sizeof")):
     PtreeSetype(p, "int");
-  }
+  end 
+ 
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemCmplx  -- Check cmplx operator}
-%======================================================================
-\begin{verbatim}
-*/
-int SemCmplx(struct tree p)
-{
+end 
+ 
+int SemCmplx(struct tree p) :
+
+  # SemCmplx checks cmplx operator.
+ 
   struct tree np;
 
-  if(LibeStrcmp(PtreeGetname(p),"cmplx")){
+  if(LibeStrcmp(PtreeGetname(p),"cmplx")):
     np = PtreeMvchild(p);
     np = PtreeMvchild(np);
     SemExpr(np);
-    if(LibeStrcmp(PtreeGetype(np), "float") == ERR){
+    if(LibeStrcmp(PtreeGetype(np), "float") == ERR):
       ErrSerror(p,"Argument to cmplx is not a float", 
                 PtreeGetdef(p));
       return(ERR);
-    }
+    end 
+ 
     if(LibeStrcmp(PtreeGetref(np), "aref") ||
-       LibeStrcmp(PtreeGetref(np), "sref")){
+       LibeStrcmp(PtreeGetref(np), "sref")):
       ErrSerror(p,"Argument to cmplx is not a scalar", 
       PtreeGetdef(p));
       return(ERR);
-    }
+    end 
+ 
     np = PtreeMvsister(np);
     SemExpr(np);
-    if(LibeStrcmp(PtreeGetype(np), "float") == ERR){
+    if(LibeStrcmp(PtreeGetype(np), "float") == ERR):
       ErrSerror(p,"Argument to cmplx is not a float", 
                 PtreeGetdef(p));
-    }
+    end 
+ 
     if(LibeStrcmp(PtreeGetref(np), "aref") ||
-       LibeStrcmp(PtreeGetref(np), "sref")){
+       LibeStrcmp(PtreeGetref(np), "sref")):
       ErrSerror(p,"Argument to cmplx is not a scalar", 
                 PtreeGetdef(p));
       return(ERR);
-    }
+    end 
+ 
     PtreeSetype(p,"complex");
-  }
+  end 
+ 
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\subsection{SemRe  -- Check Re operator}
-%======================================================================
-\begin{verbatim}
-*/
-int SemRe(struct tree p)
-{
+end 
+ 
+int SemRe(struct tree p) :
+
+  # SemRe checks Re operator.
+ 
   struct tree np;
 
-  if(LibeStrcmp(PtreeGetname(p),"re")){
+  if(LibeStrcmp(PtreeGetname(p),"re")):
     np = PtreeMvchild(p);
     SemExpr(np);
-    if(LibeStrcmp(PtreeGetype(np), "complex") == ERR){
+    if(LibeStrcmp(PtreeGetype(np), "complex") == ERR):
       ErrSerror(p,"Argument to re is not a of type complex", 
       PtreeGetdef(p));
       return(ERR);
-    }
+    end 
+ 
     if(LibeStrcmp(PtreeGetref(np), "aref") ||
-       LibeStrcmp(PtreeGetref(np), "sref")){
+       LibeStrcmp(PtreeGetref(np), "sref")):
       ErrSerror(p,"Argument to re is not a scalar", 
       PtreeGetdef(p));
       return(ERR);
-    }
+    end 
+ 
     PtreeSetype(p,"float");
-  }
+  end 
+ 
   return(OK);
-}
-/*
-%======================================================================
-\section{SemIm  -- Check Im operator}
-%======================================================================
-\begin{verbatim}
-*/
-int SemIm(struct tree p)
-{
+end 
+ 
+int SemIm(struct tree p) :
+
+  # SemIm checks Im operator.
+ 
   struct tree np;
 
-  if(LibeStrcmp(PtreeGetname(p),"im")){
+  if(LibeStrcmp(PtreeGetname(p),"im")):
     np = PtreeMvchild(p);
     SemExpr(np);
-    if(LibeStrcmp(PtreeGetype(np), "complex") == ERR){
+    if(LibeStrcmp(PtreeGetype(np), "complex") == ERR):
       ErrSerror(p,"Argument to re is not of type complex", 
       PtreeGetdef(p));
       return(ERR);
-    }
+    end 
+ 
     if(LibeStrcmp(PtreeGetref(np), "aref") ||
-       LibeStrcmp(PtreeGetref(np), "sref")){
+       LibeStrcmp(PtreeGetref(np), "sref")):
       ErrSerror(p,"Argument to re is not a scalar", 
                 PtreeGetdef(p));
       return(ERR);
-    }
+    end 
+ 
     PtreeSetype(p,"float");
-  }
+  end 
+ 
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemLen  -- Check Len operator}
-%======================================================================
-\begin{verbatim}
-*/
-int SemLen(struct tree p)
-{
+end 
+ 
+int SemLen(struct tree p) :
+
+  # SemLen checks Len operator.
+ 
   struct tree np;
 
-  if(LibeStrcmp(PtreeGetname(p),"len") == OK){
+  if(LibeStrcmp(PtreeGetname(p),"len") == OK):
     PtreeSetype(p,"int");
     np = PtreeMvchild(p);
     SemExpr(np);
-    if(LibeStrcmp(PtreeGetref(np),"aref") == ERR){
+    if(LibeStrcmp(PtreeGetref(np),"aref") == ERR):
       ErrSerror(p,"not an array", PtreeGetdef(p));
-    }
+    end 
+ 
     np = PtreeMvsister(np);
     SemExpr(np);
-    if(LibeStrcmp(PtreeGetref(np),"aref")){
+    if(LibeStrcmp(PtreeGetref(np),"aref")):
       ErrSerror(p, "not a scalar", PtreeGetdef(p));
-    }
-    if(LibeStrcmp(PtreeGetype(np),"int") == ERR){
+    end 
+ 
+    if(LibeStrcmp(PtreeGetype(np),"int") == ERR):
       ErrSerror(p,"not an integer expression", 
       PtreeGetdef(p));
-    }
-    if((np=PtreeMvsister(np)) != NULL){
+    end 
+ 
+    if((np=PtreeMvsister(np)) != NULL):
       ErrSerror(p, "too many arguments", PtreeGetdef(p));
-    }
-  }
+    end 
+ 
+  end 
+ 
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemArray  -- Check array references}
-%======================================================================
-\begin{verbatim}
-*/
-int SemArray(struct tree p, struct symbol tp)
-{ 
+end 
+ 
+int SemArray(struct tree p, struct symbol tp) :
+
+  # SemArray checks array references.
+ 
   struct tree np;
   int rank;
 
-  if(LibeStrcmp(PtreeGetarray(p),"array") == ERR){
+  if(LibeStrcmp(PtreeGetarray(p),"array") == ERR):
     ErrSerror(p,"Not an array", PtreeGetdef(p));
     return(ERR);
-  }
+  end 
+ 
 
   PtreeSetname(p,"identifier");
   np = PtreeMvchild(p);
 
-  if(LibeStrcmp(PtreeGetname(np),"exprlist") == ERR){
+  if(LibeStrcmp(PtreeGetname(np),"exprlist") == ERR):
      ErrSerror(p, "Missing array indexes", PtreeGetdef(p)); 
      return(ERR);
-  } 
-  if((np = PtreeMvchild(np)) != NULL){
+  end 
+  
+  if((np = PtreeMvchild(np)) != NULL):
     rank = 0;
-    while(np != NULL){
+    while(np != NULL):
       SemExpr(np);
       np = PtreeMvsister(np);
       rank = rank + 1;
-    } 
-  }
-  if(rank != SymGetrank(tp)){
+    end 
+  
+  end 
+ 
+  if(rank != SymGetrank(tp)):
     ErrSerror(p,"Illegal array dimension", PtreeGetdef(p)); 
     return(ERR);
-  }
+  end 
+ 
   PtreeSetrank(p, rank);
 
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemStructure  -- Check structure reference}
-%======================================================================
-\begin{verbatim}
-*/
-int SemStructure(struct tree p, struct symbol tp)
-{ 
+end 
+ 
+int SemStructure(struct tree p, struct symbol tp) :
+
+  # SemStructure checks structure reference.
+ 
   char [*] temp;
   struct symbol up, uup;
   struct tree np;
 
-  if(LibeStrcmp(PtreeGetstruct(p),"struct") == ERR){
+  if(LibeStrcmp(PtreeGetstruct(p),"struct") == ERR):
     ErrSerror(p,"Not a structure", PtreeGetdef(p));
     return(ERR);
-  }
+  end 
+ 
   PtreeSetname(p,"identifier");
 
   temp = SymGetype(tp);
-  if((up = SymLook(temp)) == NULL){
-    if((up = SymLook(temp)) == NULL){
+  if((up = SymLook(temp)) == NULL):
+    if((up = SymLook(temp)) == NULL):
        ErrSerror(p,"Undeclared structure type"," ");
        return(ERR);
-    } 
-  }
-  if(LibeStrcmp(SymGetstruct(tp), "structdef")){
+    end 
+  
+  end 
+ 
+  if(LibeStrcmp(SymGetstruct(tp), "structdef")):
        ErrSerror(p,"Struct names can not be used as a variable", 
                   PtreeGetdef(p));
        return(ERR);
-  }
+  end 
+ 
   np = PtreeMvchild(p);
-  if(np == 0){
+  if(np == 0):
     ErrSerror(p, "Missing structure selector", PtreeGetdef(p)); 
     return(ERR);
-  } 
+  end 
+  
 
-  if(LibeStrcmp(PtreeGetarray(p),"array")){
+  if(LibeStrcmp(PtreeGetarray(p),"array")):
     np = PtreeMvsister(np);
-  }
-  if(np == 0){
+  end 
+ 
+  if(np == 0):
     ErrSerror(p, "Missing array index", PtreeGetdef(p));
     return(ERR);
-  } 
+  end 
+  
   uup = SymGetable(up);
-  if((tp  = SymLookup(PtreeGetdef(np), uup)) == NULL){
+  if((tp  = SymLookup(PtreeGetdef(np), uup)) == NULL):
     ErrSerror(np, "Undeclared structure member", 
                PtreeGetdef(np));
     return(ERR);
-  }
+  end 
+ 
 
-  if(LibeStrcmp(SymGetarray(tp),"array")){
-    if(PtreeMvchild(np) != NULL){
+  if(LibeStrcmp(SymGetarray(tp),"array")):
+    if(PtreeMvchild(np) != NULL):
       SemArray(np, tp);
-      if(LibeStrcmp(SymGetstruct(tp),"struct")){
+      if(LibeStrcmp(SymGetstruct(tp),"struct")):
         PtreeSetref(np,"sref");
-      }
-    }
+      end 
+ 
+    end 
+ 
     else
       PtreeSetref(np,"aref");
-  }
-  else if(LibeStrcmp(SymGetstruct(tp),"struct")){
+  end 
+ 
+  else if(LibeStrcmp(SymGetstruct(tp),"struct")):
     PtreeSetref(np,"sref");
-  }
+  end 
+ 
   PtreeSetype(np, SymGetype(tp));
   PtreeSetarray(np, SymGetarray(tp));
   PtreeSetrank(np, SymGetrank(tp));
@@ -1451,64 +1476,57 @@ int SemStructure(struct tree p, struct symbol tp)
   PtreeSetrank(p, SymGetrank(tp));
 
   return(OK);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemExprlist  -- Check expression list}
-%======================================================================
-\begin{verbatim}
-*/
-struct tree SemExprlist(struct tree p)
-{ 
-  if(LibeStrcmp(PtreeGetname(p),"exprlist")){
+end 
+ 
+struct tree SemExprlist(struct tree p) :
+
+  # SemExprlist checks expression list.
+ 
+  if(LibeStrcmp(PtreeGetname(p),"exprlist")):
     p = PtreeMvchild(p);
-    while(p != NULL){
+    while(p != NULL):
       SemExpr(p);
       p = PtreeMvsister(p);
-    }
-  }
+    end 
+ 
+  end 
+ 
   return(p);
-}
-/*
-\end{verbatim}
-%======================================================================
-\section{SemComparetype  -- Compare type fields}
-%======================================================================
-\begin{verbatim}
-*/
-int SemComparetype(struct tree p, struct tree np)
-{ 
+end 
+ 
+int SemComparetype(struct tree p, struct tree np) :
+
+  # SemComparetype compares type fields.
+ 
   int rval;
 
   rval = OK;
   if(LibeStrcmp(PtreeGetype(p), PtreeGetype(np)) == ERR)
     rval = ERR;
-  if(LibeStrcmp(PtreeGetref(p), PtreeGetref(np)) == ERR){
-    if(LibeStrcmp(PtreeGetname(np), "iconstant")){
+  if(LibeStrcmp(PtreeGetref(p), PtreeGetref(np)) == ERR):
+    if(LibeStrcmp(PtreeGetname(np), "iconstant")):
       if(LibeStrcmp(PtreeGetdef(np),"0"))
         rval = OK;
       else
         rval = ERR;
-    }
+    end 
+ 
     else
       rval = ERR;
-  }
-  else if(LibeStrcmp(PtreeGetref(p),"aref") == OK){
+  end 
+ 
+  else if(LibeStrcmp(PtreeGetref(p),"aref") == OK):
     if(PtreeGetrank(p) != PtreeGetrank(np))
       rval = ERR;
-  }
+  end 
+ 
   return (rval);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{SemCopytype  -- Copy type fields}
-%======================================================================
-\begin{verbatim}
-*/
-int SemCopytype(struct tree p, struct tree np)
-{ 
+end 
+  
+int SemCopytype(struct tree p, struct tree np) :
+
+  #SemCopytype copy type fields.
+ 
   PtreeSetype(np, PtreeGetype(p));
   PtreeSetstruct(np, PtreeGetstruct(p));
   PtreeSetarray(np, PtreeGetarray(p));
@@ -1516,21 +1534,16 @@ int SemCopytype(struct tree p, struct tree np)
   PtreeSetlval(np, PtreeGetlval(p));
   PtreeSetrank(np, PtreeGetrank(p));
   return(OK);
-} 
-/*
-\end{verbatim}
-%======================================================================
-\section{SemCopyparallel  -- Copy parallelfield}
-%======================================================================
-\begin{verbatim}
-*/
-int SemCopyparallel(struct tree p, struct tree np)
-{ 
+end 
+  
+int SemCopyparallel(struct tree p, struct tree np) :
+
+  #SemCopyparallel  -- Copy parallelfield.
+ 
   PtreeSetparallel(p, PtreeGetparallel(np));
   return(OK);
-} 
-/*
-\end{verbatim}
-*/
+end 
+  
+ 
 
 
