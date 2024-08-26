@@ -1942,7 +1942,7 @@ int CodePreamblecpu()
   p = PtreeMknode("dummy", "dummy");
 
   PtreeSetline(p,1);
-  CodeEs(p, "#  Translated by epsc  version today  \n");
+  CodeEs(p, "//  Translated by epsc  version today  \n");
   PtreeSetline(p,2);
   PtreeSetline(p,3);
   PtreeSetline(p,4);
@@ -2508,7 +2508,7 @@ int CodePreamblecuda()
   p = PtreeMknode("dummy", "dummy");
 
   PtreeSetline(p,1);
-  CodeEs(p, "#  Translated by epsc  version December 2021  \n");
+  CodeEs(p, "//  Translated by epsc  version December 2021  \n");
   PtreeSetline(p,2);
   PtreeSetline(p,3);
 
@@ -2611,7 +2611,7 @@ int CodePreamblehip()
   p = PtreeMknode("dummy", "dummy");
 
   PtreeSetline(p,1);
-  CodeEs(p, "#  Translated by epsc  version December 2021  \n");
+  CodeEs(p, "//  Translated by epsc  version December 2021  \n");
   PtreeSetline(p,2);
   PtreeSetline(p,3);
   CodeEs(p, 

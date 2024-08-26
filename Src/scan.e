@@ -1,337 +1,315 @@
-/*
-%
-%         ***********************************************
-%         *                                             *
-            \chapter{Scan -- lexical scanner for nc}  
-%         *                                             *
-%         ***********************************************
-\section{Introduction}
-%
-The scanner reads the input source file one character
-at a time and collects them into groups called 
-{\it tokens}. Examples of tokens are keywords like
-``if'', ``for'' and ``while'' and numbers like ``238'' and
-``3.14159''.
-\begin{verbatim}
-*/
-include "libe.i"      // Library module   
-include "scan.i"      // Lexical scanner interface 
-include "ptree.i"     // Parse tree  module  
-include "err.i"       // Error routines module
+# The scanner reads the input source file one character
+# at a time and collects them into groups called 
+# tokens Examples of tokens are keywords like
+# ``if'', ``for'' and ``while'' and numbers like ``238'' and
+# ``3.14159''.
+ 
+include "libe.i"      # Library module   
+include "scan.i"      # Lexical scanner interface 
+include "ptree.i"     # Parse tree  module  
+include "err.i"       # Error routines module
 
-//The datastructures of {\tt Scan} are very simple and
-//consists of two character arrays; {\tt ScanText} and
-// ScanBuffer. The former is used to hold a string
-//literal associated with the current token.
-//The latter is used as a simple buffer to hold 
-//intermediate strings.
-char [*] ScanText;     /* Lexical value of token      */
-char [*] ScanBuffer;   /* Temporary array             */
-int ScanLine;          /* line number                 */
-int ScanLinesave;      /* Remember line no            */
-int ScanFp;            /* Current file descriptor     */
-int ScanInfile;        /* Input file descriptor       */
+# The datastructures of Scan are very simple and
+# consists of two character arrays; ScanText and
+# ScanBuffer. The former is used to hold a string
+# literal associated with the current token.
+# The latter is used as a simple buffer to hold 
+# intermediate strings.
+
+char [*] ScanText;     # Lexical value of token       
+char [*] ScanBuffer;   # Temporary array              
+int ScanLine;          # line number                  
+int ScanLinesave;      # Remember line no             
+int ScanFp;            # Current file descriptor      
+int ScanInfile;        # Input file descriptor        
 char [*] ScanInfilename;
-char [*] ScanFile;     /* Current file name           */
-/*
-\end{verbatim}
-A few functions are private to the scan module
-\begin{verbatim}
-*/
-int ScanLex(){}
-int ScanGetword(char [*] ttext){} /* Get one word       */
-int ScanGetch(){}                 /* Get a character    */
-int ScanUngetch(){}               /* Unget a character  */
-int ScanFtail(int p){}            /* Tail of a float    */
-int ScanInclude(){}
-int ScanWhite(){}
-int ScanComment(){}
-int ScanLcomment(){}
-/*
-\end{verbatim}
-%====================================================================
-\section{ScanInit -- initialize scanner}
-%====================================================================
-Before I start, the two arrays ScanText and ScanBuffer must
-be created.
-\begin{verbatim}
-*/
-int ScanInit(char [*] infile)
-{
+char [*] ScanFile;     # Current file name            
+#
+ 
+int ScanLex():end
+int ScanGetword(char [*] ttext):end # Get one word        
+int ScanGetch():end                 # Get a character     
+int ScanUngetch():end               # Unget a character   
+int ScanFtail(int p):end            # Tail of a float     
+int ScanInclude():end
+int ScanWhite():end
+int ScanComment():end
+int ScanLcomment():end
+ 
+int ScanInit(char [*] infile) :
+
+# ScanInit initializes the  scanner.
+
+# Before I start, the two arrays ScanText and ScanBuffer must
+# be created.
+
   const LTEXT = 4096; 
   ScanText = new(char [LTEXT]);
   ScanBuffer = new(char [LTEXT]);
   ScanInfile = LibeOpen(infile, "r");
-  if(ScanInfile == ERR){
+  if(ScanInfile == ERR):
     LibePuts(stderr, "Can not open input file: ");
     LibePuts(stderr, infile);
     LibePuts(stderr,"\n");
     LibeFlush(stderr);
     return(ERR);
-  }
+  end
   ScanFp = ScanInfile;
   ScanFile = LibeStrsave(infile);
   ScanInfilename = LibeStrsave(infile);
   return(OK);
-}  
-/*
-\end{verbatim}
-%====================================================================
-\section{ScanGetok -- return next token}
-%====================================================================
-\begin{verbatim}
-*/
-int ScanGetok()
-{
+end  
+ 
+int ScanGetok() :
+
+  # ScanGetok return next token.
+
   int c;
 
-  if((c=ScanLex())==INCLUDE){
+  if((c=ScanLex())==INCLUDE):
       ScanInclude();
       return(c);
-  }
-  else if(c == STOP){
+  end
+  else if(c == STOP):
     if(ScanFp == ScanInfile)
       return(c);
-    else{
+    else:
       LibeClose(ScanFp);
       ScanFp = ScanInfile;
       ScanSetfile(ScanInfilename);
       ScanLine = ScanLinesave;
       return(ScanGetok());
-    }
-  }
+    end
+  end
   else
     return(c);
-}  
-/*
-\end{verbatim}
-%====================================================================
-\section{ScanLex -- find and return the next token}
-%====================================================================
-This is the main routine of the scanner and returns the next token.
-Token values are define above, and the literal value of the token are
-returned by the {\tt ScanGetext} routine.
-\begin{verbatim}
-*/
-int ScanLex()
-{
-  int c;                 /* Token value                         */
-  int p;                 /* Next available position in ScanText */
-  int rval;              /* Return value                        */
+end  
+ 
+int ScanLex() :
+
+  # ScanLex finds and returns the next token.
+
+  # This is the main routine of the scanner and returns the next token.
+  # Token values are define above, and the literal value of the token are
+  # returned by the :\tt ScanGetextend routine.
+
+  int c;                 # Token value                          
+  int p;                 # Next available position in ScanText  
+  int rval;              # Return value                         
   int string;
   int comments;
 
-/* Start of the lexical analysis */
+  # Start of the lexical analysis  
          
-  ScanWhite();        /* Skip white space        */
-  c= ScanGetch();     /* Get the first character */
+  ScanWhite();        # Skip white space         
+  c= ScanGetch();     # Get the first character  
   p = 0;
   ScanText[p] = cast(char, c);
 
-/* Process comments                */
+  # Process comments                 
 
   comments = OK;
-  while(comments==OK){
-    if(c=='#'){
+  while(comments==OK):
+    if(c=='#'):
       ScanLcomment();
       ScanWhite();
       c=ScanGetch();
       ScanText[p] = cast(char, c);
-    }
+    end
     else
       comments=ERR;
-  }
+  end
 
-/* Process end of file             */
+  # Process end of file              
 
-  if (c == EOF){
-      rval = STOP;              /* Stop if this was the last character */
+  if (c == EOF):
+      rval = STOP;              # Stop if this was the last character  
       return(rval);
-  }
+  end
 
 
-/* Process single character tokens */
+  # Process single character tokens  
 
-  if (c == PLUS)              /* '+' */
+  if (c == PLUS)              # '+'  
     rval = PLUS;
-  else if (c == STAR)         /* '*' */
+  else if (c == STAR)         # '*'  
     rval = STAR;
-  else if (c == SLASH)        /* '/' */
+  else if (c == SLASH)        # '/'  
     rval = SLASH;
-  else if (c == LP)           /* '(' */
+  else if (c == LP)           # '('  
     rval = LP;
-  else if (c == RP)           /* ')' */
+  else if (c == RP)           # ')'  
     rval = RP;
-  else if (c == RB)           /* '}' */
+  else if (c == RB)           # 'end'  
     rval = RB;
-  else if (c == LB)           /* '{' */
+  else if (c == LB)           # ':'  
     rval = LB;
-  else if (c == LBR)          /* '[' */
+  else if (c == LBR)          # '['  
     rval = LBR;
-  else if (c == RBR)          /* ']' */
+  else if (c == RBR)          # ']'  
     rval = RBR;
-  else if (c == COLON)        /* ':' */
+  else if (c == COLON)        # ':'  
     rval = COLON;
-  else if (c == SEMICOLON)    /* ';' */
+  else if (c == SEMICOLON)    # ';'  
     rval = SEMICOLON;
-  else if (c == COMMA)        /* ',' */
+  else if (c == COMMA)        # ','  
     rval = COMMA;
-  else if (c == POINT)        /* '.'  */
+  else if (c == POINT)        # '.'   
     rval = POINT;
 
-/* Start processing of complex tokens */
+  # Start processing of complex tokens  
 
   else if (c == LT)                     
-    if((c = ScanGetch()) == ASSIGN){     /* '<=' */
+    if((c = ScanGetch()) == ASSIGN):     # '<='  
       rval =  LE;
       p = p + 1;
       ScanText[p] = cast(char, c);
-    }
-    else{                                /* '<' */
+    end
+    else:                                # '<'  
       ScanUngetch();
       rval = LT;
-    }
+    end
   else if (c == GT)                    
-    if((c = ScanGetch()) == ASSIGN){     /* '>=' */
+    if((c = ScanGetch()) == ASSIGN):     # '>='  
        rval =  GE;
        p = p + 1;
        ScanText[p] = cast(char, c);
-    }
-    else{
-      ScanUngetch();                     /* '>' */
+    end
+    else:
+      ScanUngetch();                     # '>'  
       rval = GT;
-    }
-  else if (c == MINUS){            
-    if((c = ScanGetch()) == GT){        /* '->' */
+    end
+  else if (c == MINUS):            
+    if((c = ScanGetch()) == GT):        # '->'  
       rval =  RARROW;
       p = p + 1;
       ScanText[p] = cast(char, c);
-    }
-    else{
-      ScanUngetch();                    /* '-'  */
+    end
+    else:
+      ScanUngetch();                    # '-'   
       rval = MINUS;
-    }
-  }
-  else if (c == VBAR){                  /* '||' */
-    if((c = ScanGetch()) == VBAR){
+    end
+  end
+  else if (c == VBAR):                  # '||'  
+    if((c = ScanGetch()) == VBAR):
       rval =  OR;
       p = p +1;
       ScanText[p] = cast(char, c);
-    }
+    end
     else
       ErrError("Illegal character");
-  }
-  else if (c == ADRESS){                  /* '&&' */
-    if((c = ScanGetch()) == ADRESS){
+  end
+  else if (c == ADRESS):                  # '&&'  
+    if((c = ScanGetch()) == ADRESS):
       rval =  AND;
       p = p +1;
       ScanText[p] = cast(char, c);
-    }
+    end
     else
       ErrError("Illegal character");
-  }
-  else if (c == EXLAM){                 /* '!=' */
-    if((c = ScanGetch()) == ASSIGN){
+  end
+  else if (c == EXLAM):                 # '!='  
+    if((c = ScanGetch()) == ASSIGN):
       rval =  NE;
       p = p + 1;
       ScanText[p] = cast(char, c);
-    }
+    end
     else
       ErrError("Illegal character");
-  }
-  else if (c == ASSIGN){                /* '==' */
-    if((c = ScanGetch()) == ASSIGN){
+  end
+  else if (c == ASSIGN):                # '=='  
+    if((c = ScanGetch()) == ASSIGN):
       rval =  EQ;
       p = p+1;
       ScanText[p] = cast(char, c);
-    }
-    else{
-      ScanUngetch();                    /* '=' */
+    end
+    else:
+      ScanUngetch();                    # '='  
       rval = ASSIGN;
-    }
-  }
+    end
+  end
   
-/* String */
+  # String  
 
-  else if (c == DFN){               
+  else if (c == DFN):               
     ScanText[p] = cast(char, DFN); 
     p = p + 1;
     string = 1;
-    while(string == 1){
+    while(string == 1):
       if((c = ScanGetch()) != DFN)
         string = 1;
-      else{ 
+      else: 
         if(cast(int, ScanText[p-1]) == BSLASH)
           string = 1;
         else
           string = 0;
-      }
+      end
       ScanText[p] = cast(char, c);
         p = p+1;
         if( p >= len(ScanText,0)-1)
           ErrError("String is too long");
-    }
+    end
     ScanText[p] = cast(char, EOS);
     rval = SCONST;
-  }
+  end
 
-/* Character constant */
+  # Character constant  
 
-  else if (c == SFN){
+  else if (c == SFN):
     ScanText[p] = cast(char, SFN); 
     p = p + 1;
     ScanText[p] = cast(char, ScanGetch());
     c = ScanGetch();
     if(c != SFN)
       ErrError("Character constant is too long");
-    else{
+    else:
       p = p + 1;
       ScanText[p] = cast(char, c);
-    }
+    end
     p = p + 1;
     ScanText[p] = cast(char, EOS);
     rval = ICONST;
-  }
+  end
 
-/* Decimal or floating point number  */
+  # Decimal or floating point number   
 
-  else if(LibeIsdigit(c)){
-    while (LibeIsdigit(c=ScanGetch())) {
+  else if(LibeIsdigit(c)):
+    while (LibeIsdigit(c=ScanGetch())) :
       p = p + 1;
       ScanText[p] = cast(char, c);
       if( p >= len(ScanText,0))
         ErrError("Digit is too long");
-    }
-    if(c == POINT){
+    end
+    if(c == POINT):
       p = p + 1;
       if( p >= len(ScanText,0))
         ErrError("Digit is too long");
       ScanText[p] = cast(char, c);
       p = ScanFtail(p);
       rval = RCONST;
-    }
-    else{
+    end
+    else:
       ScanUngetch();
       ScanText[p+1] = cast(char, EOS);
       rval = ICONST;
-    }
-  }
+    end
+  end
 
-/* Keywords  and identifiers */
+  # Keywords  and identifiers  
 
-  else if(LibeIsalnum(c)){
-    while (LibeIsalnum(c=ScanGetch())){
+  else if(LibeIsalnum(c)):
+    while (LibeIsalnum(c=ScanGetch())):
       p = p + 1;
       ScanText[p] = cast(char, c);
       if( p >= len(ScanText,0))
         ErrError("Identifier is too long");
-    }
+    end
     ScanUngetch();
     ScanText[p+1] = cast(char, EOS);
 
-    if(LibeStrcmp(ScanText,"include")==OK){
+    if(LibeStrcmp(ScanText,"include")==OK):
       rval = INCLUDE;
-    }
+    end
     else if(LibeStrcmp(ScanText,"int"))
       rval = INT;
     else if(LibeStrcmp(ScanText,"char"))
@@ -376,150 +354,113 @@ int ScanLex()
       rval = END;
     else
       rval = ID;
-  }
-  else{ 
+  end
+  else: 
     ErrError("Invalid token");
 	return(ERR);
-  }
+  end
   ScanText[p+1] = cast(char, EOS);
   return rval;
-}
-/*
-\end{verbatim}
-%====================================================================
-\section{ScanGetext -- get text of token}
-%====================================================================
-\begin{verbatim}
-*/
-char [*] ScanGetext()
-{
+end
+ 
+char [*] ScanGetext() :
+
+  # ScanGetext  gets text of token.
+
   return ScanText;
-}
-/*
-\end{verbatim}
-%====================================================================
-\section{Setline -- Set line no}
-%====================================================================
-\begin{verbatim}
-*/ 
-int ScanSetline(int lineno)
-{
+end
+
+int ScanSetline(int lineno) :
+
+ # Setline sets line no.
+  
   ScanLine = lineno;    
   return 0;
-}
-/*
-\end{vrbatim}
-%===================================================================
-\section{Getline -- Get line no}
-%===================================================================
-\begin{verbatim}
-*/ 
-int ScanGetline()
-{
-  return(ScanLine);
-}
-/*
-\end{vrbatim}
-%==================================================================
-\section{ScanIncline  -- Increment lineno by 1} 
-%==================================================================
-\begin{verbatim}
-*/
-int ScanIncline()
-{
+end
+int ScanGetline() :
+
+  # Getline -- Get line no.
+  
+    return(ScanLine);
+end
+
+int ScanIncline() :
+
+  # ScanIncline  increment lineno by 1. 
+ 
   ScanLine = ScanLine + 1;
   return(OK);
-}
-/*
-\end{verbatim}
-%=================================================================
-\section{ScanGetword  -- get next word} 
-%=================================================================
-\begin{verbatim}
-*/
-int ScanGetword(char [*] ttext)
-{
+end
+ 
+int ScanGetword(char [*] ttext) :
+
+  #ScanGetword gets next word. 
+
   return(LibeGetw(ScanFp, ttext));
-}
-/*
-\end{verbatim}
-%===============================================================
-\section{ScanGetch -- get a character}  
-%===============================================================
-\begin{verbatim}
-*/
-int ScanGetch()      /*  Return a character from standard input */
-{
+end
+ 
+int ScanGetch()  :    
+
+  # ScanGetch gets a character.  
+
   return(LibeGetc(ScanFp));
-}
-/*
-\end{verbatim}
-%===============================================================
-\section{ScanFtail -- get the tail of a floating point number}  
-%===============================================================
-\begin{verbatim}
-*/
-int ScanFtail(int p)      
-{
+end
+ 
+int ScanFtail(int p) :     
+
+  # ScanFtail  gets the tail of a floating point number.  
+
   int c;
  
-  while(LibeIsdigit(c=ScanGetch())){ 
+  while(LibeIsdigit(c=ScanGetch())): 
     p = p + 1;
     if( p >= len(ScanText,0))
       ErrError("Digit is too long");
     ScanText[p] = cast(char, c);
-  } 
-  if((c == 'e') || (c == 'E')){        
+  end 
+  if((c == 'e') || (c == 'E')):        
     p = p + 1;
     if( p >= len(ScanText,0))
       ErrError("Digit is too long");
     ScanText[p] = cast(char, c);
     c = ScanGetch();
-    if((c == PLUS) || ( c == MINUS)){
+    if((c == PLUS) || ( c == MINUS)):
       p = p + 1;
       if( p >= len(ScanText,0))
         ErrError("Digit is too long");
       ScanText[p] = cast(char, c);
-      while(LibeIsdigit(c=ScanGetch())){ 
+      while(LibeIsdigit(c=ScanGetch())): 
         p = p + 1;
         if( p >= len(ScanText,0))
           ErrError("Digit is too long");
         ScanText[p] = cast(char, c);
-      }
+      end
       ScanUngetch();
       ScanText[p+1] = cast(char, EOS);
       return (p);
-    }
+    end
     else
       ErrError("Unknown token");
       return(ERR);
-  }
-  else{
+  end
+  else:
     ScanUngetch();
     ScanText[p+1] = cast(char, EOS);
     return (p);
-  }
-}
-/*
-\end{verbatim}
-%===============================================================
-\section{ScanUngetch -- unget a character}  
-%===============================================================
-\begin{verbatim}
-*/
- int ScanUngetch()      /*  Return a character from standard input */
- {
+  end
+end
+
+int ScanUngetch() :     
+
+ #ScanUngetch ungets a character.  
+ 
   return(LibeUngetc(ScanFp));
- }
-/*
-\end{verbatim}
-%===============================================================
-\section{ScanInclude -- include a file}  
-%===============================================================
-\begin{verbatim}
-*/
- int ScanInclude()    
- {
+end
+ 
+int ScanInclude()  :  
+ 
+ #ScanInclude includes a file.  
+
   int p,c;
   int string;
   int delimit,l;
@@ -530,19 +471,19 @@ int ScanFtail(int p)
       ScanIncline();
   ScanUngetch();
 
-  if((c = ScanGetch()) != DFN){
+  if((c = ScanGetch()) != DFN):
     if(c != '<')
       ErrError("Invalid string in include statement");
-  }    
-  if(c=='<'){
+  end    
+  if(c=='<'):
     delimit = '>';
-  }
-  else{
+  end
+  else:
     delimit = DFN;
-  }
+  end
   p = 0;
   string = 1;
-  while(string == 1){
+  while(string == 1):
     if((c = ScanGetch()) != delimit)
       string = 1;
     else 
@@ -551,16 +492,16 @@ int ScanFtail(int p)
     p = p+1;
     if( p >= len(ScanText,0)-1)
       ErrError("String is too long");
-  }
+  end
   ScanText[p-1] = cast(char, EOS);
 
-  if(delimit == '>'){
+  if(delimit == '>'):
     l = LibeStrlen(ScanPath())
         + LibeStrlen(ScanText) + 1; 
     fname = new(char[l]);
     LibeStrcpy(ScanPath(),fname);
     LibeStrcat(ScanText,fname); 
-  }
+  end
   else
     fname = ScanText;
 
@@ -569,42 +510,30 @@ int ScanFtail(int p)
   ScanLinesave = ScanLine;
   ScanLine = 1;
   return(OK);
- }
-/*
-\end{verbatim}
-%===============================================================
-\section{ScanGetfile -- get input file name}  
-%===============================================================
-\begin{verbatim}
-*/
-char [*] ScanGetfile()    
-{
+ end
+ 
+char [*] ScanGetfile() :   
+
+  # ScanGetfile  gets input file name.  
+
   return(ScanFile);
-}
-/*
-\end{verbatim}
-%===============================================================
-\section{ScanSetfile -- set input file name}  
-%===============================================================
-\begin{verbatim}
-*/
-char [*] ScanSetfile(char [*] fname)    
-{
-  if(ScanFile != NULL){
+end
+ 
+char [*] ScanSetfile(char [*] fname) :    
+
+ # ScanSetfile sets input file name.  
+
+  if(ScanFile != NULL):
     delete(ScanFile);
-  }
+  end
   ScanFile = LibeStrsave(fname);
   return(ScanFile);
-}
-/*
-\end{verbatim}
-%===============================================================
-\section{ScanWhite -- skip white space}  
-%===============================================================
-\begin{verbatim}
-*/
- int ScanWhite()    
- {
+end
+ 
+int ScanWhite()  :   
+
+  # ScanWhite -- skips white space.  
+
   int c;
 
   while(((c=ScanGetch()) == SPACE) || (c == TAB) || (c == NL)) 
@@ -613,64 +542,53 @@ char [*] ScanSetfile(char [*] fname)
   ScanUngetch();
 
   return(OK);
- }
-/*
-\end{verbatim}
-%===============================================================
-\section{ScanComment -- skip comment}  
-%===============================================================
-\begin{verbatim}
-*/
-int ScanComment()
-{
+ end
+ 
+int ScanComment() :
+
+  #  ScanComment skips comment.  
+
   int incomment,c;
         
   incomment=OK;
 
-  /* Skip the text within the comments */
+  # Skip the text within the comments  
 
-  while(incomment == OK){
+  while(incomment == OK):
     c = ScanGetch();
     if(c == NL)
       ScanIncline();
-    if(c=='*'){
+    if(c=='*'):
       c = ScanGetch();
       if(c == NL)
         ScanIncline();
-      if(c=='/'){
+      if(c=='/'):
         incomment=ERR;
-      }
-    }
-    if(c == EOF){
+      end
+    end
+    if(c == EOF):
       ErrPanic("Closing comment missing");
-    }
-  }
+    end
+  end
   return(OK);
-}
-/*
-\end{verbatim}
-%===============================================================
-\section{ScanLcomment -- skip line comment}  
-%===============================================================
-\begin{verbatim}
-*/
-int ScanLcomment()
-{
+end
+ 
+int ScanLcomment() :
+
+  # ScanLcomment skips line comment.  
+
   int incomment,c;
         
   incomment=OK;
 
-  /* Skip the text within the comments */
+  # Skip the text within the comments  
 
-  while(incomment == OK){
+  while(incomment == OK):
     c = ScanGetch();
-    if(c == NL){
+    if(c == NL):
       ScanIncline();
       incomment=ERR;
-    }
-  }
+    end
+  end
   return(OK);
-}
-/*
-\end{verbatim}
-*/
+end

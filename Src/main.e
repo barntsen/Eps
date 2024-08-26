@@ -12,7 +12,6 @@ include "code.i"        # Code generator
 include "m.i"           # Machine dependent code
 
 int MainHelp(int arch):end 
- 
 
 int MainHelp(int arch):
   LibePuts(stderr,"Command\n");
@@ -71,12 +70,14 @@ end
 char [*] MainFout(char [*] file,int arch):end 
  
 
-# Mainfout checks the input file name
-# and creates an output file name with extension '.c'
-# or '.cpp'
-# The argument to the function is the input file name and
-# the return value is the output file name. 
 char [*] MainFout(char [*] infile, int arch):
+
+  # Mainfout checks the input file name
+  # and creates an output file name with extension '.c'
+  # or '.cpp'
+  # The argument to the function is the input file name and
+  # the return value is the output file name. 
+
   char [*] outfile; # Output file name (holding c-code)
   int l;            # Temp varibale to hold string length of 
                     # input file name
@@ -117,17 +118,16 @@ char [*] MainFout(char [*] infile, int arch):
   return(outfile);
 end 
      
-
 int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):end 
- 
 int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show):end 
- 
 int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show):end 
- 
 
 const CMDLEN=80;        # Length of command line
-# MainCcompcpu invokes the c-compiler to generate object code for cpu.
+
 int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):
+
+  # MainCcompcpu invokes the c-compiler to generate object code for cpu.
+
   char [*] tmp;         # String temporary 
   char [*] cmd;         # Command line for compiling
   int l;                # Temp varibale to hold string length of 
@@ -175,9 +175,10 @@ int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):
   return(OK);
 end 
      
-
-# MainCcompcuda invokes the nvcc compiler to generate object code for nvidia gpus.
 int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show):
+
+  # MainCcompcuda invokes the nvcc compiler to generate object code for nvidia gpus.
+
   char [*] tmp;         # String temporary 
   char [*] cmd;         # Command line for compiling
   int l;                # Temp varibale to hold string length of 
@@ -225,8 +226,10 @@ int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show):
   return(OK);
 end 
      
-# MainCcomphip invokes the hipcc compiler to generate object code for amd gpus.
 int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show):
+
+  # MainCcomphip invokes the hipcc compiler to generate object code for amd gpus.
+
   char [*] tmp;     # String temporary 
   char [*] cmd;     # Command line for compiling
   int l;            # Temp varibale to hold string length of 
@@ -239,17 +242,14 @@ int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show):
   if(debug == OK):
     LibeStrcat(" -g ",cmd);
   end 
- 
 
   if(optimize == OK):
     LibeStrcat(" -O3 ",cmd);
   end 
- 
 
   if(openmp == OK):
     LibeStrcat(" -fopenmp ",cmd);
   end 
- 
 
   LibeStrcat(file,cmd);
   LibeStrcat("\n",cmd);
@@ -274,9 +274,10 @@ int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show):
   return(OK);
 end 
      
-# Main is the main function.
-int Main(struct MainArg [*] MainArgs)
-:
+int Main(struct MainArg [*] MainArgs) :
+
+  # Main is the main function.
+
   int btree;        # Flag for emitting parse tre. 
   int atree;        # Flag for emitting annotated parse tree
   int table;        # Flag for emitting local symbol tables
@@ -334,80 +335,60 @@ int Main(struct MainArg [*] MainArgs)
       LibeExit();
     end 
  
-
     if(LibeStrcmp(MainArgs[i].arg, "-t") == OK):  
 
-    # Print parse tree  
-
-       btree = OK; parse = OK;
+      # Print parse tree  
+      btree = OK; parse = OK;
     end 
- 
 
     # Print annotated parse tree 
-
     if(LibeStrcmp(MainArgs[i].arg, "-a") == OK):  
       atree = OK; semantic = OK; parse = OK;
     end 
- 
 
     # Print local symbol table 
 
     if(LibeStrcmp(MainArgs[i].arg, "-s") == OK ):  
       table = OK; parse = OK; semantic = OK;
     end 
- 
 
     # Print external symbol table 
-
     if(LibeStrcmp(MainArgs[i].arg, "-r") == OK ):  
       etable = OK; parse = OK; semantic = OK;
     end 
- 
 
     # Emit code         
-
     if(LibeStrcmp(MainArgs[i].arg, "-e") == OK):  
       emit = OK; parse = OK; semantic = OK;
     end 
- 
 
     # Syntactic analysis only
-
     if(LibeStrcmp(MainArgs[i].arg, "-p") == OK):  
       parse = OK;
     end 
- 
 
     # Syntactic and semantic analysis only
-
     if(LibeStrcmp(MainArgs[i].arg, "-q") == OK):      
       semantic = OK; parse = OK;
     end 
- 
-
 
     # Turn on array check  
-
     if(LibeStrcmp(MainArgs[i].arg, "-C") == OK):      
       CodeArraycheckon();
     end 
  
 
     # Turn on debug flag  
-
     if(LibeStrcmp(MainArgs[i].arg, "-g") == OK):      
       debug=OK;
       CodeDebugon();
     end 
- 
 
     if(LibeStrcmp(MainArgs[i].arg, "-d") == OK):      
       show=OK;
     end 
- 
 
     # Set flag for optimization
-
     if(LibeStrcmp(MainArgs[i].arg, "-O") == OK):      
        optimize=OK;
     end 
@@ -430,21 +411,16 @@ int Main(struct MainArg [*] MainArgs)
   else :
         loop=ERR;
       end 
-  
     end 
  else :
       loop=ERR;
-    end 
- 
-  end 
- 
+   end 
+ end 
 
   # Set the default case
-
   if((parse == ERR) && (semantic == ERR) && (emit == ERR)):
     parse=semantic=emit=OK;
   end 
- 
 
   if(i>=len(MainArgs,0)):
     ErrPanic("Missing input file name");
@@ -460,21 +436,16 @@ int Main(struct MainArg [*] MainArgs)
     fd = LibeOpen(outfile,"w");
     CodeSetfdout(fd);
   end 
-     
   
   # Initialize the scanner 
-
   if(ScanInit(infile) == ERR):        
     LibeExit(); 
   end 
- 
 
   # Set line number to 1   
-
   ScanSetline(1);         
 
   # Initialize the parser   
-
   ParseIniparse();        
 
   if(emit==OK)
@@ -494,14 +465,12 @@ int Main(struct MainArg [*] MainArgs)
       if(p != NULL):
         SemSem(p, SymGetetp()); # Semantic analysis
       end 
- 
       if(atree == OK)
         PtreePrtree(p,0);       # Print annotated parse tree 
       if(table == OK)           # Print local symbol table  
         if(SymGetltp() != NULL):
           SymPrsym(SymGetltp(),0);
         end 
- 
     end 
  
     if(emit == OK)
@@ -515,9 +484,7 @@ int Main(struct MainArg [*] MainArgs)
       if(btree == OK)                
          PtreePrtree(p, 0);      # Print parse tree 
      end 
- 
   end 
- 
 
   if(ParseGetlookahead() != STOP)
      ErrError("Parsing ended before reaching EOF");
@@ -528,14 +495,11 @@ int Main(struct MainArg [*] MainArgs)
     if(SymGetetp() != NULL):
       SymPrsym(SymGetetp(),0);
     end 
- 
   end 
- 
 
   if(emit == OK): 
     CodePostamble();
   end 
- 
 
   # Compile the c-code
 
@@ -545,16 +509,14 @@ int Main(struct MainArg [*] MainArgs)
     end 
   else if(ARCH==CUDA):
       MainCcompcuda(outfile,debug,optimize,openmp,show);
-    end 
+  end 
   else if(ARCH==HIP):
       MainCcomphip(outfile,debug,optimize,openmp,show);
-    end 
- else :
+  end 
+  else :
       ErrPanic("Unknown architecture");
     end 
- 
   end 
- 
 
   if(emit == OK):
     delete(outfile);    

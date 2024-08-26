@@ -56,27 +56,24 @@ int ScanGetok():end
 #This function sets the current line number to the value of
 #lineno. The line number is used for error reporting.
  
-int ScanSetline(int lineno):end 
-    
- 
-int ScanGetline():end 
-    
-#
- 
-int ScanIncline():end 
-    
- 
- char [*] ScanGetext():end 
-   
- 
- char [*] ScanGetfile():end 
-   
-#
- 
- char [*] ScanSetfile(char [*] fname):end 
-   
-#
- char [*] ScanPath():end 
-   
-#
+int ScanSetline(int lineno):
+end 
+
+int ScanGetline():
+end 
+
+int ScanIncline():
+end 
+
+char [*] ScanGetext():
+end 
+
+char [*] ScanGetfile():
+end 
+
+char [*] ScanSetfile(char [*] fname):
+end 
+
+char [*] ScanPath():
+end 
  
