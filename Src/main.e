@@ -11,9 +11,13 @@ include "sem.i"         # Semantic checking
 include "code.i"        # Code generator
 include "m.i"           # Machine dependent code
 
-int MainHelp(int arch):end 
+int MainHelp(int arch):
+end 
 
 int MainHelp(int arch):
+
+  # MainHelp prints help message.
+
   LibePuts(stderr,"Command\n");
   LibePuts(stderr,"\n");
   if(arch == CPU):
@@ -67,7 +71,8 @@ int MainHelp(int arch):
   return(OK);
 end 
  
-char [*] MainFout(char [*] file,int arch):end 
+char [*] MainFout(char [*] file,int arch):
+end 
  
 
 char [*] MainFout(char [*] infile, int arch):

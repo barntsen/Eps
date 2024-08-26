@@ -56,43 +56,116 @@ include "err.i"      # Error routines interface
 include "scan.i"     # Lexical scanner interface      
 include "parse.i"    # Parse interface                
 
-struct tree ParseExtdecl():end 
-struct tree ParseType():end 
-int  ParseConstdecl(struct tree p):end 
-int  ParseStructdeclar(struct tree p):end 
-int  ParseIdseq(struct tree p):end 
-int  ParseFdecl(struct tree p):end 
-int  ParseArrayarg(struct tree p):end 
-struct tree ParseArglist():end 
-int  ParseArgseq(struct tree p):end 
-struct tree ParseDeclarations():end 
-struct tree ParseDeclaration():end 
-struct tree ParseCompstmnt():end 
-struct tree ParseStmntlist():end 
-struct tree ParseStmnt():end 
-struct tree ParseWhilestmnt():end 
-struct tree ParseForstmnt():end 
-struct tree ParseParallelstmnt():end 
-struct tree ParseSliceseq(struct tree p):end 
-struct tree ParseSlice():end 
-struct tree ParseReturnstmnt():end 
-struct tree ParseIfstmnt():end 
-struct tree ParseElsestmnt():end 
-struct tree ParseExprlist():end 
-struct tree ParseExprseq(struct tree p):end 
-struct tree ParseExpr():end 
-struct tree ParseAsgexpr(struct tree p):end 
-struct tree ParseAsgexprseq(struct tree p):end 
-struct tree ParseRelexpr(struct tree p):end 
-struct tree ParseRelexprseq(struct tree p):end 
-struct tree ParseAddexpr(struct tree p):end 
-struct tree ParseAddexprseq(struct tree p):end 
-struct tree ParseMultexpr(struct tree p):end 
-struct tree ParseMultexprseq(struct tree p):end 
-struct tree ParseUnexpr(struct tree p):end 
-struct tree ParsePrimexpr(struct tree p):end 
-struct tree ParseIdent():end 
-int  ParseMatch(int t):end 
+struct tree ParseExtdecl():
+end 
+
+struct tree ParseType():
+end 
+
+int  ParseConstdecl(struct tree p):
+end 
+
+int  ParseStructdeclar(struct tree p):
+end 
+
+int  ParseIdseq(struct tree p):
+end 
+
+int  ParseFdecl(struct tree p):
+end 
+
+int  ParseArrayarg(struct tree p):
+end 
+
+struct tree ParseArglist():
+end 
+
+int  ParseArgseq(struct tree p):
+end 
+
+struct tree ParseDeclarations():
+end 
+
+struct tree ParseDeclaration():
+end 
+
+struct tree ParseCompstmnt():
+end 
+
+struct tree ParseStmntlist():
+end 
+
+struct tree ParseStmnt():
+end 
+
+struct tree ParseWhilestmnt():
+end 
+
+struct tree ParseForstmnt():
+end 
+
+struct tree ParseParallelstmnt():
+end 
+
+struct tree ParseSliceseq(struct tree p):
+end 
+
+struct tree ParseSlice():
+end 
+
+struct tree ParseReturnstmnt():
+end 
+
+struct tree ParseIfstmnt():
+end 
+
+struct tree ParseElsestmnt():
+end 
+
+struct tree ParseExprlist():
+end 
+
+struct tree ParseExprseq(struct tree p):
+end 
+
+struct tree ParseExpr():
+end 
+
+struct tree ParseAsgexpr(struct tree p):
+end 
+
+struct tree ParseAsgexprseq(struct tree p):
+end 
+
+struct tree ParseRelexpr(struct tree p):
+end 
+
+struct tree ParseRelexprseq(struct tree p):
+end 
+
+struct tree ParseAddexpr(struct tree p):
+end 
+
+struct tree ParseAddexprseq(struct tree p):
+end 
+
+struct tree ParseMultexpr(struct tree p):
+end 
+
+struct tree ParseMultexprseq(struct tree p):
+end 
+
+struct tree ParseUnexpr(struct tree p):
+end 
+
+struct tree ParsePrimexpr(struct tree p):
+end 
+
+struct tree ParseIdent():
+end 
+
+int  ParseMatch(int t):
+end 
 
 int lookahead;            # Look ahead token 
 
