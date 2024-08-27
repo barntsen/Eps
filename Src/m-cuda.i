@@ -1,4 +1,4 @@
-// m-linux: Machine dependent constants for linux 
+# m-linux: Machine dependent constants for linux 
 
 
 const EPS  =    1.1920928955078125e-07; 
