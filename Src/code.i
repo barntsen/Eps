@@ -1,20 +1,22 @@
-int CodeInit(){}
-int CodePreamble(){}
-int CodePreamblecpu(){}
-int CodePreamblecuda(){}
-int CodePreamblehip(){}
-int CodeStrings(struct symbol tp){}
-int CodeCode(struct tree p, struct symbol tp){}
-int CodeTemp(struct tree p){}
-int CodeArraycheck(){}
-int CodeArraycheckon(){}
-int CodeArraycheckoff(){}
-int CodeDebug(){}
-int CodeDebugon(){}
-int CodeDebugoff(){}
-int CodeSetfdout(int fd){}
-int CodeGetfdout(){}
-int CodeSetarch(int arch){}
-int CodeGetarch(){}
-int CodePostamble(){}
+int CodeInit():end 
+ 
+int CodePreamble():end 
+int CodePreamblecpu():end 
+int CodePreamblecuda():end 
+int CodePreamblehip():end 
+int CodeStrings(struct symbol tp):end 
+int CodeCode(struct tree p, struct symbol tp):end 
+int CodeTemp(struct tree p):end 
+int CodeArraycheck():end 
+int CodeArraycheckon():end 
+int CodeArraycheckoff():end 
+int CodeDebug():end 
+int CodeDebugon():end 
+int CodeDebugoff():end 
+int CodeSetfdout(int fd):end 
+int CodeGetfdout():end 
+int CodeSetarch(int arch):end 
+int CodeGetarch():end 
+int CodePostamble():end 
+ 
 

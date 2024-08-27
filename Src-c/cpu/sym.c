@@ -1,4 +1,4 @@
-/*  Translated by epsc  version today */
+//  Translated by epsc  version today  
 #include <stddef.h>
 typedef struct { float r; float i;} complex; 
 typedef struct nctempfloat1 { int d[1]; float *a;} nctempfloat1; 
@@ -224,6 +224,7 @@ struct symbol* SymMvnext (struct symbol* np);
 struct symbol* SymLook (nctempchar1 *name);
 int SymPrsym (struct symbol* p,int level);
 int SymCpytble (struct symbol* tp,struct symbol* up);
+nctempchar1* SymSetfield (nctempchar1 *field,nctempchar1 *value);
 struct symbol* SymEtp;
 struct symbol* SymLtp;
 struct symbol* SymStp;
@@ -254,7 +255,6 @@ struct symbol* SymSetstp (struct symbol* stp)
 SymStp =stp;
 return SymStp;
 }
-nctempchar1* SymSetfield (nctempchar1 *field,nctempchar1 *value);
 struct symbol* SymLookup (nctempchar1 *s,struct symbol* tp)
 {
 struct symbol* np;

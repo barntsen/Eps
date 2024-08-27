@@ -1,4 +1,4 @@
-/*  Translated by epsc  version December 2021 */
+//  Translated by epsc  version December 2021  
 extern "C" {
 typedef struct { float r; float i;} complex; 
 typedef struct nctempfloat1 { int d[1]; float *a;} nctempfloat1; 
@@ -277,7 +277,7 @@ sp =nctemp57;
 struct tree* nctemp59= sp;
 struct tree* nctemp61= np;
 int nctemp63=PtreeAddchild(nctemp59,nctemp61);
-int nctemp64 = (lookahead ==123);
+int nctemp64 = (lookahead ==58);
 if(nctemp64)
 {
 int nctemp69= lookahead;
@@ -464,7 +464,7 @@ sp =nctemp322;
 struct tree* nctemp324= np;
 struct tree* nctemp326= sp;
 int nctemp328=PtreeAddchild(nctemp324,nctemp326);
-int nctemp330= 125;
+int nctemp330= 531;
 int nctemp332=ParseMatch(nctemp330);
 return 1;
 }
@@ -799,7 +799,7 @@ struct tree* ParseCompstmnt ()
 {
 struct tree* np;
 struct tree* sp;
-int nctemp754 = (lookahead ==123);
+int nctemp754 = (lookahead ==58);
 if(nctemp754)
 {
 struct nctempchar1 *nctemp764;
@@ -812,7 +812,7 @@ nctemp768=&nctemp769;
 nctempchar1* nctemp766= nctemp768;
 struct tree* nctemp770=PtreeMknode(nctemp762,nctemp766);
 np =nctemp770;
-int nctemp772= 123;
+int nctemp772= 58;
 int nctemp774=ParseMatch(nctemp772);
 struct tree* nctemp779=ParseDeclarations();
 sp =nctemp779;
@@ -832,7 +832,7 @@ struct tree* nctemp800= np;
 struct tree* nctemp802= sp;
 int nctemp804=PtreeAddchild(nctemp800,nctemp802);
 }
-int nctemp806= 125;
+int nctemp806= 531;
 int nctemp808=ParseMatch(nctemp806);
 }
 else{
@@ -936,7 +936,7 @@ struct tree* nctemp931=PtreeMknode(nctemp923,nctemp927);
 return nctemp931;
 }
 else{
-int nctemp932 = (lookahead ==125);
+int nctemp932 = (lookahead ==531);
 if(nctemp932)
 {
 np =0;

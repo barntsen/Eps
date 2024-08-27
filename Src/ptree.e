@@ -1,59 +1,41 @@
-/*
-%
-%         ***********************************************
-%         *                                             *
-            \chapter{Ptree -- parse tree management}  
-%         *                                             *
-%         ***********************************************
-\section{Introduction}
-%
-\begin{verbatim}
-*/
-include "libe.i"   /* Library interface */
-include "scan.i"   /* Scan interface    */
-include "ptree.i"  /* Ptree interface   */
-include "err.i"    /* Error interface   */
+# Parse tree managment
 
-/* Internal functions */
+#  node - sister 
+#    |
+#  child
 
-char [*] PtreeSetfield(char [*] field, char [*] value){}
+include "libe.i"   # Library interface  
+include "scan.i"   # Scan interface     
+include "ptree.i"  # Ptree interface    
+include "err.i"    # Error interface    
 
-/*
-\end{verbatim}
-%===============================================================
-\section{PtreeInit()}  
-%===============================================================
-\begin{verbatim}
-*/
-int PtreeInit()
-{
+# Internal functions  
+char [*] PtreeSetfield(char [*] field, char [*] value):end 
+ 
+ 
+int PtreeInit() :
+  # PtreeInit initialize the tree module.
+
   return(OK);
-}
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeRmtree -- remove a tree}                            
-%==============================================================
-\begin{verbatim}
-*/
+end 
+ 
 int PtreeRmtree(struct tree p)  
-{
-  if(p != NULL){
+:
+  # PtreeRmtree removes a tree.                            
+
+  if(p != NULL):
     PtreeRmtree(p.child);
     PtreeRmtree(p.sister);
     PtreeRmnode(p);
-  }
+  end 
+ 
   return(OK);
-}                     
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeRmnode -- remove a node}                            
-%==============================================================
-\begin{verbatim}
-*/
+end 
+                      
 int PtreeRmnode(struct tree p)  
-{
+:
+  # PtreeRmnode removes a node.                            
+
   if(p == NULL)
     return (OK);
   delete(p.name);
@@ -68,18 +50,15 @@ int PtreeRmnode(struct tree p)
   delete(p.descr);
   delete(p);
   return(OK);
- }                     
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeMknode -- make a node}  
-%==============================================================
-Make a new parse tree node 
-\begin{verbatim}
-*/
+ end 
+                      
 struct tree PtreeMknode( char [*] name, char [*] def )  
-{
+:
+
+  # PtreeMknodes make a new parse tree node.  
+
   struct tree p; 
+
   if((p = new(struct tree)) == NULL)
     ErrPanic("Out of memory");
   if((p.def = LibeStrsave(def))== NULL)
@@ -103,491 +82,371 @@ struct tree PtreeMknode( char [*] name, char [*] def )
   p.child = NULL;
   p.sister = NULL;
   return (p);
-}
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeAddchild -- add a child node}  
-%==============================================================
-\begin{verbatim}
-*/
+end 
+ 
 int PtreeAddchild(struct tree parent, struct tree child)  
-{
+:
+
+  # PtreeAddchild adds a child node  
+
   struct tree p, prev; 
 
-  if((p = parent.child) == NULL){
+  if((p = parent.child) == NULL):
     parent.child = child;
     return (OK);
-  }
+  end 
+ 
   prev = parent.child;
-  while ((p = p.sister) != NULL){
+  while ((p = p.sister) != NULL):
     prev = p;           
-  }
+  end 
+ 
   prev.sister = child;
   return(OK);
-}
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeAddsister -- add a sister node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+ 
 int PtreeAddsister(struct tree sister, struct tree newnode)
-{
- struct tree p, prev; 
+:
+
+ # PtreeAddsister adds a sister node.
+
+  struct tree p, prev; 
        
- p = sister;
- prev = p;
- while ((p = p.sister) != NULL){
-   prev = p;           
- }
- prev.sister = newnode;
- return(OK);
-}
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeMvsister -- move to the sister node}                            
-%==============================================================
-\begin{verbatim}
-*/
+  p = sister;
+  prev = p;
+  while ((p = p.sister) != NULL):
+    prev = p;           
+  end 
+ 
+  prev.sister = newnode;
+  return(OK);
+end 
+ 
 struct tree PtreeMvsister(struct tree p)
-{
+:
+  # PtreeMvsister moves to the sister node.                            
+
   return(p.sister);
-}                     
-/*
-\end{verbatim}
-%=============================================================
-\section{Mvchild -- move to child  node} 
-%=============================================================
-\begin{verbatim}
-*/
+end 
+                      
 struct tree PtreeMvchild(struct tree p)  
-{
+:
   return(p.child);
-}                     
-/*
-\end{verbatim}
-%=============================================================
-\section{PtreeSetname  -- set the name of the node}
-%=============================================================
- \begin{verbatim}
- */
+end 
+                      
 int PtreeSetname(struct tree p, char [*] name)
-{
+:
+
+  # Mvchild moves to child  node 
+
   p.name=PtreeSetfield(p.name, name);
   return(OK);
-}  
-/*
-\end{verbatim}
-%=============================================================
-\section{PtreeGetname  -- get the name of the node}
-%=============================================================
-\begin{verbatim}
-*/
+end 
+   
 char  [*] PtreeGetname(struct tree p) 
-{
-  return(p.name);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetdef -- set the definition of the node}
-%==============================================================
-\begin{verbatim}
-*/
-int PtreeSetdef(struct tree p, char [*] def)
-{
+:
+  # PtreeGetname gets the name of the node.
 
+  return(p.name);
+end 
+   
+int PtreeSetdef(struct tree p, char [*] def)
+:
+  # PtreeSetdef sets the definition of the node.
+ 
   p.def=PtreeSetfield(p.def, def);
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetdef  -- get the definition of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 char [*] PtreeGetdef(struct tree p)  
-{
+:
+
+  # PtreeGetdef gets the definition of the node.
+
   return(p.def);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetype  -- set the type of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetype(struct tree p, char [*] type)
-{
- p.type=PtreeSetfield(p.type, type);
- return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetype  -- get the type of the node}
-%==============================================================
-\begin{verbatim}
- */
+:
+  # PtreeSetype sets the type of the node.
+ 
+  p.type=PtreeSetfield(p.type, type);
+  return(OK);
+end 
+   
 char [*] PtreeGetype(struct tree p) 
-{
+:
+  # PtreeGetype gets the type of the node.
+
   return(p.type);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetstruct  -- set the structure flag}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetstruct(struct tree p, char [*] structure)
-{
- p.structure=PtreeSetfield(p.structure, structure);
- return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{Tgetstruct  -- get the structure flag}
-%==============================================================
-\begin{verbatim}
-*/
+:
+
+  # PtreeSetstruct sets the structure flag
+
+  p.structure=PtreeSetfield(p.structure, structure);
+  return(OK);
+end 
+   
 char [*] PtreeGetstruct(struct tree p)    
-{
+:
+
+  #PtreeGetstruct gets the structure flagr.end 
+ 
+
   return(p.structure);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetempr  -- set the real temporary of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetempr(struct tree p, char [*] tempr)
-{
+:
+
+  # PtreeSetempr sets the real temporary of the node
+ 
   p.tempr=PtreeSetfield(p.tempr, tempr);
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetempr  -- get the real temporary of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 char  [*] PtreeGetempr(struct tree p) 
-{
+:
+
+  # PtreeGetempr gets the real temporary of the node.
+
   return(p.tempr);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetempi  -- set the imaginary temporary of the node}
-%============================================================== 
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetempi(struct tree p, char [*] tempi)
-{
+:
+
+  # PtreeSetempi  sets the imaginary temporary of the node
+
   p.tempi=PtreeSetfield(p.tempi, tempi);
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetempi  -- get the imaginary temporary of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 char  [*] PtreeGetempi(struct tree p)  
-{
-  return(p.tempi);
-}  
-/*
-\end{verbatim}
-%===============================================================
-\section{PtreeGetline  -- get the line no of the node}
-%===============================================================
-\begin{verbatim}
-*/
+:
+
+ # PtreeGetempi gets the imaginary temporary of the node
+
+   return(p.tempi);
+end 
+   
 int PtreeGetline(struct tree p)    
-{
+:
+
+  # PtreeGetline gets the line no of the node.
+
   return(p.line);
-}  
-/*
-\end{verbatim}
-%===============================================================
-\section{PtreeSetline  -- set the line no of the node}
-%===============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetline(struct tree p, int line)    
-{
+:
+
+  #PtreeSetline sets the line no of the node.
+ 
   p.line=line;
   return(OK); 
-}  
-/*
-\end{verbatim}
-%===============================================================
-\section{PtreeGetfile  -- get the input file name of the noe}
-%===============================================================
-\begin{verbatim}
-*/
+end 
+   
 char [*] PtreeGetfile(struct tree p)    
-{
+:
+
+  # PtreeGetfile gets the input file name of the node.
+  
   return(p.file);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetrank  -- set the rank field of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetrank(struct tree p, int rank)    
-{
+:
+
+  #PtreeSetrank  sets the rank field of the node.
+ 
   p.rank = rank;
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetrank  -- get the rank field of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeGetrank(struct tree p)    
-{
+:
+  # PtreeGetrank gets the rank field of the node.
+
   return(p.rank);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetlval  -- set the lval field of the node}
-%============================================================== 
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetlval(struct tree p, char [*] lval)
-{
+:
+
+  #PtreeSetlval sets the lval field of the node.
+
   p.lval=PtreeSetfield(p.lval, lval);
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetlval  -- get the lval field of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
+ 
 char  [*] PtreeGetlval(struct tree p) 
-{
+:
+
+ # PtreeGetlval gets the lval field of the node.
+
   return(p.lval);
-}  
-/*
-\end{verbatim}
-/*
-%==============================================================
-\section{PtreeSetarray  -- Set the array field}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetarray(struct tree p, char [*] array)    
-{
+:
+
+  # PtreeSetarray sets the array field.
+
   p.array=PtreeSetfield(p.array, array);
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetarray  -- Get the array field}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 char [*] PtreeGetarray(struct tree p)    
-{
+:
+
+  # PtreeGetarray gets the array field.
+ 
   return(p.array);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetparallel  -- Set the parallel field}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetparallel(struct tree p, char [*] paral)    
-{
+:
+
+  # PtreeSetparallel sets the parallel field.
+ 
   p.paral=PtreeSetfield(p.paral, paral);
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetparallel  -- Get the parallel field}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 char [*] PtreeGetparallel(struct tree p)    
-{
+:
+
+  #PtreeGetparallel gets the parallel field.
+
   return(p.paral);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetref  -- Set the ref field}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetref(struct tree p, char [*] ref)    
-{
+:
+
+  # PtreeSetref sets the ref field.
+
   p.ref=PtreeSetfield(p.ref, ref);
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetref  -- Get the ref field}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 char [*] PtreeGetref(struct tree p)    
-{
+:
+
+  # PtreeGetref gets the ref field.
+ 
   return(p.ref);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetdescr  -- Set the descriptor field}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetdescr(struct tree p, char [*] descr)    
-{
+:
+
+  # PtreeSetdescr sets the descriptor field.
+ 
   p.descr=PtreeSetfield(p.descr, descr);
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetdescr  -- Get the descriptor field}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 char [*] PtreeGetdescr(struct tree p)    
-{
+:
+
+  # PtreeGetdescr gets the descriptor field.
+ 
   return(p.descr);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetglobal  -- Set the global field}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetglobal(struct tree p, char [*] global)    
-{
+:
+
+  # PtreeSetglobal sets the global field.
+ 
   p.global=PtreeSetfield(p.global, global);
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetdescr  -- Get the descriptor field}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 char [*] PtreeGetglobal(struct tree p)    
-{
+:
+
+  #PtreeGetdescr  -- Get the descriptor fieldend 
+ 
+ 
   return(p.global);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetopexr  -- set the topexpr field of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetopexpr(struct tree p, int topexpr)    
-{
-    p.topexpr = OK;
+:
+
+  # PtreeSetopexr  sest the topexpr field of the node.
+ 
+  p.topexpr = OK;
 
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetopexpr  -- get the simple field of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeGetopexpr(struct tree p)    
-{
+:
+
+  # PtreeGetopexpr  gets the simple field of the node.
+
     return(p.topexpr);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetsimple  -- set the simple field of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeSetsimple(struct tree p, int simple)    
-{
+:
+
+  # PtreeSetsimple sets the simple field of the node.
+ 
   p.simple = simple;
   return(OK);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeGetsimple  -- get the simple field of the node}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreeGetsimple(struct tree p)    
-{
+:
+
+  # PtreeGetsimple gets the simple field of the node.
+ 
   return(p.simple);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreeSetfield  -- Set a field}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 char [*] PtreeSetfield(char [*] field, char [*] value)    
-{
+:
+
+  #PtreeSetfield sets a field.
+ 
   if(field != NULL)
     delete(field);
   if(value == NULL)
     field = NULL;
-  else{
+  else:
     if((field = LibeStrsave(value)) == NULL)
         ErrPanic("Out of memory"); 
-  }
+  end 
+ 
     return(field);
-}  
-/*
-\end{verbatim}
-%==============================================================
-\section{PtreePrtree -- print the tree}
-%==============================================================
-\begin{verbatim}
-*/
+end 
+   
 int PtreePrtree(struct tree p, int level)
-{ 
+: 
+
+  # PtreePrtree -- print the tree.
+ 
   int i;
   int fp;
        
   fp = stdout;
 
-  if (p != NULL){
+  if (p != NULL):
     i = 0;
-    while( i < level){
+    while( i < level):
       LibePuts(fp, " ");
       i = i + 1;
-    }
+    end 
+ 
     LibePuts(fp, p.name); LibePuts(fp," ");
     LibePuts(fp, p.def);  LibePuts(fp," ");
     LibePuts(fp, p.type); LibePuts(fp," ");
@@ -596,24 +455,30 @@ int PtreePrtree(struct tree p, int level)
     LibePuts(fp, p.paral); LibePuts(fp," ");
     LibePuts(fp, p.global); LibePuts(fp," ");
     LibePuti(fp, p.rank);  LibePuts(fp," ");
-    if(p.simple==OK){
+    if(p.simple==OK):
       LibePuts(fp, "simple"); LibePuts(fp," ");
-    }
-    else if(p.simple==EMPTY){
+    end 
+ 
+    else if(p.simple==EMPTY):
       LibePuts(fp, "empty"); LibePuts(fp," ");
-    }
-    else{
+    end 
+ 
+    else:
       LibePuts(fp, "nonsimple"); LibePuts(fp," ");
-    }
-    if(p.topexpr==OK){
+    end 
+ 
+    if(p.topexpr==OK):
       LibePuts(fp, "topexpr"); LibePuts(fp," ");
-    }
-    else if(p.topexpr==ERR){
+    end 
+ 
+    else if(p.topexpr==ERR):
       LibePuts(fp, "void"); LibePuts(fp," ");
-    }
-    else{
+    end 
+ 
+    else:
       LibePuts(fp, "nonsimple"); LibePuts(fp," ");
-    }
+    end 
+ 
     LibePuti(fp, p.line);  LibePuts(fp," ");
     LibePuts(fp, p.tempr); LibePuts(fp," ");
     LibePuts(fp, p.tempi); LibePuts(fp," ");
@@ -625,10 +490,9 @@ int PtreePrtree(struct tree p, int level)
     PtreePrtree(p.child, level);
     level = level - 1;
     PtreePrtree(p.sister,level);
-  }
+  end 
+ 
   LibeFlush(fp);
   return(OK);
-}
-/*
-\end{verbatim}
-*/
+end 
+ 

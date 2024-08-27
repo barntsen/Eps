@@ -1,22 +1,20 @@
-/*
-%============================================================
-\section{ScanPath -- system include path}  
-%============================================================
-Return the system include path. The path is obtained
-by concatenating the value of the environment variable 
-{\tt EPS} with the string "/Inc/".
-\begin{verbatim}
-*/
+
 include "libe.i"
 include "scan.i"
 
-char [*] ScanPath()
-{
-  char [*] env;  /* Value of EPS */
-  char [*] tmp;  /* Temporary string */
-  char [*] path; /* The reurn path   */
-  int      l1;   /* Length of env    */
-  int      l2;   /* Length of tmp    */
+char [*] ScanPath() :
+
+  # Return the system include path. 
+
+  # The path is obtained
+  # by concatenating the value of the environment variable 
+  # EPS with the string "/Inc/".
+
+  char [*] env;  # Value of EPS  
+  char [*] tmp;  # Temporary string  
+  char [*] path; # The reurn path    
+  int      l1;   # Length of env     
+  int      l2;   # Length of tmp     
 
   env = LibeGetenv("EPS");
   tmp = "/Inc/";
@@ -26,7 +24,4 @@ char [*] ScanPath()
   LibeStrcpy(env,path);
   LibeStrcat(tmp,path);
   return(path);
-}
-/*
-\end{verbatim}
-*/
+end
