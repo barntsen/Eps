@@ -308,8 +308,7 @@ char [*] CodeSconstant(struct tree p)
   CodeEs(p,tmp2); CodeEs(p,"=&"); CodeEs(p,tmp); CodeEs(p,";\n");
   return (tmp2);
 end
-int CodeDeclarations(struct tree p, struct symbol tp)
-: 
+int CodeDeclarations(struct tree p, struct symbol tp) :
 
   #CodeDeclarations  generates code for declaration list.
  
@@ -323,6 +322,7 @@ int CodeDeclarations(struct tree p, struct symbol tp)
   CodeWdeclarations(np);   # Walk the declaration nodes  
   return (OK);
 end
+
 int CodeGdeclarations(struct tree p, struct symbol tp)
 : 
 

@@ -322,6 +322,8 @@ int ScanLex() :
       rval = COMPLEX;
     else if(LibeStrcmp(ScanText,"struct"))
       rval = STRUCT;
+    else if(LibeStrcmp(ScanText,"class"))
+      rval = STRUCT;
     else if(LibeStrcmp(ScanText,"while"))
       rval = WHILE;
     else if(LibeStrcmp(ScanText,"return"))
