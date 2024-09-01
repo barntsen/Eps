@@ -15,7 +15,7 @@ struct tree :        # Basic node
   char [*] array;    # Array field            
   char [*] paral;    # Parallel field         
   char [*] global;   # global field         
-  char [*] ref;      # Eef  field             
+  char [*] ref;      # Ref  field             
   int rank;          # Array rank field        
   int simple;        # Simple field           
   int topexpr;       # Top level expr field   

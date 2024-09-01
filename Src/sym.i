@@ -18,6 +18,7 @@ struct symbol : # basic table entry
       struct symbol last;           # last entry in chain          
 end 
   
+const NTBL=400;
 
 #
  
@@ -183,4 +184,5 @@ int SymPrsym(struct symbol p, int level):end
 int SymCpytble(struct symbol tp, struct symbol up):end 
  
 #
- 
+
+int SymReadsym(int fp, struct symbol rtbl):end 
