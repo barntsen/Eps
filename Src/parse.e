@@ -3,12 +3,15 @@
 # Eps grammar
 # The complete grammar of the epsilon language is given below using the
 # EBNF notation. 
-#
-#    extdecl         = type   ':' structdeclar | ID  [idseq] | [ '(' fdecl ]  
-#    type            = INT | REAL | COMPLEX | CHAR | CONST  | STRUCT ID   [ '['arrayarg']' ]
+#    parse           = import | extdecl
+#    import          = IMPORT ID
+#    extdecl         = type   ':' structdeclar 
+#                      | ID  [idseq] | fdef
+#    fdef            = ID '(' [arglist] ')' [compstmnt]
+#    type            = INT | REAL | COMPLEX | CHAR | CONST  
+#                      | STRUCT ID   [ '['arrayarg']' ]
 #    structdeclar   = declarations 'END'
 #    idseq          = ',' ID  [idseq] 
-#    fdecl          = [arglist] ')' [compstmnt]
 #    arrayarg       = * | ',' arrayarg
 #    arglist        = type [ID] [argseq] 
 #    argseq         = ',' [ID]  argseq  
@@ -188,8 +191,6 @@ struct tree ParseParse() :
   if(lookahead == STOP)
     return np;                 # End of parsing  
   else:
-    while(lookahead == INCLUDE)
-      ParseMatch(INCLUDE);
     np = ParseExtdecl();      # Start parsing at extdecl   
   end 
  
@@ -209,45 +210,57 @@ struct tree ParseExtdecl() :
   # The following part of the grammar is implemented:
   #    extdecl    = type [( ':' structdeclar | ID ( [idseq] ";" | '(' fdecl ] ))]
 
-  struct tree mp, np, sp;
+  struct tree mp, np, sp, imp;
 
   np = ParseType();                  
-  if(np != NULL):
-    sp = PtreeMknode("extdecl", "void");
-    PtreeAddchild(sp,np);
-    if(lookahead == COLON):            # ":"  
+  if(np == NULL):
+    if(lookahead == IMPORT ): # Import
       ParseMatch(lookahead);
-      ParseStructdeclar(np);
-    end 
- 
-    else if(lookahead == ID):        # ID  
-      mp=PtreeMknode("identifier", ScanGetext());  
-      PtreeAddchild(np,mp);
-      ParseMatch(lookahead);
-      if(lookahead == COMMA):        # idseq 
-        ParseIdseq(np);
-        ParseMatch(SEMICOLON);
-      end 
- 
-      else if(lookahead==LP):       # "("    
-        ParseMatch(LP);
-        ParseFdecl(mp);
-      end 
-        
-      else if(lookahead == ASSIGN): # Constant  
-       ParseMatch(lookahead);
-       ParseConstdecl(mp);
-      end 
- 
-      else
-       ParseMatch(SEMICOLON);
-    end 
-   
-  end 
- else
-    sp = NULL;                      # eps    
+      if(lookahead == ID) :
+        imp = PtreeMknode("import",ScanGetext());
+        ParseMatch(ID);
+        sp  = PtreeMknode("extdecl","void");
+        PtreeAddchild(sp,imp);
+      end
+    end
+    return(sp);
+  end
 
-  return (sp);
+  if(lookahead == COLON):            # ":"  
+   sp = PtreeMknode("extdecl", "void");
+   PtreeAddchild(sp,np);
+    ParseMatch(lookahead);
+    ParseStructdeclar(np);
+    return(sp);
+  end 
+
+ if(lookahead == ID):        # ID  
+   sp = PtreeMknode("extdecl", "void");
+   PtreeAddchild(sp,np);
+   mp=PtreeMknode("identifier", ScanGetext());  
+   PtreeAddchild(np,mp);
+   ParseMatch(lookahead);
+   if(lookahead == COMMA):        # idseq 
+     ParseIdseq(np);
+     ParseMatch(SEMICOLON);
+   end
+   else if(lookahead==LP):       # "("    
+     ParseMatch(LP);
+     ParseFdecl(mp);
+   end 
+   else if(lookahead == ASSIGN): # Constant  
+     ParseMatch(lookahead);
+     ParseConstdecl(mp);
+   end 
+   else :
+     ParseMatch(SEMICOLON);
+   end
+ end
+ #else :
+ #  ParseMatch(SEMICOLON);
+ #end 
+
+ return (sp);
 end 
  
 struct tree ParseType() :

@@ -324,6 +324,8 @@ int ScanLex() :
       rval = STRUCT;
     else if(LibeStrcmp(ScanText,"class"))
       rval = STRUCT;
+    else if(LibeStrcmp(ScanText,"import"))
+      rval = IMPORT;
     else if(LibeStrcmp(ScanText,"while"))
       rval = WHILE;
     else if(LibeStrcmp(ScanText,"return"))

@@ -21,12 +21,15 @@ int CodeWdeclaration(struct tree p):end
 int CodeWdeclarations(struct tree p):end                       
 int CodeGdeclarations(struct tree p, struct symbol tp):end     
 int CodeStructdef(struct tree p, struct symbol tp):end         
+int CodeStructdefsym(struct tree p, struct symbol tp):end         
 int CodeFdeclaration(struct tree p, struct symbol tp):end      
 int CodeFdeclkernel(struct tree p):end                         
 int CodeFdewrappergpu(struct tree p):end
 int CodeIdeclaration(struct tree p, struct symbol tp):end  
+int CodeIdeclarations(struct tree p, struct symbol tp):end
 int CodeIdlist(struct tree p, struct symbol tp):end     
 int CodeFdefcpu(struct tree p):end  
+int CodeFdefcpusym(struct tree  p, struct symbol tp): end
 int CodeFdefgpu(struct tree p):end  
 int CodeFdef(struct tree p):end  
 int CodeCompstmnt(struct tree p):end  
@@ -68,6 +71,7 @@ int CodeEd(int d):end
 int CodeEc(int d):end    
 int CodeSetparallel(int flag):end
 int CodeGetparallel():end
+int CodeImport(struct tree p, struct symbol tp):end
 
 # End of forward declarations
 
@@ -94,8 +98,7 @@ end
 const MAXRANK = 4;
 int CodeLine;
 
-int CodeInit()
-:    
+int CodeInit() :
 
   # CodeIcode performs c code generator initialization.
  
@@ -105,16 +108,66 @@ int CodeInit()
   CodeSetarch(CPU);
   return (OK);
 end
-int CodeCode(struct tree p, struct symbol tp)
-:
+
+int CodeCode(struct tree p, struct symbol tp) :
 
   #CodeCode is the C code generator.
 
+  struct tree np;
+  
   # Generate code for external declarations      
+  np = PtreeMvchild(p);
+  if (LibeStrcmp(PtreeGetname(np),"import")) :
+    CodeImport(np,tp);
+  end 
 
   CodeDeclarations(p,tp);   
   return (OK);
 end
+
+int CodeImport(struct tree p, struct symbol tp):
+
+  # Generate code for imported declarations
+  #
+  # Arguments :
+  #  p:  Parse tree import node
+  #  tp: External symbol table
+  #
+  # Returns: OK
+  #
+  # Forward declarations is generated for an imported module
+  #
+  
+ char [*] module;
+
+  # Get the module name
+  module = PtreeGetdef(p);
+  
+  # Loop over entries in the symbol table
+  # to find the entries for the imported module
+  
+  tp=SymMvnext(tp);
+  while(tp != NULL):
+    #LibePs(SymGetfunc(tp));LibePs("\n");
+    if(LibeStrcmp(SymGetmodule(tp),module) == OK):
+      if(LibeStrcmp(SymGetstruct(tp), "structdef")==OK):
+          CodeStructdefsym(p,tp);
+      end
+      else if(LibeStrcmp(SymGetfunc(tp), "fdef")==OK):
+          CodeFdefcpusym(p,tp);
+      end
+      else :
+        CodeIdeclaration(p,tp);
+        CodeEs(p,";\n");
+      end
+    end
+    tp = SymMvnext(tp);
+  end
+      
+end
+
+
+
  
 # Module variable 
 # flag for arraytest
@@ -308,6 +361,7 @@ char [*] CodeSconstant(struct tree p)
   CodeEs(p,tmp2); CodeEs(p,"=&"); CodeEs(p,tmp); CodeEs(p,";\n");
   return (tmp2);
 end
+
 int CodeDeclarations(struct tree p, struct symbol tp) :
 
   #CodeDeclarations  generates code for declaration list.
@@ -319,12 +373,12 @@ int CodeDeclarations(struct tree p, struct symbol tp) :
   else
     np = p;
   CodeGdeclarations(np,tp);   # Generate code               
-  CodeWdeclarations(np);   # Walk the declaration nodes  
+  #DEBUG
+  #CodeWdeclarations(np);      # Walk the declaration nodes  
   return (OK);
 end
 
-int CodeGdeclarations(struct tree p, struct symbol tp)
-: 
+int CodeGdeclarations(struct tree p, struct symbol tp) :
 
   # CodeGdeclarations  generates code for declaration list.  
  
@@ -334,11 +388,13 @@ int CodeGdeclarations(struct tree p, struct symbol tp)
       if(SymGetemit(tp) == OK):
         if(LibeStrcmp(SymGetstruct(tp), "structdef")==OK)
           CodeStructdef(p,tp);
-        else if(LibeStrcmp(SymGetfunc(tp), "fdecl")==OK)
-          CodeFdeclaration(p,tp); 
+        else if(LibeStrcmp(SymGetfunc(tp), "fdef")==OK)
+          CodeFdef(p); 
         else: 
-          CodeIdeclaration(p,tp);
-          CodeEs(p, ";\n"); 
+          if(LibeStrcmp(SymGetname(tp),"#self") == ERR) :
+            CodeIdeclaration(p,tp);
+            CodeEs(p, ";\n"); 
+          end
         end
         SymSetemit(tp, ERR);
       end
@@ -347,6 +403,65 @@ int CodeGdeclarations(struct tree p, struct symbol tp)
   end
   return (OK);
 end
+
+int CodeStructdefsym(struct tree p, struct symbol tp):
+
+  # CodeStructdefsym generates code for struct definition.  
+
+  struct symbol up;
+  CodeEs(p, "struct ");
+  CodeEs(p, SymGetype(tp));
+  CodeEs(p, " {");
+  up = SymGetable(tp);
+  up = SymMvnext(up);
+  CodeIdeclarations(p, up);
+  CodeEs(p, "};\n");
+
+  CodeEs(p, "typedef struct ");
+  CodeEs(p, "nctemp");
+  CodeEs(p, SymGetype(tp));
+  CodeEs(p, "1");
+  CodeEs(p, " {int d[1]; struct ");
+  CodeEs(p, SymGetype(tp));
+  CodeEs(p, " *a; ");
+  CodeEs(p, "} ");
+  CodeEs(p,"nctemp");
+  CodeEs(p, SymGetype(tp));
+  CodeEs(p, "1");
+  CodeEs(p, ";\n");
+
+  CodeEs(p, "struct ");
+  CodeEs(p, "nctemp");
+  CodeEs(p, SymGetype(tp));
+  CodeEs(p, "2");
+  CodeEs(p, " {int d[2]; struct ");
+  CodeEs(p, SymGetype(tp));
+  CodeEs(p, " *a; ");
+  CodeEs(p, "} ");
+  CodeEs(p, ";\n");
+
+  CodeEs(p, "struct ");
+  CodeEs(p, "nctemp");
+  CodeEs(p, SymGetype(tp));
+  CodeEs(p, "3");
+  CodeEs(p, " {int d[3]; struct ");
+  CodeEs(p, SymGetype(tp));
+  CodeEs(p, " *a; ");
+  CodeEs(p, "} ");
+  CodeEs(p, ";\n");
+
+  CodeEs(p, "struct ");
+  CodeEs(p, "nctemp");
+  CodeEs(p, SymGetype(tp));
+  CodeEs(p, "4");
+  CodeEs(p, " {int d[4]; struct ");
+  CodeEs(p, SymGetype(tp));
+  CodeEs(p, " *a; ");
+  CodeEs(p, "} ");
+  CodeEs(p, ";\n");
+  return(OK);
+end
+
 int CodeStructdef(struct tree p, struct symbol tp)
 : 
 
@@ -404,8 +519,8 @@ int CodeStructdef(struct tree p, struct symbol tp)
   CodeEs(p, ";\n");
   return(OK);
 end
-int CodeFdeclaration(struct tree p, struct symbol tp)
-: 
+
+int CodeFdeclaration(struct tree p, struct symbol tp) :
 
   # CodeFdeclaration generate code for function declaration.
  
@@ -443,10 +558,15 @@ int CodeFdeclaration(struct tree p, struct symbol tp)
   CodeEs(p, ");\n");
   return(OK);
 end
+
 int CodeIdeclaration(struct tree p, struct symbol tp)
 : 
 
-  # CodeIdeclaration  genreate code for simple id declaration.
+  # CodeIdeclaration  generate code for simple id declaration.
+  #
+  # Parameters:
+  #   p  : Identifier node in parse tree
+  #   tp : Entry in symbol table
  
   if(LibeStrcmp(SymGetstruct(tp),"structdef") == OK):
     CodeEs(p, "struct ");
@@ -481,6 +601,22 @@ int CodeIdeclaration(struct tree p, struct symbol tp)
   end
   return(OK);
 end
+
+int CodeIdeclarations(struct tree p, struct symbol tp):
+
+  # CodeIdeclarations  generate code for simple id declaration.
+  #
+  # Parameters:
+  #   p  : Identifier node in parse tree
+  #   tp : Entry in symbol table
+
+  while(tp != NULL) :
+    CodeIdeclaration(p,tp);
+    CodeEs(p,";\n");
+    tp = SymMvnext(tp);
+  end
+end
+
 int CodeWdeclarations(struct tree p)
 : 
 
@@ -495,10 +631,10 @@ int CodeWdeclarations(struct tree p)
   end
   return (OK);
 end
-int CodeWdeclaration(struct tree p)
-: 
 
- # CodeWdeclaration walks declaration nodeend  
+int CodeWdeclaration(struct tree p) :
+
+ # CodeWdeclaration walks declaration node  
  
   struct tree np;
 
@@ -510,6 +646,7 @@ int CodeWdeclaration(struct tree p)
   end
   return(OK);
 end 
+
 int CodeFdeclkernel(struct tree p)
 : 
 
@@ -571,6 +708,13 @@ int CodeCompstmnt(struct tree p)
   # Emit declarations        
 
   p = PtreeMvchild(p);    
+
+  #Return if compstmnt is empty
+  if(p == NULL):
+    CodeEs(sp, "}\n");
+    return(OK);
+  end
+
   CodeDeclarations(p,SymGetltp());
   if(LibeStrcmp(PtreeGetname(p), "declarations") == OK):
     p = PtreeMvsister(p);
@@ -2064,8 +2208,7 @@ int CodeParallelstmntcpu(struct tree p)
   return(OK);
 end 
 
-int CodeParallelfor(struct tree p , int level, int rank)
-:
+int CodeParallelfor(struct tree p , int level, int rank) :
 
   # CodeParallelfor generates code for the cpu parallel for loop.
 
@@ -2145,17 +2288,81 @@ int CodeFdef(struct tree p):
   return(OK);
 end
 
-int CodeFdefcpu(struct tree p)
-: 
+int CodeFdefcpusym(struct tree  p, struct symbol tp):
+
+  # CodeFdefcpusym creates code for a function proptotype
+  #
+  # Arguments:
+  #  p  :  Parse tree node
+  #  tp :  Symbol table (external)
+  #
+  # Returns OK
+  #
+  # Code is generated for a function protopype
+  # for an imported module
+  # The parse tree node is only used for line no ref.
+  
+  #
+  # Code for function type
+  #
+  if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
+    CodeEs(p, "struct ");
+  end
+  if(LibeStrcmp(SymGetarray(tp),"array") == OK):
+    CodeEs(p, "nctemp");
+  end
+  CodeEs(p, SymGetype(tp));
+  if(LibeStrcmp(SymGetarray(tp),"array") == OK):
+    CodeEd(SymGetrank(tp));
+    CodeEs(p," *");
+  end
+  if(LibeStrcmp(SymGetstruct(tp),"struct")==OK):
+    CodeEs(p,"*");
+  end
+  CodeEs(p, " ");
+  CodeEs(p, SymGetname(tp));
+  CodeEs(p, " (");
+
+  # Code for argument list
+
+  tp = SymGetable(tp);
+  if(tp == NULL):
+    return(OK);
+  end
+  tp = SymMvnext(tp);
+  tp = SymGetable(tp);
+  if(tp == NULL):
+    return(OK);
+  end
+
+  tp=SymMvnext(tp);
+  while(tp != NULL) :
+    CodeIdeclaration(p,tp);
+    tp = SymMvnext(tp);
+    if(tp != NULL) :
+      CodeEs(p,",");
+    end
+    else :
+      CodeEs(p,");\n");
+    end
+  end
+end
+
+int CodeFdefcpu(struct tree p) :
 
   # CodeFdefcpu defines a regular function for the cpu architecture
 
   struct symbol tp;
+  struct tree   top;
   int noarg;
 
   noarg=0;
+  top = p; # Save the top of the function def
+
+  # Move to the function name
+  p = PtreeMvchild(p);
   tp = SymLookup(PtreeGetdef(p), SymGetetp());
-  SymSetltp(SymGetable(tp));
+
   if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
     CodeEs(p, "struct ");
   end
@@ -2194,8 +2401,8 @@ int CodeFdefcpu(struct tree p)
 
   return(OK);
 end
- int CodeParallelstmntgpu(struct tree p)
-: 
+
+ int CodeParallelstmntgpu(struct tree p) :
 
   # CodeParallelstmtgpu generates gpu code for the
   # parallelstmnt.

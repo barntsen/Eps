@@ -486,6 +486,7 @@ int PtreePrtree(struct tree p, int level)
     LibePuts(fp, p.ref);   LibePuts(fp," ");
     LibePuts(fp, p.descr); LibePuts(fp," ");
     LibePuts(fp, "\n");
+
     level = level + 1;
     PtreePrtree(p.child, level);
     level = level - 1;

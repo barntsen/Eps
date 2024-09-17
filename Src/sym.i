@@ -12,6 +12,7 @@ struct symbol : # basic table entry
       char [*] descr;              # Descr field                  
       char [*] global;             # Global field  
       char [*] ref;                # Flag for  reference          
+      char [*] module;             # Module name
       int  emit;                   # The emit flag                
       struct symbol tbl;            # next table                   
       struct symbol next;           # next entry in chain          
@@ -163,7 +164,9 @@ char [*] SymGetdescr(struct symbol np):end
  
 int SymSetglobal(struct symbol np, char [*] descr):end 
  
+int SymSetmodule(struct symbol np, char [*] descr):end 
 #
+char [*] SymGetmodule(struct symbol np):end 
  
 char [*] SymGetglobal(struct symbol np):end 
  
@@ -177,12 +180,15 @@ struct symbol SymLook(char [*] name):end
   
 #
  
-int SymPrsym(struct symbol p, int level):end 
+int SymPrsym(int fp, struct symbol p, int level):end 
+int SymExport(int fp, struct symbol p, int level):end 
  
 #
  
 int SymCpytble(struct symbol tp, struct symbol up):end 
+int SymCpytbler(struct symbol tp, struct symbol up):end 
+struct symbol SymAddtble(struct symbol tp, struct symbol sp) : end
  
 #
 
-int SymReadsym(int fp, struct symbol rtbl):end 
+int SymReadsym(int fp, struct symbol rtbl, char[*] module):end 

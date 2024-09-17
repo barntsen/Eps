@@ -6,6 +6,7 @@ include "ptree.i"  # Include parse tree interface
 include "err.i"    # Include interface to error       
 include "sem.i"    # Include interface to sem         
 
+int SemImport(struct tree p, struct symbol etp): end
 int SemExtdecl(struct tree p):end 
 int SemStructdecl(struct tree p, struct symbol tp):end 
 int SemFdecl(struct tree p, struct symbol tp):end 
@@ -54,6 +55,44 @@ int SemSem(struct tree p, struct symbol tp) :
   SemExtdecl(p);  # Check syntax tree pointed to by p        
   return (OK);
 end 
+
+int SemImport(struct tree p, struct symbol etp) :
+  
+  # SemImport reads a module file
+  # and installs imported symbols into the external symbol table
+
+  char [*] module;
+  char [*] file;
+  char [*] name;
+  int fd;
+  struct symbol stp;  # Module symbol table
+  struct symbol sp,tp;
+  struct symbol prev;
+
+  module=PtreeGetdef(p);
+  file = LibeStradd(module,".m");
+  fd = LibeOpen(file,"r");
+  stp = SymMktable();
+  SymReadsym(fd,stp,module);
+  LibeClose(fd);
+
+  tp = SymMvnext(stp) ; 
+  while(tp != NULL) :  
+    if(SymLookup(name,etp) != NULL) :
+      prev=tp;
+      tp=SymMvnext(tp);
+      SymRmname(name,stp);  
+    end
+    else :
+      tp=SymMvnext(tp);
+    end      
+  end
+  #sp = stp.last;
+  etp=SymAddtble(etp,stp);
+  #sp = etp.last;
+  return(OK);
+end
+
  
 int SemExtdecl(struct tree p) :
 
@@ -68,29 +107,29 @@ int SemExtdecl(struct tree p) :
     np = PtreeMvchild(p);
     PtreeSetglobal(np,"global");
 
-   # Check structure declaration  
+   # Check import  declaration  
+   if(LibeStrcmp(PtreeGetname(np), "import")):
+     SemImport(np, SymGetetp());
+     return(OK); 
+   end 
 
+   # Check structure declaration  
     while(np!= NULL):
       sp = PtreeMvchild(np);
       if(LibeStrcmp(PtreeGetarray(np),"array")):
         sp = PtreeMvsister(sp);
       end 
- 
 
       if(LibeStrcmp(PtreeGetname(sp), "structdec")):   
         SemStructdecl(np, SymGetetp()); 
       end 
- 
 
    # Check function declaration  
-
       else if(LibeStrcmp(PtreeGetname(sp), "fdecl")):
-          SemFdecl(np, SymGetetp());
+        SemFdecl(np, SymGetetp());
       end 
-  
 
    # Check variable and array declaration  
-
       else
         SemDeclaration(np, SymGetetp());
       np = PtreeMvsister(np);
@@ -132,17 +171,25 @@ end
   
 int SemFdecl(struct tree p, struct symbol tp) :
 
- # SemFdecl checks function declaration.  
- #  The interface of a function consists of the arguments of the
- #  function and their types. Both name and type are stored in the
- #  symbol table at this point. When the function definition is
- #  given, both names and types must be correctly declared.
+  #  SemFdecl checks function declaration.  
+  #
+  # Parameters :
+  #   p   : Parse tree node "fdecl"
+  #   tp  : External symbol table
+  #
+  # Returns :
+  #   Annotated "fdecl" subtree and entry in symbol table
  
-  struct tree np, sp, tmp;
-  struct symbol  up, uup, ltp;
+  struct tree np, sp;
+  struct symbol fname;     # Function name node
+  struct symbol fsub;      # Subtable to fname
+  struct symbol arg;       # Subtable to fsub for argument list
+  struct symbol argsub;    # Subtable to arg for arguments
+  struct symbol args;      # Subtable to argsub for arguments
+  struct symbol  up, ftp, uup, ltp, atp;
   char [*] type;
   int rank;
-  
+
   # The  p node is a type node  
   # Set type and rank for this function 
   if(LibeStrcmp(PtreeGetarray(p), "array")):
@@ -153,7 +200,6 @@ int SemFdecl(struct tree p, struct symbol tp) :
     while((sp = PtreeMvsister(sp))!= NULL)
       rank = rank+1;
   end 
- 
   else:
     rank = 0;
     np = PtreeMvchild(p); 
@@ -163,132 +209,79 @@ int SemFdecl(struct tree p, struct symbol tp) :
   SemCopytype(p,np);
   PtreeSetype(np, PtreeGetdef(p));
 
-  #
-  # Move to the fdecl node 
+  # Move to the function definition  
+  p=PtreeMvchild(p);
+
+  # Enter the function name into the external symbol table
+  if((fname = SymMkname(PtreeGetdef(p), tp)) == NULL):
+    ErrSerror(np,"Function already defined", PtreeGetdef(p));
+  end 
+
+  SymSetype(fname, PtreeGetype(p));
+  SymSetstruct(fname, PtreeGetstruct(p));
+  SymSetarray(fname, PtreeGetarray(p));
+  SymSetrank(fname, PtreeGetrank(p));
+  SymSetfunc(fname, "fdef");
+  
+  # Set the name of the node
   p = np;
+  PtreeSetname(p, "fdef");
 
-  np = PtreeMvchild(p);     # Arglist  
-  if(LibeStrcmp(PtreeGetname(np),"arglist"))
-    tmp = PtreeMvchild(np);
-  else
-    tmp = NULL;
+  # Move to the arglist or function body
+  np = PtreeMvchild(p);     
 
-  sp = PtreeMvsister(np);   # Compound statement   
-  if(sp==NULL):
+  # Create a local symbol table
+  ltp = SymMktable();
+  SymSetltp(ltp);
+
+  # Create a #self entry in the local table
+  up=SymMkname("#self",ltp);
+  SymSetfunc(up,PtreeGetdef(p));
+
+  # Find the function body node and save in sp
+  if(LibeStrcmp(PtreeGetname(np),"arglist") == OK) :
+    sp = PtreeMvsister(np);   
+  end
+  else :
     sp = np;
-    np = NULL;
-  end 
- 
-  else
-    np = PtreeMvchild(np);  # Type (of arglist)    
+  end
 
-  # Function declaration    
+  #Process the argument list
+  if(LibeStrcmp(PtreeGetname(np),"arglist") == OK) :
+    # Move to arglist declarations
+    np = PtreeMvchild(np);  
 
-  if(PtreeMvchild(sp) == NULL):             
-    if((up = SymMkname(PtreeGetdef(p), tp)) == NULL):
-      ErrSerror(np,"Multiple function prototype declaration"
-             , PtreeGetdef(p));
-    end 
- 
-
-    SymSetype(up, PtreeGetype(p));
-    SymSetstruct(up, PtreeGetstruct(p));
-    SymSetarray(up, PtreeGetarray(p));
-    SymSetrank(up, PtreeGetrank(p));
-    SymSetfunc(up, "fdecl");
-    ltp = SymMktable();    # Local symbol table      
-    SymSetable(up, ltp);
+    #Create an arglist entry in the local symbol table
     up = SymMkname("#arglist", ltp);
-    uup = SymMktable();
-    SymSetable(up, uup);   # Argument list table     
-    if(np != NULL)
-      SemDeclarations(np, uup); 
-    up = SymMkname("#self", ltp);
-    SymSetfunc(up, PtreeGetdef(p));
-    SymSetemit(up,ERR);
-  end 
- 
 
-  # Function definition  
+    # Make a table to hold the argument list
+    # and set as subtable of the #arglist entry
+    ftp = SymMktable();    
+    SymSetable(up, ftp);
+   
+    # Do semantic check of the argument list
+    SemDeclarations(np, ftp); 
 
-  else:                                     
-    if((up = SymLookup(PtreeGetdef(p), tp)) == NULL):
-      ErrSerror(p, "Undeclared function"
-             , PtreeGetdef(p));
-    end 
-       
-    else:
-      if(LibeStrcmp(SymGetfunc(up),"fdef"))
-        ErrSerror(p, "Redefinition of function", PtreeGetdef(p));
-    end 
- 
+    #Create a  subtable to the function node
+    #in the external table
+    fsub = SymMktable();
+    SymSetable(fname,fsub);
 
-    if(LibeStrcmp(SymGetype(up),PtreeGetype(p)) == ERR): 
-      ErrSerror(p,"Function type does not match declaration"
-             , PtreeGetdef(p));
-    end 
+    #Create an arglist entry in the subtable
+    arg = SymMkname("#arglist", fsub);
+    #Create a  subtable to the arglist node
+    argsub = SymMktable();
+    SymSetable(arg,argsub);
+    #Copy the list of arguments from the local table
+    SymCpytble(ftp,argsub);
+  end
  
-    if(LibeStrcmp(SymGetarray(up),PtreeGetarray(p)) == ERR): 
-      ErrSerror(p,"Function type does not match declaration"
-             , PtreeGetdef(p));
-    end 
- 
-    SymSetfunc(up, "fdef");
-    PtreeSetname(p, "fdef");
-    up = SymGetable(up);
-    SymSetltp(up);
-    if(up != NULL):
-      uup = SymLookup("#arglist", up);
-    end 
- 
-    if(uup != NULL)
-      uup = SymGetable(uup);
-    while(np != NULL):
-      uup = SymMvnext(uup);
-      if(uup == NULL):
-        ErrSerror(p,"Function definition does not match declaration"
-             , PtreeGetdef(p));
-      end 
-  
-      type = SymGetype(uup);
-      PtreeSetype(np, PtreeGetdef(np));
-      if(LibeStrcmp(type, PtreeGetype(np)) == ERR):
-        ErrSerror(p,"Function definition does not match declaration"
-             , PtreeGetdef(p));
-      end 
-  
-      if(LibeStrcmp(SymGetarray(uup), PtreeGetarray(np)) == ERR):
-        ErrSerror(p,"Function definition does not match declaration"
-             , PtreeGetdef(p));
-      end 
-  
-      np = PtreeMvsister(np);
-    end 
- 
-    if(SymMvnext(uup) != NULL):
-      ErrSerror(p,"Function definition does not match declaration"
-           , PtreeGetdef(p));
-    end 
-  
-
-    if(SymGetltp() != NULL):
-      up = SymLookup("#arglist", SymGetltp());
-    end 
- 
-    if(up != NULL):
-      uup = SymGetable(up);
-      SymRmtable(uup);
-      uup = SymMktable();
-      SymSetable(up, uup); 
-      if(tmp != NULL)
-        SemDeclarations(tmp, uup);  
-     end 
- 
-    SemCompstmnt(sp); 
-    SemCopyparallel(p,sp);
-  end 
+  # Do semantic check of the function body
+  SemCompstmnt(sp); 
+  SemCopyparallel(p,sp);
  
   return (OK);
+
 end 
   
 int SemDeclarations(struct tree p, struct symbol tp) :

@@ -1,19 +1,26 @@
 # The Sym imodule manages the symbol table.
 #
-#   
-#    Table level 1
-#   -------------------     
-#   |                 |
-#   |   ----------    |         Table level 2
-#   |   |        |    |       ----------------
-#   |   |        |----------> | 
-#   |   |        |    |       | -----------
-#   |   ----------    |       |
-#   |       |         |       |
-#   |       v         |       |
-#   |                 |       |
-#   |                 |       |
-#   -------------------       ---------------- 
+#
+#    Table 1                Table 2
+#   -------------------     ----------------
+#   |                 |     |              |
+#   |   ----------    |     | ----------   |
+#   |   |        |    |     | |        |   |
+#   |   | node   |--------->| | node   |   |
+#   |   |        |    |     | |        |   |
+#   |   ----------    |     | ----------   |
+#   |       |         |     ----------------
+#   |       |         |
+#   |       |         |     Table 3
+#   |       v         |     ----------------
+#   |   ----------    |     |
+#   |   |        |    |     |
+#   |   |  node  |    |     |
+#   |   |        |    |     |
+#   |   ----------    |     |
+#   -------------------     ----------------
+
+
 
 include "libe.i"
 include "ptree.i"
@@ -31,7 +38,7 @@ struct symbol SymLtp;
 # SymStp is the string table (not used)
 struct symbol SymStp;      
 
-int Symgetline(int fp, struct symbol np): end
+int Symgetline(int fp, struct symbol np, char [*] module): end
  
 struct symbol SymGetetp() :
 
@@ -124,6 +131,7 @@ struct symbol SymMkname(char [*] name, struct symbol tp) :
     np.ref = LibeStrsave("void");
     np.descr = LibeStrsave("void");
     np.global = LibeStrsave("void");
+    np.module = LibeStrsave("void");
     np.emit = OK;
   end 
   else
@@ -199,6 +207,7 @@ struct symbol SymMktable() :
   tp.ident =  LibeStrsave("void");
   tp.lval =  LibeStrsave("void");
   tp.global = LibeStrsave("void");
+  tp.module = LibeStrsave("void");
   tp.emit = OK;
   tp.next =  NULL;
   tp.last = tp;
@@ -366,6 +375,21 @@ char [*] SymGetref(struct symbol np) :
 
   return(np.ref);
 end
+
+int SymSetmodule(struct symbol np, char  [*] module) :
+
+  # SymSetmodule sets the module field.     
+
+  np.module = SymSetfield(np.module, module);
+  return(OK);
+end
+
+char [*] SymGetmodule(struct symbol np) :
+
+  # SymGetmodule  gets the module field.
+
+  return(np.module);
+end
  
 int SymSetdescr(struct symbol np, char [*] descr) :
 
@@ -491,20 +515,77 @@ int SymCpytble(struct symbol tp, struct symbol up) :
     SymSetref(wp,SymGetref(tp));
     SymSetdescr(wp,SymGetdescr(tp));
     SymSetemit(wp,SymGetemit(tp));
+    SymSetmodule(wp,SymGetmodule(tp));
     tp = SymMvnext(tp);
   end
   return(OK);
 end 
+
+struct symbol SymAddtble(struct symbol tp, struct symbol sp) :
+
+ # SymAddtble concatenates two tables 
+ #
+ # Parameters:
+ #   tp :         Input table no 1
+ #   sp :         Input table no 2
+ # 
+ # Returns:
+ #   Table no 2 is added to table no 1 forming
+ #   a new table containing all symbols in table 1 and table 2.
+ #   The new table is returned.
+
+  struct symbol start;
+  struct symbol start2;
+  struct symbol prev;
+
+  start = tp;
+  
+  if(sp == NULL):
+    return(start);
+  end
+
+  if(tp == NULL):
+    return(start);
+  end
+
+  # If the module table is empty, do nothing
+  if(SymMvnext(sp) == NULL):
+    return(start);
+  end
+
+  #Update the table last pointer 
+  tp.last = sp.last;
+
+  tp = SymMvnext(tp); #Move to first entry
+  
+  # If the external table is empty, add the module
+  # table to the external table and return.
+  if(tp == NULL) :
+    start.next = SymMvnext(sp);
+    return(start);
+  end 
+
+  # Move to the end of the external table and
+  # add the module table
+  while(tp != NULL) :
+    prev = tp;
+    tp = SymMvnext(tp);
+  end
+  tp = prev;
+  tp.next = SymMvnext(sp);
+
+  return(start);
+end 
  
-int SymPrsym(struct symbol p, int level) :
+int SymPrsym(int fp,struct symbol p, int level) :
 
   # SymPrsym prints the symbol table.
 
   int i;
-  int fp;
+  #int fp;
   struct symbol tp;
        
-  fp = stdout;
+  #fp = stdout;
   if(p == NULL)
     return(ERR);
   while(p != NULL):
@@ -525,13 +606,14 @@ int SymPrsym(struct symbol p, int level) :
     LibePuts(fp, p.ref); LibePuts(fp, " ");    
     LibePuts(fp, p.descr); LibePuts(fp, " ");    
     LibePuts(fp, p.global); LibePuts(fp, " ");    
+    LibePuts(fp, p.module); LibePuts(fp, " ");    
     LibePuts(fp,"\n");
     LibeFlush(fp);
 
     if(p.tbl != NULL):
        tp = p.tbl;
        level = level + 1;
-       SymPrsym(tp, level);
+       SymPrsym(fp,tp, level);
        level = level - 1;
     end
     p = p.next;
@@ -540,57 +622,59 @@ int SymPrsym(struct symbol p, int level) :
     return(OK);
 end
 
-int SymReadsym(int fp, struct symbol rtbl)
-# SymReadsym reads the symbol table from a file.
-#
-# Parameters:
-#   fp   (int)           : File pointer
-#   rtbl (struct symbol) : Symbol table reference
-#                          Empty table on entry
-#                          Tree of tables on return
-#
-# Returns
-#   OK  (int): if no errors
-#   ERR (int): if an error occured            
-#
-# The symbol table (as printed with SymPrsym) is read
-# and reconstructed in memory. 
-# The layout of the input text file can be described as:
-#   1. Each table entry consist of a single line (with several fields).
-#   2. The first entry of a table is a line where the first field 
-#      contains the string "#first".
-#   3. Each table entry can contain a sub table. Each
-#      subtable is indented with a single space relative to
-#      the table entry.
-#   4. The first line in the file is indented with a single space.
-#      See example below which contain a symbol table with
-#      entries for a function (LibeArrayex) definition.
-# 
-#  #first void void void 0 1 void void void void void void 
-#  LibeArrayex int fdef void 0 1 void void void void void void 
-#   #first void void void 0 1 void void void void void void 
-#    #arglist void void void 0 1 void void void void void void 
-#    #first void void void 0 1 void void void void void void 
-#     line int void void 0 1 void identifier lval void void void 
-#     name char void array 1 1 void identifier lval void void void 
-#     ival int void void 0 1 void identifier lval void void void 
-#     index int void void 0 1 void identifier lval void void void 
-#     bound int void void 0 1 void identifier lval void void void 
-#     #self void LibeArrayex void 0 0 void void void void void void 
-#
-#     The algorith for reading and reconstructing the table in memory
-#     is quite straightforward:
-#
-#       1. Read a line of the table.
-#       2. If the ident does not change relative to
-#          the previous line, enter the table entry into the current table.
-#       3. If the indentation increases, make a new table and put the
-#          entry into the new table. The new table is marked as
-#          a subtable of the last entry in the current table.
-#       4. If the indentation decreases move from the subtable up to
-#          the entry containing the subtable.
-#
-:
+int SymReadsym(int fp, struct symbol rtbl, char [*] module) :
+
+  # SymReadsym reads the symbol table from a file.
+  #
+  # Parameters:
+  #   fp   (int)           : File pointer
+  #   rtbl (struct symbol) : Symbol table reference
+  #                          Empty table on entry
+  #                          Tree of tables on return
+  #   module               : Module name
+  #
+  # Returns
+  #   OK  (int): if no errors
+  #   ERR (int): if an error occured            
+  #
+  # The symbol table (as printed with SymPrsym) is read
+  # and reconstructed in memory. 
+  # The layout of the input text file can be described as:
+  #   1. Each table entry consist of a single line (with several fields).
+  #   2. The first entry of a table is a line where the first field 
+  #      contains the string "#first".
+  #   3. Each table entry can contain a sub table. Each
+  #      subtable is indented with a single space relative to
+  #      the table entry.
+  #   4. The first line in the file is indented with a single space.
+  #      See example below which contain a symbol table with
+  #      entries for a function (LibeArrayex) definition.
+  # 
+  #  #first void void void 0 1 void void void void void void 
+  #  LibeArrayex int fdef void 0 1 void void void void void void 
+  #   #first void void void 0 1 void void void void void void 
+  #    #arglist void void void 0 1 void void void void void void 
+  #    #first void void void 0 1 void void void void void void 
+  #     line int void void 0 1 void identifier lval void void void 
+  #     name char void array 1 1 void identifier lval void void void 
+  #     ival int void void 0 1 void identifier lval void void void 
+  #     index int void void 0 1 void identifier lval void void void 
+  #     bound int void void 0 1 void identifier lval void void void 
+  #     #self void LibeArrayex void 0 0 void void void void void void 
+  #
+  #     The algorith for reading and reconstructing the table in memory
+  #     is quite straightforward:
+  #
+  #       1. Read a line of the table.
+  #       2. If the ident does not change relative to
+  #          the previous line, enter the table entry into the current table.
+  #       3. If the indentation increases, make a new table and put the
+  #          entry into the new table. The new table is marked as
+  #          a subtable of the last entry in the current table.
+  #       4. If the indentation decreases move from the subtable up to
+  #          the entry containing the subtable.
+  #
+
   int indent;         # Indentation of current table line
   int oldindent;      # Indentation of previpus table line
   struct symbol tbl;  # Current table pointer
@@ -600,15 +684,17 @@ int SymReadsym(int fp, struct symbol rtbl)
   struct symbol ttbl; # Dummy table
   int i;              # Iteration index
 
+
   # Save the root node of the symbol table
   tbl=rtbl;
 
   # Make a dummy table and create a dummy name
   ttbl=SymMktable();
+  SymSetmodule(ttbl,module);
   mp = SymMkname("dummy",ttbl);
 
   # Skip the first line of the table
-  indent=Symgetline(fp,mp);
+  indent=Symgetline(fp,mp,module);
        
   # Initialize the old and current indents
   oldindent = 1;
@@ -617,14 +703,14 @@ int SymReadsym(int fp, struct symbol rtbl)
   while(OK):
     # Get a table line and exit if the
     # indent is negative.
-    indent=Symgetline(fp,mp);
+    indent=Symgetline(fp,mp,module);
     if(indent <0):
       return(OK);
     end
     # If this is the first line of a subtable, skip
     # the first record.
     if(LibeStrcmp(mp.name,"#first")==OK):
-      indent=Symgetline(fp,mp);
+      indent=Symgetline(fp,mp,module);
     end
 
     # The entry is in the current table
@@ -638,6 +724,7 @@ int SymReadsym(int fp, struct symbol rtbl)
     if(indent > oldindent):
       # Make new table
       ntbl=SymMktable();
+      SymSetmodule(tbl,module);
       # Get the last record in the current table 
       np=tbl.last;
       # Store the new table in the last
@@ -669,10 +756,13 @@ int SymReadsym(int fp, struct symbol rtbl)
       oldindent=indent;
     end
   end
+
+  LibeClose(fp);
   return(OK);
 end
 
-int Symgetline(int fp, struct symbol np):
+
+int Symgetline(int fp, struct symbol np, char [*] module):
 # 
 # Symgetline reads an single line (record) from a symbol 
 # table stored in a file.
@@ -721,6 +811,9 @@ int Symgetline(int fp, struct symbol np):
     SymSetrank(np,LibeAtoi(field));
 
     LibeGetw(fp,field);
+    SymSetemit(np,LibeAtoi(field));
+
+    LibeGetw(fp,field);
     SymSetstruct(np,field);
 
     LibeGetw(fp,field);
@@ -730,16 +823,17 @@ int Symgetline(int fp, struct symbol np):
     SymSetlval(np,field);
 
     LibeGetw(fp,field);
+    SymSetref(np,field);
+
+    LibeGetw(fp,field);
     SymSetdescr(np,field);
 
     LibeGetw(fp,field);
     SymSetglobal(np,field);
 
     LibeGetw(fp,field);
-    SymSetref(np,field);
-
-    LibeGetw(fp,field);
-    SymSetemit(np,LibeAtoi(field));
+    SymSetmodule(np,module);
+    
 
   #Read the rest of the line including the new line character.
   while((ch=LibeGetc(fp)) != NL): 
@@ -747,3 +841,51 @@ int Symgetline(int fp, struct symbol np):
   end
   return(indent);
 end
+
+int SymExport(int fp,struct symbol p, int level) :
+
+  # SymPrsym prints the symbol table.
+
+  int i;
+  #int fp;
+  struct symbol tp;
+       
+  #fp = stdout;
+  if(p == NULL)
+    return(ERR);
+  while(p != NULL):
+    i = 0;
+    while(i <= level):
+      LibePuts(fp, " ");
+      i = i + 1;
+    end
+    if(LibeStrcmp(p.module,"void")==OK) :
+      LibePuts(fp, p.name); LibePuts(fp, " ");    
+      LibePuts(fp, p.type); LibePuts(fp, " ");    
+      LibePuts(fp, p.func); LibePuts(fp, " ");    
+      LibePuts(fp, p.array); LibePuts(fp, " ");    
+      LibePuti(fp, p.rank); LibePuts(fp, " ");    
+      LibePuti(fp, p.emit); LibePuts(fp, " ");    
+      LibePuts(fp, p.structure); LibePuts(fp, " ");    
+      LibePuts(fp, p.ident); LibePuts(fp, " ");    
+      LibePuts(fp, p.lval); LibePuts(fp, " ");    
+      LibePuts(fp, p.ref); LibePuts(fp, " ");    
+      LibePuts(fp, p.descr); LibePuts(fp, " ");    
+      LibePuts(fp, p.global); LibePuts(fp, " ");    
+      LibePuts(fp, p.module); LibePuts(fp, " ");    
+      LibePuts(fp,"\n");
+      LibeFlush(fp);
+    end
+
+    if(p.tbl != NULL):
+       tp = p.tbl;
+       level = level + 1;
+       SymPrsym(fp,tp, level);
+       level = level - 1;
+    end
+    p = p.next;
+ end
+    LibeFlush(fp);
+    return(OK);
+end
+
