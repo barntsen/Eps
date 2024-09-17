@@ -33,7 +33,8 @@ const IM      = 27;       # The im      keyword
 const RE      = 28;       # The re      keyword     
 const LEN     = 29;       # The len     keyword     
 const CONST   = 431;      # The const   keyword     
-const INCLUDE = 432;        # The include keyword     
+const INCLUDE = 432;        # The import keyword     
+const IMPORT = 433;        # The import keyword     
 
 # ScanInit initialize the scanner.
 # ScanInit takes the input file name as argumnet 

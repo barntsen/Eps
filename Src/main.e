@@ -73,6 +73,8 @@ end
  
 char [*] MainFout(char [*] file,int arch):
 end 
+char [*] MainFmod(char [*] file):
+end 
  
 
 char [*] MainFout(char [*] infile, int arch):
@@ -119,6 +121,33 @@ char [*] MainFout(char [*] infile, int arch):
     ErrPanic("Unknow architecture");
  end 
  
+
+  return(outfile);
+end 
+
+char [*] MainFmod(char [*] infile):
+
+  # Mainmod checks the input file name
+  # and creates an output file name with extension '.m'
+  # The argument to the function is the input file name and
+  # the return value is the output file name. 
+
+  char [*] outfile; # Output file name (holding module file)
+  int l;            # Temp varibale to hold string length of 
+                    # input file name
+
+  l=len(infile,0);
+  if(l < 3):
+    ErrPanic(" Illegal file name");
+  end 
+ 
+  if(infile[l-2] != cast(char,'e')):
+    ErrPanic("File extension have to be .e");
+  end 
+ 
+  outfile=new(char [l]);
+  LibeStrcpy(infile,outfile);
+  outfile[l-2] = cast(char,'m');
 
   return(outfile);
 end 
@@ -474,7 +503,7 @@ int Main(struct MainArg [*] MainArgs) :
         PtreePrtree(p,0);       # Print annotated parse tree 
       if(table == OK)           # Print local symbol table  
         if(SymGetltp() != NULL):
-          SymPrsym(SymGetltp(),0);
+          SymPrsym(stdout,SymGetltp(),0);
         end 
     end 
  
@@ -498,7 +527,7 @@ int Main(struct MainArg [*] MainArgs) :
   if(etable == OK):
     LibeFlush(stderr);
     if(SymGetetp() != NULL):
-      SymPrsym(SymGetetp(),0);
+      SymPrsym(stdout,SymGetetp(),0);
     end 
   end 
 
@@ -527,6 +556,10 @@ int Main(struct MainArg [*] MainArgs) :
     delete(outfile);    
     LibeClose(fd);
   end 
+
+  # Output module file
+  fd = LibeOpen(MainFmod(infile),"w");
+  SymExport(fd,SymGetetp(),0);
  
   LibeFlush(stdout);
 
