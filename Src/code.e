@@ -567,6 +567,17 @@ int CodeIdeclaration(struct tree p, struct symbol tp)
   # Parameters:
   #   p  : Identifier node in parse tree
   #   tp : Entry in symbol table
+
+  # Do not generate declarations for constants
+  if(LibeStrcmp(SymGetype(tp),"rconstant")==OK) :
+    return (OK);
+  end
+  if(LibeStrcmp(SymGetype(tp),"iconstant")==OK) :
+    return (OK);
+  end
+  if(LibeStrcmp(SymGetype(tp),"sconstant")==OK) :
+    return (OK);
+  end
  
   if(LibeStrcmp(SymGetstruct(tp),"structdef") == OK):
     CodeEs(p, "struct ");
