@@ -190,6 +190,8 @@ int SemFdecl(struct tree p, struct symbol tp) :
   char [*] type;
   int rank;
 
+
+
   # The  p node is a type node  
   # Set type and rank for this function 
   if(LibeStrcmp(PtreeGetarray(p), "array")):
@@ -204,13 +206,15 @@ int SemFdecl(struct tree p, struct symbol tp) :
     rank = 0;
     np = PtreeMvchild(p); 
   end 
+
  
   PtreeSetrank(p,rank);
   SemCopytype(p,np);
   PtreeSetype(np, PtreeGetdef(p));
 
   # Move to the function definition  
-  p=PtreeMvchild(p);
+
+  p=np;
 
   # Enter the function name into the external symbol table
   if((fname = SymMkname(PtreeGetdef(p), tp)) == NULL):

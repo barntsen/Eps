@@ -24,8 +24,8 @@ char [*] LibeErrstr;  # Error message
 
 int LibeErrinit():end 
   
-int LibeErrinit()
-:
+int LibeErrinit() :
+
   # LibeErrinit -- Initialize error routines
 
   LibeErrno = OK;
@@ -34,8 +34,8 @@ int LibeErrinit()
 end 
  
 
-int LibeGeterrno()
-:
+int LibeGeterrno() :
+
   # LibeGeterrno just returns the value of
   # LibeErrno.
 
@@ -43,8 +43,8 @@ int LibeGeterrno()
 end 
  
 
-int LibeClearerr()
-:
+int LibeClearerr() :
+
   # LibeClearerr simply clears the error number.
 
   LibeErrno = OK;
@@ -52,16 +52,16 @@ int LibeClearerr()
 end 
  
 
-char [*] LibeGeterrstr()
-:
+char [*] LibeGeterrstr() :
+
   # LibeGeterrstr reports the value of the error string.
 
   return(LibeErrstr);
 end 
  
 
-char [*] LibeGetenv(char [*] name)
-:
+char [*] LibeGetenv(char [*] name) :
+
   # LibeGetenv returns the value of the environment variable
   # contained in  name.
 
@@ -98,8 +98,9 @@ int LibeIoinit():end
      # Io initialization rutine     
 int LibeMathinit():end 
    # Math initialization routine  
-int LibeInit()
-:
+
+int LibeInit() :
+
   # This is the initialization routine for the library.
   # LibeIoinit and LibeMathinit are
   # private routines defined in the section on Io and
@@ -130,14 +131,13 @@ int LibeDelete()
 end 
  
  
-int LibeExit()
-:
+int LibeExit() :
+
   # The LibeExit function closes all open files and then exits.
 
   RunExit();
   return(OK);
 end 
- 
 
 # The I/O library takes care of buffering a number of characters
 # for both read and write to minimize the number of system 
@@ -201,8 +201,7 @@ char [*] LibeTmpstr ; # String temporary
 #The LibeTmpstr array are used by various io- and
 #formatting routines for temporary storage.
 
-int LibeIoinit()
-:
+int LibeIoinit() :
 
   # LibeIoinit initialize the elements of the LibeFarr 
   # array, making the I/O routines ready for operation.
@@ -274,8 +273,7 @@ int LibeIoinit()
 end 
  
 
-int LibeIodelete()
-:
+int LibeIodelete() :
 
   # LibeIodelete closes all 
   # open files and deletes all buffers.
@@ -320,8 +318,8 @@ int LibeIodelete()
 end 
  
  
-int LibeOpen(char [*] name, char [*] mode)
-:
+int LibeOpen(char [*] name, char [*] mode) :
+
   # LibeOpen opens a file with name name. The  mode
   # string is equal to either of "w", "r" or "a" which opens the 
   # file for reading, writing or appending.
@@ -422,8 +420,8 @@ int LibeOpen(char [*] name, char [*] mode)
 end 
  
  
-int LibeClose(int fp)
-:
+int LibeClose(int fp) :
+
   # A file with filedescriptor fp is closed.
   # In case of error is ERR returned, in case of
   # success is  OK returned.
@@ -478,8 +476,8 @@ int LibeClose(int fp)
 end 
  
  
-int LibeGetc(int fp)      #  Return a character  
-:
+int LibeGetc(int fp) :     
+
   # LibeGetc inputs a single character from a file with the
   # fp EFILE reference.
   # The routine first check wether the cnt field is zero.
@@ -503,8 +501,7 @@ int LibeGetc(int fp)      #  Return a character
 end 
  
  
-int LibeUngetc(int fp)      #  Return a character  
-:
+int LibeUngetc(int fp) : 
 
   # LibeUngetc pushes the last read character back onto the file
   # referenced by  fp. A pushback of one character is guaranteed
@@ -551,7 +548,7 @@ int LibeUngetc(int fp)      #  Return a character
     if(LibeFarr[fp].ptr == LibeFarr[fp].bufsize-1):
       return cast(int, LibeFarr[fp].base[LibeFarr[fp].ptr]);
     end 
- else
+  else 
       return cast(int, LibeFarr[fp].base[LibeFarr[fp].ptr + 1]);
   end 
  

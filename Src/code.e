@@ -2305,6 +2305,8 @@ int CodeFdefcpusym(struct tree  p, struct symbol tp):
   #
   # Code for function type
   #
+
+
   if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
     CodeEs(p, "struct ");
   end
@@ -2359,8 +2361,21 @@ int CodeFdefcpu(struct tree p) :
   noarg=0;
   top = p; # Save the top of the function def
 
-  # Move to the function name
-  p = PtreeMvchild(p);
+  # We are at the type node for the function
+  if(LibeStrcmp(PtreeGetarray(p),"array") == OK):
+
+    # Move to the arrayargs node
+    p=PtreeMvchild(p); 
+
+    # Move to the function name
+    p = PtreeMvsister(p);
+  end
+  else :
+    # Move to the fdef node
+    p=PtreeMvchild(p); 
+
+  end
+
   tp = SymLookup(PtreeGetdef(p), SymGetetp());
 
   if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):

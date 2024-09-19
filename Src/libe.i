@@ -306,7 +306,7 @@ int    LibeGetmaxdig( float f):end
 int    LibeGetfexp( float f):end 
  
 #
-#LibeMach returns floating point characteristics
+# LibeMach returns floating point characteristics
 # according to the value of the  flag argument.
 # A flag value of MFMIN returns the minimum floating
 # point value, a value of MFMAX returns the maximum
@@ -354,7 +354,7 @@ int LibeGetnt():end
 int LibeMod( int n, int r):end 
  
 #
-#ibeMod returns the r modulus of the integer n.
+# LibeMod returns the r modulus of the integer n.
 # The modulus is computed by
 #  mod(n,r) = n -(n/r)r 
 #
