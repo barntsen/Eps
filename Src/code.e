@@ -2340,6 +2340,7 @@ int CodeFdefcpusym(struct tree  p, struct symbol tp):
 
   tp = SymGetable(tp);
   if(tp == NULL):
+    CodeEs(p,");\n");
     return(OK);
   end
   tp = SymMvnext(tp);
