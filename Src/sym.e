@@ -629,11 +629,16 @@ int SymExport(int fp,struct symbol p, int level) :
   int i;
   #int fp;
   struct symbol tp;
+  struct symbol tq;
        
   #fp = stdout;
   if(p == NULL)
     return(ERR);
-  #p = p.next;  
+  # Make a dummy table to print the "first" entry
+  tq = SymMktable();
+  SymPrsym(fp,tq,0);
+
+  p = p.next;  
   while(p != NULL):
     if(LibeStrcmp(p.module,"void") == OK) :
       SymPrsym(fp,p,0);
