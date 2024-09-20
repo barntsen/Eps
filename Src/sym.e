@@ -622,6 +622,28 @@ int SymPrsym(int fp,struct symbol p, int level) :
     return(OK);
 end
 
+int SymExport(int fp,struct symbol p, int level) :
+
+  # SymPrsym prints the symbol table.
+
+  int i;
+  #int fp;
+  struct symbol tp;
+       
+  #fp = stdout;
+  if(p == NULL)
+    return(ERR);
+  #p = p.next;  
+  while(p != NULL):
+    if(LibeStrcmp(p.module,"void") == OK) :
+      SymPrsym(fp,p,0);
+    end
+    p = p.next;
+  end
+  LibeFlush(fp);
+  return(OK);
+end
+
 int SymReadsym(int fp, struct symbol rtbl, char [*] module) :
 
   # SymReadsym reads the symbol table from a file.
@@ -724,7 +746,8 @@ int SymReadsym(int fp, struct symbol rtbl, char [*] module) :
     if(indent > oldindent):
       # Make new table
       ntbl=SymMktable();
-      SymSetmodule(tbl,module);
+#     SymSetmodule(tbl,module);
+      SymSetmodule(ntbl,module);
       # Get the last record in the current table 
       np=tbl.last;
       # Store the new table in the last
@@ -840,52 +863,5 @@ int Symgetline(int fp, struct symbol np, char [*] module):
     tmp=1;
   end
   return(indent);
-end
-
-int SymExport(int fp,struct symbol p, int level) :
-
-  # SymPrsym prints the symbol table.
-
-  int i;
-  #int fp;
-  struct symbol tp;
-       
-  #fp = stdout;
-  if(p == NULL)
-    return(ERR);
-  while(p != NULL):
-    i = 0;
-    while(i <= level):
-      LibePuts(fp, " ");
-      i = i + 1;
-    end
-    if(LibeStrcmp(p.module,"void")==OK) :
-      LibePuts(fp, p.name); LibePuts(fp, " ");    
-      LibePuts(fp, p.type); LibePuts(fp, " ");    
-      LibePuts(fp, p.func); LibePuts(fp, " ");    
-      LibePuts(fp, p.array); LibePuts(fp, " ");    
-      LibePuti(fp, p.rank); LibePuts(fp, " ");    
-      LibePuti(fp, p.emit); LibePuts(fp, " ");    
-      LibePuts(fp, p.structure); LibePuts(fp, " ");    
-      LibePuts(fp, p.ident); LibePuts(fp, " ");    
-      LibePuts(fp, p.lval); LibePuts(fp, " ");    
-      LibePuts(fp, p.ref); LibePuts(fp, " ");    
-      LibePuts(fp, p.descr); LibePuts(fp, " ");    
-      LibePuts(fp, p.global); LibePuts(fp, " ");    
-      LibePuts(fp, p.module); LibePuts(fp, " ");    
-      LibePuts(fp,"\n");
-      LibeFlush(fp);
-    end
-
-    if(p.tbl != NULL):
-       tp = p.tbl;
-       level = level + 1;
-       SymPrsym(fp,tp, level);
-       level = level - 1;
-    end
-    p = p.next;
- end
-    LibeFlush(fp);
-    return(OK);
 end
 
