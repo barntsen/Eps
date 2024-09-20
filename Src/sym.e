@@ -641,7 +641,24 @@ int SymExport(int fp,struct symbol p, int level) :
   p = p.next;  
   while(p != NULL):
     if(LibeStrcmp(p.module,"void") == OK) :
-      SymPrsym(fp,p,0);
+      LibePuts(fp," ");
+      LibePuts(fp, p.name); LibePuts(fp, " ");
+      LibePuts(fp, p.type); LibePuts(fp, " ");
+      LibePuts(fp, p.func); LibePuts(fp, " ");
+      LibePuts(fp, p.array); LibePuts(fp, " ");
+      LibePuti(fp, p.rank); LibePuts(fp, " ");
+      LibePuti(fp, p.emit); LibePuts(fp, " ");
+      LibePuts(fp, p.structure); LibePuts(fp, " ");
+      LibePuts(fp, p.ident); LibePuts(fp, " ");
+      LibePuts(fp, p.lval); LibePuts(fp, " ");
+      LibePuts(fp, p.ref); LibePuts(fp, " ");
+      LibePuts(fp, p.descr); LibePuts(fp, " ");
+      LibePuts(fp, p.global); LibePuts(fp, " ");
+      LibePuts(fp, p.module); LibePuts(fp, " ");
+      LibePuts(fp,"\n");
+      LibeFlush(fp);
+
+      SymPrsym(fp,SymGetable(p),1);
     end
     p = p.next;
   end
