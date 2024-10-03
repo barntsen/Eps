@@ -15,6 +15,7 @@ struct tree :        # Basic node
   char [*] array;    # Array field            
   char [*] paral;    # Parallel field         
   char [*] global;   # global field         
+  char [*] forw;     # forward field         
   char [*] ref;      # Ref  field             
   int rank;          # Array rank field        
   int simple;        # Simple field           
@@ -115,6 +116,8 @@ int PtreeSetline(struct tree p, int line ):end
 #
  
 char [*] PtreeGetfile(struct tree p):end 
+
+int PtreeSetfile(struct tree p, char [*] file):end 
      
 #
  
@@ -190,6 +193,12 @@ int PtreeSetsimple(struct tree p, int simple):end
 int PtreeGetsimple(struct tree p):end 
      
 #
+int PtreeSetforw(struct tree p, char [*] forw ):end 
+     
+#
+ 
+char [*] PtreeGetforw(struct tree p):end 
+     
  
 int PtreePrtree(struct tree p, int level):end 
  

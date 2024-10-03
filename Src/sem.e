@@ -9,7 +9,10 @@ include "sem.i"    # Include interface to sem
 int SemImport(struct tree p, struct symbol etp): end
 int SemExtdecl(struct tree p):end 
 int SemStructdecl(struct tree p, struct symbol tp):end 
-int SemFdecl(struct tree p, struct symbol tp):end 
+int SemFdef(struct tree p, struct symbol tp):end 
+int SemFdef2(struct tree p, struct symbol tp):end 
+int SemArgtype(struct tree p, struct symbol tp):end 
+int SemArgtypes(struct tree p, struct symbol tp):end 
 int SemDeclarations(struct tree p, struct symbol tp):end 
 int SemDeclaration(struct tree p, struct symbol tp):end 
 int SemCompstmnt(struct tree p):end 
@@ -42,6 +45,14 @@ int   SemIm(struct tree p):end
 int   SemCopytype(struct tree p, struct tree np):end 
 int   SemCopyparallel(struct tree p, struct tree np):end 
 int   SemComparetype(struct tree p, struct tree np):end 
+int   Semisnobody(struct tree p):end
+
+int SemSerror(struct tree p, char [*] s1, char [*] s2) : end
+
+int SemSerror(struct tree p, char [*] s1, char [*] s2) :
+  ErrSerror(PtreeGetfile(p), PtreeGetdef(p), PtreeGetline(p), s1,s2);
+  return(OK);
+end
 
 int SemSem(struct tree p, struct symbol tp) :
 
@@ -87,16 +98,13 @@ int SemImport(struct tree p, struct symbol etp) :
       tp=SymMvnext(tp);
     end      
   end
-  #sp = stp.last;
   etp=SymAddtble(etp,stp);
-  #sp = etp.last;
   return(OK);
 end
 
- 
 int SemExtdecl(struct tree p) :
 
-  # SemExtdecl checks external declaration list.  
+  # SemExtdecl checks the external declaration list.  
   # This is the start of the type checking and the routine
   # performs type checking for external declarations, including
   # structure and function definitions.
@@ -108,7 +116,7 @@ int SemExtdecl(struct tree p) :
     PtreeSetglobal(np,"global");
 
    # Check import  declaration  
-   if(LibeStrcmp(PtreeGetname(np), "import")):
+   if(LibeStrcmp(PtreeGetname(np), "import")==OK):
      SemImport(np, SymGetetp());
      return(OK); 
    end 
@@ -125,8 +133,8 @@ int SemExtdecl(struct tree p) :
       end 
 
    # Check function declaration  
-      else if(LibeStrcmp(PtreeGetname(sp), "fdecl")):
-        SemFdecl(np, SymGetetp());
+      else if(LibeStrcmp(PtreeGetname(sp), "fdef")):
+        SemFdef(np, SymGetetp());
       end 
 
    # Check variable and array declaration  
@@ -156,7 +164,7 @@ int SemStructdecl(struct tree p, struct symbol tp) :
   if(LibeStrcmp(PtreeGetname(p), "declarations")):
     up = SymMktable();
     if((uup = SymMkname(structure, tp)) == NULL)
-      ErrSerror(p,"Multiple declaration", structure);
+      SemSerror(p,"Multiple declaration", structure);
     else :
       SymSetable(uup, up);
       SymSetstruct(uup, "structdef");
@@ -168,17 +176,150 @@ int SemStructdecl(struct tree p, struct symbol tp) :
   
   return (OK);
 end 
-  
-int SemFdecl(struct tree p, struct symbol tp) :
 
-  #  SemFdecl checks function declaration.  
+int Semisnobody(struct tree p) :
+
+  # Semisnobody checks for empty function body
+  #
+  # Parameters:
+  #   p : parse tree fdef node
+  #
+  # Returns:
+  #  OK if the function body is empty.
+  #  ERR in all other cases.
+
+  struct tree np;
+
+
+  # Move to the arglist or function body
+  np = PtreeMvchild(p);     
+
+  # Arglist case
+  if(LibeStrcmp(PtreeGetname(np),"arglist")==OK):
+    np=PtreeMvsister(np);    #Move to compstmnt node
+    np=PtreeMvchild(np);     #Move to the function body
+    if(np==NULL):
+      return(OK);
+    end
+    else :
+      return(ERR);
+    end
+  end
+  else if(LibeStrcmp(PtreeGetname(np),"compstmnt")==OK):
+    np=PtreeMvchild(np);     #Move to the function body
+    if(np==NULL):
+      return(OK);
+    end
+    else:
+      return(ERR);
+    end
+  end
+end
+ 
+int SemArgtype(struct tree p, struct symbol tp) :
+ 
+  # SemArgtype checks if argument types of parse tree matches symbol table.
   #
   # Parameters :
-  #   p   : Parse tree node "fdecl"
+  #   p:   Parse tree function node
+  #   tp : External symbol table entry for function
+  #
+  # Returns : OK or exits
+  
+  char[*] name;
+
+  # Get the name of the variable
+  name = PtreeGetdef(p);
+
+  # First process the type
+  if(LibeStrcmp(SymGetype(tp),PtreeGetype(p))== ERR):
+    SemSerror(p,"Argument1 type does not match forward declaration",name);
+  end 
+  if(LibeStrcmp(SymGetref(tp),PtreeGetref(p))==ERR):
+    SemSerror(p,"Argument2 type does not match forward declaration",name);
+  end
+  if(LibeStrcmp(SymGetarray(tp),PtreeGetarray(p))==ERR):
+    SemSerror(p,"Argument3 type does not match forward declaration",name);
+  end
+  if((SymGetrank(tp)!= PtreeGetrank(p))):
+    SemSerror(p,"Argument4 type does not match forward declaration", name);
+  end
+  
+  return(OK);
+
+end
+  
+int SemArgtypes(struct tree p, struct symbol tp) :
+ 
+  # SemArgtypes checks if argument types of parse tree matches symbol table.
+  #
+  # Parameters :
+  #   p:   Parse tree function node
+  #   tp : External symbol table entry for function
+  #
+  # Returns : OK
+  #
+  char [*] name;
+
+  #Get the function name
+  name = SymGetname(tp);
+
+  # First check that the function types match
+  SemArgtype(p,tp);
+
+
+  # Check that the function parse tree has an arglist
+  p=PtreeMvchild(p);
+  if(LibeStrcmp(PtreeGetname(p),"arglist")==ERR):
+    if((tp=SymGetable(tp))!= NULL):
+      SemSerror(p,
+                "Function arguments does not match forward declaration"
+                ,PtreeGetdef(p));
+      return(ERR);
+    end 
+    return(OK);  # No arguments to check  
+  end 
+  
+  # Argument list exists, start processing of the argument list  
+
+    # Move to first entry in arglist
+    p = PtreeMvchild(PtreeMvchild(p));
+
+    # Move to arglist subtable
+    tp = SymGetable(tp);
+    tp = SymLookup("#arglist",tp);
+    if(tp == NULL) :
+      SemSerror(p,"Function Arguments does not match forward declaration",name);
+    end
+    else :
+      # Move to the argument sub table
+      tp = SymGetable(tp); 
+    end
+
+    # Move to first entry
+    tp = SymMvnext(tp); 
+
+    # Check all arguments
+
+    while(p != NULL):
+      SemArgtype(p,tp);
+      p = PtreeMvsister(p);
+      tp = SymMvnext(tp); 
+     end
+ 
+  return(OK);
+
+end 
+int SemFdef2(struct tree p, struct symbol tp) :
+
+  #  SemFdef2 checks function declaration with forward defs.
+  #
+  # Parameters :
+  #   p   : Parse tree node "fdef"
   #   tp  : External symbol table
   #
   # Returns :
-  #   Annotated "fdecl" subtree and entry in symbol table
+  #   Annotated "fdef" subtree and entry in symbol table
  
   struct tree np, sp;
   struct symbol fname;     # Function name node
@@ -190,7 +331,100 @@ int SemFdecl(struct tree p, struct symbol tp) :
   char [*] type;
   int rank;
 
+  # Set the name of the node
+  PtreeSetname(p, "fdef");
+  
+  # Delete the forward flag
+  
+  SymSetforw(tp,"void");
+  
+  # Move to the arglist or function body
+  np = PtreeMvchild(p);     
 
+  # Create a local symbol table
+  ltp = SymMktable();
+  SymSetltp(ltp);
+
+  # Create a #self entry in the local table
+  up=SymMkname("#self",ltp);
+  SymSetfunc(up,PtreeGetdef(p));
+
+  # Find the function body node and save in sp
+  if(LibeStrcmp(PtreeGetname(np),"arglist") == OK) :
+    sp = PtreeMvsister(np);   
+  end
+  else :
+    sp = np;
+  end
+
+  #Process the argument list
+  if(LibeStrcmp(PtreeGetname(np),"arglist") == OK) :
+    # Move to arglist declarations
+    np = PtreeMvchild(np);  
+
+    #Create an arglist entry in the local symbol table
+    up = SymMkname("#arglist", ltp);
+
+    # Make a table to hold the argument list
+    # and set as subtable of the #arglist entry
+    ftp = SymMktable();    
+    SymSetable(up, ftp);
+   
+    # Do semantic check of the argument list
+    SemDeclarations(np, ftp); 
+
+    #Create a  subtable to the function node
+    #in the external table
+    #fsub = SymMktable();
+    #SymSetable(fname,fsub);
+
+    #Create an arglist entry in the subtable
+    #arg = SymMkname("#arglist", fsub);
+    #Create a  subtable to the arglist node
+    #argsub = SymMktable();
+    #SymSetable(arg,argsub);
+    #Copy the list of arguments from the local table
+    #SymCpytble(ftp,argsub);
+
+  end
+
+  # Check that the argument list type matches
+  # the forward declaration
+  SemArgtypes(p,tp);
+
+  # Reset the emit flag
+  SymSetemit(tp,OK);
+ 
+  # Do semantic check of the function body
+  SemCompstmnt(sp); 
+  SemCopyparallel(p,sp);
+
+
+  return (OK);
+
+end 
+
+int SemFdef(struct tree p, struct symbol tp) :
+
+  #  SemFdef checks function declaration.  
+  #
+  # Parameters :
+  #   p   : Parse tree node "fdef"
+  #   tp  : External symbol table
+  #
+  # Returns :
+  #   Annotated "fdef" subtree and entry in symbol table
+ 
+  struct tree np, sp;
+  struct symbol fname;     # Function name node
+  struct symbol fsub;      # Subtable to fname
+  struct symbol arg;       # Subtable to fsub for argument list
+  struct symbol argsub;    # Subtable to arg for arguments
+  struct symbol args;      # Subtable to argsub for arguments
+  struct symbol  up, ftp, uup, ltp, atp, qp;
+  char [*] type;
+  int rank;
+  int nobody;
 
   # The  p node is a type node  
   # Set type and rank for this function 
@@ -206,7 +440,6 @@ int SemFdecl(struct tree p, struct symbol tp) :
     rank = 0;
     np = PtreeMvchild(p); 
   end 
-
  
   PtreeSetrank(p,rank);
   SemCopytype(p,np);
@@ -216,20 +449,33 @@ int SemFdecl(struct tree p, struct symbol tp) :
 
   p=np;
 
+  nobody=ERR;
+  # Find out whether this is a forward declaration
+  if(Semisnobody(p) == OK) :
+    PtreeSetforw(p,"forw");
+    nobody = OK;
+  end
+
   # Enter the function name into the external symbol table
   if((fname = SymMkname(PtreeGetdef(p), tp)) == NULL):
-    ErrSerror(np,"Function already defined", PtreeGetdef(p));
+    qp = SymLookup(PtreeGetdef(p),tp);
+    if(LibeStrcmp(SymGetforw(qp),"forw") != OK):
+      SemSerror(np,"Function already defined", PtreeGetdef(p));
+    end
+    else :
+      SemFdef2(p,qp);
+      return(OK); 
+    end
   end 
-
+  
   SymSetype(fname, PtreeGetype(p));
   SymSetstruct(fname, PtreeGetstruct(p));
   SymSetarray(fname, PtreeGetarray(p));
   SymSetrank(fname, PtreeGetrank(p));
   SymSetfunc(fname, "fdef");
-  
-  # Set the name of the node
-  p = np;
-  PtreeSetname(p, "fdef");
+  if(nobody == OK) :
+    SymSetforw(fname, "forw");
+  end
 
   # Move to the arglist or function body
   np = PtreeMvchild(p);     
@@ -278,6 +524,7 @@ int SemFdecl(struct tree p, struct symbol tp) :
     SymSetable(arg,argsub);
     #Copy the list of arguments from the local table
     SymCpytble(ftp,argsub);
+
   end
  
   # Do semantic check of the function body
@@ -337,7 +584,7 @@ int SemDeclaration(struct tree p, struct symbol tp) :
   while(np != NULL) :
     PtreeSetype(np, PtreeGetype(p));    # Set the type field  
     if((up = SymMkname(PtreeGetdef(np), tp)) == NULL)
-      ErrSerror(np,"Multiple declaration", PtreeGetdef(np));
+      SemSerror(np,"Multiple declaration", PtreeGetdef(np));
                 
     else:
 
@@ -371,7 +618,7 @@ int SemDeclaration(struct tree p, struct symbol tp) :
       SymSetlval(up, "lval");
       if(LibeStrcmp(PtreeGetstruct(p),"struct")):
         if((SymLookup(PtreeGetype(p), SymGetetp())) == NULL)
-          ErrSerror(p,"Undefined structure", PtreeGetype(p));
+          SemSerror(p,"Undefined structure", PtreeGetype(p));
         SymSetstruct(up, PtreeGetstruct(p));
       end 
  
@@ -504,8 +751,8 @@ int SemStmnt(struct tree p) :
     PtreeSetparallel(q,"parallel");
   end 
  
-
   return(OK);
+
 end 
   
 int SemWhilestmnt(struct tree p) :
@@ -625,7 +872,7 @@ int SemReturnstmnt(struct tree p) :
     PtreeSetref(p, PtreeGetref(sp));
     PtreeSetrank(p, SymGetrank(up));
     if(SemComparetype(p, sp) == ERR):
-      ErrSerror(p,"Return type is incorrect ", " ");
+      SemSerror(p,"Return type is incorrect ", " ");
     end 
  
   end 
@@ -658,7 +905,7 @@ struct tree SemBinexpr(struct tree p) :
     p = PtreeMvsister(p);    
     rightp = SemUnexpr(p);
     if(SemComparetype(leftp, rightp) == ERR):
-      ErrSerror(p,"Type error", " ");
+      SemSerror(p,"Type error", " ");
       return (p);
     end 
  
@@ -700,7 +947,7 @@ struct tree SemAsgexpr(struct tree p) :
 
   np = PtreeMvchild(p);
   if(LibeStrcmp(PtreeGetlval(np), "lval") == ERR):
-     ErrSerror(np,"Not a left value", PtreeGetdef(np));
+     SemSerror(np,"Not a left value", PtreeGetdef(np));
                 
   end 
  
@@ -724,18 +971,18 @@ struct tree SemRelexpr(struct tree p)
     if(LibeStrcmp(PtreeGetdef(p),"!=") == ERR):
       if((LibeStrcmp(PtreeGetref(np),"aref"))||
          (LibeStrcmp(PtreeGetref(np),"sref"))):
-        ErrSerror(p,"Illegal operation", " ");
+        SemSerror(p,"Illegal operation", " ");
       end 
   
       else if((LibeStrcmp(PtreeGetref(rp),"aref"))||
         (LibeStrcmp(PtreeGetref(np),"sref"))):
-         ErrSerror(p,"Illegal operation", " ");
+         SemSerror(p,"Illegal operation", " ");
       end 
  
     end 
   
     else if((LibeStrcmp(PtreeGetype(np), "complex"))): 
-      ErrSerror(p,"Illegal operation", " ");
+      SemSerror(p,"Illegal operation", " ");
     end 
  
   end 
@@ -755,11 +1002,11 @@ struct tree SemAddexpr(struct tree p) :
   np = PtreeMvchild(p);
   rp = PtreeMvsister(np);
   if((LibeStrcmp(PtreeGetref(np),"sref"))):
-    ErrSerror(np,"Illegal operation", " ");
+    SemSerror(np,"Illegal operation", " ");
   end 
   
   else if((LibeStrcmp(PtreeGetref(rp),"sref"))):
-     ErrSerror(np,"Illegal operation", " ");
+     SemSerror(np,"Illegal operation", " ");
   end 
  
   else: 
@@ -872,7 +1119,7 @@ int SemId(struct tree p) :
   struct tree np;
 
   if((tp = SymLook(PtreeGetdef(p))) == NULL):
-    ErrSerror(p,"Undeclared identifier", PtreeGetdef(p));
+    SemSerror(p,"Undeclared identifier", PtreeGetdef(p));
                
   end 
  
@@ -901,7 +1148,7 @@ int SemId(struct tree p) :
   end 
  
   if(LibeStrcmp(SymGetstruct(tp), "structdef")):
-       ErrSerror(p,"Struct names can not be used as a variable", 
+       SemSerror(p,"Struct names can not be used as a variable", 
                 PtreeGetdef(p));
   end 
  
@@ -948,16 +1195,15 @@ int SemFcall(struct tree p) :
     
   if(LibeStrcmp(PtreeGetname(p),"fcall")):
     if((tp = SymLookup(PtreeGetdef(p), SymGetetp())) == NULL):
-       ErrSerror(p,"Undeclared function", 
+       SemSerror(p,"Undeclared function", 
                   PtreeGetdef(p));
        return(ERR);
     end 
  
-    if(LibeStrcmp(SymGetfunc(tp), "fdecl") == ERR)
-      if(LibeStrcmp(SymGetfunc(tp), "fdef") == ERR):
-         ErrSerror(p,"Not a function", PtreeGetdef(p));
-         return(ERR);
-      end 
+    if(LibeStrcmp(SymGetfunc(tp), "fdef") == ERR):
+       SemSerror(p,"Not a function", PtreeGetdef(p));
+       return(ERR);
+    end 
  
     PtreeSetype(p, SymGetype(tp));
     PtreeSetstruct(p, SymGetstruct(tp));
@@ -981,7 +1227,7 @@ int SemFcall(struct tree p) :
 
     if((np=PtreeMvchild(p))==0):
       if((tp=SymMvnext(tp))!= NULL):
-        ErrSerror(p,"Function call does not match declaration"
+        SemSerror(p,"Function call does not match declaration"
           , PtreeGetdef(p));
         return(ERR);
       end 
@@ -996,7 +1242,7 @@ int SemFcall(struct tree p) :
     while(np != NULL):
       tp = SymMvnext(tp); # Get the next table entry  
       if(tp == NULL):
-        ErrSerror(p,"Function call does not match declaration"
+        SemSerror(p,"Function call does not match declaration"
           , PtreeGetdef(p));
         return(ERR);
       end 
@@ -1004,19 +1250,19 @@ int SemFcall(struct tree p) :
       type = SymGetype(tp);
       SemExpr(np);
       if(LibeStrcmp(type, PtreeGetype(np)) == ERR):
-         ErrSerror(p,"Function call does not match declaration"
+         SemSerror(p,"Function call does not match declaration"
           , PtreeGetdef(p));
          return(ERR);
       end 
   
       if(LibeStrcmp(SymGetarray(tp), "array")):
         if(LibeStrcmp(PtreeGetref(np),"aref") == ERR):
-           ErrSerror(p,"Function call does not match declaration"
+           SemSerror(p,"Function call does not match declaration"
                  , PtreeGetdef(p));
         end 
  
         if(PtreeGetrank(np) != SymGetrank(tp)):
-           ErrSerror(p,"Illegal array rank in function call"
+           SemSerror(p,"Illegal array rank in function call"
                  , PtreeGetdef(p));
         end 
  
@@ -1026,7 +1272,7 @@ int SemFcall(struct tree p) :
     end 
  
     if(SymMvnext(tp) != NULL):
-      ErrSerror(p,"Function call does not match declaration"
+      SemSerror(p,"Function call does not match declaration"
        , PtreeGetdef(p));
       return(ERR);
     end 
@@ -1094,7 +1340,7 @@ int SemCast(struct tree p) :
     # Check that conversions are legal:   
 
     if(LibeStrcmp(resultref, expref) == ERR):
-      ErrSerror(p,"Illegal conversion"," ");
+      SemSerror(p,"Illegal conversion"," ");
       return(ERR);
     end 
  
@@ -1102,25 +1348,25 @@ int SemCast(struct tree p) :
     if((LibeStrcmp(resultref,"aref") == ERR)||
        (LibeStrcmp(resultref,"sref") == ERR)):
       if(LibeStrcmp(resultype, "complex"))
-        ErrSerror(p,"Illegal conversion", " ");
+        SemSerror(p,"Illegal conversion", " ");
         return(ERR);
                      
       if(LibeStrcmp(resultype,"int")):
         if(LibeStrcmp(exptype, "char") == ERR)
           if(LibeStrcmp(exptype, "float") == ERR)
-            ErrSerror(p,"Illegal conversion", " ");
+            SemSerror(p,"Illegal conversion", " ");
             return(ERR);
       end 
  
       else if(LibeStrcmp(resultype,"char")):
         if(LibeStrcmp(exptype, "int") == ERR)
-          ErrSerror(p,"Illegal conversion", " ");
+          SemSerror(p,"Illegal conversion", " ");
           return(ERR);
       end 
  
       else if(LibeStrcmp(resultype,"float")):
         if(LibeStrcmp(exptype, "int") == ERR)
-          ErrSerror(np,"Illegal conversion", " ");
+          SemSerror(np,"Illegal conversion", " ");
           return(ERR);
       end 
  
@@ -1147,7 +1393,7 @@ int SemNew(struct tree p) :
  
     if(LibeStrcmp(PtreeGetarray(np),"array") == ERR):
       if(LibeStrcmp(PtreeGetstruct(np),"struct") == ERR):
-        ErrSerror(np,"Argument limited to array or structure type","  ");
+        SemSerror(np,"Argument limited to array or structure type","  ");
       end 
  
     end 
@@ -1159,7 +1405,7 @@ int SemNew(struct tree p) :
       sp = PtreeMvchild(sp);
       rank=1;
       if(sp==NULL):
-        ErrSerror(np,"Missing array size in new operator"  , " ");
+        SemSerror(np,"Missing array size in new operator"  , " ");
              
       end 
  
@@ -1192,7 +1438,7 @@ int SemDelete(struct tree p) :
     SemExpr(np);
     if(LibeStrcmp(PtreeGetref(np),"aref") == ERR):
       if(LibeStrcmp(PtreeGetref(np),"sref") == ERR):
-        ErrSerror(p,"not a array or structure", 
+        SemSerror(p,"not a array or structure", 
                   PtreeGetdef(p));
       end 
  
@@ -1230,14 +1476,14 @@ int SemCmplx(struct tree p) :
     np = PtreeMvchild(np);
     SemExpr(np);
     if(LibeStrcmp(PtreeGetype(np), "float") == ERR):
-      ErrSerror(p,"Argument to cmplx is not a float", 
+      SemSerror(p,"Argument to cmplx is not a float", 
                 PtreeGetdef(p));
       return(ERR);
     end 
  
     if(LibeStrcmp(PtreeGetref(np), "aref") ||
        LibeStrcmp(PtreeGetref(np), "sref")):
-      ErrSerror(p,"Argument to cmplx is not a scalar", 
+      SemSerror(p,"Argument to cmplx is not a scalar", 
       PtreeGetdef(p));
       return(ERR);
     end 
@@ -1245,13 +1491,13 @@ int SemCmplx(struct tree p) :
     np = PtreeMvsister(np);
     SemExpr(np);
     if(LibeStrcmp(PtreeGetype(np), "float") == ERR):
-      ErrSerror(p,"Argument to cmplx is not a float", 
+      SemSerror(p,"Argument to cmplx is not a float", 
                 PtreeGetdef(p));
     end 
  
     if(LibeStrcmp(PtreeGetref(np), "aref") ||
        LibeStrcmp(PtreeGetref(np), "sref")):
-      ErrSerror(p,"Argument to cmplx is not a scalar", 
+      SemSerror(p,"Argument to cmplx is not a scalar", 
                 PtreeGetdef(p));
       return(ERR);
     end 
@@ -1272,14 +1518,14 @@ int SemRe(struct tree p) :
     np = PtreeMvchild(p);
     SemExpr(np);
     if(LibeStrcmp(PtreeGetype(np), "complex") == ERR):
-      ErrSerror(p,"Argument to re is not a of type complex", 
+      SemSerror(p,"Argument to re is not a of type complex", 
       PtreeGetdef(p));
       return(ERR);
     end 
  
     if(LibeStrcmp(PtreeGetref(np), "aref") ||
        LibeStrcmp(PtreeGetref(np), "sref")):
-      ErrSerror(p,"Argument to re is not a scalar", 
+      SemSerror(p,"Argument to re is not a scalar", 
       PtreeGetdef(p));
       return(ERR);
     end 
@@ -1300,14 +1546,14 @@ int SemIm(struct tree p) :
     np = PtreeMvchild(p);
     SemExpr(np);
     if(LibeStrcmp(PtreeGetype(np), "complex") == ERR):
-      ErrSerror(p,"Argument to re is not of type complex", 
+      SemSerror(p,"Argument to re is not of type complex", 
       PtreeGetdef(p));
       return(ERR);
     end 
  
     if(LibeStrcmp(PtreeGetref(np), "aref") ||
        LibeStrcmp(PtreeGetref(np), "sref")):
-      ErrSerror(p,"Argument to re is not a scalar", 
+      SemSerror(p,"Argument to re is not a scalar", 
                 PtreeGetdef(p));
       return(ERR);
     end 
@@ -1329,22 +1575,22 @@ int SemLen(struct tree p) :
     np = PtreeMvchild(p);
     SemExpr(np);
     if(LibeStrcmp(PtreeGetref(np),"aref") == ERR):
-      ErrSerror(p,"not an array", PtreeGetdef(p));
+      SemSerror(p,"not an array", PtreeGetdef(p));
     end 
  
     np = PtreeMvsister(np);
     SemExpr(np);
     if(LibeStrcmp(PtreeGetref(np),"aref")):
-      ErrSerror(p, "not a scalar", PtreeGetdef(p));
+      SemSerror(p, "not a scalar", PtreeGetdef(p));
     end 
  
     if(LibeStrcmp(PtreeGetype(np),"int") == ERR):
-      ErrSerror(p,"not an integer expression", 
+      SemSerror(p,"not an integer expression", 
       PtreeGetdef(p));
     end 
  
     if((np=PtreeMvsister(np)) != NULL):
-      ErrSerror(p, "too many arguments", PtreeGetdef(p));
+      SemSerror(p, "too many arguments", PtreeGetdef(p));
     end 
  
   end 
@@ -1360,7 +1606,7 @@ int SemArray(struct tree p, struct symbol tp) :
   int rank;
 
   if(LibeStrcmp(PtreeGetarray(p),"array") == ERR):
-    ErrSerror(p,"Not an array", PtreeGetdef(p));
+    SemSerror(p,"Not an array", PtreeGetdef(p));
     return(ERR);
   end 
  
@@ -1369,7 +1615,7 @@ int SemArray(struct tree p, struct symbol tp) :
   np = PtreeMvchild(p);
 
   if(LibeStrcmp(PtreeGetname(np),"exprlist") == ERR):
-     ErrSerror(p, "Missing array indexes", PtreeGetdef(p)); 
+     SemSerror(p, "Missing array indexes", PtreeGetdef(p)); 
      return(ERR);
   end 
   
@@ -1384,7 +1630,7 @@ int SemArray(struct tree p, struct symbol tp) :
   end 
  
   if(rank != SymGetrank(tp)):
-    ErrSerror(p,"Illegal array dimension", PtreeGetdef(p)); 
+    SemSerror(p,"Illegal array dimension", PtreeGetdef(p)); 
     return(ERR);
   end 
  
@@ -1402,7 +1648,7 @@ int SemStructure(struct tree p, struct symbol tp) :
   struct tree np;
 
   if(LibeStrcmp(PtreeGetstruct(p),"struct") == ERR):
-    ErrSerror(p,"Not a structure", PtreeGetdef(p));
+    SemSerror(p,"Not a structure", PtreeGetdef(p));
     return(ERR);
   end 
  
@@ -1411,21 +1657,21 @@ int SemStructure(struct tree p, struct symbol tp) :
   temp = SymGetype(tp);
   if((up = SymLook(temp)) == NULL):
     if((up = SymLook(temp)) == NULL):
-       ErrSerror(p,"Undeclared structure type"," ");
+       SemSerror(p,"Undeclared structure type"," ");
        return(ERR);
     end 
   
   end 
  
   if(LibeStrcmp(SymGetstruct(tp), "structdef")):
-       ErrSerror(p,"Struct names can not be used as a variable", 
+       SemSerror(p,"Struct names can not be used as a variable", 
                   PtreeGetdef(p));
        return(ERR);
   end 
  
   np = PtreeMvchild(p);
   if(np == 0):
-    ErrSerror(p, "Missing structure selector", PtreeGetdef(p)); 
+    SemSerror(p, "Missing structure selector", PtreeGetdef(p)); 
     return(ERR);
   end 
   
@@ -1435,13 +1681,13 @@ int SemStructure(struct tree p, struct symbol tp) :
   end 
  
   if(np == 0):
-    ErrSerror(p, "Missing array index", PtreeGetdef(p));
+    SemSerror(p, "Missing array index", PtreeGetdef(p));
     return(ERR);
   end 
   
   uup = SymGetable(up);
   if((tp  = SymLookup(PtreeGetdef(np), uup)) == NULL):
-    ErrSerror(np, "Undeclared structure member", 
+    SemSerror(np, "Undeclared structure member", 
                PtreeGetdef(np));
     return(ERR);
   end 

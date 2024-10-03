@@ -13,6 +13,7 @@ struct symbol : # basic table entry
       char [*] global;             # Global field  
       char [*] ref;                # Flag for  reference          
       char [*] module;             # Module name
+      char [*] forw;               # Forward declaration
       int  emit;                   # The emit flag                
       struct symbol tbl;            # next table                   
       struct symbol next;           # next entry in chain          
@@ -165,8 +166,12 @@ char [*] SymGetdescr(struct symbol np):end
 int SymSetglobal(struct symbol np, char [*] descr):end 
  
 int SymSetmodule(struct symbol np, char [*] descr):end 
-#
+
 char [*] SymGetmodule(struct symbol np):end 
+
+int SymSetforw(struct symbol np, char [*] forw):end 
+
+char [*] SymGetforw(struct symbol np):end 
  
 char [*] SymGetglobal(struct symbol np):end 
  

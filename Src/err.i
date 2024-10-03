@@ -1,13 +1,9 @@
 #
  
-int ErrError(char [*] s):end 
+int ErrError(char [*] file, int line, char [*] s): end
  
 #
  
-int ErrSerror(struct tree p, char [*] s1, char [*] s2):end 
+int ErrSerror(char [*] file, char [*] fname, int lineno, char [*] s1, char [*] s2) : end
  
- 
-int ErrPanic(char [*] s):end 
- 
-#
  

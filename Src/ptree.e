@@ -5,14 +5,12 @@
 #  child
 
 include "libe.i"   # Library interface  
-include "scan.i"   # Scan interface     
 include "ptree.i"  # Ptree interface    
 include "err.i"    # Error interface    
 
 # Internal functions  
 char [*] PtreeSetfield(char [*] field, char [*] value):end 
- 
- 
+
 int PtreeInit() :
   # PtreeInit initialize the tree module.
 
@@ -59,16 +57,13 @@ struct tree PtreeMknode( char [*] name, char [*] def )
 
   struct tree p; 
 
-  if((p = new(struct tree)) == NULL)
-    ErrPanic("Out of memory");
-  if((p.def = LibeStrsave(def))== NULL)
-    ErrPanic("Out of memory"); 
-  if((p.name = LibeStrsave(name)) == NULL)
-    ErrPanic("Out of memory"); 
+  p = new(struct tree);
+  p.def = LibeStrsave(def);
+  p.name = LibeStrsave(name);
   p.type =  LibeStrsave("void");    
   p.structure = LibeStrsave("void"); 
-  p.line =  ScanGetline();          
-  p.file =  LibeStrsave(ScanGetfile());
+  p.line =  0;
+  p.file =  LibeStrsave("void");
   p.tempr = LibeStrsave("void");         
   p.tempi = LibeStrsave("void");      
   p.lval =  LibeStrsave("void");       
@@ -77,6 +72,7 @@ struct tree PtreeMknode( char [*] name, char [*] def )
   p.ref =   LibeStrsave("void");        
   p.descr = LibeStrsave("void");  
   p.global = LibeStrsave("void");  
+  p.forw =   LibeStrsave("void");  
   p.rank = 0;
   p.simple = EMPTY;
   p.child = NULL;
@@ -257,6 +253,19 @@ char [*] PtreeGetfile(struct tree p)
   
   return(p.file);
 end 
+
+int PtreeSetfile(struct tree p, char [*] file) :   
+
+  
+  # PtreeGetfile sets the input file name of the node.
+  # 
+  # Parameters :
+  #   p    : Tree node
+  #   file : File name 
+
+  PtreeSetfield(p.file,file);
+  return(OK);
+end 
    
 int PtreeSetrank(struct tree p, int rank)    
 :
@@ -412,6 +421,24 @@ int PtreeGetsimple(struct tree p)
  
   return(p.simple);
 end 
+
+int PtreeSetforw(struct tree p, char [*] forw)    
+:
+
+  # PtreeSetforw sets the forward field.
+ 
+  p.forw=PtreeSetfield(p.forw, forw);
+  return(OK);
+end 
+   
+char [*] PtreeGetforw(struct tree p)    
+:
+
+  #PtreeGetforw  -- Get the forward field
+ 
+ 
+  return(p.forw);
+end 
    
 char [*] PtreeSetfield(char [*] field, char [*] value)    
 :
@@ -423,8 +450,7 @@ char [*] PtreeSetfield(char [*] field, char [*] value)
   if(value == NULL)
     field = NULL;
   else:
-    if((field = LibeStrsave(value)) == NULL)
-        ErrPanic("Out of memory"); 
+    field = LibeStrsave(value);
   end 
  
     return(field);
@@ -455,6 +481,7 @@ int PtreePrtree(struct tree p, int level)
     LibePuts(fp, p.paral); LibePuts(fp," ");
     LibePuts(fp, p.global); LibePuts(fp," ");
     LibePuti(fp, p.rank);  LibePuts(fp," ");
+    LibePuts(fp, p.forw);  LibePuts(fp," ");
     if(p.simple==OK):
       LibePuts(fp, "simple"); LibePuts(fp," ");
     end 

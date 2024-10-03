@@ -1,26 +1,21 @@
 # main is the main module for the eps compiler.
 
 # Imported modules
-include "libe.i"        # Libray for eps
-include "ptree.i"       # Parse tree managment
-include "scan.i"        # Lexical scanner
-include "err.i"         # Error handling
-include "parse.i"       # Parsing of source code
-include "sym.i"         # Symbol table managment
-include "sem.i"         # Semantic checking
-include "code.i"        # Code generator
-include "m.i"           # Machine dependent code
+import nlibe        # Libray for eps
+import nptree       # Parse tree managment
+import nscan        # Lexical scanner
+import nerr         # Error handling
+import nparse       # Parsing of source code
+import nsym         # Symbol table managment
+import nsem         # Semantic checking
+import ncode        # Code generator
+import nm           # Machine dependent code
 
 
-int MainError(char [*] s) : end
 
 int MainError(char [*] s) : 
   ErrError(ScanGetfile(),ScanGetline(), s);
 end
-
-
-int MainHelp(int arch):
-end 
 
 int MainHelp(int arch):
 
@@ -66,10 +61,10 @@ int MainHelp(int arch):
   end 
  else if(arch == HIP):
     LibePuts(stderr,"   -c : Produce c++/hip-code but do not generate object code\n");
- end 
+  end 
  else :
     MainError("Unknown architecture");
- end 
+  end 
  
   LibePuts(stderr,"   -g : Generate debug info \n");
   LibePuts(stderr,"   -d : Show the host compiler command line  \n");
@@ -79,12 +74,6 @@ int MainHelp(int arch):
   return(OK);
 end 
  
-char [*] MainFout(char [*] file,int arch):
-end 
-char [*] MainFmod(char [*] file):
-end 
- 
-
 char [*] MainFout(char [*] infile, int arch):
 
   # Mainfout checks the input file name
@@ -128,9 +117,7 @@ char [*] MainFout(char [*] infile, int arch):
  else:
     MainError("Unknow architecture");
  end 
- 
-
-  return(outfile);
+ return(outfile);
 end 
 
 char [*] MainFmod(char [*] infile):
@@ -152,17 +139,11 @@ char [*] MainFmod(char [*] infile):
   if(infile[l-2] != cast(char,'e')):
     MainError("File extension have to be .e");
   end 
- 
   outfile=new(char [l]);
   LibeStrcpy(infile,outfile);
   outfile[l-2] = cast(char,'m');
-
   return(outfile);
 end 
-     
-int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):end 
-int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show):end 
-int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show):end 
 
 const CMDLEN=80;        # Length of command line
 
@@ -549,13 +530,13 @@ int Main(struct MainArg [*] MainArgs) :
     if(ARCH == CPU):
       MainCcompcpu(outfile,debug,optimize,openmp,show);
     end 
-    else if(ARCH==CUDA):
+  else if(ARCH==CUDA):
       MainCcompcuda(outfile,debug,optimize,openmp,show);
-    end 
-    else if(ARCH==HIP):
+  end 
+  else if(ARCH==HIP):
       MainCcomphip(outfile,debug,optimize,openmp,show);
-    end 
-    else :
+  end 
+  else :
       MainError("Unknown architecture");
     end 
   end 
@@ -569,9 +550,7 @@ int Main(struct MainArg [*] MainArgs) :
   fd = LibeOpen(MainFmod(infile),"w");
   SymExport(fd,SymGetetp(),0);
  
-  #DEBUG
   LibeFlush(stdout);
 
   return(OK);   # Successfull Return 
 end 
- 
