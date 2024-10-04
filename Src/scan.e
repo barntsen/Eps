@@ -4,10 +4,51 @@
 # ``if'', ``for'' and ``while'' and numbers like ``238'' and
 # ``3.14159''.
  
-include "libe.i"      # Library module   
-include "scan.i"      # Lexical scanner interface 
-include "err.i"       # Error routines module
+import libe      # Library module   
+import err       # Error routines module
+import scanpath  # Input file path name
 
+# Constants
+#
+const ID  =    1;         # The Identifier token    
+const RARROW = 2;         # The '->'       token    
+const EQ =     3;         # The '=='       token    
+const NE =     4;         # The '!='       token    
+const OR =     5;         # The '||'       token    
+const AND =    6;         # The '&&'       token    
+const INT =    7;         # The 'int'      keyword  
+const CHAR =   8;         # The 'char   '  keyword  
+const REAL =   9;         # The 'real'     keyword  
+const COMPLEX = 10;       # The 'complex' keyword   
+const STRUCT  = 11;       # The 'struct'  keyword   
+const WHILE   = 12;       # The 'while'   keyword   
+const FOR     = 26;       # The 'for'     keyword   
+const PARALLEL= 31;       # The 'parallel' keyword   
+const END     = 531;      # The 'end'     keyword   
+const RETURN  = 30;       # The 'return'  keyword   
+const IF      = 14;       # The 'if'      keyword   
+const ELSE    = 15;       # The 'else'    keyword   
+const THEN    = 16;       # The 'then'    keyword   
+const ICONST  = 17;       # Integer constant token  
+const SCONST  = 18;       # String  constant token  
+const STOP    = 19;       # Stop token              
+const LE      = 20;       # The '<='       token    
+const GE      = 21;       # The '>='       token    
+const SIZEOF  = 22;       # The sizeof token        
+const CAST    = 23;       # The cast   token        
+const RCONST  = 24;       # float   constant token  
+const CMPLX   = 25;       # The cmplx   keyword     
+const NEW     = 26;       # The new     keyword     
+const DELETE  = 50;       # The delete  keyword     
+const IM      = 27;       # The im      keyword     
+const RE      = 28;       # The re      keyword     
+const LEN     = 29;       # The len     keyword     
+const CONST   = 431;      # The const   keyword     
+const INCLUDE = 432;      # The include keyword     
+const IMPORT = 433;       # The import keyword     
+
+# Data structures 
+#
 # The datastructures of Scan are very simple and
 # consists of two character arrays; ScanText and
 # ScanBuffer. The former is used to hold a string
@@ -24,26 +65,62 @@ int ScanInfile;        # Input file descriptor
 char [*] ScanInfilename;
 char [*] ScanFile;     # Current file name            
 #
- 
-int ScanLex():end
-int ScanGetword(char [*] ttext):end # Get one word        
-int ScanGetch():end                 # Get a character     
-int ScanUngetch():end               # Unget a character   
-int ScanFtail(int p):end            # Tail of a float     
-int ScanInclude():end
-int ScanWhite():end
-int ScanComment():end
-int ScanLcomment():end
 
-int ScanError(char [*] s): end
+char [*] ScanGetfile() :   
+
+  # ScanGetfile  gets input file name.  
+  #
+  # Parameters: None
+  #
+  # Returns:
+  #   Input file name
+  #
+
+  return(ScanFile);
+
+end
+
+int ScanGetline() :
+
+  # ScanGetline gets the line no.
+  # 
+  # Parameters: None
+  #
+  # Returns: 
+  #   Line number
+  
+  return(ScanLine);
+
+end
 
 int ScanError(char [*] s): 
+
+  # ScanError prints an error message.
+  #
+  # Parameters:
+  #   s       : Error message
+  #
+  # Returns : None
+  # 
+  # ScanError exits the program
+
   ErrError(ScanGetfile(), ScanGetline(), s);
+
 end
  
 int ScanInit(char [*] infile) :
 
 # ScanInit initializes the  scanner.
+#
+# Parameters:
+#   infile  : input file
+#
+# Returns   : OK
+#
+# ScanInit takes the input file name as argumnet 
+# and must be called once
+# before any other calls to functions in the Scan module are made.
+# 
 
 # Before I start, the two arrays ScanText and ScanBuffer must
 # be created.
@@ -64,39 +141,196 @@ int ScanInit(char [*] infile) :
   ScanInfilename = LibeStrsave(infile);
   return(OK);
 end  
- 
-int ScanGetok() :
 
-  # ScanGetok return next token.
+int ScanGetch()  :    
+
+  # ScanGetch gets a character.  
+  # 
+  # Parameters: None
+  #
+  # Returns: 
+  #   Next character from the input file.
+  #
+
+  return(LibeGetc(ScanFp));
+
+end
+ 
+int ScanIncline() :
+
+ # ScanIncline  increment lineno by 1. 
+ # 
+ # Parameters: None
+ #
+ # Returns: 
+ #   Line number
+ #
+ 
+  ScanLine = ScanLine + 1;
+  return(OK);
+
+end
+ 
+int ScanUngetch() :     
+
+  # ScanUngetch ungets a character.  
+  # 
+  # Parameters: None
+  #
+  # Returns: 
+  #   Pushed back character   
+  #
+
+  return(LibeUngetc(ScanFp));
+
+end
+
+int ScanWhite()  :   
+
+  # ScanWhite -- skips white space.  
+  #
+  # Parameters : None
+  #
+  # Returns:
+  #   OK
 
   int c;
 
-  if((c=ScanLex())==INCLUDE):
-      ScanInclude();
-      return(c);
-  end
-  else if(c == STOP):
-    if(ScanFp == ScanInfile)
-      return(c);
-    else:
-      LibeClose(ScanFp);
-      ScanFp = ScanInfile;
-      ScanSetfile(ScanInfilename);
-      ScanLine = ScanLinesave;
-      return(ScanGetok());
+  while(((c=ScanGetch()) == SPACE) || (c == TAB) || (c == NL)) 
+    if(c == NL)
+      ScanIncline();
+  ScanUngetch();
+
+  return(OK);
+ end
+ 
+
+int ScanComment() :
+
+  #  ScanComment skips comment.  
+  #
+  # Parameters : None
+  #
+  # Returns:
+  #   OK
+
+  int incomment,c;
+        
+  incomment=OK;
+
+  # Skip the text within the comments  
+
+  while(incomment == OK):
+    c = ScanGetch();
+    if(c == NL)
+      ScanIncline();
+    if(c=='*'):
+      c = ScanGetch();
+      if(c == NL)
+        ScanIncline();
+      if(c=='/'):
+        incomment=ERR;
+      end
+    end
+    if(c == EOF):
+      ScanError("Closing comment missing");
     end
   end
-  else
-    return(c);
-end  
+  return(OK);
+end
  
+int ScanLcomment() :
+
+  # ScanLcomment skips line comment.  
+  #
+  # Parameters : None
+  #
+  # Returns:
+  #   OK
+
+  int incomment,c;
+        
+  incomment=OK;
+
+  # Skip the text within the comments  
+
+  while(incomment == OK):
+    c = ScanGetch();
+    if(c == NL):
+      ScanIncline();
+      incomment=ERR;
+    end
+  end
+  return(OK);
+end
+
+ 
+int ScanFtail(int p) :     
+
+  # ScanFtail  gets the tail of a floating point number.  
+  # 
+  # Parameters: 
+  #   p : position counter
+  #
+  # Returns: 
+  #   position count (relative to input)
+  #
+  # ScanFtail finds the digits of a float after the '.'
+  # and copies into ScanText.
+  #
+
+  int c;
+ 
+  while(LibeIsdigit(c=ScanGetch())): 
+    p = p + 1;
+    if( p >= len(ScanText,0))
+      ScanError("Digit is too long");
+    ScanText[p] = cast(char, c);
+  end 
+  if((c == 'e') || (c == 'E')):        
+    p = p + 1;
+    if( p >= len(ScanText,0))
+      ScanError("Digit is too long");
+    ScanText[p] = cast(char, c);
+    c = ScanGetch();
+    if((c == PLUS) || ( c == MINUS)):
+      p = p + 1;
+      if( p >= len(ScanText,0))
+        ScanError("Digit is too long");
+      ScanText[p] = cast(char, c);
+      while(LibeIsdigit(c=ScanGetch())): 
+        p = p + 1;
+        if( p >= len(ScanText,0))
+          ScanError("Digit is too long");
+        ScanText[p] = cast(char, c);
+      end
+      ScanUngetch();
+      ScanText[p+1] = cast(char, EOS);
+      return (p);
+    end
+    else
+      ScanError("Unknown token");
+      return(ERR);
+  end
+  else:
+    ScanUngetch();
+    ScanText[p+1] = cast(char, EOS);
+    return (p);
+  end
+end
+
+
 int ScanLex() :
 
   # ScanLex finds and returns the next token.
-
+  #
+  # Parameters: None
+  #
+  # Returns: Token
+  #
   # This is the main routine of the scanner and returns the next token.
   # Token values are define above, and the literal value of the token are
-  # returned by the :\tt ScanGetextend routine.
+  # returned by the ScanGetext routine.
 
   int c;                 # Token value                          
   int p;                 # Next available position in ScanText  
@@ -372,103 +606,35 @@ int ScanLex() :
   return rval;
 end
  
-char [*] ScanGetext() :
+char [*] ScanSetfile(char [*] fname) :    
 
-  # ScanGetext  gets text of token.
+  # ScanSetfile sets the input file name.  
+  #
+  # Parameters: 
+  #   fname : File name
+  #
+  # Returns:
+  #   OK
+  #
 
-  return ScanText;
-end
-
-int ScanSetline(int lineno) :
-
- # Setline sets line no.
-  
-  ScanLine = lineno;    
-  return 0;
-end
-int ScanGetline() :
-
-  # Getline -- Get line no.
-  
-    return(ScanLine);
-end
-
-int ScanIncline() :
-
-  # ScanIncline  increment lineno by 1. 
- 
-  ScanLine = ScanLine + 1;
-  return(OK);
-end
- 
-int ScanGetword(char [*] ttext) :
-
-  #ScanGetword gets next word. 
-
-  return(LibeGetw(ScanFp, ttext));
-end
- 
-int ScanGetch()  :    
-
-  # ScanGetch gets a character.  
-
-  return(LibeGetc(ScanFp));
-end
- 
-int ScanFtail(int p) :     
-
-  # ScanFtail  gets the tail of a floating point number.  
-
-  int c;
- 
-  while(LibeIsdigit(c=ScanGetch())): 
-    p = p + 1;
-    if( p >= len(ScanText,0))
-      ScanError("Digit is too long");
-    ScanText[p] = cast(char, c);
-  end 
-  if((c == 'e') || (c == 'E')):        
-    p = p + 1;
-    if( p >= len(ScanText,0))
-      ScanError("Digit is too long");
-    ScanText[p] = cast(char, c);
-    c = ScanGetch();
-    if((c == PLUS) || ( c == MINUS)):
-      p = p + 1;
-      if( p >= len(ScanText,0))
-        ScanError("Digit is too long");
-      ScanText[p] = cast(char, c);
-      while(LibeIsdigit(c=ScanGetch())): 
-        p = p + 1;
-        if( p >= len(ScanText,0))
-          ScanError("Digit is too long");
-        ScanText[p] = cast(char, c);
-      end
-      ScanUngetch();
-      ScanText[p+1] = cast(char, EOS);
-      return (p);
-    end
-    else
-      ScanError("Unknown token");
-      return(ERR);
+  if(ScanFile != NULL):
+    delete(ScanFile);
   end
-  else:
-    ScanUngetch();
-    ScanText[p+1] = cast(char, EOS);
-    return (p);
-  end
+  ScanFile = LibeStrsave(fname);
+  return(ScanFile);
 end
 
-int ScanUngetch() :     
-
- #ScanUngetch ungets a character.  
- 
-  return(LibeUngetc(ScanFp));
-end
- 
 int ScanInclude()  :  
  
- #ScanInclude includes a file.  
+  #ScanInclude includes a file.  
+  # 
+  # Parameters: None
+  #
+  # Returns: 
+  #   OK
+  #
+  # ScanInclude processes the include statement
+  # and opens the include file for reading by the scanner.
 
   int p,c;
   int string;
@@ -521,83 +687,81 @@ int ScanInclude()  :
   return(OK);
  end
  
-char [*] ScanGetfile() :   
-
-  # ScanGetfile  gets input file name.  
-
-  return(ScanFile);
-end
  
-char [*] ScanSetfile(char [*] fname) :    
+int ScanGetok() :
 
- # ScanSetfile sets input file name.  
-
-  if(ScanFile != NULL):
-    delete(ScanFile);
-  end
-  ScanFile = LibeStrsave(fname);
-  return(ScanFile);
-end
- 
-int ScanWhite()  :   
-
-  # ScanWhite -- skips white space.  
+  # ScanGetok returns next token.
+  #
+  # Parameters: None
+  # 
+  # Returns : Token
+  #
+  # Each call of ScanGetok returns a new token read from
+  # the standard input. The token values are listed above.
+  # If no more characters can be read,
+  # the STOP token is returned.
+  # ScanGetext returns a string literal associated with
+  # the token.
 
   int c;
 
-  while(((c=ScanGetch()) == SPACE) || (c == TAB) || (c == NL)) 
-    if(c == NL)
-      ScanIncline();
-  ScanUngetch();
-
-  return(OK);
- end
- 
-int ScanComment() :
-
-  #  ScanComment skips comment.  
-
-  int incomment,c;
-        
-  incomment=OK;
-
-  # Skip the text within the comments  
-
-  while(incomment == OK):
-    c = ScanGetch();
-    if(c == NL)
-      ScanIncline();
-    if(c=='*'):
-      c = ScanGetch();
-      if(c == NL)
-        ScanIncline();
-      if(c=='/'):
-        incomment=ERR;
-      end
-    end
-    if(c == EOF):
-      ScanError("Closing comment missing");
+  if((c=ScanLex())==INCLUDE):
+      ScanInclude();
+      return(c);
+  end
+  else if(c == STOP):
+    if(ScanFp == ScanInfile)
+      return(c);
+    else:
+      LibeClose(ScanFp);
+      ScanFp = ScanInfile;
+      ScanSetfile(ScanInfilename);
+      ScanLine = ScanLinesave;
+      return(ScanGetok());
     end
   end
-  return(OK);
+  else
+    return(c);
+end  
+char [*] ScanGetext() :
+
+  # ScanGetext  gets text of token.
+  #
+  # Parameters: None
+  #
+  # Returns: textstring with value of token
+  #
+
+  return ScanText;
+
+end
+
+int ScanSetline(int lineno) :
+
+  # Setline sets line no.
+  # 
+  # Parameters:
+  #   lineno :  Line number
+  #
+  # Returns: 0
+  
+  ScanLine = lineno;    
+  return 0;
+
+end
+
+int ScanGetword(char [*] ttext) :
+
+  # ScanGetword gets next word. 
+  # 
+  # Parameters: ttext
+  #
+  # Returns: 
+  #   Next word in ttext.
+  #
+
+  return(LibeGetw(ScanFp, ttext));
+
 end
  
-int ScanLcomment() :
-
-  # ScanLcomment skips line comment.  
-
-  int incomment,c;
-        
-  incomment=OK;
-
-  # Skip the text within the comments  
-
-  while(incomment == OK):
-    c = ScanGetch();
-    if(c == NL):
-      ScanIncline();
-      incomment=ERR;
-    end
-  end
-  return(OK);
-end
+ 

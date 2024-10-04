@@ -20,13 +20,32 @@
 #   |   ----------    |     |
 #   -------------------     ----------------
 
+import libe
 
+# Symbol table data structures
+# 
 
-include "libe.i"
-include "ptree.i"
-include "sym.i"
-
-char [*] SymSetfield(char [*] field, char[*] value):end
+struct symbol : # basic table entry  
+      char [*] name;               # Name                         
+      char [*] type;               # Basic type                   
+      char [*] func;               # Flag for function            
+      char [*] array;              # Flag for array               
+      int  rank;                   # Rank of array                
+      char [*] structure;          # Flag for structure           
+      char [*] ident;              # Flag for identifier          
+      char [*] lval;               # Flag for left value          
+      char [*] descr;              # Descr field                  
+      char [*] global;             # Global field  
+      char [*] ref;                # Flag for  reference          
+      char [*] module;             # Module name
+      char [*] forw;               # forw field
+      int  emit;                   # The emit flag                
+      struct symbol tbl;            # next table                   
+      struct symbol next;           # next entry in chain          
+      struct symbol last;           # last entry in chain          
+end 
+  
+const NTBL=400;
 
 # SymEtp is the external Symbol Table
 struct symbol SymEtp;       
@@ -36,14 +55,14 @@ struct symbol SymLtp;
 
 # SymStp is the string table (not used)
 struct symbol SymStp;      
-
-int Symgetline(int fp, struct symbol np, char [*] module): end
  
+
 struct symbol SymGetetp() :
 
   # SymGetetp gets the symbol table.                 
 
   return(SymEtp);
+
 end
  
 struct symbol SymSetetp( struct symbol etp) :
@@ -52,6 +71,7 @@ struct symbol SymSetetp( struct symbol etp) :
 
   SymEtp = etp;
   return(SymEtp);
+
 end
 
 struct symbol SymGetltp() :
@@ -59,6 +79,7 @@ struct symbol SymGetltp() :
   # SymGetltp gets the local symbol table.                 
  
   return(SymLtp);
+
 end
 
 struct symbol SymSetltp( struct symbol ltp) :
@@ -67,6 +88,7 @@ struct symbol SymSetltp( struct symbol ltp) :
  
   SymLtp = ltp;
   return(SymLtp);
+
 end
 
 struct symbol SymGetstp() :
@@ -74,6 +96,7 @@ struct symbol SymGetstp() :
  # SymGetstp gets the string table.                 
  
   return(SymStp);
+
 end
  
 struct symbol SymSetstp( struct symbol stp) :
@@ -82,6 +105,7 @@ struct symbol SymSetstp( struct symbol stp) :
 
   SymStp = stp;
   return(SymStp);
+
 end
 
 struct symbol SymLookup(char [*] s, struct symbol tp) :
@@ -136,6 +160,7 @@ struct symbol SymMkname(char [*] name, struct symbol tp) :
     np = NULL;
 
   return(np);          # Return pointer to node  
+
 end     
 
 struct symbol SymRmname(char [*] name, struct symbol tp) :
@@ -181,6 +206,7 @@ char [*] SymGetname(struct symbol np) :
   # SymGetname gets a name.
 
   return(np.name);
+
 end
  
 struct symbol SymMktable() :
@@ -211,6 +237,7 @@ struct symbol SymMktable() :
   tp.last = tp;
 
   return(tp);           # Return pointer to first node  
+
 end     
  
 struct symbol  SymMvnext(struct symbol np) :
@@ -229,6 +256,7 @@ struct symbol SymSetable(struct symbol np, struct symbol tp) :
 
   np.tbl = tp;
   return(np);
+
 end
  
 struct symbol SymGetable(struct symbol np) :
@@ -236,6 +264,23 @@ struct symbol SymGetable(struct symbol np) :
   # SymGetable gets a table.
 
   return(np.tbl);
+
+end
+
+char [*] SymSetfield(char [*] field, char [*] value) :
+
+  # SymField sets a character field.     
+
+  if(field != NULL)
+    delete(field);
+  if(value == NULL) :
+    field = NULL;
+  end
+  else : 
+    field = LibeStrsave(value);
+  end
+  return(field);
+
 end
  
 int SymSetype(struct symbol np, char [*] type) :
@@ -244,6 +289,7 @@ int SymSetype(struct symbol np, char [*] type) :
 
   np.type = SymSetfield(np.type, type);
   return(OK);
+
 end
  
 char [*] SymGetype(struct symbol np) :
@@ -251,6 +297,7 @@ char [*] SymGetype(struct symbol np) :
   # SymGetype gets type.
 
   return(np.type);
+
 end
  
 int SymSetfunc(struct symbol np, char [*] func) :
@@ -259,6 +306,7 @@ int SymSetfunc(struct symbol np, char [*] func) :
 
   np.func = SymSetfield(np.func, func);
   return(OK);
+
 end
  
 char [*] SymGetfunc(struct symbol np) :
@@ -266,6 +314,7 @@ char [*] SymGetfunc(struct symbol np) :
   # SymGetfunc gets the function field.
 
   return(np.func);
+
 end
  
 int SymSetarray(struct symbol np, char [*] array) :
@@ -274,6 +323,7 @@ int SymSetarray(struct symbol np, char [*] array) :
 
   np.array = SymSetfield(np.array, array);
   return(OK);
+
 end
  
 char [*] SymGetarray(struct symbol np) :
@@ -281,6 +331,7 @@ char [*] SymGetarray(struct symbol np) :
   # SymGetarray gets the array field.
 
   return(np.array);
+
 end
 
 int SymSetstruct(struct symbol np, char [*] structure) :
@@ -289,6 +340,7 @@ int SymSetstruct(struct symbol np, char [*] structure) :
  
   np.structure = SymSetfield(np.structure, structure);
   return(OK);
+
 end
  
 char [*] SymGetstruct(struct symbol np) :
@@ -305,6 +357,7 @@ int SymSetident(struct symbol np, char [*] ident) :
 
   np.ident = SymSetfield(np.ident, ident);
   return(OK);
+
 end
 
 char [*] SymGetident(struct symbol np) :
@@ -312,6 +365,7 @@ char [*] SymGetident(struct symbol np) :
   # SymGetident gets the identifier field.
  
   return(np.ident);
+
 end
  
 int SymSetlval(struct symbol np, char [*] lval) :
@@ -320,6 +374,7 @@ int SymSetlval(struct symbol np, char [*] lval) :
 
   np.lval = SymSetfield(np.lval, lval);
   return(OK);
+
 end
  
 char [*] SymGetlval(struct symbol np) :
@@ -327,6 +382,7 @@ char [*] SymGetlval(struct symbol np) :
   #SymGetlval -- get the lval field.
 
   return(np.lval);
+
 end
  
 int SymSetrank(struct symbol np, int rank) :
@@ -335,6 +391,7 @@ int SymSetrank(struct symbol np, int rank) :
 
   np.rank = rank;
   return(OK);
+
 end
 
 int SymGetrank(struct symbol np) :
@@ -350,6 +407,7 @@ int SymSetemit(struct symbol np, int emit) :
 
    np.emit = emit;
    return(OK);
+
 end
  
 int SymGetemit(struct symbol np) :
@@ -357,6 +415,7 @@ int SymGetemit(struct symbol np) :
   # SymGetrank gets the rank field.
 
   return(np.emit);
+
 end
  
 int SymSetref(struct symbol np, char  [*] ref) :
@@ -365,6 +424,7 @@ int SymSetref(struct symbol np, char  [*] ref) :
 
   np.ref = SymSetfield(np.ref, ref);
   return(OK);
+
 end
  
 char [*] SymGetref(struct symbol np) :
@@ -372,6 +432,7 @@ char [*] SymGetref(struct symbol np) :
   # SymGetref  gets the ref field.
 
   return(np.ref);
+
 end
 
 int SymSetmodule(struct symbol np, char  [*] module) :
@@ -380,6 +441,7 @@ int SymSetmodule(struct symbol np, char  [*] module) :
 
   np.module = SymSetfield(np.module, module);
   return(OK);
+
 end
 
 char [*] SymGetmodule(struct symbol np) :
@@ -387,11 +449,12 @@ char [*] SymGetmodule(struct symbol np) :
   # SymGetmodule  gets the module field.
 
   return(np.module);
+
 end
- 
+
 int SymSetforw(struct symbol np, char  [*] forw) :
 
-  # SymSetmodule sets the forw field.     
+  # SymSetmodule sets the forw field.
 
   np.forw = SymSetfield(np.forw, forw);
   return(OK);
@@ -403,13 +466,14 @@ char [*] SymGetforw(struct symbol np) :
 
   return(np.forw);
 end
-
+ 
 int SymSetdescr(struct symbol np, char [*] descr) :
 
   # SymSetdescr sets the descr field.     
 
   np.descr = SymSetfield(np.descr, descr);
   return(OK);
+
 end
  
 char [*] SymGetdescr(struct symbol np) :
@@ -417,6 +481,7 @@ char [*] SymGetdescr(struct symbol np) :
   # SymGetdescr gets the descr field.
 
   return(np.descr);
+
 end
 
 int SymSetglobal(struct symbol np, char [*] global) :
@@ -425,6 +490,7 @@ int SymSetglobal(struct symbol np, char [*] global) :
  
   np.global = SymSetfield(np.global, global);
   return(OK);
+
 end
  
 char [*] SymGetglobal(struct symbol np) :
@@ -432,6 +498,7 @@ char [*] SymGetglobal(struct symbol np) :
   # SymGetdescr gets the global field.
 
   return(np.global);
+
 end
  
 int SymRmtable(struct symbol p) :
@@ -472,6 +539,7 @@ int SymRmtable(struct symbol p) :
     p=next;
   end
   return(OK);
+
 end
 
 struct symbol SymLook(char [*] name) :
@@ -492,22 +560,9 @@ struct symbol SymLook(char [*] name) :
     end
   end
   return(tp);
+
 end 
  
-char [*] SymSetfield(char [*] field, char [*] value) :
-
-  # SymField sets a character field.     
-
-  if(field != NULL)
-    delete(field);
-  if(value == NULL) :
-    field = NULL;
-  end
-  else : 
-    field = LibeStrsave(value);
-  end
-  return(field);
-end
 
 int SymCpytble(struct symbol tp, struct symbol up) :
 
@@ -532,6 +587,7 @@ int SymCpytble(struct symbol tp, struct symbol up) :
     tp = SymMvnext(tp);
   end
   return(OK);
+
 end 
 
 struct symbol SymAddtble(struct symbol tp, struct symbol sp) :
@@ -588,6 +644,7 @@ struct symbol SymAddtble(struct symbol tp, struct symbol sp) :
   tp.next = SymMvnext(sp);
 
   return(start);
+
 end 
  
 int SymPrsym(int fp,struct symbol p, int level) :
@@ -638,7 +695,7 @@ end
 
 int SymExport(int fp,struct symbol p, int level) :
 
-  # SymExports parts of the symbol table.
+  # SymPrsym prints the symbol table.
 
   int i;
   #int fp;
@@ -678,8 +735,89 @@ int SymExport(int fp,struct symbol p, int level) :
   end
   LibeFlush(fp);
   return(OK);
+
 end
 
+int Symgetline(int fp, struct symbol np, char [*] module):
+# 
+# Symgetline reads an single line (record) from a symbol 
+# table stored in a file.
+  int indent;
+  int ch;
+  int tmp;
+  char [*] field;
+
+  field = new(char [NTBL]);
+
+  indent =0;
+
+  # Read the current line
+  ch=OK;
+  if((ch=LibeGetc(fp)) == EOF):
+    return(-1);
+  end
+  else: 
+    # Back up one character
+    LibeUngetc(fp);
+  end
+
+  #Get the number of whitespace characters at the beginning of the line
+  while((ch=LibeGetc(fp)) == SPACE): 
+    indent = indent+1;
+  end
+  # Back up one character
+  LibeUngetc(fp);
+
+  # Get the fields in the current line and set into fields
+  # in the node pointed to by np
+
+    LibeGetw(fp,field);
+    SymSetfield(np.name,field); 
+
+    LibeGetw(fp,field);
+    SymSetype(np,field);
+
+    LibeGetw(fp,field);
+    SymSetfunc(np,field);
+
+    LibeGetw(fp,field);
+    SymSetarray(np,field);
+    
+    LibeGetw(fp,field);
+    SymSetrank(np,LibeAtoi(field));
+
+    LibeGetw(fp,field);
+    SymSetemit(np,LibeAtoi(field));
+
+    LibeGetw(fp,field);
+    SymSetstruct(np,field);
+
+    LibeGetw(fp,field);
+    SymSetident(np,field);
+
+    LibeGetw(fp,field);
+    SymSetlval(np,field);
+
+    LibeGetw(fp,field);
+    SymSetref(np,field);
+
+    LibeGetw(fp,field);
+    SymSetdescr(np,field);
+
+    LibeGetw(fp,field);
+    SymSetglobal(np,field);
+
+    LibeGetw(fp,field);
+    SymSetmodule(np,module);
+    
+
+  #Read the rest of the line including the new line character.
+  while((ch=LibeGetc(fp)) != NL): 
+    tmp=1;
+  end
+  return(indent);
+
+end
 int SymReadsym(int fp, struct symbol rtbl, char [*] module) :
 
   # SymReadsym reads the symbol table from a file.
@@ -818,86 +956,8 @@ int SymReadsym(int fp, struct symbol rtbl, char [*] module) :
 
   LibeClose(fp);
   return(OK);
+
 end
 
 
-int Symgetline(int fp, struct symbol np, char [*] module):
-# 
-# Symgetline reads an single line (record) from a symbol 
-# table stored in a file.
-  int indent;
-  int ch;
-  int tmp;
-  char [*] field;
-
-  field = new(char [NTBL]);
-
-  indent =0;
-
-  # Read the current line
-  ch=OK;
-  if((ch=LibeGetc(fp)) == EOF):
-    return(-1);
-  end
-  else: 
-    # Back up one character
-    LibeUngetc(fp);
-  end
-
-  #Get the number of whitespace characters at the beginning of the line
-  while((ch=LibeGetc(fp)) == SPACE): 
-    indent = indent+1;
-  end
-  # Back up one character
-  LibeUngetc(fp);
-
-  # Get the fields in the current line and set into fields
-  # in the node pointed to by np
-
-    LibeGetw(fp,field);
-    SymSetfield(np.name,field); 
-
-    LibeGetw(fp,field);
-    SymSetype(np,field);
-
-    LibeGetw(fp,field);
-    SymSetfunc(np,field);
-
-    LibeGetw(fp,field);
-    SymSetarray(np,field);
-    
-    LibeGetw(fp,field);
-    SymSetrank(np,LibeAtoi(field));
-
-    LibeGetw(fp,field);
-    SymSetemit(np,LibeAtoi(field));
-
-    LibeGetw(fp,field);
-    SymSetstruct(np,field);
-
-    LibeGetw(fp,field);
-    SymSetident(np,field);
-
-    LibeGetw(fp,field);
-    SymSetlval(np,field);
-
-    LibeGetw(fp,field);
-    SymSetref(np,field);
-
-    LibeGetw(fp,field);
-    SymSetdescr(np,field);
-
-    LibeGetw(fp,field);
-    SymSetglobal(np,field);
-
-    LibeGetw(fp,field);
-    SymSetmodule(np,module);
-    
-
-  #Read the rest of the line including the new line character.
-  while((ch=LibeGetc(fp)) != NL): 
-    tmp=1;
-  end
-  return(indent);
-end
 

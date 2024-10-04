@@ -14,6 +14,9 @@ char [*] CodeBinexpr(struct tree p):end
 char [*] CodeExpr(struct tree p):end
 
 int CodeError(char [*] s) :
+  
+  # CodeError prints error messages and exits.
+
   ErrError(ScanGetfile(), ScanGetline(), s);
 end
 
@@ -1451,9 +1454,6 @@ char [*] CodeNew(struct tree p) :
   return(pointer);
 end
 
-
-
-
 char [*] CodeDelete(struct tree p) :
 
   #CodeDelete generate code for the delete operator.
@@ -1755,8 +1755,6 @@ char [*] CodeCast(struct tree p) :
   end
   return(pointer);
 end
-
-
 
 char [*] CodePrimexpr(struct tree p) :
 
@@ -2536,11 +2534,6 @@ int CodeStmnt(struct tree p) :
   return(OK);
 end 
 
-
-
-
-
-
 int CodeNewdescr(struct tree p, char[*] pointer) :
 
   # CodeNewdescr generate code for array descriptor.
@@ -2553,9 +2546,6 @@ int CodeNewdescr(struct tree p, char[*] pointer) :
   CodeEs(p, "));\n");
   return(OK);
 end
-
-
-
 
 # Cpu code generation 
 # The code below performs code generation for single/multicore cpu's.
@@ -2587,7 +2577,6 @@ int CodeFdef(struct tree p):
   end
   return(OK);
 end
-
 
 int CodePreamblecpu() :
 
@@ -2676,7 +2665,6 @@ int CodePreamblecpu() :
 
   return (OK);
 end
-
 
 int CodePreamblecuda() :
 
@@ -2894,6 +2882,7 @@ int CodePreamble():
     return(ERR);
   end
 end  
+
 int CodePostamble():
   int fdo;
 

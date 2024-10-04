@@ -1,14 +1,12 @@
-
-include "libe.i"
-include "scan.i"
+import libe
 
 char [*] ScanPath() :
 
-  # Return the system include path. 
+  # Return the system library path
 
   # The path is obtained
   # by concatenating the value of the environment variable 
-  # EPS with the string "/Inc/".
+  # EPS with the string "/Lib/".
 
   char [*] env;  # Value of EPS  
   char [*] tmp;  # Temporary string  

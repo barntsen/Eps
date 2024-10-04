@@ -31,36 +31,40 @@
     BIN=../Bin
     LIB=../Lib
     INC=../Inc
-    ECFLAGS=-g 
+    ECFLAGS=
     LDFLAGS=
 
 # The compiler executable
 $(ARCH):    main.o scan.o parse.o ptree.o sem.o sym.o code.o   \
-            err.o scanpath.o libe.o run$(ARCH)c.o
+            err.o scanpath.o libe.o run$(ARCH)c.o run.o m.o
 	    $(EL) $(LDFLAGS) -o $(EXEC)1 main.o scan.o parse.o \
             ptree.o sem.o code.o sym.o err.o scanpath.o libe.o \
             run$(ARCH)c.o -lm
 
-main.o:      main.e m.i 
+main.o:      main.e m.o scan.o parse.o ptree.o sem.o code.o sym.o libe.o \
+             scan.o scanpath.o err.o run.o 
 	     $(EC) $(ECFLAGS) main.e 
-m.i:         m-$(ARCH).i
-	     cp m-$(ARCH).i m.i
-scan.o:      scan.e
+scan.o:      scan.e libe.o err.o scanpath.o
 	     $(EC) $(ECFLAGS) scan.e 
-scanpath.o:  scanpath.e
+scanpath.o:  scanpath.e libe.o
 	     $(EC) $(ECFLAGS) scanpath.e 
-parse.o:     parse.e
+parse.o:     parse.e libe.o ptree.o err.o scan.o
 	     $(EC) $(ECFLAGS) parse.e 
-ptree.o:     ptree.e
+ptree.o:     ptree.e libe.o err.o 
 	     $(EC) $(ECFLAGS) ptree.e 
-sem.o:       sem.e
+sem.o:       sem.e sym.o libe.o ptree.o err.o m.o  
 	     $(EC) $(ECFLAGS) sem.e 
-sym.o:       sym.e
+sym.o:       sym.e libe.o err.o 
 	     $(EC) $(ECFLAGS) sym.e 
-code.o:      code.e
+code.o:      code.e libe.o sym.o ptree.o err.o m.o scan.o 
 	     $(EC) $(ECFLAGS) code.e 
-err.o:	     err.e
+err.o:	     err.e libe.o
 	     $(EC) $(ECFLAGS) err.e 
+m.o:         m.e
+	     cp m-$(ARCH).e m.e
+	     $(EC) $(ECFLAGS) m.e
+run.o:	     run.e
+	     $(EC) $(ECFLAGS) run.e
 
 # Libraries
 lib:           lib$(ARCH).a  
@@ -68,8 +72,11 @@ lib:           lib$(ARCH).a
 lib$(ARCH).a:  libe.o run$(ARCH).o
 	       ar rcs libe$(ARCH).a libe.o run$(ARCH).o 
 
-libe.o:        libe.e
-	       $(EC)  $(ECFLAGS) libe.e 
+libe.o:        libe.e run.m
+	       $(EC)  $(ECFLAGS) libe.e   
+
+run.m:         run.e	
+	       $(EC)  $(ECFLAGS) run.e   
 
 run$(ARCH).o : 
 	       cp run$(ARCH).e run$(ARCH).$(EXT)
@@ -92,4 +99,4 @@ install :  lib $(EC) $(EXEL)-install
 
 # The clean target
 clean: 
-	    rm -f *.a *.o *.c *.cpp ec1 ecc1 ech1 
+	    rm -f *.m *.a *.o *.c *.cpp ec1 ecc1 ech1 

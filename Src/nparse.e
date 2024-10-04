@@ -52,8 +52,7 @@
 #                     | IM '(' expr ')'| RE '(' expr ')'
 #   ident             =  ID  [ '['exprlist ']' ] 
 
-# Definitions     
-import nlibe    # Library interface              
+import nlibe     # Library interface              
 import nptree    # Parse Tree routines interface  
 import nerr      # Error routines interface       
 import nscan     # Lexical scanner interface      
@@ -942,6 +941,7 @@ struct tree ParseSlice() :
  
    return (np);
 end 
+
 struct tree ParseSliceseq(struct tree np) :
 
    # ParseSliceseq  parses slice sequence.      
@@ -971,6 +971,7 @@ struct tree ParseSliceseq(struct tree np) :
 
    return(np);
 end 
+
 struct tree ParseParallelstmnt() :
 
   # ParseParallelstmnt parses a prallel statement
@@ -1026,7 +1027,6 @@ struct tree ParseElsestmnt() :
  return  (np);
 end 
  
- 
 struct tree ParseIfstmnt() :
 
   # ParseIfstmnt parses an if statement.
@@ -1052,7 +1052,6 @@ struct tree ParseIfstmnt() :
     sp = NULL;
   return (sp);
 end 
- 
  
 struct tree ParseStmnt() :
 
@@ -1093,6 +1092,7 @@ struct tree ParseStmnt() :
   end 
  
 end 
+
 struct tree ParseStmntlist() :
 
   # ParseStmntlist parses a list of statements

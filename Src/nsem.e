@@ -26,7 +26,6 @@ int SemSerror(struct tree p, char [*] s1, char [*] s2) :
   return(OK);
 end
 
-
 int SemImport(struct tree p, struct symbol etp) :
   
   # SemImport reads a module file
@@ -1516,8 +1515,6 @@ int SemSem(struct tree p, struct symbol tp) :
   SemExtdecl(p);  # Check syntax tree pointed to by p        
   return (OK);
 end 
-
-
  
 int SemWhilestmnt(struct tree p) :
 
@@ -1645,7 +1642,6 @@ int SemReturnstmnt(struct tree p) :
 
 end 
  
- 
 int SemStmnt(struct tree p) :
 
   # SemStmnt checks statement.  
@@ -1702,7 +1698,6 @@ int SemStmnt(struct tree p) :
   return(OK);
 
 end 
-  
   
 int SemCompstmnt(struct tree p) :
 
