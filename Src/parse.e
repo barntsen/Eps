@@ -148,9 +148,6 @@ struct tree ParseMknode(char [*] name, char [*] def) :
   p = PtreeMknode(name,def);
   PtreeSetline(p,ScanGetline());
   PtreeSetfile(p,ScanGetfile());
-  if(PtreeGetfile(p) == NULL) :
-    LibePs("Should not happen\n");
-  end
   return(p);
 end
 
@@ -1225,15 +1222,18 @@ end
 struct tree ParseParse() :
 
   # Parse is the entry point for the eps parser.
+  # Parsing starts with the symbol "extdecl"
+  # which parses structure definitions, function
+  # definitions and external variables.
 
   struct tree np;
 
   np = NULL;
   if(lookahead == STOP)
-    return np;                 # End of parsing  
+    return np;                 
   else:
-    np = ParseExtdecl();      # Start parsing at extdecl   
+    np = ParseExtdecl();                        
   end 
 
-  return (np);                # Return root of syntax tree 
+  return (np);                
 end 

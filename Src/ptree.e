@@ -269,16 +269,13 @@ char [*] PtreeSetfield(char [*] field, char [*] value) :
   # Returns: 
   #   contents of field
   #
- 
-  if(field != NULL)
-    delete(field);
-  if(value == NULL)
-    field = NULL;
-  else:
-    field = LibeStrsave(value);
-  end 
- 
-    return(field);
+
+  char [*] t;
+
+  t=field;
+  field=LibeStrsave(value);
+  delete(t);
+  return(field);
 
 end 
                       
@@ -519,7 +516,10 @@ int PtreeSetfile(struct tree p, char [*] file) :
   #
   # Returns : OK
 
-  PtreeSetfield(p.file,file);
+  if((file != NULL) && (p != NULL)): 
+    delete(p.file);
+    p.file=LibeStrsave(file);
+  end
   return(OK);
 
 end 
