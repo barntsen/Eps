@@ -4,6 +4,7 @@ import libe   # Include library definitions
 import sym    # Include symbol table interface   
 import ptree  # Include parse tree interface     
 import err    # Include interface to error       
+import scanpath
 
 
 # Forward statements
@@ -20,7 +21,7 @@ end
 
 int SemSerror(struct tree p, char [*] s1, char [*] s2) :
   
-  # SemError prints semantic errors
+  # SemSError prints semantic errors
 
   ErrSerror(PtreeGetfile(p), PtreeGetdef(p), PtreeGetline(p), s1,s2);
   return(OK);
@@ -33,6 +34,8 @@ int SemImport(struct tree p, struct symbol etp) :
 
   char [*] module;
   char [*] file;
+  char [*] path;
+  char [*] sysfile;
   char [*] name;
   int fd;
   struct symbol stp;  # Module symbol table
@@ -41,7 +44,19 @@ int SemImport(struct tree p, struct symbol etp) :
 
   module=PtreeGetdef(p);
   file = LibeStradd(module,".m");
+
   fd = LibeOpen(file,"r");
+  if(fd == ERR): 
+    path = ScanPath();
+    sysfile = LibeStradd(path,file);
+    fd = LibeOpen(sysfile,"r");
+    delete(sysfile);
+    delete(path);
+    if(fd == ERR):
+      SemSerror(p,"Module file not found: ",file);
+    end
+  end
+  
   stp = SymMktable();
   SymReadsym(fd,stp,module);
   LibeClose(fd);

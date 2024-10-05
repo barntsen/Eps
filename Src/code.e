@@ -566,40 +566,66 @@ end
 
 int CodeFdefgpu(struct tree p) :
 
-  # CodeFdefgpu generates gpu code for function definition
+  # CodeFdefgpu generates code for gpu global functions.
 
   struct symbol tp;
+  struct tree   top;
   int noarg;
+  int forw;
 
   noarg=0;
+  forw=0;
+  top = p; # Save the top of the function def
+
+  # We are at the type node for the function
+  if(LibeStrcmp(PtreeGetarray(p),"array") == OK):
+
+    # Move to the arrayargs node
+    p=PtreeMvchild(p); 
+
+    # Move to the function name
+    p = PtreeMvsister(p);
+    if(LibeStrcmp(PtreeGetforw(p),"forw")== OK) :
+      forw=1;
+    end
+  end
+  else :
+    # Move to the fdef node
+    p=PtreeMvchild(p); 
+    if(LibeStrcmp(PtreeGetforw(p),"forw")== OK) :
+      forw=1;
+    end
+  end
+
   tp = SymLookup(PtreeGetdef(p), SymGetetp());
-  SymSetltp(SymGetable(tp));
-  CodeFdeclkernel(p); 
-  
-  #
+
   if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
     CodeEs(p, "struct ");
   end
   if(LibeStrcmp(SymGetarray(tp),"array") == OK):
     CodeEs(p, "nctemp");
   end
-
-  CodeEs(p,"__global__ ");
-  CodeEs(p, "void");
-
-  #
+  CodeEs(p, SymGetype(tp));
   if(LibeStrcmp(SymGetarray(tp),"array") == OK):
     CodeEd(SymGetrank(tp));
+    CodeEs(p," *");
   end
   if(LibeStrcmp(SymGetstruct(tp),"struct")==OK):
-     CodeEs(p,"*");
+    CodeEs(p,"*");
   end
 
+  CodeEs(p,"__global__"); 
+  CodeEs(p,"void");
   CodeEs(p, " ");
-  CodeEs(p, "kernel_");
+  CodeEs(p,"kernel_");
   CodeEs(p, SymGetname(tp)); 
   CodeEs(p, " (");
-  p = PtreeMvchild(p);    
+
+  # Check for missing arglist
+  if(PtreeMvchild(p) != NULL):
+    p = PtreeMvchild(p);
+  end
+
   if(LibeStrcmp(PtreeGetname(p), "arglist") == OK):
     tp = SymGetable(tp);
     tp = SymLookup("#arglist", tp);       
@@ -613,11 +639,19 @@ int CodeFdefgpu(struct tree p) :
     end
   end
   CodeEs(p, ")\n");
-  if(PtreeMvsister(p) != NULL)
-    CodeCompstmnt(PtreeMvsister(p));
-  else
-    CodeCompstmnt(p);
 
+  # Done if forward declaration
+  if(forw == 1):
+    CodeEs(p,";\n");
+    return(OK);
+  end
+
+  if(PtreeMvsister(p) != NULL) :
+    CodeCompstmnt(PtreeMvsister(p));
+  end
+  else :
+    CodeCompstmnt(p);
+  end
   return(OK);
 end
 
@@ -696,6 +730,7 @@ int CodeFdewrappergpu(struct tree p) :
 
   return(OK);
 end
+
 int CodeGdeclarations(struct tree p, struct symbol tp) :
 
   # CodeGdeclarations  generates code for declaration list.  
@@ -722,7 +757,6 @@ int CodeGdeclarations(struct tree p, struct symbol tp) :
   end
   return (OK);
 end
-
 
 int CodeDeclarations(struct tree p, struct symbol tp) :
 

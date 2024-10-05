@@ -290,7 +290,10 @@ int PtreeSetname(struct tree p, char [*] name) :
   # Returns: OK 
   #   
 
-  p.name=PtreeSetfield(p.name, name);
+  if((name != NULL) && (p != NULL)):
+    delete(p.name);
+    p.name=LibeStrsave(name);
+  end
   return(OK);
 
 end 
