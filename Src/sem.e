@@ -8,16 +8,11 @@ import scanpath
 
 
 # Forward statements
-int SemCompstmnt(struct tree p) :
-end
-int SemStmnt(struct tree p) :
-end
-struct tree SemExpr(struct tree p):
-end
-struct tree SemUnexpr(struct tree p):
-end
-struct tree SemPrimexpr(struct tree p):
-end
+int SemCompstmnt(struct tree p) : end
+int SemStmnt(struct tree p)     : end
+struct tree SemExpr(struct tree p): end
+struct tree SemUnexpr(struct tree p): end
+struct tree SemPrimexpr(struct tree p): end
 
 int SemSerror(struct tree p, char [*] s1, char [*] s2) :
   
@@ -49,6 +44,7 @@ int SemImport(struct tree p, struct symbol etp) :
   if(fd == ERR): 
     path = ScanPath();
     sysfile = LibeStradd(path,file);
+    LibePs(sysfile); LibePs("\n");
     fd = LibeOpen(sysfile,"r");
     delete(sysfile);
     delete(path);

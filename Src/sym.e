@@ -698,13 +698,12 @@ int SymExport(int fp,struct symbol p, int level) :
   # SymPrsym prints the symbol table.
 
   int i;
-  #int fp;
   struct symbol tp;
   struct symbol tq;
        
-  #fp = stdout;
   if(p == NULL)
     return(ERR);
+
   # Make a dummy table to print the "first" entry
   tq = SymMktable();
   SymPrsym(fp,tq,0);

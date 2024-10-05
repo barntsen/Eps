@@ -14,8 +14,8 @@ ARCH=cuda
 #EC=ech
 #ARCH=hip
 
-#Copy machine depenent header file
-cp m-$ARCH.i m.i
+#Copy machine depenent file
+cp m-$ARCH.e m.e
 
 #Copy the correct runtime library file 
 cp run$ARCH.e run$ARCH.c 
@@ -34,6 +34,7 @@ $EC -c ptree.e
 $EC -c libe.e
 $EC -c err.e
 $EC -c code.e
+$EC -c m.e
 
 
 #Copy c-code to bootstrap directory

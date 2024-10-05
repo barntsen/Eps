@@ -15,7 +15,7 @@ char [*] ScanPath() :
   int      l2;   # Length of tmp     
 
   env = LibeGetenv("EPS");
-  tmp = "/Inc/";
+  tmp = "/Lib/";
   l1 = len(env,0);
   l2 = len(tmp,0);
   path=new(char[l1+l2+100]);

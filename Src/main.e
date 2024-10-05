@@ -14,12 +14,27 @@ import m           # Machine dependent code
 
 
 int MainError(char [*] s) : 
+
+  # MainError prints error messages.
+  #
+  # Parameters:
+  #   s: Error message
+  #
+  # Returns : Prints error and exits.
+
   ErrError(ScanGetfile(),ScanGetline(), s);
 end
 
 int MainHelp(int arch):
 
   # MainHelp prints help message.
+  #
+  # Parameters:
+  #   arch : Architecture = 1 : cpu
+  #                       = 2 : cuda
+  #                       = 3 : hip
+  #
+  # Returns : Prints help message and exits.
 
   LibePuts(stderr,"Command\n");
   LibePuts(stderr,"\n");
@@ -77,14 +92,20 @@ end
 char [*] MainFout(char [*] infile, int arch):
 
   # Mainfout checks the input file name
-  # and creates an output file name with extension '.c'
-  # or '.cpp'
-  # The argument to the function is the input file name and
-  # the return value is the output file name. 
+  #
+  # Parameters:
+  # 
+  # infile : Input file name
+  # arch   : Architecture = 1: cpu
+  #                       = 2: cuda
+  #                       = 3: hip
+  # 
+  # Returns: Returns output file name
+  # with extension '.c' (for cpu)
+  # or '.cpp' (for cuda and hip).
 
   char [*] outfile; # Output file name (holding c-code)
   int l;            # Temp varibale to hold string length of 
-                    # input file name
 
   l=len(infile,0);
   if(l < 3):
@@ -123,7 +144,11 @@ end
 char [*] MainFmod(char [*] infile):
 
   # Mainmod checks the input file name
-  # and creates an output file name with extension '.m'
+  #
+  # Parameters: 
+  #   infile : Input file name
+  #
+  # Return:
   # The argument to the function is the input file name and
   # the return value is the output file name. 
 
@@ -150,6 +175,17 @@ const CMDLEN=80;        # Length of command line
 int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):
 
   # MainCcompcpu invokes the c-compiler to generate object code for cpu.
+  #
+  # Parameters:
+  #   file    : Output c/c++ file name.
+  #   debug   :  = 1 Generate debug info 
+  #   optimize : = 1 Turn on optimization
+  #   openmp   : = 1 Generate OpenMp code
+  #   show     : = 1 Show command line
+  #   
+  # Returns : 
+  #   OK
+  
 
   char [*] tmp;         # String temporary 
   char [*] cmd;         # Command line for compiling
@@ -173,7 +209,6 @@ int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):
   if(openmp == OK):
     LibeStrcat(" -fopenmp ",cmd);
   end 
- 
 
   LibeStrcat(file,cmd);
   LibeStrcat("\n",cmd);
@@ -338,6 +373,7 @@ int Main(struct MainArg [*] MainArgs) :
   CodeInit();    
   CodeArraycheckoff();
   CodeDebugoff();
+  LibePs("ARCH: "); LibePi(ARCH); LibePs("\n");
   CodeSetarch(ARCH);
 
    

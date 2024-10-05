@@ -29,52 +29,75 @@ int RunFree(void * );
 int RunSync();
 int RunGetnt();
 int RunGetnb();
-int LibeArrayex (int line,nctempchar1 *name,int ival,int index,int bound);
-int LibeClearerr ();
-int LibeGeterrno ();
-nctempchar1* LibeGeterrstr ();
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
 struct MainArg {nctempchar1 *arg;
 };
 typedef struct nctempMainArg1 {int d[1]; struct MainArg *a; } nctempMainArg1;
 struct nctempMainArg2 {int d[2]; struct MainArg *a; } ;
 struct nctempMainArg3 {int d[3]; struct MainArg *a; } ;
 struct nctempMainArg4 {int d[4]; struct MainArg *a; } ;
-int Main (struct nctempMainArg1 *MainArgs);
-int LibeInit ();
-int LibeDelete ();
-int LibeExit ();
-nctempchar1* LibeGetenv (nctempchar1 *name);
-int LibeOpen (nctempchar1 *name,nctempchar1 *mode);
-int LibeClose (int fp);
-int LibeGetc (int fp);
-int LibeUngetc (int fp);
-int LibeGetw (int fp,nctempchar1 *text);
-int LibePs (nctempchar1 *s);
-int LibePi (int n);
-int LibePf (float r);
-int LibePutf (int fp,float r,nctempchar1 *form);
-int LibePutc (int fp,int c);
-int LibePuts (int fp,nctempchar1 *s);
-int LibePuti (int fp,int ival);
-int LibeRead (int fp,int n,nctempchar1 *array);
-int LibeWrite (int fp,int n,nctempchar1 *array);
-int LibeSeek (int fp,int pos,int flag);
-int LibeFlush (int fp);
-int LibeStrlen (nctempchar1 *s);
-int LibeStrcmp (nctempchar1 *s,nctempchar1 *t);
-int LibeStrev (nctempchar1 *s);
-nctempchar1* LibeStrsave (nctempchar1 *s);
-int LibeStrcpy (nctempchar1 *s,nctempchar1 *t);
-int LibeStrcat (nctempchar1 *s,nctempchar1 *t);
-nctempchar1* LibeStradd (nctempchar1 *t,nctempchar1 *s);
-int LibeIsalpha (int c);
-int LibeIsdigit (int c);
-int LibeIsalnum (int c);
-int LibeAtoi (nctempchar1 *s);
-int LibeItoa (int n,nctempchar1 *s);
-int LibeItoh (int n,nctempchar1 *s);
-float LibeAtof (nctempchar1 *s);
-int LibeFtoa (float f,nctempchar1 *fmt,nctempchar1 *s);
+int LibeErrno;
+nctempchar1 *LibeErrstr;
+int LibeErrinit ();
+int LibeGeterrno ();
+int LibeClearerr ();
+nctempchar1 * LibeGeterrstr ();
+nctempchar1 * LibeGetenv (nctempchar1 *name);
+;
+;
+;
+;
+;
 float LibeMach (int flag);
 float LibeFabs (float x);
 float LibeFscale2 (float x,int n);
@@ -86,22 +109,147 @@ float LibeGetffman (float f);
 int LibeGetmaxdig (float f);
 int LibeGetfexp (float f);
 float LibeClock ();
-int LibeSetnb (int n);
-int LibeSetnt (int n);
-int LibeGetnb ();
-int LibeGetnt ();
+;
+;
+;
+;
+;
+;
+;
+float LibeSincosmax;
+float LibeSincoslim;
+float LibeLnmax;
+float LibeLnmin;
 int LibeMod (int n,int r);
 float LibeSqrt (float x);
 float LibeLn (float x);
 float LibeExp (float x);
+float LibeSincos (float x,float y,float sign);
 float LibeSin (float x);
 float LibeCos (float x);
 float LibeTan (float x);
 float LibeArcsin (float x);
 float LibeArccos (float x);
+float LibeAtan (float f);
 float LibeArctan (float x);
 float LibePow (float base,float exponent);
+int LibeMathinit ();
+int LibeStrlen (nctempchar1 *s);
+int LibeStrcmp (nctempchar1 *s,nctempchar1 *t);
+int LibeStrev (nctempchar1 *s);
+int LibeStrcpy (nctempchar1 *s,nctempchar1 *t);
+int LibeStrcat (nctempchar1 *s,nctempchar1 *t);
+nctempchar1 * LibeStradd (nctempchar1 *t,nctempchar1 *s);
+nctempchar1 * LibeStrsave (nctempchar1 *s);
+int LibeIsalhpa (int c);
+int LibeIsdigit (int c);
+int LibeIsalnum (int c);
+int LibeAtoi (nctempchar1 *s);
+int LibeItoa (int n,nctempchar1 *s);
+int LibeItoh (int n,nctempchar1 *s);
+float LibeAtof (nctempchar1 *s);
+int LibeFtoaf (int mant,int nexp,int nfield,int nfrac,nctempchar1 *s);
+int LibeFtoae (int mant,int nexp,int nfield,int nfrac,nctempchar1 *s);
+int LibeFtoa (float f,nctempchar1 *fmt,nctempchar1 *s);
+struct LibeFdescr {int cnt;
+int ptr;
+int bufsize;
+nctempchar1 *base;
+int readflg;
+int writflg;
+int unbflg;
+int errflg;
+int eoflg;
+int fd;
+char nctemp5673;
+char nctemp5845;
+char nctemp5861;
+char nctemp5902;
+char nctemp5994;
+char nctemp6010;
+char nctemp6053;
+char nctemp6137;
+int nctemp6138;
+int nctemp6139;
+int nctemp6140;
+int nctemp6141;
+int nctemp6142;
+int nctemp6143;
+int nctemp6144;
+char nctemp6391;
+char nctemp6420;
+char nctemp6484;
+char nctemp6490;
+char nctemp6496;
+char nctemp6577;
+int nctemp6578;
+int nctemp6579;
+int nctemp6580;
+int nctemp6581;
+int nctemp6582;
+int nctemp6583;
+int nctemp6584;
+char nctemp6645;
+int nctemp6646;
+int nctemp6647;
+int nctemp6648;
+char nctemp6655;
+int nctemp6656;
+int nctemp6657;
+int nctemp6658;
+int nctemp6659;
+int nctemp6660;
+int nctemp6661;
+int nctemp6662;
+char nctemp6884;
+int nctemp6885;
+int nctemp6886;
+int nctemp6887;
+char nctemp6924;
+int nctemp6925;
+int nctemp6926;
+int nctemp6927;
+char nctemp7350;
+char nctemp7395;
+};
+typedef struct nctempLibeFdescr1 {int d[1]; struct LibeFdescr *a; } nctempLibeFdescr1;
+struct nctempLibeFdescr2 {int d[2]; struct LibeFdescr *a; } ;
+struct nctempLibeFdescr3 {int d[3]; struct LibeFdescr *a; } ;
+struct nctempLibeFdescr4 {int d[4]; struct LibeFdescr *a; } ;
+;
+struct nctempLibeFdescr1 *LibeFarr;
+;
+nctempchar1 *LibeTmpstr;
+int LibeIoinit ();
+int LibeFlushbuff (int fp);
+int LibeFillbuff (int fp);
+int LibeFlush (int fp);
+int LibeOpen (nctempchar1 *name,nctempchar1 *mode);
+int LibeClose (int fp);
+int LibeGetc (int fp);
+int LibeUngetc (int fp);
+int LibeGetw (int fp,nctempchar1 *text);
+int LibePutc (int fp,int c);
+int LibePuts (int fp,nctempchar1 *s);
+int LibePuti (int fp,int ival);
+int LibePutf (int fp,float fval,nctempchar1 *form);
+int LibePs (nctempchar1 *s);
+int LibePi (int n);
+int LibePf (float r);
+int LibeRead (int fp,int n,nctempchar1 *buffer);
+int LibeWrite (int fp,int n,nctempchar1 *buffer);
+int LibeSeek (int fp,int pos,int flag);
+int LibeIodelete ();
+int NBLOCKS;
+int NTHREADS;
+int LibeSetnb (int nb);
+int LibeSetnt (int nt);
+int LibeGetnb ();
+int LibeGetnt ();
+int LibeArrayex (int line,nctempchar1 *name,int ival,int index,int bound);
 int LibeSystem (nctempchar1 *cmd);
+int LibeInit ();
+int LibeExit ();
 struct symbol {nctempchar1 *name;
 nctempchar1 *type;
 nctempchar1 *func;
@@ -113,56 +261,177 @@ nctempchar1 *lval;
 nctempchar1 *descr;
 nctempchar1 *global;
 nctempchar1 *ref;
+nctempchar1 *module;
+nctempchar1 *forw;
 int emit;
 struct symbol* tbl;
 struct symbol* next;
 struct symbol* last;
+char nctemp36;
+char nctemp83;
+char nctemp113;
+char nctemp123;
+char nctemp133;
+char nctemp143;
+char nctemp157;
+char nctemp171;
+char nctemp181;
+char nctemp191;
+char nctemp201;
+char nctemp211;
+char nctemp221;
+char nctemp262;
+char nctemp308;
+char nctemp311;
+char nctemp314;
+char nctemp317;
+char nctemp320;
+char nctemp325;
+char nctemp328;
+char nctemp331;
+char nctemp334;
+char nctemp337;
+char nctemp352;
+char nctemp362;
+char nctemp376;
+char nctemp386;
+char nctemp396;
+char nctemp406;
+char nctemp416;
+char nctemp426;
+char nctemp436;
+char nctemp446;
+char nctemp456;
+char nctemp466;
+char nctemp530;
+char nctemp534;
+char nctemp541;
+char nctemp545;
+char nctemp549;
+char nctemp556;
+char nctemp560;
+char nctemp564;
+char nctemp571;
+char nctemp575;
+char nctemp579;
+char nctemp586;
+char nctemp590;
+char nctemp594;
+char nctemp601;
+char nctemp605;
+char nctemp609;
+char nctemp616;
+char nctemp632;
+char nctemp636;
+char nctemp643;
+char nctemp647;
+char nctemp651;
+char nctemp658;
+char nctemp662;
+char nctemp666;
+char nctemp673;
+char nctemp677;
+char nctemp681;
+char nctemp688;
+char nctemp692;
+char nctemp696;
+char nctemp703;
+char nctemp731;
+char nctemp743;
+char nctemp755;
+char nctemp780;
+char nctemp783;
+char nctemp786;
+char nctemp789;
+char nctemp792;
+char nctemp797;
+char nctemp800;
+char nctemp803;
+char nctemp806;
+char nctemp1160;
+char nctemp1175;
+char nctemp1190;
+char nctemp1205;
+char nctemp1248;
+char nctemp1263;
+char nctemp1278;
+char nctemp1293;
+char nctemp1308;
+char nctemp1323;
+char nctemp1338;
+char nctemp1353;
+char nctemp1454;
+char nctemp1474;
+char nctemp1489;
+char nctemp1504;
+char nctemp1519;
+char nctemp1562;
+char nctemp1577;
+char nctemp1592;
+char nctemp1607;
+char nctemp1622;
+char nctemp1637;
+char nctemp1652;
+char nctemp1777;
+char nctemp2055;
 };
 typedef struct nctempsymbol1 {int d[1]; struct symbol *a; } nctempsymbol1;
 struct nctempsymbol2 {int d[2]; struct symbol *a; } ;
 struct nctempsymbol3 {int d[3]; struct symbol *a; } ;
 struct nctempsymbol4 {int d[4]; struct symbol *a; } ;
+;
+struct symbol* SymEtp;
+struct symbol* SymLtp;
+struct symbol* SymStp;
 struct symbol* SymGetetp ();
 struct symbol* SymSetetp (struct symbol* etp);
 struct symbol* SymGetltp ();
-struct symbol* SymSetltp (struct symbol* etp);
+struct symbol* SymSetltp (struct symbol* ltp);
 struct symbol* SymGetstp ();
-struct symbol* SymSetstp (struct symbol* etp);
-struct symbol* SymMktable ();
-struct symbol* SymSetable (struct symbol* np,struct symbol* tp);
-struct symbol* SymGetable (struct symbol* np);
+struct symbol* SymSetstp (struct symbol* stp);
+struct symbol* SymLookup (nctempchar1 *s,struct symbol* tp);
 struct symbol* SymMkname (nctempchar1 *name,struct symbol* tp);
 struct symbol* SymRmname (nctempchar1 *name,struct symbol* tp);
-int SymRmtable (struct symbol* p);
-int SymRmsubtables (struct symbol* p);
-nctempchar1* SymGetname (struct symbol* np);
-struct symbol* SymLookup (nctempchar1 *s,struct symbol* tp);
+nctempchar1 * SymGetname (struct symbol* np);
+struct symbol* SymMktable ();
+struct symbol* SymMvnext (struct symbol* np);
+struct symbol* SymSetable (struct symbol* np,struct symbol* tp);
+struct symbol* SymGetable (struct symbol* np);
+nctempchar1 * SymSetfield (nctempchar1 *field,nctempchar1 *value);
 int SymSetype (struct symbol* np,nctempchar1 *type);
-nctempchar1* SymGetype (struct symbol* np);
-int SymSetident (struct symbol* np,nctempchar1 *ident);
-nctempchar1* SymGetident (struct symbol* np);
-int SymSetlval (struct symbol* np,nctempchar1 *lval);
-nctempchar1* SymGetlval (struct symbol* np);
-int SymSetref (struct symbol* np,nctempchar1 *ref);
-nctempchar1* SymGetref (struct symbol* np);
+nctempchar1 * SymGetype (struct symbol* np);
 int SymSetfunc (struct symbol* np,nctempchar1 *func);
-nctempchar1* SymGetfunc (struct symbol* np);
+nctempchar1 * SymGetfunc (struct symbol* np);
 int SymSetarray (struct symbol* np,nctempchar1 *array);
-nctempchar1* SymGetarray (struct symbol* np);
+nctempchar1 * SymGetarray (struct symbol* np);
+int SymSetstruct (struct symbol* np,nctempchar1 *structure);
+nctempchar1 * SymGetstruct (struct symbol* np);
+int SymSetident (struct symbol* np,nctempchar1 *ident);
+nctempchar1 * SymGetident (struct symbol* np);
+int SymSetlval (struct symbol* np,nctempchar1 *lval);
+nctempchar1 * SymGetlval (struct symbol* np);
 int SymSetrank (struct symbol* np,int rank);
 int SymGetrank (struct symbol* np);
 int SymSetemit (struct symbol* np,int emit);
 int SymGetemit (struct symbol* np);
-int SymSetstruct (struct symbol* np,nctempchar1 *structure);
-nctempchar1* SymGetstruct (struct symbol* np);
+int SymSetref (struct symbol* np,nctempchar1 *ref);
+nctempchar1 * SymGetref (struct symbol* np);
+int SymSetmodule (struct symbol* np,nctempchar1 *module);
+nctempchar1 * SymGetmodule (struct symbol* np);
+int SymSetforw (struct symbol* np,nctempchar1 *forw);
+nctempchar1 * SymGetforw (struct symbol* np);
 int SymSetdescr (struct symbol* np,nctempchar1 *descr);
-nctempchar1* SymGetdescr (struct symbol* np);
-int SymSetglobal (struct symbol* np,nctempchar1 *descr);
-nctempchar1* SymGetglobal (struct symbol* np);
-struct symbol* SymMvnext (struct symbol* np);
+nctempchar1 * SymGetdescr (struct symbol* np);
+int SymSetglobal (struct symbol* np,nctempchar1 *global);
+nctempchar1 * SymGetglobal (struct symbol* np);
+int SymRmtable (struct symbol* p);
 struct symbol* SymLook (nctempchar1 *name);
-int SymPrsym (struct symbol* p,int level);
 int SymCpytble (struct symbol* tp,struct symbol* up);
+struct symbol* SymAddtble (struct symbol* tp,struct symbol* sp);
+int SymPrsym (int fp,struct symbol* p,int level);
+int SymExport (int fp,struct symbol* p,int level);
+int Symgetline (int fp,struct symbol* np,nctempchar1 *module);
+int SymReadsym (int fp,struct symbol* rtbl,nctempchar1 *module);
 struct tree {nctempchar1 *name;
 nctempchar1 *def;
 nctempchar1 *type;
@@ -175,6 +444,7 @@ nctempchar1 *lval;
 nctempchar1 *array;
 nctempchar1 *paral;
 nctempchar1 *global;
+nctempchar1 *forw;
 nctempchar1 *ref;
 int rank;
 int simple;
@@ -182,705 +452,274 @@ int topexpr;
 nctempchar1 *descr;
 struct tree* child;
 struct tree* sister;
+char nctemp9;
+char nctemp12;
+char nctemp15;
+char nctemp18;
+char nctemp21;
+char nctemp24;
+char nctemp27;
+char nctemp30;
+char nctemp33;
+char nctemp36;
+char nctemp66;
+char nctemp75;
+char nctemp84;
+char nctemp94;
+char nctemp108;
+char nctemp118;
+char nctemp128;
+char nctemp138;
+char nctemp148;
+char nctemp158;
+char nctemp168;
+char nctemp178;
+char nctemp188;
+char nctemp198;
+char nctemp336;
+char nctemp340;
+char nctemp348;
+char nctemp364;
+char nctemp368;
+char nctemp376;
+char nctemp392;
+char nctemp396;
+char nctemp404;
+char nctemp420;
+char nctemp424;
+char nctemp432;
+char nctemp448;
+char nctemp452;
+char nctemp460;
+char nctemp476;
+char nctemp480;
+char nctemp488;
+char nctemp496;
+char nctemp512;
+char nctemp516;
+char nctemp544;
+char nctemp548;
+char nctemp556;
+char nctemp572;
+char nctemp576;
+char nctemp584;
+char nctemp600;
+char nctemp604;
+char nctemp612;
+char nctemp628;
+char nctemp632;
+char nctemp640;
+char nctemp656;
+char nctemp660;
+char nctemp668;
+char nctemp684;
+char nctemp688;
+char nctemp696;
+char nctemp724;
+char nctemp728;
+char nctemp736;
+char nctemp780;
+char nctemp795;
+char nctemp810;
+char nctemp825;
+char nctemp840;
+char nctemp855;
+char nctemp870;
+char nctemp899;
+char nctemp1040;
+char nctemp1055;
+char nctemp1070;
+char nctemp1085;
+char nctemp1100;
 };
 typedef struct nctemptree1 {int d[1]; struct tree *a; } nctemptree1;
 struct nctemptree2 {int d[2]; struct tree *a; } ;
 struct nctemptree3 {int d[3]; struct tree *a; } ;
 struct nctemptree4 {int d[4]; struct tree *a; } ;
 int PtreeInit ();
-int PtreeRmtree (struct tree* p);
 int PtreeRmnode (struct tree* p);
+int PtreeRmtree (struct tree* p);
 struct tree* PtreeMknode (nctempchar1 *name,nctempchar1 *def);
 int PtreeAddchild (struct tree* parent,struct tree* child);
 int PtreeAddsister (struct tree* sister,struct tree* newnode);
 struct tree* PtreeMvsister (struct tree* p);
 struct tree* PtreeMvchild (struct tree* p);
+nctempchar1 * PtreeSetfield (nctempchar1 *field,nctempchar1 *value);
 int PtreeSetname (struct tree* p,nctempchar1 *name);
-nctempchar1* PtreeGetname (struct tree* p);
+nctempchar1 * PtreeGetname (struct tree* p);
 int PtreeSetdef (struct tree* p,nctempchar1 *def);
-nctempchar1* PtreeGetdef (struct tree* p);
+nctempchar1 * PtreeGetdef (struct tree* p);
 int PtreeSetype (struct tree* p,nctempchar1 *type);
-nctempchar1* PtreeGetype (struct tree* p);
+nctempchar1 * PtreeGetype (struct tree* p);
 int PtreeSetstruct (struct tree* p,nctempchar1 *structure);
-nctempchar1* PtreeGetstruct (struct tree* p);
+nctempchar1 * PtreeGetstruct (struct tree* p);
 int PtreeSetempr (struct tree* p,nctempchar1 *tempr);
-nctempchar1* PtreeGetempr (struct tree* p);
+nctempchar1 * PtreeGetempr (struct tree* p);
 int PtreeSetempi (struct tree* p,nctempchar1 *tempi);
-nctempchar1* PtreeGetempi (struct tree* p);
+nctempchar1 * PtreeGetempi (struct tree* p);
 int PtreeGetline (struct tree* p);
 int PtreeSetline (struct tree* p,int line);
-nctempchar1* PtreeGetfile (struct tree* p);
+nctempchar1 * PtreeGetfile (struct tree* p);
+int PtreeSetfile (struct tree* p,nctempchar1 *file);
 int PtreeSetrank (struct tree* p,int rank);
 int PtreeGetrank (struct tree* p);
 int PtreeSetlval (struct tree* p,nctempchar1 *lval);
-nctempchar1* PtreeGetlval (struct tree* p);
+nctempchar1 * PtreeGetlval (struct tree* p);
 int PtreeSetarray (struct tree* p,nctempchar1 *array);
-nctempchar1* PtreeGetarray (struct tree* p);
+nctempchar1 * PtreeGetarray (struct tree* p);
 int PtreeSetparallel (struct tree* p,nctempchar1 *paral);
-nctempchar1* PtreeGetparallel (struct tree* p);
+nctempchar1 * PtreeGetparallel (struct tree* p);
 int PtreeSetref (struct tree* p,nctempchar1 *ref);
-nctempchar1* PtreeGetref (struct tree* p);
+nctempchar1 * PtreeGetref (struct tree* p);
 int PtreeSetdescr (struct tree* p,nctempchar1 *descr);
-nctempchar1* PtreeGetdescr (struct tree* p);
-int PtreeSetglobal (struct tree* p,nctempchar1 *descr);
-nctempchar1* PtreeGetglobal (struct tree* p);
+nctempchar1 * PtreeGetdescr (struct tree* p);
+int PtreeSetglobal (struct tree* p,nctempchar1 *global);
+nctempchar1 * PtreeGetglobal (struct tree* p);
 int PtreeSetopexpr (struct tree* p,int topexpr);
 int PtreeGetopexpr (struct tree* p);
 int PtreeSetsimple (struct tree* p,int simple);
 int PtreeGetsimple (struct tree* p);
+int PtreeSetforw (struct tree* p,nctempchar1 *forw);
+nctempchar1 * PtreeGetforw (struct tree* p);
 int PtreePrtree (struct tree* p,int level);
-int ErrError (nctempchar1 *s);
-int ErrSerror (struct tree* p,nctempchar1 *s1,nctempchar1 *s2);
-int ErrPanic (nctempchar1 *s);
-int SemInit ();
-int SemSem (struct tree* p,struct symbol* tp);
-int SemExtdecl (struct tree* p);
-int SemStructdecl (struct tree* p,struct symbol* tp);
-int SemFdecl (struct tree* p,struct symbol* tp);
-int SemDeclarations (struct tree* p,struct symbol* tp);
-int SemDeclaration (struct tree* p,struct symbol* tp);
-int SemCompstmnt (struct tree* p);
-int SemStmnt (struct tree* p);
-int SemWhilestmnt (struct tree* p);
-int SemForstmnt (struct tree* p);
-int SemParallelstmnt (struct tree* p);
-int SemIfstmnt (struct tree* p);
-int SemReturnstmnt (struct tree* p);
-struct tree* SemExprlist (struct tree* p);
-struct tree* SemExpr (struct tree* p);
-struct tree* SemBinexpr (struct tree* p);
-struct tree* SemAsgexpr (struct tree* p);
-struct tree* SemRelexpr (struct tree* p);
-struct tree* SemAddexpr (struct tree* p);
-struct tree* SemUnexpr (struct tree* p);
-struct tree* SemPrimexpr (struct tree* p);
-int SemId (struct tree* p);
-int SemFcall (struct tree* p);
-int SemStructure (struct tree* p,struct symbol* tp);
-int SemArray (struct tree* p,struct symbol* tp);
-int SemCast (struct tree* p);
-int SemNew (struct tree* p);
-int SemDelete (struct tree* p);
-int SemLen (struct tree* p);
-int SemSizeof (struct tree* p);
-int SemCmplx (struct tree* p);
-int SemRe (struct tree* p);
-int SemIm (struct tree* p);
-int SemCopytype (struct tree* p,struct tree* np);
-int SemCopyparallel (struct tree* p,struct tree* np);
-int SemComparetype (struct tree* p,struct tree* np);
-int SemSem (struct tree* p,struct symbol* tp)
+int ErrError (nctempchar1 *file,int line,nctempchar1 *s);
+int ErrSerror (nctempchar1 *file,nctempchar1 *fname,int lineno,nctempchar1 *s1,nctempchar1 *s2);
+nctempchar1 * ScanPath ();
+int SemCompstmnt (struct tree* p)
+;
+int SemStmnt (struct tree* p)
+;
+struct tree* SemExpr (struct tree* p)
+;
+struct tree* SemUnexpr (struct tree* p)
+;
+struct tree* SemPrimexpr (struct tree* p)
+;
+int SemSerror (struct tree* p,nctempchar1 *s1,nctempchar1 *s2)
 {
-struct symbol* ltp;
-struct symbol* nctemp2= tp;
-struct symbol* nctemp4=SymSetetp(nctemp2);
-ltp =0;
-struct symbol* nctemp10= ltp;
-struct symbol* nctemp12=SymSetltp(nctemp10);
+struct tree* nctemp4= p;
+nctempchar1* nctemp6=PtreeGetfile(nctemp4);
+nctempchar1* nctemp2= nctemp6;
+struct tree* nctemp9= p;
+nctempchar1* nctemp11=PtreeGetdef(nctemp9);
+nctempchar1* nctemp7= nctemp11;
 struct tree* nctemp14= p;
-int nctemp16=SemExtdecl(nctemp14);
+int nctemp16=PtreeGetline(nctemp14);
+int nctemp12= nctemp16;
+nctempchar1* nctemp17= s1;
+nctempchar1* nctemp20= s2;
+int nctemp23=ErrSerror(nctemp2,nctemp7,nctemp12,nctemp17,nctemp20);
 return 1;
 }
-int SemExtdecl (struct tree* p)
+int SemImport (struct tree* p,struct symbol* etp)
 {
-struct tree* sp;
-struct tree* np;
-struct tree* nctemp21= p;
-nctempchar1* nctemp23=PtreeGetname(nctemp21);
-nctempchar1* nctemp19= nctemp23;
-struct nctempchar1 *nctemp26;
-static struct nctempchar1 nctemp27 = {{ 8}, (char*)"extdecl\0"};
-nctemp26=&nctemp27;
-nctempchar1* nctemp24= nctemp26;
-int nctemp28=LibeStrcmp(nctemp19,nctemp24);
-if(nctemp28)
+nctempchar1 *module;
+nctempchar1 *file;
+nctempchar1 *path;
+nctempchar1 *sysfile;
+nctempchar1 *name;
+int fd;
+struct symbol* stp;
+struct symbol* sp;
+struct symbol* tp;
+struct symbol* prev;
+struct tree* nctemp30= p;
+nctempchar1* nctemp32=PtreeGetdef(nctemp30);
+module=nctemp32;
+nctempchar1* nctemp38= module;
+struct nctempchar1 *nctemp43;
+static struct nctempchar1 nctemp44 = {{ 3}, (char*)".m\0"};
+nctemp43=&nctemp44;
+nctempchar1* nctemp41= nctemp43;
+nctempchar1* nctemp45=LibeStradd(nctemp38,nctemp41);
+file=nctemp45;
+nctempchar1* nctemp50= file;
+struct nctempchar1 *nctemp55;
+static struct nctempchar1 nctemp56 = {{ 2}, (char*)"r\0"};
+nctemp55=&nctemp56;
+nctempchar1* nctemp53= nctemp55;
+int nctemp57=LibeOpen(nctemp50,nctemp53);
+fd =nctemp57;
+int nctemp58 = (fd ==0);
+if(nctemp58)
 {
-struct tree* nctemp33= p;
-struct tree* nctemp35=PtreeMvchild(nctemp33);
-np =nctemp35;
-struct tree* nctemp37= np;
-struct nctempchar1 *nctemp41;
-static struct nctempchar1 nctemp42 = {{ 7}, (char*)"global\0"};
-nctemp41=&nctemp42;
-nctempchar1* nctemp39= nctemp41;
-int nctemp43=PtreeSetglobal(nctemp37,nctemp39);
-int nctemp44 = (np !=0);
-int nctemp48=nctemp44;
-while(nctemp48)
-{{
-struct tree* nctemp53= np;
-struct tree* nctemp55=PtreeMvchild(nctemp53);
-sp =nctemp55;
-struct tree* nctemp59= np;
-nctempchar1* nctemp61=PtreeGetarray(nctemp59);
-nctempchar1* nctemp57= nctemp61;
-struct nctempchar1 *nctemp64;
-static struct nctempchar1 nctemp65 = {{ 6}, (char*)"array\0"};
-nctemp64=&nctemp65;
-nctempchar1* nctemp62= nctemp64;
-int nctemp66=LibeStrcmp(nctemp57,nctemp62);
-if(nctemp66)
-{
-struct tree* nctemp71= sp;
-struct tree* nctemp73=PtreeMvsister(nctemp71);
-sp =nctemp73;
-}
-struct tree* nctemp77= sp;
-nctempchar1* nctemp79=PtreeGetname(nctemp77);
-nctempchar1* nctemp75= nctemp79;
-struct nctempchar1 *nctemp82;
-static struct nctempchar1 nctemp83 = {{ 10}, (char*)"structdec\0"};
-nctemp82=&nctemp83;
-nctempchar1* nctemp80= nctemp82;
-int nctemp84=LibeStrcmp(nctemp75,nctemp80);
-if(nctemp84)
-{
-struct tree* nctemp86= np;
-struct symbol* nctemp90=SymGetetp();
-struct symbol* nctemp88= nctemp90;
-int nctemp91=SemStructdecl(nctemp86,nctemp88);
-}
-else{
-struct tree* nctemp95= sp;
-nctempchar1* nctemp97=PtreeGetname(nctemp95);
-nctempchar1* nctemp93= nctemp97;
+nctempchar1* nctemp67=ScanPath();
+path=nctemp67;
+nctempchar1* nctemp73= path;
+nctempchar1* nctemp76= file;
+nctempchar1* nctemp79=LibeStradd(nctemp73,nctemp76);
+sysfile=nctemp79;
+nctempchar1* nctemp81= sysfile;
+int nctemp84=LibePs(nctemp81);
+struct nctempchar1 *nctemp88;
+static struct nctempchar1 nctemp89 = {{ 3}, (char*)"\n\0"};
+nctemp88=&nctemp89;
+nctempchar1* nctemp86= nctemp88;
+int nctemp90=LibePs(nctemp86);
+nctempchar1* nctemp95= sysfile;
 struct nctempchar1 *nctemp100;
-static struct nctempchar1 nctemp101 = {{ 6}, (char*)"fdecl\0"};
+static struct nctempchar1 nctemp101 = {{ 2}, (char*)"r\0"};
 nctemp100=&nctemp101;
 nctempchar1* nctemp98= nctemp100;
-int nctemp102=LibeStrcmp(nctemp93,nctemp98);
-if(nctemp102)
+int nctemp102=LibeOpen(nctemp95,nctemp98);
+fd =nctemp102;
+RunFree(sysfile->a);
+RunFree(sysfile);
+RunFree(path->a);
+RunFree(path);
+int nctemp109 = (fd ==0);
+if(nctemp109)
 {
-struct tree* nctemp104= np;
-struct symbol* nctemp108=SymGetetp();
-struct symbol* nctemp106= nctemp108;
-int nctemp109=SemFdecl(nctemp104,nctemp106);
-}
-else{
-struct tree* nctemp111= np;
-struct symbol* nctemp115=SymGetetp();
-struct symbol* nctemp113= nctemp115;
-int nctemp116=SemDeclaration(nctemp111,nctemp113);
+struct tree* nctemp114= p;
+struct nctempchar1 *nctemp118;
+static struct nctempchar1 nctemp119 = {{ 24}, (char*)"Module file not found: \0"};
+nctemp118=&nctemp119;
+nctempchar1* nctemp116= nctemp118;
+nctempchar1* nctemp120= file;
+int nctemp123=SemSerror(nctemp114,nctemp116,nctemp120);
 }
 }
-struct tree* nctemp121= np;
-struct tree* nctemp123=PtreeMvsister(nctemp121);
-np =nctemp123;
-}
-int nctemp124 = (np !=0);
-nctemp48=nctemp124;}}
-return 1;
-}
-int SemStructdecl (struct tree* p,struct symbol* tp)
-{
-struct symbol* up;
-struct symbol* uup;
-nctempchar1 *structure;
-struct tree* nctemp134= p;
-nctempchar1* nctemp136=PtreeGetdef(nctemp134);
-structure=nctemp136;
-struct tree* nctemp141= p;
-struct tree* nctemp143=PtreeMvchild(nctemp141);
-p =nctemp143;
-struct tree* nctemp148= p;
-struct tree* nctemp150=PtreeMvchild(nctemp148);
-p =nctemp150;
-struct tree* nctemp154= p;
-nctempchar1* nctemp156=PtreeGetname(nctemp154);
-nctempchar1* nctemp152= nctemp156;
-struct nctempchar1 *nctemp159;
-static struct nctempchar1 nctemp160 = {{ 13}, (char*)"declarations\0"};
-nctemp159=&nctemp160;
-nctempchar1* nctemp157= nctemp159;
-int nctemp161=LibeStrcmp(nctemp152,nctemp157);
-if(nctemp161)
-{
-struct symbol* nctemp166=SymMktable();
-up =nctemp166;
-nctempchar1* nctemp174= structure;
-struct symbol* nctemp177= tp;
-struct symbol* nctemp179=SymMkname(nctemp174,nctemp177);
-uup =nctemp179;
-int nctemp167 = (uup ==0);
-if(nctemp167)
-{
-struct tree* nctemp182= p;
-struct nctempchar1 *nctemp186;
-static struct nctempchar1 nctemp187 = {{ 21}, (char*)"Multiple declaration\0"};
-nctemp186=&nctemp187;
-nctempchar1* nctemp184= nctemp186;
-nctempchar1* nctemp188= structure;
-int nctemp191=ErrSerror(nctemp182,nctemp184,nctemp188);
-}
-else{
-struct symbol* nctemp193= uup;
-struct symbol* nctemp195= up;
-struct symbol* nctemp197=SymSetable(nctemp193,nctemp195);
-struct symbol* nctemp199= uup;
-struct nctempchar1 *nctemp203;
-static struct nctempchar1 nctemp204 = {{ 10}, (char*)"structdef\0"};
-nctemp203=&nctemp204;
-nctempchar1* nctemp201= nctemp203;
-int nctemp205=SymSetstruct(nctemp199,nctemp201);
-struct symbol* nctemp207= uup;
-nctempchar1* nctemp209= structure;
-int nctemp212=SymSetype(nctemp207,nctemp209);
-struct tree* nctemp216= p;
-struct tree* nctemp218=PtreeMvchild(nctemp216);
-struct tree* nctemp214= nctemp218;
-struct symbol* nctemp219= up;
-int nctemp221=SemDeclarations(nctemp214,nctemp219);
-}
-}
-return 1;
-}
-int SemFdecl (struct tree* p,struct symbol* tp)
-{
-struct tree* np;
-struct tree* sp;
-struct tree* tmp;
-struct symbol* up;
-struct symbol* uup;
-struct symbol* ltp;
-nctempchar1 *type;
-int rank;
-struct tree* nctemp226= p;
-nctempchar1* nctemp228=PtreeGetarray(nctemp226);
-nctempchar1* nctemp224= nctemp228;
-struct nctempchar1 *nctemp231;
-static struct nctempchar1 nctemp232 = {{ 6}, (char*)"array\0"};
-nctemp231=&nctemp232;
-nctempchar1* nctemp229= nctemp231;
-int nctemp233=LibeStrcmp(nctemp224,nctemp229);
-if(nctemp233)
-{
-rank =1;
-struct tree* nctemp242= p;
-struct tree* nctemp244=PtreeMvchild(nctemp242);
-np =nctemp244;
-struct tree* nctemp249= np;
-struct tree* nctemp251=PtreeMvchild(nctemp249);
-sp =nctemp251;
-struct tree* nctemp256= np;
-struct tree* nctemp258=PtreeMvsister(nctemp256);
-np =nctemp258;
-struct tree* nctemp266= sp;
-struct tree* nctemp268=PtreeMvsister(nctemp266);
-sp =nctemp268;
-int nctemp259 = (sp !=0);
-int nctemp270=nctemp259;
-while(nctemp270)
+struct symbol* nctemp128=SymMktable();
+stp =nctemp128;
+int nctemp130= fd;
+struct symbol* nctemp132= stp;
+nctempchar1* nctemp134= module;
+int nctemp137=SymReadsym(nctemp130,nctemp132,nctemp134);
+int nctemp139= fd;
+int nctemp141=LibeClose(nctemp139);
+struct symbol* nctemp146= stp;
+struct symbol* nctemp148=SymMvnext(nctemp146);
+tp =nctemp148;
+int nctemp149 = (tp !=0);
+int nctemp153=nctemp149;
+while(nctemp153)
 {{
-int nctemp279 = rank + 1;
-rank =nctemp279;
-}
-struct tree* nctemp287= sp;
-struct tree* nctemp289=PtreeMvsister(nctemp287);
-sp =nctemp289;
-int nctemp280 = (sp !=0);
-nctemp270=nctemp280;}}
-else{
-rank =0;
-struct tree* nctemp299= p;
-struct tree* nctemp301=PtreeMvchild(nctemp299);
-np =nctemp301;
-}
-struct tree* nctemp303= p;
-int nctemp305= rank;
-int nctemp307=PtreeSetrank(nctemp303,nctemp305);
-struct tree* nctemp309= p;
-struct tree* nctemp311= np;
-int nctemp313=SemCopytype(nctemp309,nctemp311);
-struct tree* nctemp315= np;
-struct tree* nctemp319= p;
-nctempchar1* nctemp321=PtreeGetdef(nctemp319);
-nctempchar1* nctemp317= nctemp321;
-int nctemp322=PtreeSetype(nctemp315,nctemp317);
-p =np;
-struct tree* nctemp331= p;
-struct tree* nctemp333=PtreeMvchild(nctemp331);
-np =nctemp333;
-struct tree* nctemp337= np;
-nctempchar1* nctemp339=PtreeGetname(nctemp337);
-nctempchar1* nctemp335= nctemp339;
-struct nctempchar1 *nctemp342;
-static struct nctempchar1 nctemp343 = {{ 8}, (char*)"arglist\0"};
-nctemp342=&nctemp343;
-nctempchar1* nctemp340= nctemp342;
-int nctemp344=LibeStrcmp(nctemp335,nctemp340);
-if(nctemp344)
+nctempchar1* nctemp157= name;
+struct symbol* nctemp160= etp;
+struct symbol* nctemp162=SymLookup(nctemp157,nctemp160);
+int nctemp154 = (nctemp162 !=0);
+if(nctemp154)
 {
-struct tree* nctemp349= np;
-struct tree* nctemp351=PtreeMvchild(nctemp349);
-tmp =nctemp351;
+prev =tp;
+struct symbol* nctemp172= tp;
+struct symbol* nctemp174=SymMvnext(nctemp172);
+tp =nctemp174;
+nctempchar1* nctemp176= name;
+struct symbol* nctemp179= stp;
+struct symbol* nctemp181=SymRmname(nctemp176,nctemp179);
 }
 else{
-tmp =0;
-}
-struct tree* nctemp360= np;
-struct tree* nctemp362=PtreeMvsister(nctemp360);
-sp =nctemp362;
-int nctemp363 = (sp ==0);
-if(nctemp363)
-{
-sp =np;
-np =0;
-}
-else{
-struct tree* nctemp379= np;
-struct tree* nctemp381=PtreeMvchild(nctemp379);
-np =nctemp381;
-}
-struct tree* nctemp385= sp;
-struct tree* nctemp387=PtreeMvchild(nctemp385);
-int nctemp382 = (nctemp387 ==0);
-if(nctemp382)
-{
-struct tree* nctemp398= p;
-nctempchar1* nctemp400=PtreeGetdef(nctemp398);
-nctempchar1* nctemp396= nctemp400;
-struct symbol* nctemp401= tp;
-struct symbol* nctemp403=SymMkname(nctemp396,nctemp401);
-up =nctemp403;
-int nctemp389 = (up ==0);
-if(nctemp389)
-{
-struct tree* nctemp406= np;
-struct nctempchar1 *nctemp410;
-static struct nctempchar1 nctemp411 = {{ 40}, (char*)"Multiple function prototype declaration\0"};
-nctemp410=&nctemp411;
-nctempchar1* nctemp408= nctemp410;
-struct tree* nctemp414= p;
-nctempchar1* nctemp416=PtreeGetdef(nctemp414);
-nctempchar1* nctemp412= nctemp416;
-int nctemp417=ErrSerror(nctemp406,nctemp408,nctemp412);
-}
-struct symbol* nctemp419= up;
-struct tree* nctemp423= p;
-nctempchar1* nctemp425=PtreeGetype(nctemp423);
-nctempchar1* nctemp421= nctemp425;
-int nctemp426=SymSetype(nctemp419,nctemp421);
-struct symbol* nctemp428= up;
-struct tree* nctemp432= p;
-nctempchar1* nctemp434=PtreeGetstruct(nctemp432);
-nctempchar1* nctemp430= nctemp434;
-int nctemp435=SymSetstruct(nctemp428,nctemp430);
-struct symbol* nctemp437= up;
-struct tree* nctemp441= p;
-nctempchar1* nctemp443=PtreeGetarray(nctemp441);
-nctempchar1* nctemp439= nctemp443;
-int nctemp444=SymSetarray(nctemp437,nctemp439);
-struct symbol* nctemp446= up;
-struct tree* nctemp450= p;
-int nctemp452=PtreeGetrank(nctemp450);
-int nctemp448= nctemp452;
-int nctemp453=SymSetrank(nctemp446,nctemp448);
-struct symbol* nctemp455= up;
-struct nctempchar1 *nctemp459;
-static struct nctempchar1 nctemp460 = {{ 6}, (char*)"fdecl\0"};
-nctemp459=&nctemp460;
-nctempchar1* nctemp457= nctemp459;
-int nctemp461=SymSetfunc(nctemp455,nctemp457);
-struct symbol* nctemp466=SymMktable();
-ltp =nctemp466;
-struct symbol* nctemp468= up;
-struct symbol* nctemp470= ltp;
-struct symbol* nctemp472=SymSetable(nctemp468,nctemp470);
-struct nctempchar1 *nctemp479;
-static struct nctempchar1 nctemp480 = {{ 9}, (char*)"#arglist\0"};
-nctemp479=&nctemp480;
-nctempchar1* nctemp477= nctemp479;
-struct symbol* nctemp481= ltp;
-struct symbol* nctemp483=SymMkname(nctemp477,nctemp481);
-up =nctemp483;
-struct symbol* nctemp488=SymMktable();
-uup =nctemp488;
-struct symbol* nctemp490= up;
-struct symbol* nctemp492= uup;
-struct symbol* nctemp494=SymSetable(nctemp490,nctemp492);
-int nctemp495 = (np !=0);
-if(nctemp495)
-{
-struct tree* nctemp500= np;
-struct symbol* nctemp502= uup;
-int nctemp504=SemDeclarations(nctemp500,nctemp502);
-}
-struct nctempchar1 *nctemp511;
-static struct nctempchar1 nctemp512 = {{ 6}, (char*)"#self\0"};
-nctemp511=&nctemp512;
-nctempchar1* nctemp509= nctemp511;
-struct symbol* nctemp513= ltp;
-struct symbol* nctemp515=SymMkname(nctemp509,nctemp513);
-up =nctemp515;
-struct symbol* nctemp517= up;
-struct tree* nctemp521= p;
-nctempchar1* nctemp523=PtreeGetdef(nctemp521);
-nctempchar1* nctemp519= nctemp523;
-int nctemp524=SymSetfunc(nctemp517,nctemp519);
-struct symbol* nctemp526= up;
-int nctemp528= 0;
-int nctemp530=SymSetemit(nctemp526,nctemp528);
-}
-else{
-struct tree* nctemp540= p;
-nctempchar1* nctemp542=PtreeGetdef(nctemp540);
-nctempchar1* nctemp538= nctemp542;
-struct symbol* nctemp543= tp;
-struct symbol* nctemp545=SymLookup(nctemp538,nctemp543);
-up =nctemp545;
-int nctemp531 = (up ==0);
-if(nctemp531)
-{
-struct tree* nctemp548= p;
-struct nctempchar1 *nctemp552;
-static struct nctempchar1 nctemp553 = {{ 20}, (char*)"Undeclared function\0"};
-nctemp552=&nctemp553;
-nctempchar1* nctemp550= nctemp552;
-struct tree* nctemp556= p;
-nctempchar1* nctemp558=PtreeGetdef(nctemp556);
-nctempchar1* nctemp554= nctemp558;
-int nctemp559=ErrSerror(nctemp548,nctemp550,nctemp554);
-}
-else{
-struct symbol* nctemp563= up;
-nctempchar1* nctemp565=SymGetfunc(nctemp563);
-nctempchar1* nctemp561= nctemp565;
-struct nctempchar1 *nctemp568;
-static struct nctempchar1 nctemp569 = {{ 5}, (char*)"fdef\0"};
-nctemp568=&nctemp569;
-nctempchar1* nctemp566= nctemp568;
-int nctemp570=LibeStrcmp(nctemp561,nctemp566);
-if(nctemp570)
-{
-struct tree* nctemp572= p;
-struct nctempchar1 *nctemp576;
-static struct nctempchar1 nctemp577 = {{ 25}, (char*)"Redefinition of function\0"};
-nctemp576=&nctemp577;
-nctempchar1* nctemp574= nctemp576;
-struct tree* nctemp580= p;
-nctempchar1* nctemp582=PtreeGetdef(nctemp580);
-nctempchar1* nctemp578= nctemp582;
-int nctemp583=ErrSerror(nctemp572,nctemp574,nctemp578);
+struct symbol* nctemp186= tp;
+struct symbol* nctemp188=SymMvnext(nctemp186);
+tp =nctemp188;
 }
 }
-struct symbol* nctemp589= up;
-nctempchar1* nctemp591=SymGetype(nctemp589);
-nctempchar1* nctemp587= nctemp591;
-struct tree* nctemp594= p;
-nctempchar1* nctemp596=PtreeGetype(nctemp594);
-nctempchar1* nctemp592= nctemp596;
-int nctemp597=LibeStrcmp(nctemp587,nctemp592);
-int nctemp584 = (nctemp597 ==0);
-if(nctemp584)
-{
-struct tree* nctemp600= p;
-struct nctempchar1 *nctemp604;
-static struct nctempchar1 nctemp605 = {{ 41}, (char*)"Function type does not match declaration\0"};
-nctemp604=&nctemp605;
-nctempchar1* nctemp602= nctemp604;
-struct tree* nctemp608= p;
-nctempchar1* nctemp610=PtreeGetdef(nctemp608);
-nctempchar1* nctemp606= nctemp610;
-int nctemp611=ErrSerror(nctemp600,nctemp602,nctemp606);
-}
-struct symbol* nctemp617= up;
-nctempchar1* nctemp619=SymGetarray(nctemp617);
-nctempchar1* nctemp615= nctemp619;
-struct tree* nctemp622= p;
-nctempchar1* nctemp624=PtreeGetarray(nctemp622);
-nctempchar1* nctemp620= nctemp624;
-int nctemp625=LibeStrcmp(nctemp615,nctemp620);
-int nctemp612 = (nctemp625 ==0);
-if(nctemp612)
-{
-struct tree* nctemp628= p;
-struct nctempchar1 *nctemp632;
-static struct nctempchar1 nctemp633 = {{ 41}, (char*)"Function type does not match declaration\0"};
-nctemp632=&nctemp633;
-nctempchar1* nctemp630= nctemp632;
-struct tree* nctemp636= p;
-nctempchar1* nctemp638=PtreeGetdef(nctemp636);
-nctempchar1* nctemp634= nctemp638;
-int nctemp639=ErrSerror(nctemp628,nctemp630,nctemp634);
-}
-struct symbol* nctemp641= up;
-struct nctempchar1 *nctemp645;
-static struct nctempchar1 nctemp646 = {{ 5}, (char*)"fdef\0"};
-nctemp645=&nctemp646;
-nctempchar1* nctemp643= nctemp645;
-int nctemp647=SymSetfunc(nctemp641,nctemp643);
-struct tree* nctemp649= p;
-struct nctempchar1 *nctemp653;
-static struct nctempchar1 nctemp654 = {{ 5}, (char*)"fdef\0"};
-nctemp653=&nctemp654;
-nctempchar1* nctemp651= nctemp653;
-int nctemp655=PtreeSetname(nctemp649,nctemp651);
-struct symbol* nctemp660= up;
-struct symbol* nctemp662=SymGetable(nctemp660);
-up =nctemp662;
-struct symbol* nctemp664= up;
-struct symbol* nctemp666=SymSetltp(nctemp664);
-int nctemp667 = (up !=0);
-if(nctemp667)
-{
-struct nctempchar1 *nctemp677;
-static struct nctempchar1 nctemp678 = {{ 9}, (char*)"#arglist\0"};
-nctemp677=&nctemp678;
-nctempchar1* nctemp675= nctemp677;
-struct symbol* nctemp679= up;
-struct symbol* nctemp681=SymLookup(nctemp675,nctemp679);
-uup =nctemp681;
-}
-int nctemp682 = (uup !=0);
-if(nctemp682)
-{
-struct symbol* nctemp690= uup;
-struct symbol* nctemp692=SymGetable(nctemp690);
-uup =nctemp692;
-}
-int nctemp693 = (np !=0);
-int nctemp697=nctemp693;
-while(nctemp697)
-{{
-struct symbol* nctemp702= uup;
-struct symbol* nctemp704=SymMvnext(nctemp702);
-uup =nctemp704;
-int nctemp705 = (uup ==0);
-if(nctemp705)
-{
-struct tree* nctemp710= p;
-struct nctempchar1 *nctemp714;
-static struct nctempchar1 nctemp715 = {{ 47}, (char*)"Function definition does not match declaration\0"};
-nctemp714=&nctemp715;
-nctempchar1* nctemp712= nctemp714;
-struct tree* nctemp718= p;
-nctempchar1* nctemp720=PtreeGetdef(nctemp718);
-nctempchar1* nctemp716= nctemp720;
-int nctemp721=ErrSerror(nctemp710,nctemp712,nctemp716);
-}
-struct symbol* nctemp727= uup;
-nctempchar1* nctemp729=SymGetype(nctemp727);
-type=nctemp729;
-struct tree* nctemp731= np;
-struct tree* nctemp735= np;
-nctempchar1* nctemp737=PtreeGetdef(nctemp735);
-nctempchar1* nctemp733= nctemp737;
-int nctemp738=PtreeSetype(nctemp731,nctemp733);
-nctempchar1* nctemp742= type;
-struct tree* nctemp747= np;
-nctempchar1* nctemp749=PtreeGetype(nctemp747);
-nctempchar1* nctemp745= nctemp749;
-int nctemp750=LibeStrcmp(nctemp742,nctemp745);
-int nctemp739 = (nctemp750 ==0);
-if(nctemp739)
-{
-struct tree* nctemp753= p;
-struct nctempchar1 *nctemp757;
-static struct nctempchar1 nctemp758 = {{ 47}, (char*)"Function definition does not match declaration\0"};
-nctemp757=&nctemp758;
-nctempchar1* nctemp755= nctemp757;
-struct tree* nctemp761= p;
-nctempchar1* nctemp763=PtreeGetdef(nctemp761);
-nctempchar1* nctemp759= nctemp763;
-int nctemp764=ErrSerror(nctemp753,nctemp755,nctemp759);
-}
-struct symbol* nctemp770= uup;
-nctempchar1* nctemp772=SymGetarray(nctemp770);
-nctempchar1* nctemp768= nctemp772;
-struct tree* nctemp775= np;
-nctempchar1* nctemp777=PtreeGetarray(nctemp775);
-nctempchar1* nctemp773= nctemp777;
-int nctemp778=LibeStrcmp(nctemp768,nctemp773);
-int nctemp765 = (nctemp778 ==0);
-if(nctemp765)
-{
-struct tree* nctemp781= p;
-struct nctempchar1 *nctemp785;
-static struct nctempchar1 nctemp786 = {{ 47}, (char*)"Function definition does not match declaration\0"};
-nctemp785=&nctemp786;
-nctempchar1* nctemp783= nctemp785;
-struct tree* nctemp789= p;
-nctempchar1* nctemp791=PtreeGetdef(nctemp789);
-nctempchar1* nctemp787= nctemp791;
-int nctemp792=ErrSerror(nctemp781,nctemp783,nctemp787);
-}
-struct tree* nctemp797= np;
-struct tree* nctemp799=PtreeMvsister(nctemp797);
-np =nctemp799;
-}
-int nctemp800 = (np !=0);
-nctemp697=nctemp800;}struct symbol* nctemp807= uup;
-struct symbol* nctemp809=SymMvnext(nctemp807);
-int nctemp804 = (nctemp809 !=0);
-if(nctemp804)
-{
-struct tree* nctemp812= p;
-struct nctempchar1 *nctemp816;
-static struct nctempchar1 nctemp817 = {{ 47}, (char*)"Function definition does not match declaration\0"};
-nctemp816=&nctemp817;
-nctempchar1* nctemp814= nctemp816;
-struct tree* nctemp820= p;
-nctempchar1* nctemp822=PtreeGetdef(nctemp820);
-nctempchar1* nctemp818= nctemp822;
-int nctemp823=ErrSerror(nctemp812,nctemp814,nctemp818);
-}
-struct symbol* nctemp827=SymGetltp();
-int nctemp824 = (nctemp827 !=0);
-if(nctemp824)
-{
-struct nctempchar1 *nctemp835;
-static struct nctempchar1 nctemp836 = {{ 9}, (char*)"#arglist\0"};
-nctemp835=&nctemp836;
-nctempchar1* nctemp833= nctemp835;
-struct symbol* nctemp839=SymGetltp();
-struct symbol* nctemp837= nctemp839;
-struct symbol* nctemp840=SymLookup(nctemp833,nctemp837);
-up =nctemp840;
-}
-int nctemp841 = (up !=0);
-if(nctemp841)
-{
-struct symbol* nctemp849= up;
-struct symbol* nctemp851=SymGetable(nctemp849);
-uup =nctemp851;
-struct symbol* nctemp853= uup;
-int nctemp855=SymRmtable(nctemp853);
-struct symbol* nctemp860=SymMktable();
-uup =nctemp860;
-struct symbol* nctemp862= up;
-struct symbol* nctemp864= uup;
-struct symbol* nctemp866=SymSetable(nctemp862,nctemp864);
-int nctemp867 = (tmp !=0);
-if(nctemp867)
-{
-struct tree* nctemp872= tmp;
-struct symbol* nctemp874= uup;
-int nctemp876=SemDeclarations(nctemp872,nctemp874);
-}
-}
-struct tree* nctemp878= sp;
-int nctemp880=SemCompstmnt(nctemp878);
-struct tree* nctemp882= p;
-struct tree* nctemp884= sp;
-int nctemp886=SemCopyparallel(nctemp882,nctemp884);
-}
+int nctemp189 = (tp !=0);
+nctemp153=nctemp189;}struct symbol* nctemp197= etp;
+struct symbol* nctemp199= stp;
+struct symbol* nctemp201=SymAddtble(nctemp197,nctemp199);
+etp =nctemp201;
 return 1;
-}
-int SemDeclarations (struct tree* p,struct symbol* tp)
-{
-int nctemp888 = (p !=0);
-int nctemp892=nctemp888;
-while(nctemp892)
-{{
-struct tree* nctemp894= p;
-struct symbol* nctemp896= tp;
-int nctemp898=SemDeclaration(nctemp894,nctemp896);
-struct tree* nctemp903= p;
-struct tree* nctemp905=PtreeMvsister(nctemp903);
-p =nctemp905;
-}
-int nctemp906 = (p !=0);
-nctemp892=nctemp906;}return 1;
 }
 int SemDeclaration (struct tree* p,struct symbol* tp)
 {
@@ -891,1786 +730,1035 @@ int rank;
 int l;
 nctempchar1 *s;
 nctempchar1 *global;
-struct tree* nctemp912= p;
-struct tree* nctemp916= p;
-nctempchar1* nctemp918=PtreeGetdef(nctemp916);
-nctempchar1* nctemp914= nctemp918;
-int nctemp919=PtreeSetype(nctemp912,nctemp914);
-struct tree* nctemp925= p;
-nctempchar1* nctemp927=PtreeGetglobal(nctemp925);
-global=nctemp927;
+struct tree* nctemp204= p;
+struct tree* nctemp208= p;
+nctempchar1* nctemp210=PtreeGetdef(nctemp208);
+nctempchar1* nctemp206= nctemp210;
+int nctemp211=PtreeSetype(nctemp204,nctemp206);
+struct tree* nctemp217= p;
+nctempchar1* nctemp219=PtreeGetglobal(nctemp217);
+global=nctemp219;
 rank =0;
-struct tree* nctemp935= p;
-nctempchar1* nctemp937=PtreeGetarray(nctemp935);
-nctempchar1* nctemp933= nctemp937;
-struct nctempchar1 *nctemp940;
-static struct nctempchar1 nctemp941 = {{ 6}, (char*)"array\0"};
-nctemp940=&nctemp941;
-nctempchar1* nctemp938= nctemp940;
-int nctemp942=LibeStrcmp(nctemp933,nctemp938);
-if(nctemp942)
+struct tree* nctemp227= p;
+nctempchar1* nctemp229=PtreeGetarray(nctemp227);
+nctempchar1* nctemp225= nctemp229;
+struct nctempchar1 *nctemp232;
+static struct nctempchar1 nctemp233 = {{ 6}, (char*)"array\0"};
+nctemp232=&nctemp233;
+nctempchar1* nctemp230= nctemp232;
+int nctemp234=LibeStrcmp(nctemp225,nctemp230);
+if(nctemp234)
 {
-struct tree* nctemp947= p;
-struct tree* nctemp949=PtreeMvchild(nctemp947);
-np =nctemp949;
-struct tree* nctemp954= np;
-struct tree* nctemp956=PtreeMvchild(nctemp954);
-np =nctemp956;
+struct tree* nctemp239= p;
+struct tree* nctemp241=PtreeMvchild(nctemp239);
+np =nctemp241;
+struct tree* nctemp246= np;
+struct tree* nctemp248=PtreeMvchild(nctemp246);
+np =nctemp248;
 rank =1;
-struct tree* nctemp968= np;
-struct tree* nctemp970=PtreeMvsister(nctemp968);
-np =nctemp970;
-int nctemp961 = (np !=0);
-int nctemp972=nctemp961;
-while(nctemp972)
+struct tree* nctemp260= np;
+struct tree* nctemp262=PtreeMvsister(nctemp260);
+np =nctemp262;
+int nctemp253 = (np !=0);
+int nctemp264=nctemp253;
+while(nctemp264)
 {{
-int nctemp981 = rank + 1;
-rank =nctemp981;
+int nctemp273 = rank + 1;
+rank =nctemp273;
 }
-struct tree* nctemp989= np;
-struct tree* nctemp991=PtreeMvsister(nctemp989);
-np =nctemp991;
-int nctemp982 = (np !=0);
-nctemp972=nctemp982;}struct tree* nctemp997= p;
-struct tree* nctemp999=PtreeMvchild(nctemp997);
-np =nctemp999;
-struct tree* nctemp1004= np;
-struct tree* nctemp1006=PtreeMvsister(nctemp1004);
-np =nctemp1006;
+struct tree* nctemp281= np;
+struct tree* nctemp283=PtreeMvsister(nctemp281);
+np =nctemp283;
+int nctemp274 = (np !=0);
+nctemp264=nctemp274;}struct tree* nctemp289= p;
+struct tree* nctemp291=PtreeMvchild(nctemp289);
+np =nctemp291;
+struct tree* nctemp296= np;
+struct tree* nctemp298=PtreeMvsister(nctemp296);
+np =nctemp298;
 }
 else{
-struct tree* nctemp1011= p;
-struct tree* nctemp1013=PtreeMvchild(nctemp1011);
-np =nctemp1013;
+struct tree* nctemp303= p;
+struct tree* nctemp305=PtreeMvchild(nctemp303);
+np =nctemp305;
 }
-int nctemp1014 = (np !=0);
-int nctemp1018=nctemp1014;
-while(nctemp1018)
+int nctemp306 = (np !=0);
+int nctemp310=nctemp306;
+while(nctemp310)
 {{
-struct tree* nctemp1020= np;
-struct tree* nctemp1024= p;
-nctempchar1* nctemp1026=PtreeGetype(nctemp1024);
-nctempchar1* nctemp1022= nctemp1026;
-int nctemp1027=PtreeSetype(nctemp1020,nctemp1022);
-struct tree* nctemp1037= np;
-nctempchar1* nctemp1039=PtreeGetdef(nctemp1037);
-nctempchar1* nctemp1035= nctemp1039;
-struct symbol* nctemp1040= tp;
-struct symbol* nctemp1042=SymMkname(nctemp1035,nctemp1040);
-up =nctemp1042;
-int nctemp1028 = (up ==0);
-if(nctemp1028)
+struct tree* nctemp312= np;
+struct tree* nctemp316= p;
+nctempchar1* nctemp318=PtreeGetype(nctemp316);
+nctempchar1* nctemp314= nctemp318;
+int nctemp319=PtreeSetype(nctemp312,nctemp314);
+struct tree* nctemp329= np;
+nctempchar1* nctemp331=PtreeGetdef(nctemp329);
+nctempchar1* nctemp327= nctemp331;
+struct symbol* nctemp332= tp;
+struct symbol* nctemp334=SymMkname(nctemp327,nctemp332);
+up =nctemp334;
+int nctemp320 = (up ==0);
+if(nctemp320)
 {
-struct tree* nctemp1045= np;
-struct nctempchar1 *nctemp1049;
-static struct nctempchar1 nctemp1050 = {{ 21}, (char*)"Multiple declaration\0"};
-nctemp1049=&nctemp1050;
-nctempchar1* nctemp1047= nctemp1049;
-struct tree* nctemp1053= np;
-nctempchar1* nctemp1055=PtreeGetdef(nctemp1053);
-nctempchar1* nctemp1051= nctemp1055;
-int nctemp1056=ErrSerror(nctemp1045,nctemp1047,nctemp1051);
+struct tree* nctemp337= np;
+struct nctempchar1 *nctemp341;
+static struct nctempchar1 nctemp342 = {{ 21}, (char*)"Multiple declaration\0"};
+nctemp341=&nctemp342;
+nctempchar1* nctemp339= nctemp341;
+struct tree* nctemp345= np;
+nctempchar1* nctemp347=PtreeGetdef(nctemp345);
+nctempchar1* nctemp343= nctemp347;
+int nctemp348=SemSerror(nctemp337,nctemp339,nctemp343);
 }
 else{
-struct symbol* nctemp1058= up;
-struct nctempchar1 *nctemp1062;
-static struct nctempchar1 nctemp1063 = {{ 11}, (char*)"identifier\0"};
-nctemp1062=&nctemp1063;
-nctempchar1* nctemp1060= nctemp1062;
-int nctemp1064=SymSetident(nctemp1058,nctemp1060);
-struct symbol* nctemp1066= up;
-struct tree* nctemp1070= p;
-nctempchar1* nctemp1072=PtreeGetype(nctemp1070);
-nctempchar1* nctemp1068= nctemp1072;
-int nctemp1073=SymSetype(nctemp1066,nctemp1068);
-nctempchar1* nctemp1077= global;
-struct nctempchar1 *nctemp1082;
-static struct nctempchar1 nctemp1083 = {{ 7}, (char*)"global\0"};
-nctemp1082=&nctemp1083;
-nctempchar1* nctemp1080= nctemp1082;
-int nctemp1084=LibeStrcmp(nctemp1077,nctemp1080);
-int nctemp1074 = (nctemp1084 ==1);
-if(nctemp1074)
+struct symbol* nctemp350= up;
+struct nctempchar1 *nctemp354;
+static struct nctempchar1 nctemp355 = {{ 11}, (char*)"identifier\0"};
+nctemp354=&nctemp355;
+nctempchar1* nctemp352= nctemp354;
+int nctemp356=SymSetident(nctemp350,nctemp352);
+struct symbol* nctemp358= up;
+struct tree* nctemp362= p;
+nctempchar1* nctemp364=PtreeGetype(nctemp362);
+nctempchar1* nctemp360= nctemp364;
+int nctemp365=SymSetype(nctemp358,nctemp360);
+nctempchar1* nctemp369= global;
+struct nctempchar1 *nctemp374;
+static struct nctempchar1 nctemp375 = {{ 7}, (char*)"global\0"};
+nctemp374=&nctemp375;
+nctempchar1* nctemp372= nctemp374;
+int nctemp376=LibeStrcmp(nctemp369,nctemp372);
+int nctemp366 = (nctemp376 ==1);
+if(nctemp366)
 {
-struct symbol* nctemp1087= up;
-struct nctempchar1 *nctemp1091;
-static struct nctempchar1 nctemp1092 = {{ 7}, (char*)"global\0"};
-nctemp1091=&nctemp1092;
-nctempchar1* nctemp1089= nctemp1091;
-int nctemp1093=SymSetglobal(nctemp1087,nctemp1089);
+struct symbol* nctemp379= up;
+struct nctempchar1 *nctemp383;
+static struct nctempchar1 nctemp384 = {{ 7}, (char*)"global\0"};
+nctemp383=&nctemp384;
+nctempchar1* nctemp381= nctemp383;
+int nctemp385=SymSetglobal(nctemp379,nctemp381);
 }
-struct tree* nctemp1099= p;
-nctempchar1* nctemp1101=PtreeGetype(nctemp1099);
-nctempchar1* nctemp1097= nctemp1101;
-struct nctempchar1 *nctemp1104;
-static struct nctempchar1 nctemp1105 = {{ 6}, (char*)"const\0"};
-nctemp1104=&nctemp1105;
-nctempchar1* nctemp1102= nctemp1104;
-int nctemp1106=LibeStrcmp(nctemp1097,nctemp1102);
-int nctemp1094 = (nctemp1106 ==1);
-if(nctemp1094)
+struct tree* nctemp391= p;
+nctempchar1* nctemp393=PtreeGetype(nctemp391);
+nctempchar1* nctemp389= nctemp393;
+struct nctempchar1 *nctemp396;
+static struct nctempchar1 nctemp397 = {{ 6}, (char*)"const\0"};
+nctemp396=&nctemp397;
+nctempchar1* nctemp394= nctemp396;
+int nctemp398=LibeStrcmp(nctemp389,nctemp394);
+int nctemp386 = (nctemp398 ==1);
+if(nctemp386)
 {
-struct tree* nctemp1112= np;
-struct tree* nctemp1114=PtreeMvchild(nctemp1112);
-sp =nctemp1114;
-struct tree* nctemp1119= sp;
-struct tree* nctemp1121=PtreeMvchild(nctemp1119);
-sp =nctemp1121;
-struct tree* nctemp1127= sp;
-nctempchar1* nctemp1129=PtreeGetname(nctemp1127);
-nctempchar1* nctemp1125= nctemp1129;
-struct nctempchar1 *nctemp1132;
-static struct nctempchar1 nctemp1133 = {{ 7}, (char*)"unexpr\0"};
-nctemp1132=&nctemp1133;
-nctempchar1* nctemp1130= nctemp1132;
-int nctemp1134=LibeStrcmp(nctemp1125,nctemp1130);
-int nctemp1122 = (nctemp1134 ==1);
-if(nctemp1122)
+struct tree* nctemp404= np;
+struct tree* nctemp406=PtreeMvchild(nctemp404);
+sp =nctemp406;
+struct tree* nctemp411= sp;
+struct tree* nctemp413=PtreeMvchild(nctemp411);
+sp =nctemp413;
+struct tree* nctemp419= sp;
+nctempchar1* nctemp421=PtreeGetname(nctemp419);
+nctempchar1* nctemp417= nctemp421;
+struct nctempchar1 *nctemp424;
+static struct nctempchar1 nctemp425 = {{ 7}, (char*)"unexpr\0"};
+nctemp424=&nctemp425;
+nctempchar1* nctemp422= nctemp424;
+int nctemp426=LibeStrcmp(nctemp417,nctemp422);
+int nctemp414 = (nctemp426 ==1);
+if(nctemp414)
 {
-struct tree* nctemp1140= sp;
-struct tree* nctemp1142=PtreeMvchild(nctemp1140);
-sp =nctemp1142;
-struct tree* nctemp1155= sp;
-nctempchar1* nctemp1157=PtreeGetdef(nctemp1155);
-nctempchar1* nctemp1153= nctemp1157;
-int nctemp1158=LibeStrlen(nctemp1153);
-int nctemp1160 = nctemp1158 + 1;
-int nctemp1162 = nctemp1160 + 3;
-l =nctemp1162;
-int nctemp1169=l;
-nctempchar1 *nctemp1168;
-nctemp1168=(nctempchar1*)RunMalloc(sizeof(nctempchar1));
-nctemp1168->d[0]=l;
-nctemp1168->a=(char *)RunMalloc(sizeof(char)*nctemp1169);
-s=nctemp1168;
-struct nctempchar1 *nctemp1175;
-static struct nctempchar1 nctemp1176 = {{ 3}, (char*)"(-\0"};
-nctemp1175=&nctemp1176;
-nctempchar1* nctemp1173= nctemp1175;
-nctempchar1* nctemp1177= s;
-int nctemp1180=LibeStrcpy(nctemp1173,nctemp1177);
-struct tree* nctemp1184= sp;
-nctempchar1* nctemp1186=PtreeGetdef(nctemp1184);
-nctempchar1* nctemp1182= nctemp1186;
-nctempchar1* nctemp1187= s;
-int nctemp1190=LibeStrcat(nctemp1182,nctemp1187);
-struct nctempchar1 *nctemp1194;
-static struct nctempchar1 nctemp1195 = {{ 2}, (char*)")\0"};
-nctemp1194=&nctemp1195;
-nctempchar1* nctemp1192= nctemp1194;
-nctempchar1* nctemp1196= s;
-int nctemp1199=LibeStrcat(nctemp1192,nctemp1196);
-struct tree* nctemp1201= sp;
-nctempchar1* nctemp1203= s;
-int nctemp1206=PtreeSetdef(nctemp1201,nctemp1203);
+struct tree* nctemp432= sp;
+struct tree* nctemp434=PtreeMvchild(nctemp432);
+sp =nctemp434;
+struct tree* nctemp447= sp;
+nctempchar1* nctemp449=PtreeGetdef(nctemp447);
+nctempchar1* nctemp445= nctemp449;
+int nctemp450=LibeStrlen(nctemp445);
+int nctemp452 = nctemp450 + 1;
+int nctemp454 = nctemp452 + 3;
+l =nctemp454;
+int nctemp461=l;
+nctempchar1 *nctemp460;
+nctemp460=(nctempchar1*)RunMalloc(sizeof(nctempchar1));
+nctemp460->d[0]=l;
+nctemp460->a=(char *)RunMalloc(sizeof(char)*nctemp461);
+s=nctemp460;
+struct nctempchar1 *nctemp467;
+static struct nctempchar1 nctemp468 = {{ 3}, (char*)"(-\0"};
+nctemp467=&nctemp468;
+nctempchar1* nctemp465= nctemp467;
+nctempchar1* nctemp469= s;
+int nctemp472=LibeStrcpy(nctemp465,nctemp469);
+struct tree* nctemp476= sp;
+nctempchar1* nctemp478=PtreeGetdef(nctemp476);
+nctempchar1* nctemp474= nctemp478;
+nctempchar1* nctemp479= s;
+int nctemp482=LibeStrcat(nctemp474,nctemp479);
+struct nctempchar1 *nctemp486;
+static struct nctempchar1 nctemp487 = {{ 2}, (char*)")\0"};
+nctemp486=&nctemp487;
+nctempchar1* nctemp484= nctemp486;
+nctempchar1* nctemp488= s;
+int nctemp491=LibeStrcat(nctemp484,nctemp488);
+struct tree* nctemp493= sp;
+nctempchar1* nctemp495= s;
+int nctemp498=PtreeSetdef(nctemp493,nctemp495);
 RunFree(s->a);
 RunFree(s);
 }
-struct symbol* nctemp1211= up;
-struct tree* nctemp1215= sp;
-nctempchar1* nctemp1217=PtreeGetname(nctemp1215);
-nctempchar1* nctemp1213= nctemp1217;
-int nctemp1218=SymSetype(nctemp1211,nctemp1213);
-struct symbol* nctemp1220= up;
-struct tree* nctemp1224= sp;
-nctempchar1* nctemp1226=PtreeGetdef(nctemp1224);
-nctempchar1* nctemp1222= nctemp1226;
-int nctemp1227=SymSetdescr(nctemp1220,nctemp1222);
-struct symbol* nctemp1229= up;
-int nctemp1231= 0;
-int nctemp1233=SymSetemit(nctemp1229,nctemp1231);
+struct symbol* nctemp503= up;
+struct tree* nctemp507= sp;
+nctempchar1* nctemp509=PtreeGetname(nctemp507);
+nctempchar1* nctemp505= nctemp509;
+int nctemp510=SymSetype(nctemp503,nctemp505);
+struct symbol* nctemp512= up;
+struct tree* nctemp516= sp;
+nctempchar1* nctemp518=PtreeGetdef(nctemp516);
+nctempchar1* nctemp514= nctemp518;
+int nctemp519=SymSetdescr(nctemp512,nctemp514);
+struct symbol* nctemp521= up;
+int nctemp523= 0;
+int nctemp525=SymSetemit(nctemp521,nctemp523);
 }
-struct symbol* nctemp1235= up;
-struct nctempchar1 *nctemp1239;
-static struct nctempchar1 nctemp1240 = {{ 5}, (char*)"lval\0"};
-nctemp1239=&nctemp1240;
-nctempchar1* nctemp1237= nctemp1239;
-int nctemp1241=SymSetlval(nctemp1235,nctemp1237);
-struct tree* nctemp1245= p;
-nctempchar1* nctemp1247=PtreeGetstruct(nctemp1245);
-nctempchar1* nctemp1243= nctemp1247;
-struct nctempchar1 *nctemp1250;
-static struct nctempchar1 nctemp1251 = {{ 7}, (char*)"struct\0"};
-nctemp1250=&nctemp1251;
-nctempchar1* nctemp1248= nctemp1250;
-int nctemp1252=LibeStrcmp(nctemp1243,nctemp1248);
-if(nctemp1252)
+struct symbol* nctemp527= up;
+struct nctempchar1 *nctemp531;
+static struct nctempchar1 nctemp532 = {{ 5}, (char*)"lval\0"};
+nctemp531=&nctemp532;
+nctempchar1* nctemp529= nctemp531;
+int nctemp533=SymSetlval(nctemp527,nctemp529);
+struct tree* nctemp537= p;
+nctempchar1* nctemp539=PtreeGetstruct(nctemp537);
+nctempchar1* nctemp535= nctemp539;
+struct nctempchar1 *nctemp542;
+static struct nctempchar1 nctemp543 = {{ 7}, (char*)"struct\0"};
+nctemp542=&nctemp543;
+nctempchar1* nctemp540= nctemp542;
+int nctemp544=LibeStrcmp(nctemp535,nctemp540);
+if(nctemp544)
 {
-struct tree* nctemp1258= p;
-nctempchar1* nctemp1260=PtreeGetype(nctemp1258);
-nctempchar1* nctemp1256= nctemp1260;
-struct symbol* nctemp1263=SymGetetp();
-struct symbol* nctemp1261= nctemp1263;
-struct symbol* nctemp1264=SymLookup(nctemp1256,nctemp1261);
-int nctemp1253 = (nctemp1264 ==0);
-if(nctemp1253)
+struct tree* nctemp550= p;
+nctempchar1* nctemp552=PtreeGetype(nctemp550);
+nctempchar1* nctemp548= nctemp552;
+struct symbol* nctemp555=SymGetetp();
+struct symbol* nctemp553= nctemp555;
+struct symbol* nctemp556=SymLookup(nctemp548,nctemp553);
+int nctemp545 = (nctemp556 ==0);
+if(nctemp545)
 {
-struct tree* nctemp1267= p;
-struct nctempchar1 *nctemp1271;
-static struct nctempchar1 nctemp1272 = {{ 20}, (char*)"Undefined structure\0"};
-nctemp1271=&nctemp1272;
-nctempchar1* nctemp1269= nctemp1271;
-struct tree* nctemp1275= p;
-nctempchar1* nctemp1277=PtreeGetype(nctemp1275);
-nctempchar1* nctemp1273= nctemp1277;
-int nctemp1278=ErrSerror(nctemp1267,nctemp1269,nctemp1273);
+struct tree* nctemp559= p;
+struct nctempchar1 *nctemp563;
+static struct nctempchar1 nctemp564 = {{ 20}, (char*)"Undefined structure\0"};
+nctemp563=&nctemp564;
+nctempchar1* nctemp561= nctemp563;
+struct tree* nctemp567= p;
+nctempchar1* nctemp569=PtreeGetype(nctemp567);
+nctempchar1* nctemp565= nctemp569;
+int nctemp570=SemSerror(nctemp559,nctemp561,nctemp565);
 }
-struct symbol* nctemp1280= up;
-struct tree* nctemp1284= p;
-nctempchar1* nctemp1286=PtreeGetstruct(nctemp1284);
-nctempchar1* nctemp1282= nctemp1286;
-int nctemp1287=SymSetstruct(nctemp1280,nctemp1282);
+struct symbol* nctemp572= up;
+struct tree* nctemp576= p;
+nctempchar1* nctemp578=PtreeGetstruct(nctemp576);
+nctempchar1* nctemp574= nctemp578;
+int nctemp579=SymSetstruct(nctemp572,nctemp574);
 }
-struct symbol* nctemp1289= up;
-struct tree* nctemp1293= p;
-nctempchar1* nctemp1295=PtreeGetarray(nctemp1293);
-nctempchar1* nctemp1291= nctemp1295;
-int nctemp1296=SymSetarray(nctemp1289,nctemp1291);
-struct symbol* nctemp1298= up;
-int nctemp1300= rank;
-int nctemp1302=SymSetrank(nctemp1298,nctemp1300);
-struct tree* nctemp1304= np;
-int nctemp1306= rank;
-int nctemp1308=PtreeSetrank(nctemp1304,nctemp1306);
+struct symbol* nctemp581= up;
+struct tree* nctemp585= p;
+nctempchar1* nctemp587=PtreeGetarray(nctemp585);
+nctempchar1* nctemp583= nctemp587;
+int nctemp588=SymSetarray(nctemp581,nctemp583);
+struct symbol* nctemp590= up;
+int nctemp592= rank;
+int nctemp594=SymSetrank(nctemp590,nctemp592);
+struct tree* nctemp596= np;
+int nctemp598= rank;
+int nctemp600=PtreeSetrank(nctemp596,nctemp598);
 }
-struct tree* nctemp1313= np;
-struct tree* nctemp1315=PtreeMvsister(nctemp1313);
-np =nctemp1315;
+struct tree* nctemp605= np;
+struct tree* nctemp607=PtreeMvsister(nctemp605);
+np =nctemp607;
 }
-int nctemp1316 = (np !=0);
-nctemp1018=nctemp1316;}return 1;
+int nctemp608 = (np !=0);
+nctemp310=nctemp608;}return 1;
 }
-int SemCompstmnt (struct tree* p)
+int SemDeclarations (struct tree* p,struct symbol* tp)
 {
-struct tree* q;
-int parflag;
-parflag =0;
-q =p;
-struct tree* nctemp1333= p;
-struct tree* nctemp1335=PtreeMvchild(nctemp1333);
-p =nctemp1335;
-int nctemp1336 = (p ==0);
-if(nctemp1336)
-{
-return 1;
-}
-struct tree* nctemp1344= p;
-nctempchar1* nctemp1346=PtreeGetname(nctemp1344);
-nctempchar1* nctemp1342= nctemp1346;
-struct nctempchar1 *nctemp1349;
-static struct nctempchar1 nctemp1350 = {{ 13}, (char*)"declarations\0"};
-nctemp1349=&nctemp1350;
-nctempchar1* nctemp1347= nctemp1349;
-int nctemp1351=LibeStrcmp(nctemp1342,nctemp1347);
-if(nctemp1351)
-{
-struct tree* nctemp1355= p;
-struct tree* nctemp1357=PtreeMvchild(nctemp1355);
-struct tree* nctemp1353= nctemp1357;
-struct symbol* nctemp1360=SymGetltp();
-struct symbol* nctemp1358= nctemp1360;
-int nctemp1361=SemDeclarations(nctemp1353,nctemp1358);
-struct tree* nctemp1366= p;
-struct tree* nctemp1368=PtreeMvsister(nctemp1366);
-p =nctemp1368;
-}
-int nctemp1369 = (p !=0);
-int nctemp1373=nctemp1369;
-while(nctemp1373)
+int nctemp613 = (p !=0);
+int nctemp617=nctemp613;
+while(nctemp617)
 {{
-struct tree* nctemp1377= p;
-nctempchar1* nctemp1379=PtreeGetname(nctemp1377);
-nctempchar1* nctemp1375= nctemp1379;
-struct nctempchar1 *nctemp1382;
-static struct nctempchar1 nctemp1383 = {{ 5}, (char*)"expr\0"};
-nctemp1382=&nctemp1383;
-nctempchar1* nctemp1380= nctemp1382;
-int nctemp1384=LibeStrcmp(nctemp1375,nctemp1380);
-if(nctemp1384)
+struct tree* nctemp619= p;
+struct symbol* nctemp621= tp;
+int nctemp623=SemDeclaration(nctemp619,nctemp621);
+struct tree* nctemp628= p;
+struct tree* nctemp630=PtreeMvsister(nctemp628);
+p =nctemp630;
+}
+int nctemp631 = (p !=0);
+nctemp617=nctemp631;}return 1;
+}
+int SemStructdecl (struct tree* p,struct symbol* tp)
 {
-struct tree* nctemp1386= p;
-struct tree* nctemp1388=SemExpr(nctemp1386);
-struct tree* nctemp1390= p;
-int nctemp1392= 1;
-int nctemp1394=PtreeSetopexpr(nctemp1390,nctemp1392);
-}
-struct tree* nctemp1398= p;
-nctempchar1* nctemp1400=PtreeGetname(nctemp1398);
-nctempchar1* nctemp1396= nctemp1400;
-struct nctempchar1 *nctemp1403;
-static struct nctempchar1 nctemp1404 = {{ 6}, (char*)"while\0"};
-nctemp1403=&nctemp1404;
-nctempchar1* nctemp1401= nctemp1403;
-int nctemp1405=LibeStrcmp(nctemp1396,nctemp1401);
-if(nctemp1405)
-{
-struct tree* nctemp1407= p;
-int nctemp1409=SemWhilestmnt(nctemp1407);
-}
-struct tree* nctemp1413= p;
-nctempchar1* nctemp1415=PtreeGetname(nctemp1413);
-nctempchar1* nctemp1411= nctemp1415;
-struct nctempchar1 *nctemp1418;
-static struct nctempchar1 nctemp1419 = {{ 4}, (char*)"for\0"};
-nctemp1418=&nctemp1419;
-nctempchar1* nctemp1416= nctemp1418;
-int nctemp1420=LibeStrcmp(nctemp1411,nctemp1416);
-if(nctemp1420)
-{
-struct tree* nctemp1422= p;
-int nctemp1424=SemForstmnt(nctemp1422);
-}
-struct tree* nctemp1428= p;
-nctempchar1* nctemp1430=PtreeGetname(nctemp1428);
-nctempchar1* nctemp1426= nctemp1430;
-struct nctempchar1 *nctemp1433;
-static struct nctempchar1 nctemp1434 = {{ 9}, (char*)"parallel\0"};
-nctemp1433=&nctemp1434;
-nctempchar1* nctemp1431= nctemp1433;
-int nctemp1435=LibeStrcmp(nctemp1426,nctemp1431);
-if(nctemp1435)
-{
-struct tree* nctemp1437= p;
-int nctemp1439=SemParallelstmnt(nctemp1437);
-struct tree* nctemp1441= p;
-struct nctempchar1 *nctemp1445;
-static struct nctempchar1 nctemp1446 = {{ 9}, (char*)"parallel\0"};
-nctemp1445=&nctemp1446;
-nctempchar1* nctemp1443= nctemp1445;
-int nctemp1447=PtreeSetparallel(nctemp1441,nctemp1443);
-}
-struct tree* nctemp1451= p;
-nctempchar1* nctemp1453=PtreeGetname(nctemp1451);
-nctempchar1* nctemp1449= nctemp1453;
-struct nctempchar1 *nctemp1456;
-static struct nctempchar1 nctemp1457 = {{ 3}, (char*)"if\0"};
-nctemp1456=&nctemp1457;
-nctempchar1* nctemp1454= nctemp1456;
-int nctemp1458=LibeStrcmp(nctemp1449,nctemp1454);
-if(nctemp1458)
-{
-struct tree* nctemp1460= p;
-int nctemp1462=SemIfstmnt(nctemp1460);
-}
-struct tree* nctemp1466= p;
-nctempchar1* nctemp1468=PtreeGetname(nctemp1466);
-nctempchar1* nctemp1464= nctemp1468;
-struct nctempchar1 *nctemp1471;
-static struct nctempchar1 nctemp1472 = {{ 7}, (char*)"return\0"};
-nctemp1471=&nctemp1472;
-nctempchar1* nctemp1469= nctemp1471;
-int nctemp1473=LibeStrcmp(nctemp1464,nctemp1469);
-if(nctemp1473)
-{
-struct tree* nctemp1475= p;
-int nctemp1477=SemReturnstmnt(nctemp1475);
-}
-struct tree* nctemp1481= p;
-nctempchar1* nctemp1483=PtreeGetparallel(nctemp1481);
-nctempchar1* nctemp1479= nctemp1483;
-struct nctempchar1 *nctemp1486;
-static struct nctempchar1 nctemp1487 = {{ 9}, (char*)"parallel\0"};
-nctemp1486=&nctemp1487;
-nctempchar1* nctemp1484= nctemp1486;
-int nctemp1488=LibeStrcmp(nctemp1479,nctemp1484);
-if(nctemp1488)
-{
-parflag =1;
-}
-struct tree* nctemp1497= p;
-struct tree* nctemp1499=PtreeMvsister(nctemp1497);
-p =nctemp1499;
-}
-int nctemp1500 = (p !=0);
-nctemp1373=nctemp1500;}int nctemp1504 = (parflag ==1);
-if(nctemp1504)
-{
-struct tree* nctemp1509= q;
-struct nctempchar1 *nctemp1513;
-static struct nctempchar1 nctemp1514 = {{ 9}, (char*)"parallel\0"};
-nctemp1513=&nctemp1514;
-nctempchar1* nctemp1511= nctemp1513;
-int nctemp1515=PtreeSetparallel(nctemp1509,nctemp1511);
-}
-return 1;
-}
-int SemStmnt (struct tree* p)
-{
-struct tree* q;
-int parflag;
-parflag =0;
-q =p;
-struct tree* nctemp1528= p;
-nctempchar1* nctemp1530=PtreeGetname(nctemp1528);
-nctempchar1* nctemp1526= nctemp1530;
-struct nctempchar1 *nctemp1533;
-static struct nctempchar1 nctemp1534 = {{ 13}, (char*)"declarations\0"};
-nctemp1533=&nctemp1534;
-nctempchar1* nctemp1531= nctemp1533;
-int nctemp1535=LibeStrcmp(nctemp1526,nctemp1531);
-if(nctemp1535)
-{
-struct tree* nctemp1537= p;
-struct symbol* nctemp1541=SymGetltp();
-struct symbol* nctemp1539= nctemp1541;
-int nctemp1542=SemDeclarations(nctemp1537,nctemp1539);
-struct tree* nctemp1547= p;
-struct tree* nctemp1549=PtreeMvsister(nctemp1547);
-p =nctemp1549;
-}
-int nctemp1550 = (p !=0);
-int nctemp1554=nctemp1550;
-while(nctemp1554)
-{{
-struct tree* nctemp1558= p;
-nctempchar1* nctemp1560=PtreeGetname(nctemp1558);
-nctempchar1* nctemp1556= nctemp1560;
-struct nctempchar1 *nctemp1563;
-static struct nctempchar1 nctemp1564 = {{ 5}, (char*)"expr\0"};
-nctemp1563=&nctemp1564;
-nctempchar1* nctemp1561= nctemp1563;
-int nctemp1565=LibeStrcmp(nctemp1556,nctemp1561);
-if(nctemp1565)
-{
-struct tree* nctemp1567= p;
-struct tree* nctemp1569=SemExpr(nctemp1567);
-struct tree* nctemp1571= p;
-int nctemp1573= 1;
-int nctemp1575=PtreeSetopexpr(nctemp1571,nctemp1573);
-}
-struct tree* nctemp1579= p;
-nctempchar1* nctemp1581=PtreeGetname(nctemp1579);
-nctempchar1* nctemp1577= nctemp1581;
-struct nctempchar1 *nctemp1584;
-static struct nctempchar1 nctemp1585 = {{ 10}, (char*)"compstmnt\0"};
-nctemp1584=&nctemp1585;
-nctempchar1* nctemp1582= nctemp1584;
-int nctemp1586=LibeStrcmp(nctemp1577,nctemp1582);
-if(nctemp1586)
-{
-struct tree* nctemp1588= p;
-int nctemp1590=SemCompstmnt(nctemp1588);
-}
-struct tree* nctemp1594= p;
-nctempchar1* nctemp1596=PtreeGetname(nctemp1594);
-nctempchar1* nctemp1592= nctemp1596;
-struct nctempchar1 *nctemp1599;
-static struct nctempchar1 nctemp1600 = {{ 6}, (char*)"while\0"};
-nctemp1599=&nctemp1600;
-nctempchar1* nctemp1597= nctemp1599;
-int nctemp1601=LibeStrcmp(nctemp1592,nctemp1597);
-if(nctemp1601)
-{
-struct tree* nctemp1603= p;
-int nctemp1605=SemWhilestmnt(nctemp1603);
-}
-struct tree* nctemp1609= p;
-nctempchar1* nctemp1611=PtreeGetname(nctemp1609);
-nctempchar1* nctemp1607= nctemp1611;
-struct nctempchar1 *nctemp1614;
-static struct nctempchar1 nctemp1615 = {{ 4}, (char*)"for\0"};
-nctemp1614=&nctemp1615;
-nctempchar1* nctemp1612= nctemp1614;
-int nctemp1616=LibeStrcmp(nctemp1607,nctemp1612);
-if(nctemp1616)
-{
-struct tree* nctemp1618= p;
-int nctemp1620=SemForstmnt(nctemp1618);
-}
-struct tree* nctemp1624= p;
-nctempchar1* nctemp1626=PtreeGetname(nctemp1624);
-nctempchar1* nctemp1622= nctemp1626;
-struct nctempchar1 *nctemp1629;
-static struct nctempchar1 nctemp1630 = {{ 9}, (char*)"parallel\0"};
-nctemp1629=&nctemp1630;
-nctempchar1* nctemp1627= nctemp1629;
-int nctemp1631=LibeStrcmp(nctemp1622,nctemp1627);
-if(nctemp1631)
-{
-parflag =1;
-}
-struct tree* nctemp1639= p;
-nctempchar1* nctemp1641=PtreeGetname(nctemp1639);
-nctempchar1* nctemp1637= nctemp1641;
-struct nctempchar1 *nctemp1644;
-static struct nctempchar1 nctemp1645 = {{ 3}, (char*)"if\0"};
-nctemp1644=&nctemp1645;
-nctempchar1* nctemp1642= nctemp1644;
-int nctemp1646=LibeStrcmp(nctemp1637,nctemp1642);
-if(nctemp1646)
-{
-struct tree* nctemp1648= p;
-int nctemp1650=SemIfstmnt(nctemp1648);
-}
-struct tree* nctemp1654= p;
-nctempchar1* nctemp1656=PtreeGetname(nctemp1654);
-nctempchar1* nctemp1652= nctemp1656;
-struct nctempchar1 *nctemp1659;
-static struct nctempchar1 nctemp1660 = {{ 7}, (char*)"return\0"};
-nctemp1659=&nctemp1660;
-nctempchar1* nctemp1657= nctemp1659;
-int nctemp1661=LibeStrcmp(nctemp1652,nctemp1657);
-if(nctemp1661)
-{
-struct tree* nctemp1663= p;
-int nctemp1665=SemReturnstmnt(nctemp1663);
-}
-struct tree* nctemp1670= p;
-struct tree* nctemp1672=PtreeMvsister(nctemp1670);
-p =nctemp1672;
-}
-int nctemp1673 = (p !=0);
-nctemp1554=nctemp1673;}int nctemp1677 = (parflag ==1);
-if(nctemp1677)
-{
-struct tree* nctemp1682= q;
-struct nctempchar1 *nctemp1686;
-static struct nctempchar1 nctemp1687 = {{ 9}, (char*)"parallel\0"};
-nctemp1686=&nctemp1687;
-nctempchar1* nctemp1684= nctemp1686;
-int nctemp1688=PtreeSetparallel(nctemp1682,nctemp1684);
-}
-return 1;
-}
-int SemWhilestmnt (struct tree* p)
-{
-struct tree* q;
-q =p;
-struct tree* nctemp1698= p;
-struct tree* nctemp1700=PtreeMvchild(nctemp1698);
-p =nctemp1700;
-struct tree* nctemp1702= p;
-struct tree* nctemp1704=SemExpr(nctemp1702);
-struct tree* nctemp1706= p;
-int nctemp1708= 1;
-int nctemp1710=PtreeSetopexpr(nctemp1706,nctemp1708);
-struct tree* nctemp1715= p;
-struct tree* nctemp1717=PtreeMvsister(nctemp1715);
-p =nctemp1717;
-struct tree* nctemp1719= p;
-int nctemp1721=SemStmnt(nctemp1719);
-struct tree* nctemp1723= q;
-struct tree* nctemp1725= p;
-int nctemp1727=SemCopyparallel(nctemp1723,nctemp1725);
-return 1;
-}
-int SemForstmnt (struct tree* p)
-{
-struct tree* q;
-q =p;
-struct tree* nctemp1737= p;
-struct tree* nctemp1739=PtreeMvchild(nctemp1737);
-p =nctemp1739;
-struct tree* nctemp1741= p;
-struct tree* nctemp1743=SemExpr(nctemp1741);
-struct tree* nctemp1745= p;
-int nctemp1747= 1;
-int nctemp1749=PtreeSetopexpr(nctemp1745,nctemp1747);
-struct tree* nctemp1754= p;
-struct tree* nctemp1756=PtreeMvsister(nctemp1754);
-p =nctemp1756;
-struct tree* nctemp1758= p;
-struct tree* nctemp1760=SemExpr(nctemp1758);
-struct tree* nctemp1762= p;
-int nctemp1764= 1;
-int nctemp1766=PtreeSetopexpr(nctemp1762,nctemp1764);
-struct tree* nctemp1771= p;
-struct tree* nctemp1773=PtreeMvsister(nctemp1771);
-p =nctemp1773;
-struct tree* nctemp1775= p;
-struct tree* nctemp1777=SemExpr(nctemp1775);
-struct tree* nctemp1779= p;
-int nctemp1781= 1;
-int nctemp1783=PtreeSetopexpr(nctemp1779,nctemp1781);
-struct tree* nctemp1788= p;
-struct tree* nctemp1790=PtreeMvsister(nctemp1788);
-p =nctemp1790;
-struct tree* nctemp1792= p;
-int nctemp1794=SemStmnt(nctemp1792);
-struct tree* nctemp1796= q;
-struct tree* nctemp1798= p;
-int nctemp1800=SemCopyparallel(nctemp1796,nctemp1798);
-return 1;
-}
-int SemParallelstmnt (struct tree* p)
-{
-struct tree* sp;
-struct tree* rp;
-int rank;
-rank =0;
-struct tree* nctemp1810= p;
-struct tree* nctemp1812=PtreeMvchild(nctemp1810);
-sp =nctemp1812;
-struct tree* nctemp1817= sp;
-struct tree* nctemp1819=PtreeMvchild(nctemp1817);
-sp =nctemp1819;
-int nctemp1820 = (sp !=0);
-int nctemp1824=nctemp1820;
-while(nctemp1824)
-{{
-struct tree* nctemp1829= sp;
-struct tree* nctemp1831=PtreeMvchild(nctemp1829);
-rp =nctemp1831;
-struct tree* nctemp1833= rp;
-struct tree* nctemp1835=SemExpr(nctemp1833);
-struct tree* nctemp1837= rp;
-int nctemp1839= 1;
-int nctemp1841=PtreeSetopexpr(nctemp1837,nctemp1839);
-struct tree* nctemp1846= rp;
-struct tree* nctemp1848=PtreeMvsister(nctemp1846);
-rp =nctemp1848;
-struct tree* nctemp1850= rp;
-struct tree* nctemp1852=SemExpr(nctemp1850);
-struct tree* nctemp1854= rp;
-int nctemp1856= 1;
-int nctemp1858=PtreeSetopexpr(nctemp1854,nctemp1856);
-struct tree* nctemp1866= rp;
-struct tree* nctemp1868=PtreeMvsister(nctemp1866);
-rp =nctemp1868;
-int nctemp1859 = (rp !=0);
-if(nctemp1859)
-{
-struct tree* nctemp1871= rp;
-struct tree* nctemp1873=SemExpr(nctemp1871);
-struct tree* nctemp1875= rp;
-int nctemp1877= 1;
-int nctemp1879=PtreeSetopexpr(nctemp1875,nctemp1877);
-}
-struct tree* nctemp1883= sp;
-struct tree* nctemp1885=PtreeMvsister(nctemp1883);
-int nctemp1880 = (nctemp1885 !=0);
-if(nctemp1880)
-{
-struct tree* nctemp1891= sp;
-struct tree* nctemp1893=PtreeMvsister(nctemp1891);
-rp =nctemp1893;
-}
-struct tree* nctemp1898= sp;
-struct tree* nctemp1900=PtreeMvsister(nctemp1898);
-sp =nctemp1900;
-int nctemp1909 = rank + 1;
-rank =nctemp1909;
-}
-int nctemp1910 = (sp !=0);
-nctemp1824=nctemp1910;}struct tree* nctemp1915= p;
-int nctemp1917= rank;
-int nctemp1919=PtreeSetrank(nctemp1915,nctemp1917);
-struct tree* nctemp1924= p;
-struct tree* nctemp1926=PtreeMvchild(nctemp1924);
-sp =nctemp1926;
-struct tree* nctemp1931= sp;
-struct tree* nctemp1933=PtreeMvsister(nctemp1931);
-sp =nctemp1933;
-struct tree* nctemp1935= sp;
-int nctemp1937=SemStmnt(nctemp1935);
-return 1;
-}
-int SemIfstmnt (struct tree* p)
-{
-struct tree* q;
-q =p;
-struct tree* nctemp1947= p;
-struct tree* nctemp1949=PtreeMvchild(nctemp1947);
-p =nctemp1949;
-struct tree* nctemp1951= p;
-struct tree* nctemp1953=SemExpr(nctemp1951);
-struct tree* nctemp1955= p;
-int nctemp1957= 1;
-int nctemp1959=PtreeSetopexpr(nctemp1955,nctemp1957);
-struct tree* nctemp1964= p;
-struct tree* nctemp1966=PtreeMvsister(nctemp1964);
-p =nctemp1966;
-struct tree* nctemp1968= p;
-int nctemp1970=SemStmnt(nctemp1968);
-struct tree* nctemp1972= q;
-struct tree* nctemp1974= p;
-int nctemp1976=SemCopyparallel(nctemp1972,nctemp1974);
-struct tree* nctemp1984= p;
-struct tree* nctemp1986=PtreeMvsister(nctemp1984);
-p =nctemp1986;
-int nctemp1977 = (p !=0);
-if(nctemp1977)
-{
-struct tree* nctemp1991= p;
-nctempchar1* nctemp1993=PtreeGetname(nctemp1991);
-nctempchar1* nctemp1989= nctemp1993;
-struct nctempchar1 *nctemp1996;
-static struct nctempchar1 nctemp1997 = {{ 5}, (char*)"else\0"};
-nctemp1996=&nctemp1997;
-nctempchar1* nctemp1994= nctemp1996;
-int nctemp1998=LibeStrcmp(nctemp1989,nctemp1994);
-if(nctemp1998)
-{
-struct tree* nctemp2003= p;
-struct tree* nctemp2005=PtreeMvchild(nctemp2003);
-p =nctemp2005;
-struct tree* nctemp2007= p;
-int nctemp2009=SemStmnt(nctemp2007);
-}
-}
-return 1;
-}
-int SemReturnstmnt (struct tree* p)
-{
-struct tree* sp;
 struct symbol* up;
-struct tree* nctemp2015= p;
-struct tree* nctemp2017=PtreeMvchild(nctemp2015);
-sp =nctemp2017;
-int nctemp2018 = (sp !=0);
-if(nctemp2018)
+struct symbol* uup;
+nctempchar1 *structure;
+struct tree* nctemp641= p;
+nctempchar1* nctemp643=PtreeGetdef(nctemp641);
+structure=nctemp643;
+struct tree* nctemp648= p;
+struct tree* nctemp650=PtreeMvchild(nctemp648);
+p =nctemp650;
+struct tree* nctemp655= p;
+struct tree* nctemp657=PtreeMvchild(nctemp655);
+p =nctemp657;
+struct tree* nctemp661= p;
+nctempchar1* nctemp663=PtreeGetname(nctemp661);
+nctempchar1* nctemp659= nctemp663;
+struct nctempchar1 *nctemp666;
+static struct nctempchar1 nctemp667 = {{ 13}, (char*)"declarations\0"};
+nctemp666=&nctemp667;
+nctempchar1* nctemp664= nctemp666;
+int nctemp668=LibeStrcmp(nctemp659,nctemp664);
+if(nctemp668)
 {
-struct tree* nctemp2023= sp;
-struct tree* nctemp2025=SemExpr(nctemp2023);
-struct tree* nctemp2027= sp;
-int nctemp2029= 1;
-int nctemp2031=PtreeSetopexpr(nctemp2027,nctemp2029);
-struct nctempchar1 *nctemp2038;
-static struct nctempchar1 nctemp2039 = {{ 6}, (char*)"#self\0"};
-nctemp2038=&nctemp2039;
-nctempchar1* nctemp2036= nctemp2038;
-struct symbol* nctemp2042=SymGetltp();
-struct symbol* nctemp2040= nctemp2042;
-struct symbol* nctemp2043=SymLookup(nctemp2036,nctemp2040);
-up =nctemp2043;
-struct symbol* nctemp2050= up;
-nctempchar1* nctemp2052=SymGetfunc(nctemp2050);
-nctempchar1* nctemp2048= nctemp2052;
-struct symbol* nctemp2053=SymLook(nctemp2048);
-up =nctemp2053;
-struct tree* nctemp2055= p;
-struct symbol* nctemp2059= up;
-nctempchar1* nctemp2061=SymGetype(nctemp2059);
-nctempchar1* nctemp2057= nctemp2061;
-int nctemp2062=PtreeSetype(nctemp2055,nctemp2057);
-struct tree* nctemp2064= p;
-struct symbol* nctemp2068= up;
-nctempchar1* nctemp2070=SymGetstruct(nctemp2068);
-nctempchar1* nctemp2066= nctemp2070;
-int nctemp2071=PtreeSetstruct(nctemp2064,nctemp2066);
-struct tree* nctemp2073= p;
-struct symbol* nctemp2077= up;
-nctempchar1* nctemp2079=SymGetarray(nctemp2077);
-nctempchar1* nctemp2075= nctemp2079;
-int nctemp2080=PtreeSetarray(nctemp2073,nctemp2075);
-struct tree* nctemp2082= p;
-struct tree* nctemp2086= sp;
-nctempchar1* nctemp2088=PtreeGetref(nctemp2086);
-nctempchar1* nctemp2084= nctemp2088;
-int nctemp2089=PtreeSetref(nctemp2082,nctemp2084);
-struct tree* nctemp2091= p;
-struct symbol* nctemp2095= up;
-int nctemp2097=SymGetrank(nctemp2095);
-int nctemp2093= nctemp2097;
-int nctemp2098=PtreeSetrank(nctemp2091,nctemp2093);
-struct tree* nctemp2102= p;
-struct tree* nctemp2104= sp;
-int nctemp2106=SemComparetype(nctemp2102,nctemp2104);
-int nctemp2099 = (nctemp2106 ==0);
-if(nctemp2099)
+struct symbol* nctemp673=SymMktable();
+up =nctemp673;
+nctempchar1* nctemp681= structure;
+struct symbol* nctemp684= tp;
+struct symbol* nctemp686=SymMkname(nctemp681,nctemp684);
+uup =nctemp686;
+int nctemp674 = (uup ==0);
+if(nctemp674)
 {
-struct tree* nctemp2109= p;
-struct nctempchar1 *nctemp2113;
-static struct nctempchar1 nctemp2114 = {{ 26}, (char*)"Return type is incorrect \0"};
-nctemp2113=&nctemp2114;
-nctempchar1* nctemp2111= nctemp2113;
-struct nctempchar1 *nctemp2117;
-static struct nctempchar1 nctemp2118 = {{ 2}, (char*)" \0"};
-nctemp2117=&nctemp2118;
-nctempchar1* nctemp2115= nctemp2117;
-int nctemp2119=ErrSerror(nctemp2109,nctemp2111,nctemp2115);
+struct tree* nctemp689= p;
+struct nctempchar1 *nctemp693;
+static struct nctempchar1 nctemp694 = {{ 21}, (char*)"Multiple declaration\0"};
+nctemp693=&nctemp694;
+nctempchar1* nctemp691= nctemp693;
+nctempchar1* nctemp695= structure;
+int nctemp698=SemSerror(nctemp689,nctemp691,nctemp695);
+}
+else{
+struct symbol* nctemp700= uup;
+struct symbol* nctemp702= up;
+struct symbol* nctemp704=SymSetable(nctemp700,nctemp702);
+struct symbol* nctemp706= uup;
+struct nctempchar1 *nctemp710;
+static struct nctempchar1 nctemp711 = {{ 10}, (char*)"structdef\0"};
+nctemp710=&nctemp711;
+nctempchar1* nctemp708= nctemp710;
+int nctemp712=SymSetstruct(nctemp706,nctemp708);
+struct symbol* nctemp714= uup;
+nctempchar1* nctemp716= structure;
+int nctemp719=SymSetype(nctemp714,nctemp716);
+struct tree* nctemp723= p;
+struct tree* nctemp725=PtreeMvchild(nctemp723);
+struct tree* nctemp721= nctemp725;
+struct symbol* nctemp726= up;
+int nctemp728=SemDeclarations(nctemp721,nctemp726);
 }
 }
 return 1;
 }
-struct tree* SemExpr (struct tree* p)
+int SemArgtype (struct tree* p,struct symbol* tp)
 {
-struct tree* sp;
-struct tree* nctemp2125= p;
-struct tree* nctemp2127=PtreeMvchild(nctemp2125);
-sp =nctemp2127;
-struct tree* nctemp2132= sp;
-struct tree* nctemp2134=SemBinexpr(nctemp2132);
-sp =nctemp2134;
-struct tree* nctemp2136= sp;
-struct tree* nctemp2138= p;
-int nctemp2140=SemCopytype(nctemp2136,nctemp2138);
-return p;
-}
-struct tree* SemBinexpr (struct tree* p)
+nctempchar1 *name;
+struct tree* nctemp735= p;
+nctempchar1* nctemp737=PtreeGetdef(nctemp735);
+name=nctemp737;
+struct symbol* nctemp743= tp;
+nctempchar1* nctemp745=SymGetype(nctemp743);
+nctempchar1* nctemp741= nctemp745;
+struct tree* nctemp748= p;
+nctempchar1* nctemp750=PtreeGetype(nctemp748);
+nctempchar1* nctemp746= nctemp750;
+int nctemp751=LibeStrcmp(nctemp741,nctemp746);
+int nctemp738 = (nctemp751 ==0);
+if(nctemp738)
 {
-struct tree* leftp;
-struct tree* rightp;
-struct tree* np;
-np =p;
-struct tree* nctemp2149= p;
-nctempchar1* nctemp2151=PtreeGetname(nctemp2149);
-nctempchar1* nctemp2147= nctemp2151;
-struct nctempchar1 *nctemp2154;
-static struct nctempchar1 nctemp2155 = {{ 8}, (char*)"binexpr\0"};
-nctemp2154=&nctemp2155;
-nctempchar1* nctemp2152= nctemp2154;
-int nctemp2156=LibeStrcmp(nctemp2147,nctemp2152);
-if(nctemp2156)
+struct tree* nctemp754= p;
+struct nctempchar1 *nctemp758;
+static struct nctempchar1 nctemp759 = {{ 50}, (char*)"Argument1 type does not match forward declaration\0"};
+nctemp758=&nctemp759;
+nctempchar1* nctemp756= nctemp758;
+nctempchar1* nctemp760= name;
+int nctemp763=SemSerror(nctemp754,nctemp756,nctemp760);
+}
+struct symbol* nctemp769= tp;
+nctempchar1* nctemp771=SymGetref(nctemp769);
+nctempchar1* nctemp767= nctemp771;
+struct tree* nctemp774= p;
+nctempchar1* nctemp776=PtreeGetref(nctemp774);
+nctempchar1* nctemp772= nctemp776;
+int nctemp777=LibeStrcmp(nctemp767,nctemp772);
+int nctemp764 = (nctemp777 ==0);
+if(nctemp764)
 {
-struct tree* nctemp2161= p;
-struct tree* nctemp2163=PtreeMvchild(nctemp2161);
-p =nctemp2163;
-struct tree* nctemp2168= p;
-struct tree* nctemp2170=SemUnexpr(nctemp2168);
-leftp =nctemp2170;
-struct tree* nctemp2175= p;
-struct tree* nctemp2177=PtreeMvsister(nctemp2175);
-p =nctemp2177;
-struct tree* nctemp2182= p;
-struct tree* nctemp2184=SemUnexpr(nctemp2182);
-rightp =nctemp2184;
-struct tree* nctemp2188= leftp;
-struct tree* nctemp2190= rightp;
-int nctemp2192=SemComparetype(nctemp2188,nctemp2190);
-int nctemp2185 = (nctemp2192 ==0);
-if(nctemp2185)
+struct tree* nctemp780= p;
+struct nctempchar1 *nctemp784;
+static struct nctempchar1 nctemp785 = {{ 50}, (char*)"Argument2 type does not match forward declaration\0"};
+nctemp784=&nctemp785;
+nctempchar1* nctemp782= nctemp784;
+nctempchar1* nctemp786= name;
+int nctemp789=SemSerror(nctemp780,nctemp782,nctemp786);
+}
+struct symbol* nctemp795= tp;
+nctempchar1* nctemp797=SymGetarray(nctemp795);
+nctempchar1* nctemp793= nctemp797;
+struct tree* nctemp800= p;
+nctempchar1* nctemp802=PtreeGetarray(nctemp800);
+nctempchar1* nctemp798= nctemp802;
+int nctemp803=LibeStrcmp(nctemp793,nctemp798);
+int nctemp790 = (nctemp803 ==0);
+if(nctemp790)
 {
-struct tree* nctemp2195= p;
-struct nctempchar1 *nctemp2199;
-static struct nctempchar1 nctemp2200 = {{ 11}, (char*)"Type error\0"};
-nctemp2199=&nctemp2200;
-nctempchar1* nctemp2197= nctemp2199;
-struct nctempchar1 *nctemp2203;
-static struct nctempchar1 nctemp2204 = {{ 2}, (char*)" \0"};
-nctemp2203=&nctemp2204;
-nctempchar1* nctemp2201= nctemp2203;
-int nctemp2205=ErrSerror(nctemp2195,nctemp2197,nctemp2201);
-return p;
+struct tree* nctemp806= p;
+struct nctempchar1 *nctemp810;
+static struct nctempchar1 nctemp811 = {{ 50}, (char*)"Argument3 type does not match forward declaration\0"};
+nctemp810=&nctemp811;
+nctempchar1* nctemp808= nctemp810;
+nctempchar1* nctemp812= name;
+int nctemp815=SemSerror(nctemp806,nctemp808,nctemp812);
 }
-else{
-struct tree* nctemp2210= np;
-nctempchar1* nctemp2212=PtreeGetdef(nctemp2210);
-nctempchar1* nctemp2208= nctemp2212;
-struct nctempchar1 *nctemp2215;
-static struct nctempchar1 nctemp2216 = {{ 2}, (char*)"=\0"};
-nctemp2215=&nctemp2216;
-nctempchar1* nctemp2213= nctemp2215;
-int nctemp2217=LibeStrcmp(nctemp2208,nctemp2213);
-if(nctemp2217)
+struct symbol* nctemp819= tp;
+int nctemp821=SymGetrank(nctemp819);
+struct tree* nctemp823= p;
+int nctemp825=PtreeGetrank(nctemp823);
+int nctemp816 = (nctemp821 !=nctemp825);
+if(nctemp816)
 {
-struct tree* nctemp2219= np;
-struct tree* nctemp2221=SemAsgexpr(nctemp2219);
+struct tree* nctemp827= p;
+struct nctempchar1 *nctemp831;
+static struct nctempchar1 nctemp832 = {{ 50}, (char*)"Argument4 type does not match forward declaration\0"};
+nctemp831=&nctemp832;
+nctempchar1* nctemp829= nctemp831;
+nctempchar1* nctemp833= name;
+int nctemp836=SemSerror(nctemp827,nctemp829,nctemp833);
 }
-else{
-struct tree* nctemp2245= np;
-nctempchar1* nctemp2247=PtreeGetdef(nctemp2245);
-nctempchar1* nctemp2243= nctemp2247;
-struct nctempchar1 *nctemp2250;
-static struct nctempchar1 nctemp2251 = {{ 3}, (char*)"!=\0"};
-nctemp2250=&nctemp2251;
-nctempchar1* nctemp2248= nctemp2250;
-int nctemp2252=LibeStrcmp(nctemp2243,nctemp2248);
-struct tree* nctemp2256= np;
-nctempchar1* nctemp2258=PtreeGetdef(nctemp2256);
-nctempchar1* nctemp2254= nctemp2258;
-struct nctempchar1 *nctemp2261;
-static struct nctempchar1 nctemp2262 = {{ 3}, (char*)"==\0"};
-nctemp2261=&nctemp2262;
-nctempchar1* nctemp2259= nctemp2261;
-int nctemp2263=LibeStrcmp(nctemp2254,nctemp2259);
-int nctemp2240 = (nctemp2252 || nctemp2263);
-struct tree* nctemp2267= np;
-nctempchar1* nctemp2269=PtreeGetdef(nctemp2267);
-nctempchar1* nctemp2265= nctemp2269;
-struct nctempchar1 *nctemp2272;
-static struct nctempchar1 nctemp2273 = {{ 3}, (char*)"||\0"};
-nctemp2272=&nctemp2273;
-nctempchar1* nctemp2270= nctemp2272;
-int nctemp2274=LibeStrcmp(nctemp2265,nctemp2270);
-int nctemp2237 = (nctemp2240 || nctemp2274);
-struct tree* nctemp2278= np;
-nctempchar1* nctemp2280=PtreeGetdef(nctemp2278);
-nctempchar1* nctemp2276= nctemp2280;
-struct nctempchar1 *nctemp2283;
-static struct nctempchar1 nctemp2284 = {{ 3}, (char*)"<=\0"};
-nctemp2283=&nctemp2284;
-nctempchar1* nctemp2281= nctemp2283;
-int nctemp2285=LibeStrcmp(nctemp2276,nctemp2281);
-int nctemp2234 = (nctemp2237 || nctemp2285);
-struct tree* nctemp2289= np;
-nctempchar1* nctemp2291=PtreeGetdef(nctemp2289);
-nctempchar1* nctemp2287= nctemp2291;
-struct nctempchar1 *nctemp2294;
-static struct nctempchar1 nctemp2295 = {{ 3}, (char*)">=\0"};
-nctemp2294=&nctemp2295;
-nctempchar1* nctemp2292= nctemp2294;
-int nctemp2296=LibeStrcmp(nctemp2287,nctemp2292);
-int nctemp2231 = (nctemp2234 || nctemp2296);
-struct tree* nctemp2300= np;
-nctempchar1* nctemp2302=PtreeGetdef(nctemp2300);
-nctempchar1* nctemp2298= nctemp2302;
-struct nctempchar1 *nctemp2305;
-static struct nctempchar1 nctemp2306 = {{ 2}, (char*)"<\0"};
-nctemp2305=&nctemp2306;
-nctempchar1* nctemp2303= nctemp2305;
-int nctemp2307=LibeStrcmp(nctemp2298,nctemp2303);
-int nctemp2228 = (nctemp2231 || nctemp2307);
-struct tree* nctemp2311= np;
-nctempchar1* nctemp2313=PtreeGetdef(nctemp2311);
-nctempchar1* nctemp2309= nctemp2313;
-struct nctempchar1 *nctemp2316;
-static struct nctempchar1 nctemp2317 = {{ 2}, (char*)">\0"};
-nctemp2316=&nctemp2317;
-nctempchar1* nctemp2314= nctemp2316;
-int nctemp2318=LibeStrcmp(nctemp2309,nctemp2314);
-int nctemp2225 = (nctemp2228 || nctemp2318);
-struct tree* nctemp2322= np;
-nctempchar1* nctemp2324=PtreeGetdef(nctemp2322);
-nctempchar1* nctemp2320= nctemp2324;
-struct nctempchar1 *nctemp2327;
-static struct nctempchar1 nctemp2328 = {{ 3}, (char*)"&&\0"};
-nctemp2327=&nctemp2328;
-nctempchar1* nctemp2325= nctemp2327;
-int nctemp2329=LibeStrcmp(nctemp2320,nctemp2325);
-int nctemp2222 = (nctemp2225 || nctemp2329);
-if(nctemp2222)
-{
-struct tree* nctemp2331= np;
-struct tree* nctemp2333=SemRelexpr(nctemp2331);
+return 1;
 }
-else{
-struct tree* nctemp2345= np;
-nctempchar1* nctemp2347=PtreeGetdef(nctemp2345);
-nctempchar1* nctemp2343= nctemp2347;
-struct nctempchar1 *nctemp2350;
-static struct nctempchar1 nctemp2351 = {{ 2}, (char*)"+\0"};
-nctemp2350=&nctemp2351;
-nctempchar1* nctemp2348= nctemp2350;
-int nctemp2352=LibeStrcmp(nctemp2343,nctemp2348);
-struct tree* nctemp2356= np;
-nctempchar1* nctemp2358=PtreeGetdef(nctemp2356);
-nctempchar1* nctemp2354= nctemp2358;
-struct nctempchar1 *nctemp2361;
-static struct nctempchar1 nctemp2362 = {{ 2}, (char*)"-\0"};
-nctemp2361=&nctemp2362;
-nctempchar1* nctemp2359= nctemp2361;
-int nctemp2363=LibeStrcmp(nctemp2354,nctemp2359);
-int nctemp2340 = (nctemp2352 || nctemp2363);
-struct tree* nctemp2367= np;
-nctempchar1* nctemp2369=PtreeGetdef(nctemp2367);
-nctempchar1* nctemp2365= nctemp2369;
-struct nctempchar1 *nctemp2372;
-static struct nctempchar1 nctemp2373 = {{ 2}, (char*)"*\0"};
-nctemp2372=&nctemp2373;
-nctempchar1* nctemp2370= nctemp2372;
-int nctemp2374=LibeStrcmp(nctemp2365,nctemp2370);
-int nctemp2337 = (nctemp2340 || nctemp2374);
-struct tree* nctemp2378= np;
-nctempchar1* nctemp2380=PtreeGetdef(nctemp2378);
-nctempchar1* nctemp2376= nctemp2380;
-struct nctempchar1 *nctemp2383;
-static struct nctempchar1 nctemp2384 = {{ 2}, (char*)"/\0"};
-nctemp2383=&nctemp2384;
-nctempchar1* nctemp2381= nctemp2383;
-int nctemp2385=LibeStrcmp(nctemp2376,nctemp2381);
-int nctemp2334 = (nctemp2337 || nctemp2385);
-if(nctemp2334)
-{
-struct tree* nctemp2387= np;
-struct tree* nctemp2389=SemAddexpr(nctemp2387);
-}
-}
-}
-return np;
-}
-}
-else{
-struct tree* nctemp2392= p;
-struct tree* nctemp2394=SemUnexpr(nctemp2392);
-return nctemp2394;
-}
-}
-struct tree* SemAsgexpr (struct tree* p)
+int SemArray (struct tree* p,struct symbol* tp)
 {
 struct tree* np;
-struct tree* nctemp2399= p;
-struct tree* nctemp2401=PtreeMvchild(nctemp2399);
-np =nctemp2401;
-struct tree* nctemp2407= np;
-nctempchar1* nctemp2409=PtreeGetlval(nctemp2407);
-nctempchar1* nctemp2405= nctemp2409;
-struct nctempchar1 *nctemp2412;
-static struct nctempchar1 nctemp2413 = {{ 5}, (char*)"lval\0"};
-nctemp2412=&nctemp2413;
-nctempchar1* nctemp2410= nctemp2412;
-int nctemp2414=LibeStrcmp(nctemp2405,nctemp2410);
-int nctemp2402 = (nctemp2414 ==0);
-if(nctemp2402)
+int rank;
+struct tree* nctemp843= p;
+nctempchar1* nctemp845=PtreeGetarray(nctemp843);
+nctempchar1* nctemp841= nctemp845;
+struct nctempchar1 *nctemp848;
+static struct nctempchar1 nctemp849 = {{ 6}, (char*)"array\0"};
+nctemp848=&nctemp849;
+nctempchar1* nctemp846= nctemp848;
+int nctemp850=LibeStrcmp(nctemp841,nctemp846);
+int nctemp838 = (nctemp850 ==0);
+if(nctemp838)
 {
-struct tree* nctemp2417= np;
-struct nctempchar1 *nctemp2421;
-static struct nctempchar1 nctemp2422 = {{ 17}, (char*)"Not a left value\0"};
-nctemp2421=&nctemp2422;
-nctempchar1* nctemp2419= nctemp2421;
-struct tree* nctemp2425= np;
-nctempchar1* nctemp2427=PtreeGetdef(nctemp2425);
-nctempchar1* nctemp2423= nctemp2427;
-int nctemp2428=ErrSerror(nctemp2417,nctemp2419,nctemp2423);
+struct tree* nctemp853= p;
+struct nctempchar1 *nctemp857;
+static struct nctempchar1 nctemp858 = {{ 13}, (char*)"Not an array\0"};
+nctemp857=&nctemp858;
+nctempchar1* nctemp855= nctemp857;
+struct tree* nctemp861= p;
+nctempchar1* nctemp863=PtreeGetdef(nctemp861);
+nctempchar1* nctemp859= nctemp863;
+int nctemp864=SemSerror(nctemp853,nctemp855,nctemp859);
+return 0;
 }
-else{
-struct tree* nctemp2430= p;
-struct nctempchar1 *nctemp2434;
-static struct nctempchar1 nctemp2435 = {{ 5}, (char*)"lval\0"};
-nctemp2434=&nctemp2435;
-nctempchar1* nctemp2432= nctemp2434;
-int nctemp2436=PtreeSetlval(nctemp2430,nctemp2432);
-}
-struct tree* nctemp2438= np;
-struct tree* nctemp2440= p;
-int nctemp2442=SemCopytype(nctemp2438,nctemp2440);
-return p;
-}
-struct tree* SemRelexpr (struct tree* p)
+struct tree* nctemp867= p;
+struct nctempchar1 *nctemp871;
+static struct nctempchar1 nctemp872 = {{ 11}, (char*)"identifier\0"};
+nctemp871=&nctemp872;
+nctempchar1* nctemp869= nctemp871;
+int nctemp873=PtreeSetname(nctemp867,nctemp869);
+struct tree* nctemp878= p;
+struct tree* nctemp880=PtreeMvchild(nctemp878);
+np =nctemp880;
+struct tree* nctemp886= np;
+nctempchar1* nctemp888=PtreeGetname(nctemp886);
+nctempchar1* nctemp884= nctemp888;
+struct nctempchar1 *nctemp891;
+static struct nctempchar1 nctemp892 = {{ 9}, (char*)"exprlist\0"};
+nctemp891=&nctemp892;
+nctempchar1* nctemp889= nctemp891;
+int nctemp893=LibeStrcmp(nctemp884,nctemp889);
+int nctemp881 = (nctemp893 ==0);
+if(nctemp881)
 {
+struct tree* nctemp896= p;
+struct nctempchar1 *nctemp900;
+static struct nctempchar1 nctemp901 = {{ 22}, (char*)"Missing array indexes\0"};
+nctemp900=&nctemp901;
+nctempchar1* nctemp898= nctemp900;
+struct tree* nctemp904= p;
+nctempchar1* nctemp906=PtreeGetdef(nctemp904);
+nctempchar1* nctemp902= nctemp906;
+int nctemp907=SemSerror(nctemp896,nctemp898,nctemp902);
+return 0;
+}
+struct tree* nctemp916= np;
+struct tree* nctemp918=PtreeMvchild(nctemp916);
+np =nctemp918;
+int nctemp909 = (np !=0);
+if(nctemp909)
+{
+rank =0;
+int nctemp924 = (np !=0);
+int nctemp928=nctemp924;
+while(nctemp928)
+{{
+struct tree* nctemp930= np;
+struct tree* nctemp932=SemExpr(nctemp930);
+struct tree* nctemp937= np;
+struct tree* nctemp939=PtreeMvsister(nctemp937);
+np =nctemp939;
+int nctemp948 = rank + 1;
+rank =nctemp948;
+}
+int nctemp949 = (np !=0);
+nctemp928=nctemp949;}}
+struct symbol* nctemp957= tp;
+int nctemp959=SymGetrank(nctemp957);
+int nctemp953 = (rank !=nctemp959);
+if(nctemp953)
+{
+struct tree* nctemp961= p;
+struct nctempchar1 *nctemp965;
+static struct nctempchar1 nctemp966 = {{ 24}, (char*)"Illegal array dimension\0"};
+nctemp965=&nctemp966;
+nctempchar1* nctemp963= nctemp965;
+struct tree* nctemp969= p;
+nctempchar1* nctemp971=PtreeGetdef(nctemp969);
+nctempchar1* nctemp967= nctemp971;
+int nctemp972=SemSerror(nctemp961,nctemp963,nctemp967);
+return 0;
+}
+struct tree* nctemp975= p;
+int nctemp977= rank;
+int nctemp979=PtreeSetrank(nctemp975,nctemp977);
+return 1;
+}
+int SemStructure (struct tree* p,struct symbol* tp)
+{
+nctempchar1 *temp;
+struct symbol* up;
+struct symbol* uup;
 struct tree* np;
-struct tree* rp;
-struct tree* nctemp2448= p;
-struct tree* nctemp2450=PtreeMvchild(nctemp2448);
-np =nctemp2450;
-struct tree* nctemp2455= np;
-struct tree* nctemp2457=PtreeMvsister(nctemp2455);
-rp =nctemp2457;
-struct tree* nctemp2463= p;
-nctempchar1* nctemp2465=PtreeGetdef(nctemp2463);
-nctempchar1* nctemp2461= nctemp2465;
-struct nctempchar1 *nctemp2468;
-static struct nctempchar1 nctemp2469 = {{ 3}, (char*)"==\0"};
-nctemp2468=&nctemp2469;
-nctempchar1* nctemp2466= nctemp2468;
-int nctemp2470=LibeStrcmp(nctemp2461,nctemp2466);
-int nctemp2458 = (nctemp2470 ==0);
-if(nctemp2458)
+struct tree* nctemp986= p;
+nctempchar1* nctemp988=PtreeGetstruct(nctemp986);
+nctempchar1* nctemp984= nctemp988;
+struct nctempchar1 *nctemp991;
+static struct nctempchar1 nctemp992 = {{ 7}, (char*)"struct\0"};
+nctemp991=&nctemp992;
+nctempchar1* nctemp989= nctemp991;
+int nctemp993=LibeStrcmp(nctemp984,nctemp989);
+int nctemp981 = (nctemp993 ==0);
+if(nctemp981)
 {
-struct tree* nctemp2477= p;
-nctempchar1* nctemp2479=PtreeGetdef(nctemp2477);
-nctempchar1* nctemp2475= nctemp2479;
-struct nctempchar1 *nctemp2482;
-static struct nctempchar1 nctemp2483 = {{ 3}, (char*)"!=\0"};
-nctemp2482=&nctemp2483;
-nctempchar1* nctemp2480= nctemp2482;
-int nctemp2484=LibeStrcmp(nctemp2475,nctemp2480);
-int nctemp2472 = (nctemp2484 ==0);
-if(nctemp2472)
+struct tree* nctemp996= p;
+struct nctempchar1 *nctemp1000;
+static struct nctempchar1 nctemp1001 = {{ 16}, (char*)"Not a structure\0"};
+nctemp1000=&nctemp1001;
+nctempchar1* nctemp998= nctemp1000;
+struct tree* nctemp1004= p;
+nctempchar1* nctemp1006=PtreeGetdef(nctemp1004);
+nctempchar1* nctemp1002= nctemp1006;
+int nctemp1007=SemSerror(nctemp996,nctemp998,nctemp1002);
+return 0;
+}
+struct tree* nctemp1010= p;
+struct nctempchar1 *nctemp1014;
+static struct nctempchar1 nctemp1015 = {{ 11}, (char*)"identifier\0"};
+nctemp1014=&nctemp1015;
+nctempchar1* nctemp1012= nctemp1014;
+int nctemp1016=PtreeSetname(nctemp1010,nctemp1012);
+struct symbol* nctemp1022= tp;
+nctempchar1* nctemp1024=SymGetype(nctemp1022);
+temp=nctemp1024;
+nctempchar1* nctemp1032= temp;
+struct symbol* nctemp1035=SymLook(nctemp1032);
+up =nctemp1035;
+int nctemp1025 = (up ==0);
+if(nctemp1025)
 {
-struct tree* nctemp2491= np;
-nctempchar1* nctemp2493=PtreeGetref(nctemp2491);
-nctempchar1* nctemp2489= nctemp2493;
-struct nctempchar1 *nctemp2496;
-static struct nctempchar1 nctemp2497 = {{ 5}, (char*)"aref\0"};
-nctemp2496=&nctemp2497;
-nctempchar1* nctemp2494= nctemp2496;
-int nctemp2498=LibeStrcmp(nctemp2489,nctemp2494);
-struct tree* nctemp2502= np;
-nctempchar1* nctemp2504=PtreeGetref(nctemp2502);
-nctempchar1* nctemp2500= nctemp2504;
-struct nctempchar1 *nctemp2507;
-static struct nctempchar1 nctemp2508 = {{ 5}, (char*)"sref\0"};
-nctemp2507=&nctemp2508;
-nctempchar1* nctemp2505= nctemp2507;
-int nctemp2509=LibeStrcmp(nctemp2500,nctemp2505);
-int nctemp2486 = (nctemp2498 || nctemp2509);
-if(nctemp2486)
+nctempchar1* nctemp1044= temp;
+struct symbol* nctemp1047=SymLook(nctemp1044);
+up =nctemp1047;
+int nctemp1037 = (up ==0);
+if(nctemp1037)
 {
-struct tree* nctemp2511= p;
-struct nctempchar1 *nctemp2515;
-static struct nctempchar1 nctemp2516 = {{ 18}, (char*)"Illegal operation\0"};
-nctemp2515=&nctemp2516;
-nctempchar1* nctemp2513= nctemp2515;
-struct nctempchar1 *nctemp2519;
-static struct nctempchar1 nctemp2520 = {{ 2}, (char*)" \0"};
-nctemp2519=&nctemp2520;
-nctempchar1* nctemp2517= nctemp2519;
-int nctemp2521=ErrSerror(nctemp2511,nctemp2513,nctemp2517);
+struct tree* nctemp1050= p;
+struct nctempchar1 *nctemp1054;
+static struct nctempchar1 nctemp1055 = {{ 26}, (char*)"Undeclared structure type\0"};
+nctemp1054=&nctemp1055;
+nctempchar1* nctemp1052= nctemp1054;
+struct nctempchar1 *nctemp1058;
+static struct nctempchar1 nctemp1059 = {{ 2}, (char*)" \0"};
+nctemp1058=&nctemp1059;
+nctempchar1* nctemp1056= nctemp1058;
+int nctemp1060=SemSerror(nctemp1050,nctemp1052,nctemp1056);
+return 0;
+}
+}
+struct symbol* nctemp1065= tp;
+nctempchar1* nctemp1067=SymGetstruct(nctemp1065);
+nctempchar1* nctemp1063= nctemp1067;
+struct nctempchar1 *nctemp1070;
+static struct nctempchar1 nctemp1071 = {{ 10}, (char*)"structdef\0"};
+nctemp1070=&nctemp1071;
+nctempchar1* nctemp1068= nctemp1070;
+int nctemp1072=LibeStrcmp(nctemp1063,nctemp1068);
+if(nctemp1072)
+{
+struct tree* nctemp1074= p;
+struct nctempchar1 *nctemp1078;
+static struct nctempchar1 nctemp1079 = {{ 43}, (char*)"Struct names can not be used as a variable\0"};
+nctemp1078=&nctemp1079;
+nctempchar1* nctemp1076= nctemp1078;
+struct tree* nctemp1082= p;
+nctempchar1* nctemp1084=PtreeGetdef(nctemp1082);
+nctempchar1* nctemp1080= nctemp1084;
+int nctemp1085=SemSerror(nctemp1074,nctemp1076,nctemp1080);
+return 0;
+}
+struct tree* nctemp1091= p;
+struct tree* nctemp1093=PtreeMvchild(nctemp1091);
+np =nctemp1093;
+int nctemp1094 = (np ==0);
+if(nctemp1094)
+{
+struct tree* nctemp1099= p;
+struct nctempchar1 *nctemp1103;
+static struct nctempchar1 nctemp1104 = {{ 27}, (char*)"Missing structure selector\0"};
+nctemp1103=&nctemp1104;
+nctempchar1* nctemp1101= nctemp1103;
+struct tree* nctemp1107= p;
+nctempchar1* nctemp1109=PtreeGetdef(nctemp1107);
+nctempchar1* nctemp1105= nctemp1109;
+int nctemp1110=SemSerror(nctemp1099,nctemp1101,nctemp1105);
+return 0;
+}
+struct tree* nctemp1115= p;
+nctempchar1* nctemp1117=PtreeGetarray(nctemp1115);
+nctempchar1* nctemp1113= nctemp1117;
+struct nctempchar1 *nctemp1120;
+static struct nctempchar1 nctemp1121 = {{ 6}, (char*)"array\0"};
+nctemp1120=&nctemp1121;
+nctempchar1* nctemp1118= nctemp1120;
+int nctemp1122=LibeStrcmp(nctemp1113,nctemp1118);
+if(nctemp1122)
+{
+struct tree* nctemp1127= np;
+struct tree* nctemp1129=PtreeMvsister(nctemp1127);
+np =nctemp1129;
+}
+int nctemp1130 = (np ==0);
+if(nctemp1130)
+{
+struct tree* nctemp1135= p;
+struct nctempchar1 *nctemp1139;
+static struct nctempchar1 nctemp1140 = {{ 20}, (char*)"Missing array index\0"};
+nctemp1139=&nctemp1140;
+nctempchar1* nctemp1137= nctemp1139;
+struct tree* nctemp1143= p;
+nctempchar1* nctemp1145=PtreeGetdef(nctemp1143);
+nctempchar1* nctemp1141= nctemp1145;
+int nctemp1146=SemSerror(nctemp1135,nctemp1137,nctemp1141);
+return 0;
+}
+struct symbol* nctemp1152= up;
+struct symbol* nctemp1154=SymGetable(nctemp1152);
+uup =nctemp1154;
+struct tree* nctemp1164= np;
+nctempchar1* nctemp1166=PtreeGetdef(nctemp1164);
+nctempchar1* nctemp1162= nctemp1166;
+struct symbol* nctemp1167= uup;
+struct symbol* nctemp1169=SymLookup(nctemp1162,nctemp1167);
+tp =nctemp1169;
+int nctemp1155 = (tp ==0);
+if(nctemp1155)
+{
+struct tree* nctemp1172= np;
+struct nctempchar1 *nctemp1176;
+static struct nctempchar1 nctemp1177 = {{ 28}, (char*)"Undeclared structure member\0"};
+nctemp1176=&nctemp1177;
+nctempchar1* nctemp1174= nctemp1176;
+struct tree* nctemp1180= np;
+nctempchar1* nctemp1182=PtreeGetdef(nctemp1180);
+nctempchar1* nctemp1178= nctemp1182;
+int nctemp1183=SemSerror(nctemp1172,nctemp1174,nctemp1178);
+return 0;
+}
+struct symbol* nctemp1188= tp;
+nctempchar1* nctemp1190=SymGetarray(nctemp1188);
+nctempchar1* nctemp1186= nctemp1190;
+struct nctempchar1 *nctemp1193;
+static struct nctempchar1 nctemp1194 = {{ 6}, (char*)"array\0"};
+nctemp1193=&nctemp1194;
+nctempchar1* nctemp1191= nctemp1193;
+int nctemp1195=LibeStrcmp(nctemp1186,nctemp1191);
+if(nctemp1195)
+{
+struct tree* nctemp1199= np;
+struct tree* nctemp1201=PtreeMvchild(nctemp1199);
+int nctemp1196 = (nctemp1201 !=0);
+if(nctemp1196)
+{
+struct tree* nctemp1204= np;
+struct symbol* nctemp1206= tp;
+int nctemp1208=SemArray(nctemp1204,nctemp1206);
+struct symbol* nctemp1212= tp;
+nctempchar1* nctemp1214=SymGetstruct(nctemp1212);
+nctempchar1* nctemp1210= nctemp1214;
+struct nctempchar1 *nctemp1217;
+static struct nctempchar1 nctemp1218 = {{ 7}, (char*)"struct\0"};
+nctemp1217=&nctemp1218;
+nctempchar1* nctemp1215= nctemp1217;
+int nctemp1219=LibeStrcmp(nctemp1210,nctemp1215);
+if(nctemp1219)
+{
+struct tree* nctemp1221= np;
+struct nctempchar1 *nctemp1225;
+static struct nctempchar1 nctemp1226 = {{ 5}, (char*)"sref\0"};
+nctemp1225=&nctemp1226;
+nctempchar1* nctemp1223= nctemp1225;
+int nctemp1227=PtreeSetref(nctemp1221,nctemp1223);
+}
 }
 else{
-struct tree* nctemp2527= rp;
-nctempchar1* nctemp2529=PtreeGetref(nctemp2527);
-nctempchar1* nctemp2525= nctemp2529;
-struct nctempchar1 *nctemp2532;
-static struct nctempchar1 nctemp2533 = {{ 5}, (char*)"aref\0"};
-nctemp2532=&nctemp2533;
-nctempchar1* nctemp2530= nctemp2532;
-int nctemp2534=LibeStrcmp(nctemp2525,nctemp2530);
-struct tree* nctemp2538= np;
-nctempchar1* nctemp2540=PtreeGetref(nctemp2538);
-nctempchar1* nctemp2536= nctemp2540;
-struct nctempchar1 *nctemp2543;
-static struct nctempchar1 nctemp2544 = {{ 5}, (char*)"sref\0"};
-nctemp2543=&nctemp2544;
-nctempchar1* nctemp2541= nctemp2543;
-int nctemp2545=LibeStrcmp(nctemp2536,nctemp2541);
-int nctemp2522 = (nctemp2534 || nctemp2545);
-if(nctemp2522)
-{
-struct tree* nctemp2547= p;
-struct nctempchar1 *nctemp2551;
-static struct nctempchar1 nctemp2552 = {{ 18}, (char*)"Illegal operation\0"};
-nctemp2551=&nctemp2552;
-nctempchar1* nctemp2549= nctemp2551;
-struct nctempchar1 *nctemp2555;
-static struct nctempchar1 nctemp2556 = {{ 2}, (char*)" \0"};
-nctemp2555=&nctemp2556;
-nctempchar1* nctemp2553= nctemp2555;
-int nctemp2557=ErrSerror(nctemp2547,nctemp2549,nctemp2553);
-}
+struct tree* nctemp1229= np;
+struct nctempchar1 *nctemp1233;
+static struct nctempchar1 nctemp1234 = {{ 5}, (char*)"aref\0"};
+nctemp1233=&nctemp1234;
+nctempchar1* nctemp1231= nctemp1233;
+int nctemp1235=PtreeSetref(nctemp1229,nctemp1231);
 }
 }
 else{
-struct tree* nctemp2561= np;
-nctempchar1* nctemp2563=PtreeGetype(nctemp2561);
-nctempchar1* nctemp2559= nctemp2563;
-struct nctempchar1 *nctemp2566;
-static struct nctempchar1 nctemp2567 = {{ 8}, (char*)"complex\0"};
-nctemp2566=&nctemp2567;
-nctempchar1* nctemp2564= nctemp2566;
-int nctemp2568=LibeStrcmp(nctemp2559,nctemp2564);
-if(nctemp2568)
+struct symbol* nctemp1239= tp;
+nctempchar1* nctemp1241=SymGetstruct(nctemp1239);
+nctempchar1* nctemp1237= nctemp1241;
+struct nctempchar1 *nctemp1244;
+static struct nctempchar1 nctemp1245 = {{ 7}, (char*)"struct\0"};
+nctemp1244=&nctemp1245;
+nctempchar1* nctemp1242= nctemp1244;
+int nctemp1246=LibeStrcmp(nctemp1237,nctemp1242);
+if(nctemp1246)
 {
-struct tree* nctemp2570= p;
-struct nctempchar1 *nctemp2574;
-static struct nctempchar1 nctemp2575 = {{ 18}, (char*)"Illegal operation\0"};
-nctemp2574=&nctemp2575;
-nctempchar1* nctemp2572= nctemp2574;
-struct nctempchar1 *nctemp2578;
-static struct nctempchar1 nctemp2579 = {{ 2}, (char*)" \0"};
-nctemp2578=&nctemp2579;
-nctempchar1* nctemp2576= nctemp2578;
-int nctemp2580=ErrSerror(nctemp2570,nctemp2572,nctemp2576);
+struct tree* nctemp1248= np;
+struct nctempchar1 *nctemp1252;
+static struct nctempchar1 nctemp1253 = {{ 5}, (char*)"sref\0"};
+nctemp1252=&nctemp1253;
+nctempchar1* nctemp1250= nctemp1252;
+int nctemp1254=PtreeSetref(nctemp1248,nctemp1250);
 }
 }
-}
-struct tree* nctemp2582= p;
-struct nctempchar1 *nctemp2586;
-static struct nctempchar1 nctemp2587 = {{ 4}, (char*)"int\0"};
-nctemp2586=&nctemp2587;
-nctempchar1* nctemp2584= nctemp2586;
-int nctemp2588=PtreeSetype(nctemp2582,nctemp2584);
-struct tree* nctemp2590= p;
-struct nctempchar1 *nctemp2594;
-static struct nctempchar1 nctemp2595 = {{ 5}, (char*)"void\0"};
-nctemp2594=&nctemp2595;
-nctempchar1* nctemp2592= nctemp2594;
-int nctemp2596=PtreeSetlval(nctemp2590,nctemp2592);
-struct tree* nctemp2598= p;
-struct nctempchar1 *nctemp2602;
-static struct nctempchar1 nctemp2603 = {{ 5}, (char*)"void\0"};
-nctemp2602=&nctemp2603;
-nctempchar1* nctemp2600= nctemp2602;
-int nctemp2604=PtreeSetstruct(nctemp2598,nctemp2600);
-return p;
-}
-struct tree* SemAddexpr (struct tree* p)
-{
-struct tree* np;
-struct tree* rp;
-struct tree* nctemp2610= p;
-struct tree* nctemp2612=PtreeMvchild(nctemp2610);
-np =nctemp2612;
-struct tree* nctemp2617= np;
-struct tree* nctemp2619=PtreeMvsister(nctemp2617);
-rp =nctemp2619;
-struct tree* nctemp2623= np;
-nctempchar1* nctemp2625=PtreeGetref(nctemp2623);
-nctempchar1* nctemp2621= nctemp2625;
-struct nctempchar1 *nctemp2628;
-static struct nctempchar1 nctemp2629 = {{ 5}, (char*)"sref\0"};
-nctemp2628=&nctemp2629;
-nctempchar1* nctemp2626= nctemp2628;
-int nctemp2630=LibeStrcmp(nctemp2621,nctemp2626);
-if(nctemp2630)
-{
-struct tree* nctemp2632= np;
-struct nctempchar1 *nctemp2636;
-static struct nctempchar1 nctemp2637 = {{ 18}, (char*)"Illegal operation\0"};
-nctemp2636=&nctemp2637;
-nctempchar1* nctemp2634= nctemp2636;
-struct nctempchar1 *nctemp2640;
-static struct nctempchar1 nctemp2641 = {{ 2}, (char*)" \0"};
-nctemp2640=&nctemp2641;
-nctempchar1* nctemp2638= nctemp2640;
-int nctemp2642=ErrSerror(nctemp2632,nctemp2634,nctemp2638);
-}
-else{
-struct tree* nctemp2646= rp;
-nctempchar1* nctemp2648=PtreeGetref(nctemp2646);
-nctempchar1* nctemp2644= nctemp2648;
-struct nctempchar1 *nctemp2651;
-static struct nctempchar1 nctemp2652 = {{ 5}, (char*)"sref\0"};
-nctemp2651=&nctemp2652;
-nctempchar1* nctemp2649= nctemp2651;
-int nctemp2653=LibeStrcmp(nctemp2644,nctemp2649);
-if(nctemp2653)
-{
-struct tree* nctemp2655= np;
-struct nctempchar1 *nctemp2659;
-static struct nctempchar1 nctemp2660 = {{ 18}, (char*)"Illegal operation\0"};
-nctemp2659=&nctemp2660;
-nctempchar1* nctemp2657= nctemp2659;
-struct nctempchar1 *nctemp2663;
-static struct nctempchar1 nctemp2664 = {{ 2}, (char*)" \0"};
-nctemp2663=&nctemp2664;
-nctempchar1* nctemp2661= nctemp2663;
-int nctemp2665=ErrSerror(nctemp2655,nctemp2657,nctemp2661);
-}
-else{
-struct tree* nctemp2667= np;
-struct tree* nctemp2669= p;
-int nctemp2671=SemCopytype(nctemp2667,nctemp2669);
-struct tree* nctemp2673= p;
-struct nctempchar1 *nctemp2677;
-static struct nctempchar1 nctemp2678 = {{ 5}, (char*)"void\0"};
-nctemp2677=&nctemp2678;
-nctempchar1* nctemp2675= nctemp2677;
-int nctemp2679=PtreeSetlval(nctemp2673,nctemp2675);
-}
-}
-return p;
-}
-struct tree* SemUnexpr (struct tree* p)
-{
-struct tree* np;
-np =p;
-struct tree* nctemp2688= p;
-nctempchar1* nctemp2690=PtreeGetname(nctemp2688);
-nctempchar1* nctemp2686= nctemp2690;
-struct nctempchar1 *nctemp2693;
-static struct nctempchar1 nctemp2694 = {{ 7}, (char*)"unexpr\0"};
-nctemp2693=&nctemp2694;
-nctempchar1* nctemp2691= nctemp2693;
-int nctemp2695=LibeStrcmp(nctemp2686,nctemp2691);
-if(nctemp2695)
-{
-struct tree* nctemp2700= p;
-struct tree* nctemp2702=PtreeMvchild(nctemp2700);
-p =nctemp2702;
-struct tree* nctemp2707= p;
-struct tree* nctemp2709=SemPrimexpr(nctemp2707);
-p =nctemp2709;
-struct tree* nctemp2711= p;
-struct tree* nctemp2713= np;
-int nctemp2715=SemCopytype(nctemp2711,nctemp2713);
-return np;
-}
-else{
-struct tree* nctemp2718= p;
-struct tree* nctemp2720=SemPrimexpr(nctemp2718);
-return nctemp2720;
-}
-}
-struct tree* SemPrimexpr (struct tree* p)
-{
-struct tree* nctemp2724= p;
-nctempchar1* nctemp2726=PtreeGetname(nctemp2724);
-nctempchar1* nctemp2722= nctemp2726;
-struct nctempchar1 *nctemp2729;
-static struct nctempchar1 nctemp2730 = {{ 11}, (char*)"identifier\0"};
-nctemp2729=&nctemp2730;
-nctempchar1* nctemp2727= nctemp2729;
-int nctemp2731=LibeStrcmp(nctemp2722,nctemp2727);
-if(nctemp2731)
-{
-struct tree* nctemp2733= p;
-int nctemp2735=SemId(nctemp2733);
-return p;
-}
-else{
-struct tree* nctemp2740= p;
-nctempchar1* nctemp2742=PtreeGetname(nctemp2740);
-nctempchar1* nctemp2738= nctemp2742;
-struct nctempchar1 *nctemp2745;
-static struct nctempchar1 nctemp2746 = {{ 6}, (char*)"fcall\0"};
-nctemp2745=&nctemp2746;
-nctempchar1* nctemp2743= nctemp2745;
-int nctemp2747=LibeStrcmp(nctemp2738,nctemp2743);
-if(nctemp2747)
-{
-struct tree* nctemp2749= p;
-int nctemp2751=SemFcall(nctemp2749);
-return p;
-}
-else{
-struct tree* nctemp2756= p;
-nctempchar1* nctemp2758=PtreeGetname(nctemp2756);
-nctempchar1* nctemp2754= nctemp2758;
-struct nctempchar1 *nctemp2761;
-static struct nctempchar1 nctemp2762 = {{ 5}, (char*)"cast\0"};
-nctemp2761=&nctemp2762;
-nctempchar1* nctemp2759= nctemp2761;
-int nctemp2763=LibeStrcmp(nctemp2754,nctemp2759);
-if(nctemp2763)
-{
-struct tree* nctemp2765= p;
-int nctemp2767=SemCast(nctemp2765);
-return p;
-}
-else{
-struct tree* nctemp2772= p;
-nctempchar1* nctemp2774=PtreeGetname(nctemp2772);
-nctempchar1* nctemp2770= nctemp2774;
-struct nctempchar1 *nctemp2777;
-static struct nctempchar1 nctemp2778 = {{ 4}, (char*)"new\0"};
-nctemp2777=&nctemp2778;
-nctempchar1* nctemp2775= nctemp2777;
-int nctemp2779=LibeStrcmp(nctemp2770,nctemp2775);
-if(nctemp2779)
-{
-struct tree* nctemp2781= p;
-int nctemp2783=SemNew(nctemp2781);
-return p;
-}
-else{
-struct tree* nctemp2788= p;
-nctempchar1* nctemp2790=PtreeGetname(nctemp2788);
-nctempchar1* nctemp2786= nctemp2790;
-struct nctempchar1 *nctemp2793;
-static struct nctempchar1 nctemp2794 = {{ 7}, (char*)"delete\0"};
-nctemp2793=&nctemp2794;
-nctempchar1* nctemp2791= nctemp2793;
-int nctemp2795=LibeStrcmp(nctemp2786,nctemp2791);
-if(nctemp2795)
-{
-struct tree* nctemp2797= p;
-int nctemp2799=SemDelete(nctemp2797);
-return p;
-}
-else{
-struct tree* nctemp2804= p;
-nctempchar1* nctemp2806=PtreeGetname(nctemp2804);
-nctempchar1* nctemp2802= nctemp2806;
-struct nctempchar1 *nctemp2809;
-static struct nctempchar1 nctemp2810 = {{ 6}, (char*)"cmplx\0"};
-nctemp2809=&nctemp2810;
-nctempchar1* nctemp2807= nctemp2809;
-int nctemp2811=LibeStrcmp(nctemp2802,nctemp2807);
-if(nctemp2811)
-{
-struct tree* nctemp2813= p;
-int nctemp2815=SemCmplx(nctemp2813);
-return p;
-}
-else{
-struct tree* nctemp2820= p;
-nctempchar1* nctemp2822=PtreeGetname(nctemp2820);
-nctempchar1* nctemp2818= nctemp2822;
-struct nctempchar1 *nctemp2825;
-static struct nctempchar1 nctemp2826 = {{ 3}, (char*)"re\0"};
-nctemp2825=&nctemp2826;
-nctempchar1* nctemp2823= nctemp2825;
-int nctemp2827=LibeStrcmp(nctemp2818,nctemp2823);
-if(nctemp2827)
-{
-struct tree* nctemp2829= p;
-int nctemp2831=SemRe(nctemp2829);
-return p;
-}
-else{
-struct tree* nctemp2836= p;
-nctempchar1* nctemp2838=PtreeGetname(nctemp2836);
-nctempchar1* nctemp2834= nctemp2838;
-struct nctempchar1 *nctemp2841;
-static struct nctempchar1 nctemp2842 = {{ 4}, (char*)"len\0"};
-nctemp2841=&nctemp2842;
-nctempchar1* nctemp2839= nctemp2841;
-int nctemp2843=LibeStrcmp(nctemp2834,nctemp2839);
-if(nctemp2843)
-{
-struct tree* nctemp2845= p;
-int nctemp2847=SemLen(nctemp2845);
-return p;
-}
-else{
-struct tree* nctemp2852= p;
-nctempchar1* nctemp2854=PtreeGetname(nctemp2852);
-nctempchar1* nctemp2850= nctemp2854;
-struct nctempchar1 *nctemp2857;
-static struct nctempchar1 nctemp2858 = {{ 3}, (char*)"im\0"};
-nctemp2857=&nctemp2858;
-nctempchar1* nctemp2855= nctemp2857;
-int nctemp2859=LibeStrcmp(nctemp2850,nctemp2855);
-if(nctemp2859)
-{
-struct tree* nctemp2861= p;
-int nctemp2863=SemIm(nctemp2861);
-return p;
-}
-else{
-struct tree* nctemp2868= p;
-nctempchar1* nctemp2870=PtreeGetname(nctemp2868);
-nctempchar1* nctemp2866= nctemp2870;
-struct nctempchar1 *nctemp2873;
-static struct nctempchar1 nctemp2874 = {{ 7}, (char*)"sizeof\0"};
-nctemp2873=&nctemp2874;
-nctempchar1* nctemp2871= nctemp2873;
-int nctemp2875=LibeStrcmp(nctemp2866,nctemp2871);
-if(nctemp2875)
-{
-struct tree* nctemp2877= p;
-int nctemp2879=SemSizeof(nctemp2877);
-return p;
-}
-else{
-struct tree* nctemp2884= p;
-nctempchar1* nctemp2886=PtreeGetname(nctemp2884);
-nctempchar1* nctemp2882= nctemp2886;
-struct nctempchar1 *nctemp2889;
-static struct nctempchar1 nctemp2890 = {{ 10}, (char*)"iconstant\0"};
-nctemp2889=&nctemp2890;
-nctempchar1* nctemp2887= nctemp2889;
-int nctemp2891=LibeStrcmp(nctemp2882,nctemp2887);
-if(nctemp2891)
-{
-struct tree* nctemp2893= p;
-struct nctempchar1 *nctemp2897;
-static struct nctempchar1 nctemp2898 = {{ 4}, (char*)"int\0"};
-nctemp2897=&nctemp2898;
-nctempchar1* nctemp2895= nctemp2897;
-int nctemp2899=PtreeSetype(nctemp2893,nctemp2895);
-return p;
-}
-else{
-struct tree* nctemp2904= p;
-nctempchar1* nctemp2906=PtreeGetname(nctemp2904);
-nctempchar1* nctemp2902= nctemp2906;
-struct nctempchar1 *nctemp2909;
-static struct nctempchar1 nctemp2910 = {{ 10}, (char*)"rconstant\0"};
-nctemp2909=&nctemp2910;
-nctempchar1* nctemp2907= nctemp2909;
-int nctemp2911=LibeStrcmp(nctemp2902,nctemp2907);
-if(nctemp2911)
-{
-struct tree* nctemp2913= p;
-struct nctempchar1 *nctemp2917;
-static struct nctempchar1 nctemp2918 = {{ 6}, (char*)"float\0"};
-nctemp2917=&nctemp2918;
-nctempchar1* nctemp2915= nctemp2917;
-int nctemp2919=PtreeSetype(nctemp2913,nctemp2915);
-return p;
-}
-else{
-struct tree* nctemp2924= p;
-nctempchar1* nctemp2926=PtreeGetname(nctemp2924);
-nctempchar1* nctemp2922= nctemp2926;
-struct nctempchar1 *nctemp2929;
-static struct nctempchar1 nctemp2930 = {{ 10}, (char*)"sconstant\0"};
-nctemp2929=&nctemp2930;
-nctempchar1* nctemp2927= nctemp2929;
-int nctemp2931=LibeStrcmp(nctemp2922,nctemp2927);
-if(nctemp2931)
-{
-struct tree* nctemp2933= p;
-struct nctempchar1 *nctemp2937;
-static struct nctempchar1 nctemp2938 = {{ 5}, (char*)"char\0"};
-nctemp2937=&nctemp2938;
-nctempchar1* nctemp2935= nctemp2937;
-int nctemp2939=PtreeSetype(nctemp2933,nctemp2935);
-struct tree* nctemp2941= p;
-struct nctempchar1 *nctemp2945;
-static struct nctempchar1 nctemp2946 = {{ 5}, (char*)"aref\0"};
-nctemp2945=&nctemp2946;
-nctempchar1* nctemp2943= nctemp2945;
-int nctemp2947=PtreeSetref(nctemp2941,nctemp2943);
-struct tree* nctemp2949= p;
-int nctemp2951= 1;
-int nctemp2953=PtreeSetrank(nctemp2949,nctemp2951);
-return p;
-}
-else{
-struct tree* nctemp2956= p;
-struct tree* nctemp2958=SemBinexpr(nctemp2956);
-return nctemp2958;
-}
-}
-}
-}
-}
-}
-}
-}
-}
-}
-}
-}
-}
+struct tree* nctemp1256= np;
+struct symbol* nctemp1260= tp;
+nctempchar1* nctemp1262=SymGetype(nctemp1260);
+nctempchar1* nctemp1258= nctemp1262;
+int nctemp1263=PtreeSetype(nctemp1256,nctemp1258);
+struct tree* nctemp1265= np;
+struct symbol* nctemp1269= tp;
+nctempchar1* nctemp1271=SymGetarray(nctemp1269);
+nctempchar1* nctemp1267= nctemp1271;
+int nctemp1272=PtreeSetarray(nctemp1265,nctemp1267);
+struct tree* nctemp1274= np;
+struct symbol* nctemp1278= tp;
+int nctemp1280=SymGetrank(nctemp1278);
+int nctemp1276= nctemp1280;
+int nctemp1281=PtreeSetrank(nctemp1274,nctemp1276);
+struct tree* nctemp1283= np;
+struct symbol* nctemp1287= tp;
+nctempchar1* nctemp1289=SymGetlval(nctemp1287);
+nctempchar1* nctemp1285= nctemp1289;
+int nctemp1290=PtreeSetlval(nctemp1283,nctemp1285);
+struct tree* nctemp1292= p;
+struct symbol* nctemp1296= tp;
+nctempchar1* nctemp1298=SymGetype(nctemp1296);
+nctempchar1* nctemp1294= nctemp1298;
+int nctemp1299=PtreeSetype(nctemp1292,nctemp1294);
+struct tree* nctemp1301= p;
+struct tree* nctemp1305= np;
+nctempchar1* nctemp1307=PtreeGetref(nctemp1305);
+nctempchar1* nctemp1303= nctemp1307;
+int nctemp1308=PtreeSetref(nctemp1301,nctemp1303);
+struct tree* nctemp1310= p;
+struct symbol* nctemp1314= tp;
+int nctemp1316=SymGetrank(nctemp1314);
+int nctemp1312= nctemp1316;
+int nctemp1317=PtreeSetrank(nctemp1310,nctemp1312);
+return 1;
 }
 int SemId (struct tree* p)
 {
 struct symbol* tp;
 struct tree* np;
-struct tree* nctemp2968= p;
-nctempchar1* nctemp2970=PtreeGetdef(nctemp2968);
-nctempchar1* nctemp2966= nctemp2970;
-struct symbol* nctemp2971=SymLook(nctemp2966);
-tp =nctemp2971;
-int nctemp2959 = (tp ==0);
-if(nctemp2959)
+struct tree* nctemp1328= p;
+nctempchar1* nctemp1330=PtreeGetdef(nctemp1328);
+nctempchar1* nctemp1326= nctemp1330;
+struct symbol* nctemp1331=SymLook(nctemp1326);
+tp =nctemp1331;
+int nctemp1319 = (tp ==0);
+if(nctemp1319)
 {
-struct tree* nctemp2974= p;
-struct nctempchar1 *nctemp2978;
-static struct nctempchar1 nctemp2979 = {{ 22}, (char*)"Undeclared identifier\0"};
-nctemp2978=&nctemp2979;
-nctempchar1* nctemp2976= nctemp2978;
-struct tree* nctemp2982= p;
-nctempchar1* nctemp2984=PtreeGetdef(nctemp2982);
-nctempchar1* nctemp2980= nctemp2984;
-int nctemp2985=ErrSerror(nctemp2974,nctemp2976,nctemp2980);
+struct tree* nctemp1334= p;
+struct nctempchar1 *nctemp1338;
+static struct nctempchar1 nctemp1339 = {{ 22}, (char*)"Undeclared identifier\0"};
+nctemp1338=&nctemp1339;
+nctempchar1* nctemp1336= nctemp1338;
+struct tree* nctemp1342= p;
+nctempchar1* nctemp1344=PtreeGetdef(nctemp1342);
+nctempchar1* nctemp1340= nctemp1344;
+int nctemp1345=SemSerror(nctemp1334,nctemp1336,nctemp1340);
 }
-struct symbol* nctemp2991= tp;
-nctempchar1* nctemp2993=SymGetype(nctemp2991);
-nctempchar1* nctemp2989= nctemp2993;
-struct nctempchar1 *nctemp2996;
-static struct nctempchar1 nctemp2997 = {{ 10}, (char*)"iconstant\0"};
-nctemp2996=&nctemp2997;
-nctempchar1* nctemp2994= nctemp2996;
-int nctemp2998=LibeStrcmp(nctemp2989,nctemp2994);
-int nctemp2986 = (nctemp2998 ==1);
-if(nctemp2986)
+struct symbol* nctemp1351= tp;
+nctempchar1* nctemp1353=SymGetype(nctemp1351);
+nctempchar1* nctemp1349= nctemp1353;
+struct nctempchar1 *nctemp1356;
+static struct nctempchar1 nctemp1357 = {{ 10}, (char*)"iconstant\0"};
+nctemp1356=&nctemp1357;
+nctempchar1* nctemp1354= nctemp1356;
+int nctemp1358=LibeStrcmp(nctemp1349,nctemp1354);
+int nctemp1346 = (nctemp1358 ==1);
+if(nctemp1346)
 {
-struct tree* nctemp3001= p;
-struct symbol* nctemp3005= tp;
-nctempchar1* nctemp3007=SymGetype(nctemp3005);
-nctempchar1* nctemp3003= nctemp3007;
-int nctemp3008=PtreeSetname(nctemp3001,nctemp3003);
-struct tree* nctemp3010= p;
-struct symbol* nctemp3014= tp;
-nctempchar1* nctemp3016=SymGetdescr(nctemp3014);
-nctempchar1* nctemp3012= nctemp3016;
-int nctemp3017=PtreeSetdef(nctemp3010,nctemp3012);
-struct tree* nctemp3019= p;
-struct nctempchar1 *nctemp3023;
-static struct nctempchar1 nctemp3024 = {{ 4}, (char*)"int\0"};
-nctemp3023=&nctemp3024;
-nctempchar1* nctemp3021= nctemp3023;
-int nctemp3025=PtreeSetype(nctemp3019,nctemp3021);
+struct tree* nctemp1361= p;
+struct symbol* nctemp1365= tp;
+nctempchar1* nctemp1367=SymGetype(nctemp1365);
+nctempchar1* nctemp1363= nctemp1367;
+int nctemp1368=PtreeSetname(nctemp1361,nctemp1363);
+struct tree* nctemp1370= p;
+struct symbol* nctemp1374= tp;
+nctempchar1* nctemp1376=SymGetdescr(nctemp1374);
+nctempchar1* nctemp1372= nctemp1376;
+int nctemp1377=PtreeSetdef(nctemp1370,nctemp1372);
+struct tree* nctemp1379= p;
+struct nctempchar1 *nctemp1383;
+static struct nctempchar1 nctemp1384 = {{ 4}, (char*)"int\0"};
+nctemp1383=&nctemp1384;
+nctempchar1* nctemp1381= nctemp1383;
+int nctemp1385=PtreeSetype(nctemp1379,nctemp1381);
 return 1;
 }
 else{
-struct symbol* nctemp3032= tp;
-nctempchar1* nctemp3034=SymGetype(nctemp3032);
-nctempchar1* nctemp3030= nctemp3034;
-struct nctempchar1 *nctemp3037;
-static struct nctempchar1 nctemp3038 = {{ 10}, (char*)"rconstant\0"};
-nctemp3037=&nctemp3038;
-nctempchar1* nctemp3035= nctemp3037;
-int nctemp3039=LibeStrcmp(nctemp3030,nctemp3035);
-int nctemp3027 = (nctemp3039 ==1);
-if(nctemp3027)
+struct symbol* nctemp1392= tp;
+nctempchar1* nctemp1394=SymGetype(nctemp1392);
+nctempchar1* nctemp1390= nctemp1394;
+struct nctempchar1 *nctemp1397;
+static struct nctempchar1 nctemp1398 = {{ 10}, (char*)"rconstant\0"};
+nctemp1397=&nctemp1398;
+nctempchar1* nctemp1395= nctemp1397;
+int nctemp1399=LibeStrcmp(nctemp1390,nctemp1395);
+int nctemp1387 = (nctemp1399 ==1);
+if(nctemp1387)
 {
-struct tree* nctemp3042= p;
-struct symbol* nctemp3046= tp;
-nctempchar1* nctemp3048=SymGetype(nctemp3046);
-nctempchar1* nctemp3044= nctemp3048;
-int nctemp3049=PtreeSetname(nctemp3042,nctemp3044);
-struct tree* nctemp3051= p;
-struct symbol* nctemp3055= tp;
-nctempchar1* nctemp3057=SymGetdescr(nctemp3055);
-nctempchar1* nctemp3053= nctemp3057;
-int nctemp3058=PtreeSetdef(nctemp3051,nctemp3053);
-struct tree* nctemp3060= p;
-struct nctempchar1 *nctemp3064;
-static struct nctempchar1 nctemp3065 = {{ 6}, (char*)"float\0"};
-nctemp3064=&nctemp3065;
-nctempchar1* nctemp3062= nctemp3064;
-int nctemp3066=PtreeSetype(nctemp3060,nctemp3062);
+struct tree* nctemp1402= p;
+struct symbol* nctemp1406= tp;
+nctempchar1* nctemp1408=SymGetype(nctemp1406);
+nctempchar1* nctemp1404= nctemp1408;
+int nctemp1409=PtreeSetname(nctemp1402,nctemp1404);
+struct tree* nctemp1411= p;
+struct symbol* nctemp1415= tp;
+nctempchar1* nctemp1417=SymGetdescr(nctemp1415);
+nctempchar1* nctemp1413= nctemp1417;
+int nctemp1418=PtreeSetdef(nctemp1411,nctemp1413);
+struct tree* nctemp1420= p;
+struct nctempchar1 *nctemp1424;
+static struct nctempchar1 nctemp1425 = {{ 6}, (char*)"float\0"};
+nctemp1424=&nctemp1425;
+nctempchar1* nctemp1422= nctemp1424;
+int nctemp1426=PtreeSetype(nctemp1420,nctemp1422);
 return 1;
 }
 else{
-struct symbol* nctemp3073= tp;
-nctempchar1* nctemp3075=SymGetype(nctemp3073);
-nctempchar1* nctemp3071= nctemp3075;
-struct nctempchar1 *nctemp3078;
-static struct nctempchar1 nctemp3079 = {{ 10}, (char*)"sconstant\0"};
-nctemp3078=&nctemp3079;
-nctempchar1* nctemp3076= nctemp3078;
-int nctemp3080=LibeStrcmp(nctemp3071,nctemp3076);
-int nctemp3068 = (nctemp3080 ==1);
-if(nctemp3068)
+struct symbol* nctemp1433= tp;
+nctempchar1* nctemp1435=SymGetype(nctemp1433);
+nctempchar1* nctemp1431= nctemp1435;
+struct nctempchar1 *nctemp1438;
+static struct nctempchar1 nctemp1439 = {{ 10}, (char*)"sconstant\0"};
+nctemp1438=&nctemp1439;
+nctempchar1* nctemp1436= nctemp1438;
+int nctemp1440=LibeStrcmp(nctemp1431,nctemp1436);
+int nctemp1428 = (nctemp1440 ==1);
+if(nctemp1428)
 {
-struct tree* nctemp3083= p;
-struct symbol* nctemp3087= tp;
-nctempchar1* nctemp3089=SymGetype(nctemp3087);
-nctempchar1* nctemp3085= nctemp3089;
-int nctemp3090=PtreeSetname(nctemp3083,nctemp3085);
-struct tree* nctemp3092= p;
-struct symbol* nctemp3096= tp;
-nctempchar1* nctemp3098=SymGetdescr(nctemp3096);
-nctempchar1* nctemp3094= nctemp3098;
-int nctemp3099=PtreeSetdef(nctemp3092,nctemp3094);
-struct tree* nctemp3101= p;
-struct nctempchar1 *nctemp3105;
-static struct nctempchar1 nctemp3106 = {{ 5}, (char*)"char\0"};
-nctemp3105=&nctemp3106;
-nctempchar1* nctemp3103= nctemp3105;
-int nctemp3107=PtreeSetype(nctemp3101,nctemp3103);
-struct tree* nctemp3109= p;
-struct nctempchar1 *nctemp3113;
-static struct nctempchar1 nctemp3114 = {{ 6}, (char*)"array\0"};
-nctemp3113=&nctemp3114;
-nctempchar1* nctemp3111= nctemp3113;
-int nctemp3115=PtreeSetarray(nctemp3109,nctemp3111);
-struct tree* nctemp3117= p;
-struct nctempchar1 *nctemp3121;
-static struct nctempchar1 nctemp3122 = {{ 5}, (char*)"aref\0"};
-nctemp3121=&nctemp3122;
-nctempchar1* nctemp3119= nctemp3121;
-int nctemp3123=PtreeSetref(nctemp3117,nctemp3119);
-struct tree* nctemp3125= p;
-int nctemp3127= 1;
-int nctemp3129=PtreeSetrank(nctemp3125,nctemp3127);
+struct tree* nctemp1443= p;
+struct symbol* nctemp1447= tp;
+nctempchar1* nctemp1449=SymGetype(nctemp1447);
+nctempchar1* nctemp1445= nctemp1449;
+int nctemp1450=PtreeSetname(nctemp1443,nctemp1445);
+struct tree* nctemp1452= p;
+struct symbol* nctemp1456= tp;
+nctempchar1* nctemp1458=SymGetdescr(nctemp1456);
+nctempchar1* nctemp1454= nctemp1458;
+int nctemp1459=PtreeSetdef(nctemp1452,nctemp1454);
+struct tree* nctemp1461= p;
+struct nctempchar1 *nctemp1465;
+static struct nctempchar1 nctemp1466 = {{ 5}, (char*)"char\0"};
+nctemp1465=&nctemp1466;
+nctempchar1* nctemp1463= nctemp1465;
+int nctemp1467=PtreeSetype(nctemp1461,nctemp1463);
+struct tree* nctemp1469= p;
+struct nctempchar1 *nctemp1473;
+static struct nctempchar1 nctemp1474 = {{ 6}, (char*)"array\0"};
+nctemp1473=&nctemp1474;
+nctempchar1* nctemp1471= nctemp1473;
+int nctemp1475=PtreeSetarray(nctemp1469,nctemp1471);
+struct tree* nctemp1477= p;
+struct nctempchar1 *nctemp1481;
+static struct nctempchar1 nctemp1482 = {{ 5}, (char*)"aref\0"};
+nctemp1481=&nctemp1482;
+nctempchar1* nctemp1479= nctemp1481;
+int nctemp1483=PtreeSetref(nctemp1477,nctemp1479);
+struct tree* nctemp1485= p;
+int nctemp1487= 1;
+int nctemp1489=PtreeSetrank(nctemp1485,nctemp1487);
 return 1;
 }
 }
 }
-struct symbol* nctemp3134= tp;
-nctempchar1* nctemp3136=SymGetstruct(nctemp3134);
-nctempchar1* nctemp3132= nctemp3136;
-struct nctempchar1 *nctemp3139;
-static struct nctempchar1 nctemp3140 = {{ 10}, (char*)"structdef\0"};
-nctemp3139=&nctemp3140;
-nctempchar1* nctemp3137= nctemp3139;
-int nctemp3141=LibeStrcmp(nctemp3132,nctemp3137);
-if(nctemp3141)
+struct symbol* nctemp1494= tp;
+nctempchar1* nctemp1496=SymGetstruct(nctemp1494);
+nctempchar1* nctemp1492= nctemp1496;
+struct nctempchar1 *nctemp1499;
+static struct nctempchar1 nctemp1500 = {{ 10}, (char*)"structdef\0"};
+nctemp1499=&nctemp1500;
+nctempchar1* nctemp1497= nctemp1499;
+int nctemp1501=LibeStrcmp(nctemp1492,nctemp1497);
+if(nctemp1501)
 {
-struct tree* nctemp3143= p;
-struct nctempchar1 *nctemp3147;
-static struct nctempchar1 nctemp3148 = {{ 43}, (char*)"Struct names can not be used as a variable\0"};
-nctemp3147=&nctemp3148;
-nctempchar1* nctemp3145= nctemp3147;
-struct tree* nctemp3151= p;
-nctempchar1* nctemp3153=PtreeGetdef(nctemp3151);
-nctempchar1* nctemp3149= nctemp3153;
-int nctemp3154=ErrSerror(nctemp3143,nctemp3145,nctemp3149);
+struct tree* nctemp1503= p;
+struct nctempchar1 *nctemp1507;
+static struct nctempchar1 nctemp1508 = {{ 43}, (char*)"Struct names can not be used as a variable\0"};
+nctemp1507=&nctemp1508;
+nctempchar1* nctemp1505= nctemp1507;
+struct tree* nctemp1511= p;
+nctempchar1* nctemp1513=PtreeGetdef(nctemp1511);
+nctempchar1* nctemp1509= nctemp1513;
+int nctemp1514=SemSerror(nctemp1503,nctemp1505,nctemp1509);
 }
-struct tree* nctemp3156= p;
-struct symbol* nctemp3160= tp;
-nctempchar1* nctemp3162=SymGetype(nctemp3160);
-nctempchar1* nctemp3158= nctemp3162;
-int nctemp3163=PtreeSetype(nctemp3156,nctemp3158);
-struct tree* nctemp3165= p;
-struct symbol* nctemp3169= tp;
-nctempchar1* nctemp3171=SymGetarray(nctemp3169);
-nctempchar1* nctemp3167= nctemp3171;
-int nctemp3172=PtreeSetarray(nctemp3165,nctemp3167);
-struct tree* nctemp3174= p;
-struct symbol* nctemp3178= tp;
-int nctemp3180=SymGetrank(nctemp3178);
-int nctemp3176= nctemp3180;
-int nctemp3181=PtreeSetrank(nctemp3174,nctemp3176);
-struct tree* nctemp3183= p;
-struct symbol* nctemp3187= tp;
-nctempchar1* nctemp3189=SymGetstruct(nctemp3187);
-nctempchar1* nctemp3185= nctemp3189;
-int nctemp3190=PtreeSetstruct(nctemp3183,nctemp3185);
-struct tree* nctemp3192= p;
-struct symbol* nctemp3196= tp;
-nctempchar1* nctemp3198=SymGetlval(nctemp3196);
-nctempchar1* nctemp3194= nctemp3198;
-int nctemp3199=PtreeSetlval(nctemp3192,nctemp3194);
-struct tree* nctemp3204= p;
-struct tree* nctemp3206=PtreeMvchild(nctemp3204);
-np =nctemp3206;
-int nctemp3207 = (np !=0);
-if(nctemp3207)
+struct tree* nctemp1516= p;
+struct symbol* nctemp1520= tp;
+nctempchar1* nctemp1522=SymGetype(nctemp1520);
+nctempchar1* nctemp1518= nctemp1522;
+int nctemp1523=PtreeSetype(nctemp1516,nctemp1518);
+struct tree* nctemp1525= p;
+struct symbol* nctemp1529= tp;
+nctempchar1* nctemp1531=SymGetarray(nctemp1529);
+nctempchar1* nctemp1527= nctemp1531;
+int nctemp1532=PtreeSetarray(nctemp1525,nctemp1527);
+struct tree* nctemp1534= p;
+struct symbol* nctemp1538= tp;
+int nctemp1540=SymGetrank(nctemp1538);
+int nctemp1536= nctemp1540;
+int nctemp1541=PtreeSetrank(nctemp1534,nctemp1536);
+struct tree* nctemp1543= p;
+struct symbol* nctemp1547= tp;
+nctempchar1* nctemp1549=SymGetstruct(nctemp1547);
+nctempchar1* nctemp1545= nctemp1549;
+int nctemp1550=PtreeSetstruct(nctemp1543,nctemp1545);
+struct tree* nctemp1552= p;
+struct symbol* nctemp1556= tp;
+nctempchar1* nctemp1558=SymGetlval(nctemp1556);
+nctempchar1* nctemp1554= nctemp1558;
+int nctemp1559=PtreeSetlval(nctemp1552,nctemp1554);
+struct tree* nctemp1564= p;
+struct tree* nctemp1566=PtreeMvchild(nctemp1564);
+np =nctemp1566;
+int nctemp1567 = (np !=0);
+if(nctemp1567)
 {
-struct tree* nctemp3214= np;
-nctempchar1* nctemp3216=PtreeGetname(nctemp3214);
-nctempchar1* nctemp3212= nctemp3216;
-struct nctempchar1 *nctemp3219;
-static struct nctempchar1 nctemp3220 = {{ 9}, (char*)"exprlist\0"};
-nctemp3219=&nctemp3220;
-nctempchar1* nctemp3217= nctemp3219;
-int nctemp3221=LibeStrcmp(nctemp3212,nctemp3217);
-if(nctemp3221)
+struct tree* nctemp1574= np;
+nctempchar1* nctemp1576=PtreeGetname(nctemp1574);
+nctempchar1* nctemp1572= nctemp1576;
+struct nctempchar1 *nctemp1579;
+static struct nctempchar1 nctemp1580 = {{ 9}, (char*)"exprlist\0"};
+nctemp1579=&nctemp1580;
+nctempchar1* nctemp1577= nctemp1579;
+int nctemp1581=LibeStrcmp(nctemp1572,nctemp1577);
+if(nctemp1581)
 {
-struct tree* nctemp3223= p;
-struct symbol* nctemp3225= tp;
-int nctemp3227=SemArray(nctemp3223,nctemp3225);
-struct tree* nctemp3231= np;
-struct tree* nctemp3233=PtreeMvsister(nctemp3231);
-int nctemp3228 = (nctemp3233 !=0);
-if(nctemp3228)
+struct tree* nctemp1583= p;
+struct symbol* nctemp1585= tp;
+int nctemp1587=SemArray(nctemp1583,nctemp1585);
+struct tree* nctemp1591= np;
+struct tree* nctemp1593=PtreeMvsister(nctemp1591);
+int nctemp1588 = (nctemp1593 !=0);
+if(nctemp1588)
 {
-struct tree* nctemp3236= p;
-struct symbol* nctemp3238= tp;
-int nctemp3240=SemStructure(nctemp3236,nctemp3238);
-}
-else{
-struct tree* nctemp3244= p;
-nctempchar1* nctemp3246=PtreeGetstruct(nctemp3244);
-nctempchar1* nctemp3242= nctemp3246;
-struct nctempchar1 *nctemp3249;
-static struct nctempchar1 nctemp3250 = {{ 7}, (char*)"struct\0"};
-nctemp3249=&nctemp3250;
-nctempchar1* nctemp3247= nctemp3249;
-int nctemp3251=LibeStrcmp(nctemp3242,nctemp3247);
-if(nctemp3251)
-{
-struct tree* nctemp3253= p;
-struct nctempchar1 *nctemp3257;
-static struct nctempchar1 nctemp3258 = {{ 5}, (char*)"sref\0"};
-nctemp3257=&nctemp3258;
-nctempchar1* nctemp3255= nctemp3257;
-int nctemp3259=PtreeSetref(nctemp3253,nctemp3255);
-}
-}
+struct tree* nctemp1596= p;
+struct symbol* nctemp1598= tp;
+int nctemp1600=SemStructure(nctemp1596,nctemp1598);
 }
 else{
-struct tree* nctemp3263= np;
-nctempchar1* nctemp3265=PtreeGetname(nctemp3263);
-nctempchar1* nctemp3261= nctemp3265;
-struct nctempchar1 *nctemp3268;
-static struct nctempchar1 nctemp3269 = {{ 9}, (char*)"selector\0"};
-nctemp3268=&nctemp3269;
-nctempchar1* nctemp3266= nctemp3268;
-int nctemp3270=LibeStrcmp(nctemp3261,nctemp3266);
-if(nctemp3270)
+struct tree* nctemp1604= p;
+nctempchar1* nctemp1606=PtreeGetstruct(nctemp1604);
+nctempchar1* nctemp1602= nctemp1606;
+struct nctempchar1 *nctemp1609;
+static struct nctempchar1 nctemp1610 = {{ 7}, (char*)"struct\0"};
+nctemp1609=&nctemp1610;
+nctempchar1* nctemp1607= nctemp1609;
+int nctemp1611=LibeStrcmp(nctemp1602,nctemp1607);
+if(nctemp1611)
 {
-struct tree* nctemp3272= p;
-struct symbol* nctemp3274= tp;
-int nctemp3276=SemStructure(nctemp3272,nctemp3274);
+struct tree* nctemp1613= p;
+struct nctempchar1 *nctemp1617;
+static struct nctempchar1 nctemp1618 = {{ 5}, (char*)"sref\0"};
+nctemp1617=&nctemp1618;
+nctempchar1* nctemp1615= nctemp1617;
+int nctemp1619=PtreeSetref(nctemp1613,nctemp1615);
 }
 }
 }
 else{
-struct tree* nctemp3280= p;
-nctempchar1* nctemp3282=PtreeGetarray(nctemp3280);
-nctempchar1* nctemp3278= nctemp3282;
-struct nctempchar1 *nctemp3285;
-static struct nctempchar1 nctemp3286 = {{ 6}, (char*)"array\0"};
-nctemp3285=&nctemp3286;
-nctempchar1* nctemp3283= nctemp3285;
-int nctemp3287=LibeStrcmp(nctemp3278,nctemp3283);
-if(nctemp3287)
+struct tree* nctemp1623= np;
+nctempchar1* nctemp1625=PtreeGetname(nctemp1623);
+nctempchar1* nctemp1621= nctemp1625;
+struct nctempchar1 *nctemp1628;
+static struct nctempchar1 nctemp1629 = {{ 9}, (char*)"selector\0"};
+nctemp1628=&nctemp1629;
+nctempchar1* nctemp1626= nctemp1628;
+int nctemp1630=LibeStrcmp(nctemp1621,nctemp1626);
+if(nctemp1630)
 {
-struct tree* nctemp3289= p;
-struct nctempchar1 *nctemp3293;
-static struct nctempchar1 nctemp3294 = {{ 5}, (char*)"aref\0"};
-nctemp3293=&nctemp3294;
-nctempchar1* nctemp3291= nctemp3293;
-int nctemp3295=PtreeSetref(nctemp3289,nctemp3291);
+struct tree* nctemp1632= p;
+struct symbol* nctemp1634= tp;
+int nctemp1636=SemStructure(nctemp1632,nctemp1634);
+}
+}
 }
 else{
-struct tree* nctemp3299= p;
-nctempchar1* nctemp3301=PtreeGetstruct(nctemp3299);
-nctempchar1* nctemp3297= nctemp3301;
-struct nctempchar1 *nctemp3304;
-static struct nctempchar1 nctemp3305 = {{ 7}, (char*)"struct\0"};
-nctemp3304=&nctemp3305;
-nctempchar1* nctemp3302= nctemp3304;
-int nctemp3306=LibeStrcmp(nctemp3297,nctemp3302);
-if(nctemp3306)
+struct tree* nctemp1640= p;
+nctempchar1* nctemp1642=PtreeGetarray(nctemp1640);
+nctempchar1* nctemp1638= nctemp1642;
+struct nctempchar1 *nctemp1645;
+static struct nctempchar1 nctemp1646 = {{ 6}, (char*)"array\0"};
+nctemp1645=&nctemp1646;
+nctempchar1* nctemp1643= nctemp1645;
+int nctemp1647=LibeStrcmp(nctemp1638,nctemp1643);
+if(nctemp1647)
 {
-struct tree* nctemp3308= p;
-struct nctempchar1 *nctemp3312;
-static struct nctempchar1 nctemp3313 = {{ 5}, (char*)"sref\0"};
-nctemp3312=&nctemp3313;
-nctempchar1* nctemp3310= nctemp3312;
-int nctemp3314=PtreeSetref(nctemp3308,nctemp3310);
+struct tree* nctemp1649= p;
+struct nctempchar1 *nctemp1653;
+static struct nctempchar1 nctemp1654 = {{ 5}, (char*)"aref\0"};
+nctemp1653=&nctemp1654;
+nctempchar1* nctemp1651= nctemp1653;
+int nctemp1655=PtreeSetref(nctemp1649,nctemp1651);
+}
+else{
+struct tree* nctemp1659= p;
+nctempchar1* nctemp1661=PtreeGetstruct(nctemp1659);
+nctempchar1* nctemp1657= nctemp1661;
+struct nctempchar1 *nctemp1664;
+static struct nctempchar1 nctemp1665 = {{ 7}, (char*)"struct\0"};
+nctemp1664=&nctemp1665;
+nctempchar1* nctemp1662= nctemp1664;
+int nctemp1666=LibeStrcmp(nctemp1657,nctemp1662);
+if(nctemp1666)
+{
+struct tree* nctemp1668= p;
+struct nctempchar1 *nctemp1672;
+static struct nctempchar1 nctemp1673 = {{ 5}, (char*)"sref\0"};
+nctemp1672=&nctemp1673;
+nctempchar1* nctemp1670= nctemp1672;
+int nctemp1674=PtreeSetref(nctemp1668,nctemp1670);
 }
 }
 }
@@ -2681,290 +1769,341 @@ int SemFcall (struct tree* p)
 struct tree* np;
 struct symbol* tp;
 nctempchar1 *type;
-struct tree* nctemp3319= p;
-nctempchar1* nctemp3321=PtreeGetname(nctemp3319);
-nctempchar1* nctemp3317= nctemp3321;
-struct nctempchar1 *nctemp3324;
-static struct nctempchar1 nctemp3325 = {{ 6}, (char*)"fcall\0"};
-nctemp3324=&nctemp3325;
-nctempchar1* nctemp3322= nctemp3324;
-int nctemp3326=LibeStrcmp(nctemp3317,nctemp3322);
-if(nctemp3326)
+struct tree* nctemp1679= p;
+nctempchar1* nctemp1681=PtreeGetname(nctemp1679);
+nctempchar1* nctemp1677= nctemp1681;
+struct nctempchar1 *nctemp1684;
+static struct nctempchar1 nctemp1685 = {{ 6}, (char*)"fcall\0"};
+nctemp1684=&nctemp1685;
+nctempchar1* nctemp1682= nctemp1684;
+int nctemp1686=LibeStrcmp(nctemp1677,nctemp1682);
+if(nctemp1686)
 {
-struct tree* nctemp3336= p;
-nctempchar1* nctemp3338=PtreeGetdef(nctemp3336);
-nctempchar1* nctemp3334= nctemp3338;
-struct symbol* nctemp3341=SymGetetp();
-struct symbol* nctemp3339= nctemp3341;
-struct symbol* nctemp3342=SymLookup(nctemp3334,nctemp3339);
-tp =nctemp3342;
-int nctemp3327 = (tp ==0);
-if(nctemp3327)
+struct tree* nctemp1696= p;
+nctempchar1* nctemp1698=PtreeGetdef(nctemp1696);
+nctempchar1* nctemp1694= nctemp1698;
+struct symbol* nctemp1701=SymGetetp();
+struct symbol* nctemp1699= nctemp1701;
+struct symbol* nctemp1702=SymLookup(nctemp1694,nctemp1699);
+tp =nctemp1702;
+int nctemp1687 = (tp ==0);
+if(nctemp1687)
 {
-struct tree* nctemp3345= p;
-struct nctempchar1 *nctemp3349;
-static struct nctempchar1 nctemp3350 = {{ 20}, (char*)"Undeclared function\0"};
-nctemp3349=&nctemp3350;
-nctempchar1* nctemp3347= nctemp3349;
-struct tree* nctemp3353= p;
-nctempchar1* nctemp3355=PtreeGetdef(nctemp3353);
-nctempchar1* nctemp3351= nctemp3355;
-int nctemp3356=ErrSerror(nctemp3345,nctemp3347,nctemp3351);
+struct tree* nctemp1705= p;
+struct nctempchar1 *nctemp1709;
+static struct nctempchar1 nctemp1710 = {{ 20}, (char*)"Undeclared function\0"};
+nctemp1709=&nctemp1710;
+nctempchar1* nctemp1707= nctemp1709;
+struct tree* nctemp1713= p;
+nctempchar1* nctemp1715=PtreeGetdef(nctemp1713);
+nctempchar1* nctemp1711= nctemp1715;
+int nctemp1716=SemSerror(nctemp1705,nctemp1707,nctemp1711);
 return 0;
 }
-struct symbol* nctemp3363= tp;
-nctempchar1* nctemp3365=SymGetfunc(nctemp3363);
-nctempchar1* nctemp3361= nctemp3365;
-struct nctempchar1 *nctemp3368;
-static struct nctempchar1 nctemp3369 = {{ 6}, (char*)"fdecl\0"};
-nctemp3368=&nctemp3369;
-nctempchar1* nctemp3366= nctemp3368;
-int nctemp3370=LibeStrcmp(nctemp3361,nctemp3366);
-int nctemp3358 = (nctemp3370 ==0);
-if(nctemp3358)
+struct symbol* nctemp1723= tp;
+nctempchar1* nctemp1725=SymGetfunc(nctemp1723);
+nctempchar1* nctemp1721= nctemp1725;
+struct nctempchar1 *nctemp1728;
+static struct nctempchar1 nctemp1729 = {{ 5}, (char*)"fdef\0"};
+nctemp1728=&nctemp1729;
+nctempchar1* nctemp1726= nctemp1728;
+int nctemp1730=LibeStrcmp(nctemp1721,nctemp1726);
+int nctemp1718 = (nctemp1730 ==0);
+if(nctemp1718)
 {
-struct symbol* nctemp3377= tp;
-nctempchar1* nctemp3379=SymGetfunc(nctemp3377);
-nctempchar1* nctemp3375= nctemp3379;
-struct nctempchar1 *nctemp3382;
-static struct nctempchar1 nctemp3383 = {{ 5}, (char*)"fdef\0"};
-nctemp3382=&nctemp3383;
-nctempchar1* nctemp3380= nctemp3382;
-int nctemp3384=LibeStrcmp(nctemp3375,nctemp3380);
-int nctemp3372 = (nctemp3384 ==0);
-if(nctemp3372)
-{
-struct tree* nctemp3387= p;
-struct nctempchar1 *nctemp3391;
-static struct nctempchar1 nctemp3392 = {{ 15}, (char*)"Not a function\0"};
-nctemp3391=&nctemp3392;
-nctempchar1* nctemp3389= nctemp3391;
-struct tree* nctemp3395= p;
-nctempchar1* nctemp3397=PtreeGetdef(nctemp3395);
-nctempchar1* nctemp3393= nctemp3397;
-int nctemp3398=ErrSerror(nctemp3387,nctemp3389,nctemp3393);
+struct tree* nctemp1733= p;
+struct nctempchar1 *nctemp1737;
+static struct nctempchar1 nctemp1738 = {{ 15}, (char*)"Not a function\0"};
+nctemp1737=&nctemp1738;
+nctempchar1* nctemp1735= nctemp1737;
+struct tree* nctemp1741= p;
+nctempchar1* nctemp1743=PtreeGetdef(nctemp1741);
+nctempchar1* nctemp1739= nctemp1743;
+int nctemp1744=SemSerror(nctemp1733,nctemp1735,nctemp1739);
 return 0;
 }
-}
-struct tree* nctemp3401= p;
-struct symbol* nctemp3405= tp;
-nctempchar1* nctemp3407=SymGetype(nctemp3405);
-nctempchar1* nctemp3403= nctemp3407;
-int nctemp3408=PtreeSetype(nctemp3401,nctemp3403);
-struct tree* nctemp3410= p;
-struct symbol* nctemp3414= tp;
-nctempchar1* nctemp3416=SymGetstruct(nctemp3414);
-nctempchar1* nctemp3412= nctemp3416;
-int nctemp3417=PtreeSetstruct(nctemp3410,nctemp3412);
-struct tree* nctemp3419= p;
-struct symbol* nctemp3423= tp;
-nctempchar1* nctemp3425=SymGetarray(nctemp3423);
-nctempchar1* nctemp3421= nctemp3425;
-int nctemp3426=PtreeSetarray(nctemp3419,nctemp3421);
-struct tree* nctemp3428= p;
-struct symbol* nctemp3432= tp;
-int nctemp3434=SymGetrank(nctemp3432);
-int nctemp3430= nctemp3434;
-int nctemp3435=PtreeSetrank(nctemp3428,nctemp3430);
-struct tree* nctemp3439= p;
-nctempchar1* nctemp3441=PtreeGetarray(nctemp3439);
-nctempchar1* nctemp3437= nctemp3441;
-struct nctempchar1 *nctemp3444;
-static struct nctempchar1 nctemp3445 = {{ 6}, (char*)"array\0"};
-nctemp3444=&nctemp3445;
-nctempchar1* nctemp3442= nctemp3444;
-int nctemp3446=LibeStrcmp(nctemp3437,nctemp3442);
-if(nctemp3446)
+struct tree* nctemp1747= p;
+struct symbol* nctemp1751= tp;
+nctempchar1* nctemp1753=SymGetype(nctemp1751);
+nctempchar1* nctemp1749= nctemp1753;
+int nctemp1754=PtreeSetype(nctemp1747,nctemp1749);
+struct tree* nctemp1756= p;
+struct symbol* nctemp1760= tp;
+nctempchar1* nctemp1762=SymGetstruct(nctemp1760);
+nctempchar1* nctemp1758= nctemp1762;
+int nctemp1763=PtreeSetstruct(nctemp1756,nctemp1758);
+struct tree* nctemp1765= p;
+struct symbol* nctemp1769= tp;
+nctempchar1* nctemp1771=SymGetarray(nctemp1769);
+nctempchar1* nctemp1767= nctemp1771;
+int nctemp1772=PtreeSetarray(nctemp1765,nctemp1767);
+struct tree* nctemp1774= p;
+struct symbol* nctemp1778= tp;
+int nctemp1780=SymGetrank(nctemp1778);
+int nctemp1776= nctemp1780;
+int nctemp1781=PtreeSetrank(nctemp1774,nctemp1776);
+struct tree* nctemp1785= p;
+nctempchar1* nctemp1787=PtreeGetarray(nctemp1785);
+nctempchar1* nctemp1783= nctemp1787;
+struct nctempchar1 *nctemp1790;
+static struct nctempchar1 nctemp1791 = {{ 6}, (char*)"array\0"};
+nctemp1790=&nctemp1791;
+nctempchar1* nctemp1788= nctemp1790;
+int nctemp1792=LibeStrcmp(nctemp1783,nctemp1788);
+if(nctemp1792)
 {
-struct tree* nctemp3448= p;
-struct nctempchar1 *nctemp3452;
-static struct nctempchar1 nctemp3453 = {{ 5}, (char*)"aref\0"};
-nctemp3452=&nctemp3453;
-nctempchar1* nctemp3450= nctemp3452;
-int nctemp3454=PtreeSetref(nctemp3448,nctemp3450);
+struct tree* nctemp1794= p;
+struct nctempchar1 *nctemp1798;
+static struct nctempchar1 nctemp1799 = {{ 5}, (char*)"aref\0"};
+nctemp1798=&nctemp1799;
+nctempchar1* nctemp1796= nctemp1798;
+int nctemp1800=PtreeSetref(nctemp1794,nctemp1796);
 }
 else{
-struct tree* nctemp3458= p;
-nctempchar1* nctemp3460=PtreeGetstruct(nctemp3458);
-nctempchar1* nctemp3456= nctemp3460;
-struct nctempchar1 *nctemp3463;
-static struct nctempchar1 nctemp3464 = {{ 7}, (char*)"struct\0"};
-nctemp3463=&nctemp3464;
-nctempchar1* nctemp3461= nctemp3463;
-int nctemp3465=LibeStrcmp(nctemp3456,nctemp3461);
-if(nctemp3465)
+struct tree* nctemp1804= p;
+nctempchar1* nctemp1806=PtreeGetstruct(nctemp1804);
+nctempchar1* nctemp1802= nctemp1806;
+struct nctempchar1 *nctemp1809;
+static struct nctempchar1 nctemp1810 = {{ 7}, (char*)"struct\0"};
+nctemp1809=&nctemp1810;
+nctempchar1* nctemp1807= nctemp1809;
+int nctemp1811=LibeStrcmp(nctemp1802,nctemp1807);
+if(nctemp1811)
 {
-struct tree* nctemp3467= p;
-struct nctempchar1 *nctemp3471;
-static struct nctempchar1 nctemp3472 = {{ 5}, (char*)"sref\0"};
-nctemp3471=&nctemp3472;
-nctempchar1* nctemp3469= nctemp3471;
-int nctemp3473=PtreeSetref(nctemp3467,nctemp3469);
+struct tree* nctemp1813= p;
+struct nctempchar1 *nctemp1817;
+static struct nctempchar1 nctemp1818 = {{ 5}, (char*)"sref\0"};
+nctemp1817=&nctemp1818;
+nctempchar1* nctemp1815= nctemp1817;
+int nctemp1819=PtreeSetref(nctemp1813,nctemp1815);
 }
 }
-struct symbol* nctemp3478= tp;
-struct symbol* nctemp3480=SymGetable(nctemp3478);
-tp =nctemp3480;
-struct nctempchar1 *nctemp3487;
-static struct nctempchar1 nctemp3488 = {{ 9}, (char*)"#arglist\0"};
-nctemp3487=&nctemp3488;
-nctempchar1* nctemp3485= nctemp3487;
-struct symbol* nctemp3489= tp;
-struct symbol* nctemp3491=SymLookup(nctemp3485,nctemp3489);
-tp =nctemp3491;
-int nctemp3492 = (tp !=0);
-if(nctemp3492)
+struct symbol* nctemp1824= tp;
+struct symbol* nctemp1826=SymGetable(nctemp1824);
+tp =nctemp1826;
+struct nctempchar1 *nctemp1833;
+static struct nctempchar1 nctemp1834 = {{ 9}, (char*)"#arglist\0"};
+nctemp1833=&nctemp1834;
+nctempchar1* nctemp1831= nctemp1833;
+struct symbol* nctemp1835= tp;
+struct symbol* nctemp1837=SymLookup(nctemp1831,nctemp1835);
+tp =nctemp1837;
+int nctemp1838 = (tp !=0);
+if(nctemp1838)
 {
-struct symbol* nctemp3500= tp;
-struct symbol* nctemp3502=SymGetable(nctemp3500);
-tp =nctemp3502;
+struct symbol* nctemp1846= tp;
+struct symbol* nctemp1848=SymGetable(nctemp1846);
+tp =nctemp1848;
 }
-struct tree* nctemp3510= p;
-struct tree* nctemp3512=PtreeMvchild(nctemp3510);
-np =nctemp3512;
-int nctemp3503 = (np ==0);
-if(nctemp3503)
+struct tree* nctemp1856= p;
+struct tree* nctemp1858=PtreeMvchild(nctemp1856);
+np =nctemp1858;
+int nctemp1849 = (np ==0);
+if(nctemp1849)
 {
-struct symbol* nctemp3521= tp;
-struct symbol* nctemp3523=SymMvnext(nctemp3521);
-tp =nctemp3523;
-int nctemp3514 = (tp !=0);
-if(nctemp3514)
+struct symbol* nctemp1867= tp;
+struct symbol* nctemp1869=SymMvnext(nctemp1867);
+tp =nctemp1869;
+int nctemp1860 = (tp !=0);
+if(nctemp1860)
 {
-struct tree* nctemp3526= p;
-struct nctempchar1 *nctemp3530;
-static struct nctempchar1 nctemp3531 = {{ 41}, (char*)"Function call does not match declaration\0"};
-nctemp3530=&nctemp3531;
-nctempchar1* nctemp3528= nctemp3530;
-struct tree* nctemp3534= p;
-nctempchar1* nctemp3536=PtreeGetdef(nctemp3534);
-nctempchar1* nctemp3532= nctemp3536;
-int nctemp3537=ErrSerror(nctemp3526,nctemp3528,nctemp3532);
+struct tree* nctemp1872= p;
+struct nctempchar1 *nctemp1876;
+static struct nctempchar1 nctemp1877 = {{ 41}, (char*)"Function call does not match declaration\0"};
+nctemp1876=&nctemp1877;
+nctempchar1* nctemp1874= nctemp1876;
+struct tree* nctemp1880= p;
+nctempchar1* nctemp1882=PtreeGetdef(nctemp1880);
+nctempchar1* nctemp1878= nctemp1882;
+int nctemp1883=SemSerror(nctemp1872,nctemp1874,nctemp1878);
 return 0;
 }
 return 1;
 }
-struct tree* nctemp3546= p;
-struct tree* nctemp3548=PtreeMvchild(nctemp3546);
-struct tree* nctemp3544= nctemp3548;
-struct tree* nctemp3549=PtreeMvchild(nctemp3544);
-np =nctemp3549;
-int nctemp3550 = (np !=0);
-int nctemp3554=nctemp3550;
-while(nctemp3554)
+struct tree* nctemp1892= p;
+struct tree* nctemp1894=PtreeMvchild(nctemp1892);
+struct tree* nctemp1890= nctemp1894;
+struct tree* nctemp1895=PtreeMvchild(nctemp1890);
+np =nctemp1895;
+int nctemp1896 = (np !=0);
+int nctemp1900=nctemp1896;
+while(nctemp1900)
 {{
-struct symbol* nctemp3559= tp;
-struct symbol* nctemp3561=SymMvnext(nctemp3559);
-tp =nctemp3561;
-int nctemp3562 = (tp ==0);
-if(nctemp3562)
+struct symbol* nctemp1905= tp;
+struct symbol* nctemp1907=SymMvnext(nctemp1905);
+tp =nctemp1907;
+int nctemp1908 = (tp ==0);
+if(nctemp1908)
 {
-struct tree* nctemp3567= p;
-struct nctempchar1 *nctemp3571;
-static struct nctempchar1 nctemp3572 = {{ 41}, (char*)"Function call does not match declaration\0"};
-nctemp3571=&nctemp3572;
-nctempchar1* nctemp3569= nctemp3571;
-struct tree* nctemp3575= p;
-nctempchar1* nctemp3577=PtreeGetdef(nctemp3575);
-nctempchar1* nctemp3573= nctemp3577;
-int nctemp3578=ErrSerror(nctemp3567,nctemp3569,nctemp3573);
+struct tree* nctemp1913= p;
+struct nctempchar1 *nctemp1917;
+static struct nctempchar1 nctemp1918 = {{ 41}, (char*)"Function call does not match declaration\0"};
+nctemp1917=&nctemp1918;
+nctempchar1* nctemp1915= nctemp1917;
+struct tree* nctemp1921= p;
+nctempchar1* nctemp1923=PtreeGetdef(nctemp1921);
+nctempchar1* nctemp1919= nctemp1923;
+int nctemp1924=SemSerror(nctemp1913,nctemp1915,nctemp1919);
 return 0;
 }
-struct symbol* nctemp3585= tp;
-nctempchar1* nctemp3587=SymGetype(nctemp3585);
-type=nctemp3587;
-struct tree* nctemp3589= np;
-struct tree* nctemp3591=SemExpr(nctemp3589);
-nctempchar1* nctemp3595= type;
-struct tree* nctemp3600= np;
-nctempchar1* nctemp3602=PtreeGetype(nctemp3600);
-nctempchar1* nctemp3598= nctemp3602;
-int nctemp3603=LibeStrcmp(nctemp3595,nctemp3598);
-int nctemp3592 = (nctemp3603 ==0);
-if(nctemp3592)
+struct symbol* nctemp1931= tp;
+nctempchar1* nctemp1933=SymGetype(nctemp1931);
+type=nctemp1933;
+struct tree* nctemp1935= np;
+struct tree* nctemp1937=SemExpr(nctemp1935);
+nctempchar1* nctemp1941= type;
+struct tree* nctemp1946= np;
+nctempchar1* nctemp1948=PtreeGetype(nctemp1946);
+nctempchar1* nctemp1944= nctemp1948;
+int nctemp1949=LibeStrcmp(nctemp1941,nctemp1944);
+int nctemp1938 = (nctemp1949 ==0);
+if(nctemp1938)
 {
-struct tree* nctemp3606= p;
-struct nctempchar1 *nctemp3610;
-static struct nctempchar1 nctemp3611 = {{ 41}, (char*)"Function call does not match declaration\0"};
-nctemp3610=&nctemp3611;
-nctempchar1* nctemp3608= nctemp3610;
-struct tree* nctemp3614= p;
-nctempchar1* nctemp3616=PtreeGetdef(nctemp3614);
-nctempchar1* nctemp3612= nctemp3616;
-int nctemp3617=ErrSerror(nctemp3606,nctemp3608,nctemp3612);
+struct tree* nctemp1952= p;
+struct nctempchar1 *nctemp1956;
+static struct nctempchar1 nctemp1957 = {{ 41}, (char*)"Function call does not match declaration\0"};
+nctemp1956=&nctemp1957;
+nctempchar1* nctemp1954= nctemp1956;
+struct tree* nctemp1960= p;
+nctempchar1* nctemp1962=PtreeGetdef(nctemp1960);
+nctempchar1* nctemp1958= nctemp1962;
+int nctemp1963=SemSerror(nctemp1952,nctemp1954,nctemp1958);
 return 0;
 }
-struct symbol* nctemp3622= tp;
-nctempchar1* nctemp3624=SymGetarray(nctemp3622);
-nctempchar1* nctemp3620= nctemp3624;
-struct nctempchar1 *nctemp3627;
-static struct nctempchar1 nctemp3628 = {{ 6}, (char*)"array\0"};
-nctemp3627=&nctemp3628;
-nctempchar1* nctemp3625= nctemp3627;
-int nctemp3629=LibeStrcmp(nctemp3620,nctemp3625);
-if(nctemp3629)
+struct symbol* nctemp1968= tp;
+nctempchar1* nctemp1970=SymGetarray(nctemp1968);
+nctempchar1* nctemp1966= nctemp1970;
+struct nctempchar1 *nctemp1973;
+static struct nctempchar1 nctemp1974 = {{ 6}, (char*)"array\0"};
+nctemp1973=&nctemp1974;
+nctempchar1* nctemp1971= nctemp1973;
+int nctemp1975=LibeStrcmp(nctemp1966,nctemp1971);
+if(nctemp1975)
 {
-struct tree* nctemp3635= np;
-nctempchar1* nctemp3637=PtreeGetref(nctemp3635);
-nctempchar1* nctemp3633= nctemp3637;
-struct nctempchar1 *nctemp3640;
-static struct nctempchar1 nctemp3641 = {{ 5}, (char*)"aref\0"};
-nctemp3640=&nctemp3641;
-nctempchar1* nctemp3638= nctemp3640;
-int nctemp3642=LibeStrcmp(nctemp3633,nctemp3638);
-int nctemp3630 = (nctemp3642 ==0);
-if(nctemp3630)
+struct tree* nctemp1981= np;
+nctempchar1* nctemp1983=PtreeGetref(nctemp1981);
+nctempchar1* nctemp1979= nctemp1983;
+struct nctempchar1 *nctemp1986;
+static struct nctempchar1 nctemp1987 = {{ 5}, (char*)"aref\0"};
+nctemp1986=&nctemp1987;
+nctempchar1* nctemp1984= nctemp1986;
+int nctemp1988=LibeStrcmp(nctemp1979,nctemp1984);
+int nctemp1976 = (nctemp1988 ==0);
+if(nctemp1976)
 {
-struct tree* nctemp3645= p;
-struct nctempchar1 *nctemp3649;
-static struct nctempchar1 nctemp3650 = {{ 41}, (char*)"Function call does not match declaration\0"};
-nctemp3649=&nctemp3650;
-nctempchar1* nctemp3647= nctemp3649;
-struct tree* nctemp3653= p;
-nctempchar1* nctemp3655=PtreeGetdef(nctemp3653);
-nctempchar1* nctemp3651= nctemp3655;
-int nctemp3656=ErrSerror(nctemp3645,nctemp3647,nctemp3651);
+struct tree* nctemp1991= p;
+struct nctempchar1 *nctemp1995;
+static struct nctempchar1 nctemp1996 = {{ 41}, (char*)"Function call does not match declaration\0"};
+nctemp1995=&nctemp1996;
+nctempchar1* nctemp1993= nctemp1995;
+struct tree* nctemp1999= p;
+nctempchar1* nctemp2001=PtreeGetdef(nctemp1999);
+nctempchar1* nctemp1997= nctemp2001;
+int nctemp2002=SemSerror(nctemp1991,nctemp1993,nctemp1997);
 }
-struct tree* nctemp3660= np;
-int nctemp3662=PtreeGetrank(nctemp3660);
-struct symbol* nctemp3664= tp;
-int nctemp3666=SymGetrank(nctemp3664);
-int nctemp3657 = (nctemp3662 !=nctemp3666);
-if(nctemp3657)
+struct tree* nctemp2006= np;
+int nctemp2008=PtreeGetrank(nctemp2006);
+struct symbol* nctemp2010= tp;
+int nctemp2012=SymGetrank(nctemp2010);
+int nctemp2003 = (nctemp2008 !=nctemp2012);
+if(nctemp2003)
 {
-struct tree* nctemp3668= p;
-struct nctempchar1 *nctemp3672;
-static struct nctempchar1 nctemp3673 = {{ 36}, (char*)"Illegal array rank in function call\0"};
-nctemp3672=&nctemp3673;
-nctempchar1* nctemp3670= nctemp3672;
-struct tree* nctemp3676= p;
-nctempchar1* nctemp3678=PtreeGetdef(nctemp3676);
-nctempchar1* nctemp3674= nctemp3678;
-int nctemp3679=ErrSerror(nctemp3668,nctemp3670,nctemp3674);
+struct tree* nctemp2014= p;
+struct nctempchar1 *nctemp2018;
+static struct nctempchar1 nctemp2019 = {{ 36}, (char*)"Illegal array rank in function call\0"};
+nctemp2018=&nctemp2019;
+nctempchar1* nctemp2016= nctemp2018;
+struct tree* nctemp2022= p;
+nctempchar1* nctemp2024=PtreeGetdef(nctemp2022);
+nctempchar1* nctemp2020= nctemp2024;
+int nctemp2025=SemSerror(nctemp2014,nctemp2016,nctemp2020);
 }
 }
-struct tree* nctemp3684= np;
-struct tree* nctemp3686=PtreeMvsister(nctemp3684);
-np =nctemp3686;
+struct tree* nctemp2030= np;
+struct tree* nctemp2032=PtreeMvsister(nctemp2030);
+np =nctemp2032;
 }
-int nctemp3687 = (np !=0);
-nctemp3554=nctemp3687;}struct symbol* nctemp3694= tp;
-struct symbol* nctemp3696=SymMvnext(nctemp3694);
-int nctemp3691 = (nctemp3696 !=0);
-if(nctemp3691)
+int nctemp2033 = (np !=0);
+nctemp1900=nctemp2033;}struct symbol* nctemp2040= tp;
+struct symbol* nctemp2042=SymMvnext(nctemp2040);
+int nctemp2037 = (nctemp2042 !=0);
+if(nctemp2037)
 {
-struct tree* nctemp3699= p;
-struct nctempchar1 *nctemp3703;
-static struct nctempchar1 nctemp3704 = {{ 41}, (char*)"Function call does not match declaration\0"};
-nctemp3703=&nctemp3704;
-nctempchar1* nctemp3701= nctemp3703;
-struct tree* nctemp3707= p;
-nctempchar1* nctemp3709=PtreeGetdef(nctemp3707);
-nctempchar1* nctemp3705= nctemp3709;
-int nctemp3710=ErrSerror(nctemp3699,nctemp3701,nctemp3705);
+struct tree* nctemp2045= p;
+struct nctempchar1 *nctemp2049;
+static struct nctempchar1 nctemp2050 = {{ 41}, (char*)"Function call does not match declaration\0"};
+nctemp2049=&nctemp2050;
+nctempchar1* nctemp2047= nctemp2049;
+struct tree* nctemp2053= p;
+nctempchar1* nctemp2055=PtreeGetdef(nctemp2053);
+nctempchar1* nctemp2051= nctemp2055;
+int nctemp2056=SemSerror(nctemp2045,nctemp2047,nctemp2051);
 return 0;
 }
 }
+return 1;
+}
+struct tree* SemExprlist (struct tree* p)
+{
+struct tree* nctemp2062= p;
+nctempchar1* nctemp2064=PtreeGetname(nctemp2062);
+nctempchar1* nctemp2060= nctemp2064;
+struct nctempchar1 *nctemp2067;
+static struct nctempchar1 nctemp2068 = {{ 9}, (char*)"exprlist\0"};
+nctemp2067=&nctemp2068;
+nctempchar1* nctemp2065= nctemp2067;
+int nctemp2069=LibeStrcmp(nctemp2060,nctemp2065);
+if(nctemp2069)
+{
+struct tree* nctemp2074= p;
+struct tree* nctemp2076=PtreeMvchild(nctemp2074);
+p =nctemp2076;
+int nctemp2077 = (p !=0);
+int nctemp2081=nctemp2077;
+while(nctemp2081)
+{{
+struct tree* nctemp2083= p;
+struct tree* nctemp2085=SemExpr(nctemp2083);
+struct tree* nctemp2090= p;
+struct tree* nctemp2092=PtreeMvsister(nctemp2090);
+p =nctemp2092;
+}
+int nctemp2093 = (p !=0);
+nctemp2081=nctemp2093;}}
+return p;
+}
+int SemCopytype (struct tree* p,struct tree* np)
+{
+struct tree* nctemp2099= np;
+struct tree* nctemp2103= p;
+nctempchar1* nctemp2105=PtreeGetype(nctemp2103);
+nctempchar1* nctemp2101= nctemp2105;
+int nctemp2106=PtreeSetype(nctemp2099,nctemp2101);
+struct tree* nctemp2108= np;
+struct tree* nctemp2112= p;
+nctempchar1* nctemp2114=PtreeGetstruct(nctemp2112);
+nctempchar1* nctemp2110= nctemp2114;
+int nctemp2115=PtreeSetstruct(nctemp2108,nctemp2110);
+struct tree* nctemp2117= np;
+struct tree* nctemp2121= p;
+nctempchar1* nctemp2123=PtreeGetarray(nctemp2121);
+nctempchar1* nctemp2119= nctemp2123;
+int nctemp2124=PtreeSetarray(nctemp2117,nctemp2119);
+struct tree* nctemp2126= np;
+struct tree* nctemp2130= p;
+nctempchar1* nctemp2132=PtreeGetref(nctemp2130);
+nctempchar1* nctemp2128= nctemp2132;
+int nctemp2133=PtreeSetref(nctemp2126,nctemp2128);
+struct tree* nctemp2135= np;
+struct tree* nctemp2139= p;
+nctempchar1* nctemp2141=PtreeGetlval(nctemp2139);
+nctempchar1* nctemp2137= nctemp2141;
+int nctemp2142=PtreeSetlval(nctemp2135,nctemp2137);
+struct tree* nctemp2144= np;
+struct tree* nctemp2148= p;
+int nctemp2150=PtreeGetrank(nctemp2148);
+int nctemp2146= nctemp2150;
+int nctemp2151=PtreeSetrank(nctemp2144,nctemp2146);
 return 1;
 }
 int SemCast (struct tree* p)
@@ -2976,293 +2115,293 @@ nctempchar1 *resultype;
 nctempchar1 *exptype;
 nctempchar1 *resultref;
 nctempchar1 *expref;
-struct nctempchar1 *nctemp3718;
-static struct nctempchar1 nctemp3719 = {{ 5}, (char*)"void\0"};
-nctemp3718=&nctemp3719;
-resultref=nctemp3718;
-struct nctempchar1 *nctemp3725;
-static struct nctempchar1 nctemp3726 = {{ 5}, (char*)"void\0"};
-nctemp3725=&nctemp3726;
-expref=nctemp3725;
-struct tree* nctemp3730= p;
-nctempchar1* nctemp3732=PtreeGetname(nctemp3730);
-nctempchar1* nctemp3728= nctemp3732;
-struct nctempchar1 *nctemp3735;
-static struct nctempchar1 nctemp3736 = {{ 5}, (char*)"cast\0"};
-nctemp3735=&nctemp3736;
-nctempchar1* nctemp3733= nctemp3735;
-int nctemp3737=LibeStrcmp(nctemp3728,nctemp3733);
-if(nctemp3737)
+struct nctempchar1 *nctemp2158;
+static struct nctempchar1 nctemp2159 = {{ 5}, (char*)"void\0"};
+nctemp2158=&nctemp2159;
+resultref=nctemp2158;
+struct nctempchar1 *nctemp2165;
+static struct nctempchar1 nctemp2166 = {{ 5}, (char*)"void\0"};
+nctemp2165=&nctemp2166;
+expref=nctemp2165;
+struct tree* nctemp2170= p;
+nctempchar1* nctemp2172=PtreeGetname(nctemp2170);
+nctempchar1* nctemp2168= nctemp2172;
+struct nctempchar1 *nctemp2175;
+static struct nctempchar1 nctemp2176 = {{ 5}, (char*)"cast\0"};
+nctemp2175=&nctemp2176;
+nctempchar1* nctemp2173= nctemp2175;
+int nctemp2177=LibeStrcmp(nctemp2168,nctemp2173);
+if(nctemp2177)
 {
-struct tree* nctemp3742= p;
-struct tree* nctemp3744=PtreeMvchild(nctemp3742);
-np =nctemp3744;
-struct tree* nctemp3750= np;
-nctempchar1* nctemp3752=PtreeGetdef(nctemp3750);
-resultype=nctemp3752;
-struct tree* nctemp3754= np;
-nctempchar1* nctemp3756= resultype;
-int nctemp3759=PtreeSetype(nctemp3754,nctemp3756);
+struct tree* nctemp2182= p;
+struct tree* nctemp2184=PtreeMvchild(nctemp2182);
+np =nctemp2184;
+struct tree* nctemp2190= np;
+nctempchar1* nctemp2192=PtreeGetdef(nctemp2190);
+resultype=nctemp2192;
+struct tree* nctemp2194= np;
+nctempchar1* nctemp2196= resultype;
+int nctemp2199=PtreeSetype(nctemp2194,nctemp2196);
 resultrank =0;
-struct tree* nctemp3767= np;
-nctempchar1* nctemp3769=PtreeGetarray(nctemp3767);
-nctempchar1* nctemp3765= nctemp3769;
-struct nctempchar1 *nctemp3772;
-static struct nctempchar1 nctemp3773 = {{ 6}, (char*)"array\0"};
-nctemp3772=&nctemp3773;
-nctempchar1* nctemp3770= nctemp3772;
-int nctemp3774=LibeStrcmp(nctemp3765,nctemp3770);
-if(nctemp3774)
+struct tree* nctemp2207= np;
+nctempchar1* nctemp2209=PtreeGetarray(nctemp2207);
+nctempchar1* nctemp2205= nctemp2209;
+struct nctempchar1 *nctemp2212;
+static struct nctempchar1 nctemp2213 = {{ 6}, (char*)"array\0"};
+nctemp2212=&nctemp2213;
+nctempchar1* nctemp2210= nctemp2212;
+int nctemp2214=LibeStrcmp(nctemp2205,nctemp2210);
+if(nctemp2214)
 {
-struct tree* nctemp3779= np;
-struct tree* nctemp3781=PtreeMvchild(nctemp3779);
-sp =nctemp3781;
-struct tree* nctemp3786= sp;
-struct tree* nctemp3788=PtreeMvchild(nctemp3786);
-sp =nctemp3788;
-struct tree* nctemp3793= sp;
-struct tree* nctemp3795=PtreeMvchild(nctemp3793);
-sp =nctemp3795;
-struct tree* nctemp3797= sp;
-struct tree* nctemp3799=SemExprlist(nctemp3797);
-struct tree* nctemp3804= sp;
-struct tree* nctemp3806=PtreeMvchild(nctemp3804);
-sp =nctemp3806;
+struct tree* nctemp2219= np;
+struct tree* nctemp2221=PtreeMvchild(nctemp2219);
+sp =nctemp2221;
+struct tree* nctemp2226= sp;
+struct tree* nctemp2228=PtreeMvchild(nctemp2226);
+sp =nctemp2228;
+struct tree* nctemp2233= sp;
+struct tree* nctemp2235=PtreeMvchild(nctemp2233);
+sp =nctemp2235;
+struct tree* nctemp2237= sp;
+struct tree* nctemp2239=SemExprlist(nctemp2237);
+struct tree* nctemp2244= sp;
+struct tree* nctemp2246=PtreeMvchild(nctemp2244);
+sp =nctemp2246;
 resultrank =1;
-struct tree* nctemp3818= sp;
-struct tree* nctemp3820=PtreeMvsister(nctemp3818);
-sp =nctemp3820;
-int nctemp3811 = (sp !=0);
-int nctemp3822=nctemp3811;
-while(nctemp3822)
+struct tree* nctemp2258= sp;
+struct tree* nctemp2260=PtreeMvsister(nctemp2258);
+sp =nctemp2260;
+int nctemp2251 = (sp !=0);
+int nctemp2262=nctemp2251;
+while(nctemp2262)
 {{
-int nctemp3831 = resultrank + 1;
-resultrank =nctemp3831;
+int nctemp2271 = resultrank + 1;
+resultrank =nctemp2271;
 }
-struct tree* nctemp3839= sp;
-struct tree* nctemp3841=PtreeMvsister(nctemp3839);
-sp =nctemp3841;
-int nctemp3832 = (sp !=0);
-nctemp3822=nctemp3832;}struct tree* nctemp3844= np;
-int nctemp3846= resultrank;
-int nctemp3848=PtreeSetrank(nctemp3844,nctemp3846);
-struct tree* nctemp3850= p;
-int nctemp3852= resultrank;
-int nctemp3854=PtreeSetrank(nctemp3850,nctemp3852);
-struct tree* nctemp3856= np;
-struct nctempchar1 *nctemp3860;
-static struct nctempchar1 nctemp3861 = {{ 5}, (char*)"aref\0"};
-nctemp3860=&nctemp3861;
-nctempchar1* nctemp3858= nctemp3860;
-int nctemp3862=PtreeSetref(nctemp3856,nctemp3858);
-struct nctempchar1 *nctemp3870;
-static struct nctempchar1 nctemp3871 = {{ 5}, (char*)"aref\0"};
-nctemp3870=&nctemp3871;
-nctempchar1* nctemp3868= nctemp3870;
-nctempchar1* nctemp3872=LibeStrsave(nctemp3868);
-resultref=nctemp3872;
-}
-else{
-struct tree* nctemp3876= np;
-nctempchar1* nctemp3878=PtreeGetstruct(nctemp3876);
-nctempchar1* nctemp3874= nctemp3878;
-struct nctempchar1 *nctemp3881;
-static struct nctempchar1 nctemp3882 = {{ 7}, (char*)"struct\0"};
-nctemp3881=&nctemp3882;
-nctempchar1* nctemp3879= nctemp3881;
-int nctemp3883=LibeStrcmp(nctemp3874,nctemp3879);
-if(nctemp3883)
-{
-struct tree* nctemp3885= np;
-struct nctempchar1 *nctemp3889;
-static struct nctempchar1 nctemp3890 = {{ 5}, (char*)"sref\0"};
-nctemp3889=&nctemp3890;
-nctempchar1* nctemp3887= nctemp3889;
-int nctemp3891=PtreeSetref(nctemp3885,nctemp3887);
-struct nctempchar1 *nctemp3899;
-static struct nctempchar1 nctemp3900 = {{ 5}, (char*)"sref\0"};
-nctemp3899=&nctemp3900;
-nctempchar1* nctemp3897= nctemp3899;
-nctempchar1* nctemp3901=LibeStrsave(nctemp3897);
-resultref=nctemp3901;
+struct tree* nctemp2279= sp;
+struct tree* nctemp2281=PtreeMvsister(nctemp2279);
+sp =nctemp2281;
+int nctemp2272 = (sp !=0);
+nctemp2262=nctemp2272;}struct tree* nctemp2284= np;
+int nctemp2286= resultrank;
+int nctemp2288=PtreeSetrank(nctemp2284,nctemp2286);
+struct tree* nctemp2290= p;
+int nctemp2292= resultrank;
+int nctemp2294=PtreeSetrank(nctemp2290,nctemp2292);
+struct tree* nctemp2296= np;
+struct nctempchar1 *nctemp2300;
+static struct nctempchar1 nctemp2301 = {{ 5}, (char*)"aref\0"};
+nctemp2300=&nctemp2301;
+nctempchar1* nctemp2298= nctemp2300;
+int nctemp2302=PtreeSetref(nctemp2296,nctemp2298);
+struct nctempchar1 *nctemp2310;
+static struct nctempchar1 nctemp2311 = {{ 5}, (char*)"aref\0"};
+nctemp2310=&nctemp2311;
+nctempchar1* nctemp2308= nctemp2310;
+nctempchar1* nctemp2312=LibeStrsave(nctemp2308);
+resultref=nctemp2312;
 }
 else{
-struct nctempchar1 *nctemp3909;
-static struct nctempchar1 nctemp3910 = {{ 5}, (char*)"void\0"};
-nctemp3909=&nctemp3910;
-nctempchar1* nctemp3907= nctemp3909;
-nctempchar1* nctemp3911=LibeStrsave(nctemp3907);
-resultref=nctemp3911;
-}
-}
-struct tree* nctemp3913= np;
-struct tree* nctemp3915= p;
-int nctemp3917=SemCopytype(nctemp3913,nctemp3915);
-struct tree* nctemp3922= np;
-struct tree* nctemp3924=PtreeMvsister(nctemp3922);
-np =nctemp3924;
-struct tree* nctemp3926= np;
-struct tree* nctemp3928=SemExpr(nctemp3926);
-struct tree* nctemp3934= np;
-nctempchar1* nctemp3936=PtreeGetype(nctemp3934);
-exptype=nctemp3936;
-struct tree* nctemp3942= np;
-nctempchar1* nctemp3944=PtreeGetref(nctemp3942);
-expref=nctemp3944;
-nctempchar1* nctemp3948= resultref;
-nctempchar1* nctemp3951= expref;
-int nctemp3954=LibeStrcmp(nctemp3948,nctemp3951);
-int nctemp3945 = (nctemp3954 ==0);
-if(nctemp3945)
+struct tree* nctemp2316= np;
+nctempchar1* nctemp2318=PtreeGetstruct(nctemp2316);
+nctempchar1* nctemp2314= nctemp2318;
+struct nctempchar1 *nctemp2321;
+static struct nctempchar1 nctemp2322 = {{ 7}, (char*)"struct\0"};
+nctemp2321=&nctemp2322;
+nctempchar1* nctemp2319= nctemp2321;
+int nctemp2323=LibeStrcmp(nctemp2314,nctemp2319);
+if(nctemp2323)
 {
-struct tree* nctemp3957= p;
-struct nctempchar1 *nctemp3961;
-static struct nctempchar1 nctemp3962 = {{ 19}, (char*)"Illegal conversion\0"};
-nctemp3961=&nctemp3962;
-nctempchar1* nctemp3959= nctemp3961;
-struct nctempchar1 *nctemp3965;
-static struct nctempchar1 nctemp3966 = {{ 2}, (char*)" \0"};
-nctemp3965=&nctemp3966;
-nctempchar1* nctemp3963= nctemp3965;
-int nctemp3967=ErrSerror(nctemp3957,nctemp3959,nctemp3963);
-return 0;
-}
-nctempchar1* nctemp3975= resultref;
-struct nctempchar1 *nctemp3980;
-static struct nctempchar1 nctemp3981 = {{ 5}, (char*)"aref\0"};
-nctemp3980=&nctemp3981;
-nctempchar1* nctemp3978= nctemp3980;
-int nctemp3982=LibeStrcmp(nctemp3975,nctemp3978);
-int nctemp3972 = (nctemp3982 ==0);
-nctempchar1* nctemp3988= resultref;
-struct nctempchar1 *nctemp3993;
-static struct nctempchar1 nctemp3994 = {{ 5}, (char*)"sref\0"};
-nctemp3993=&nctemp3994;
-nctempchar1* nctemp3991= nctemp3993;
-int nctemp3995=LibeStrcmp(nctemp3988,nctemp3991);
-int nctemp3985 = (nctemp3995 ==0);
-int nctemp3969 = (nctemp3972 || nctemp3985);
-if(nctemp3969)
-{
-nctempchar1* nctemp3998= resultype;
-struct nctempchar1 *nctemp4003;
-static struct nctempchar1 nctemp4004 = {{ 8}, (char*)"complex\0"};
-nctemp4003=&nctemp4004;
-nctempchar1* nctemp4001= nctemp4003;
-int nctemp4005=LibeStrcmp(nctemp3998,nctemp4001);
-if(nctemp4005)
-{
-struct tree* nctemp4007= p;
-struct nctempchar1 *nctemp4011;
-static struct nctempchar1 nctemp4012 = {{ 19}, (char*)"Illegal conversion\0"};
-nctemp4011=&nctemp4012;
-nctempchar1* nctemp4009= nctemp4011;
-struct nctempchar1 *nctemp4015;
-static struct nctempchar1 nctemp4016 = {{ 2}, (char*)" \0"};
-nctemp4015=&nctemp4016;
-nctempchar1* nctemp4013= nctemp4015;
-int nctemp4017=ErrSerror(nctemp4007,nctemp4009,nctemp4013);
-}
-return 0;
-nctempchar1* nctemp4020= resultype;
-struct nctempchar1 *nctemp4025;
-static struct nctempchar1 nctemp4026 = {{ 4}, (char*)"int\0"};
-nctemp4025=&nctemp4026;
-nctempchar1* nctemp4023= nctemp4025;
-int nctemp4027=LibeStrcmp(nctemp4020,nctemp4023);
-if(nctemp4027)
-{
-nctempchar1* nctemp4031= exptype;
-struct nctempchar1 *nctemp4036;
-static struct nctempchar1 nctemp4037 = {{ 5}, (char*)"char\0"};
-nctemp4036=&nctemp4037;
-nctempchar1* nctemp4034= nctemp4036;
-int nctemp4038=LibeStrcmp(nctemp4031,nctemp4034);
-int nctemp4028 = (nctemp4038 ==0);
-if(nctemp4028)
-{
-nctempchar1* nctemp4043= exptype;
-struct nctempchar1 *nctemp4048;
-static struct nctempchar1 nctemp4049 = {{ 6}, (char*)"float\0"};
-nctemp4048=&nctemp4049;
-nctempchar1* nctemp4046= nctemp4048;
-int nctemp4050=LibeStrcmp(nctemp4043,nctemp4046);
-int nctemp4040 = (nctemp4050 ==0);
-if(nctemp4040)
-{
-struct tree* nctemp4053= p;
-struct nctempchar1 *nctemp4057;
-static struct nctempchar1 nctemp4058 = {{ 19}, (char*)"Illegal conversion\0"};
-nctemp4057=&nctemp4058;
-nctempchar1* nctemp4055= nctemp4057;
-struct nctempchar1 *nctemp4061;
-static struct nctempchar1 nctemp4062 = {{ 2}, (char*)" \0"};
-nctemp4061=&nctemp4062;
-nctempchar1* nctemp4059= nctemp4061;
-int nctemp4063=ErrSerror(nctemp4053,nctemp4055,nctemp4059);
-}
-}
-return 0;
+struct tree* nctemp2325= np;
+struct nctempchar1 *nctemp2329;
+static struct nctempchar1 nctemp2330 = {{ 5}, (char*)"sref\0"};
+nctemp2329=&nctemp2330;
+nctempchar1* nctemp2327= nctemp2329;
+int nctemp2331=PtreeSetref(nctemp2325,nctemp2327);
+struct nctempchar1 *nctemp2339;
+static struct nctempchar1 nctemp2340 = {{ 5}, (char*)"sref\0"};
+nctemp2339=&nctemp2340;
+nctempchar1* nctemp2337= nctemp2339;
+nctempchar1* nctemp2341=LibeStrsave(nctemp2337);
+resultref=nctemp2341;
 }
 else{
-nctempchar1* nctemp4066= resultype;
-struct nctempchar1 *nctemp4071;
-static struct nctempchar1 nctemp4072 = {{ 5}, (char*)"char\0"};
-nctemp4071=&nctemp4072;
-nctempchar1* nctemp4069= nctemp4071;
-int nctemp4073=LibeStrcmp(nctemp4066,nctemp4069);
-if(nctemp4073)
+struct nctempchar1 *nctemp2349;
+static struct nctempchar1 nctemp2350 = {{ 5}, (char*)"void\0"};
+nctemp2349=&nctemp2350;
+nctempchar1* nctemp2347= nctemp2349;
+nctempchar1* nctemp2351=LibeStrsave(nctemp2347);
+resultref=nctemp2351;
+}
+}
+struct tree* nctemp2353= np;
+struct tree* nctemp2355= p;
+int nctemp2357=SemCopytype(nctemp2353,nctemp2355);
+struct tree* nctemp2362= np;
+struct tree* nctemp2364=PtreeMvsister(nctemp2362);
+np =nctemp2364;
+struct tree* nctemp2366= np;
+struct tree* nctemp2368=SemExpr(nctemp2366);
+struct tree* nctemp2374= np;
+nctempchar1* nctemp2376=PtreeGetype(nctemp2374);
+exptype=nctemp2376;
+struct tree* nctemp2382= np;
+nctempchar1* nctemp2384=PtreeGetref(nctemp2382);
+expref=nctemp2384;
+nctempchar1* nctemp2388= resultref;
+nctempchar1* nctemp2391= expref;
+int nctemp2394=LibeStrcmp(nctemp2388,nctemp2391);
+int nctemp2385 = (nctemp2394 ==0);
+if(nctemp2385)
 {
-nctempchar1* nctemp4077= exptype;
-struct nctempchar1 *nctemp4082;
-static struct nctempchar1 nctemp4083 = {{ 4}, (char*)"int\0"};
-nctemp4082=&nctemp4083;
-nctempchar1* nctemp4080= nctemp4082;
-int nctemp4084=LibeStrcmp(nctemp4077,nctemp4080);
-int nctemp4074 = (nctemp4084 ==0);
-if(nctemp4074)
+struct tree* nctemp2397= p;
+struct nctempchar1 *nctemp2401;
+static struct nctempchar1 nctemp2402 = {{ 19}, (char*)"Illegal conversion\0"};
+nctemp2401=&nctemp2402;
+nctempchar1* nctemp2399= nctemp2401;
+struct nctempchar1 *nctemp2405;
+static struct nctempchar1 nctemp2406 = {{ 2}, (char*)" \0"};
+nctemp2405=&nctemp2406;
+nctempchar1* nctemp2403= nctemp2405;
+int nctemp2407=SemSerror(nctemp2397,nctemp2399,nctemp2403);
+return 0;
+}
+nctempchar1* nctemp2415= resultref;
+struct nctempchar1 *nctemp2420;
+static struct nctempchar1 nctemp2421 = {{ 5}, (char*)"aref\0"};
+nctemp2420=&nctemp2421;
+nctempchar1* nctemp2418= nctemp2420;
+int nctemp2422=LibeStrcmp(nctemp2415,nctemp2418);
+int nctemp2412 = (nctemp2422 ==0);
+nctempchar1* nctemp2428= resultref;
+struct nctempchar1 *nctemp2433;
+static struct nctempchar1 nctemp2434 = {{ 5}, (char*)"sref\0"};
+nctemp2433=&nctemp2434;
+nctempchar1* nctemp2431= nctemp2433;
+int nctemp2435=LibeStrcmp(nctemp2428,nctemp2431);
+int nctemp2425 = (nctemp2435 ==0);
+int nctemp2409 = (nctemp2412 || nctemp2425);
+if(nctemp2409)
 {
-struct tree* nctemp4087= p;
-struct nctempchar1 *nctemp4091;
-static struct nctempchar1 nctemp4092 = {{ 19}, (char*)"Illegal conversion\0"};
-nctemp4091=&nctemp4092;
-nctempchar1* nctemp4089= nctemp4091;
-struct nctempchar1 *nctemp4095;
-static struct nctempchar1 nctemp4096 = {{ 2}, (char*)" \0"};
-nctemp4095=&nctemp4096;
-nctempchar1* nctemp4093= nctemp4095;
-int nctemp4097=ErrSerror(nctemp4087,nctemp4089,nctemp4093);
+nctempchar1* nctemp2438= resultype;
+struct nctempchar1 *nctemp2443;
+static struct nctempchar1 nctemp2444 = {{ 8}, (char*)"complex\0"};
+nctemp2443=&nctemp2444;
+nctempchar1* nctemp2441= nctemp2443;
+int nctemp2445=LibeStrcmp(nctemp2438,nctemp2441);
+if(nctemp2445)
+{
+struct tree* nctemp2447= p;
+struct nctempchar1 *nctemp2451;
+static struct nctempchar1 nctemp2452 = {{ 19}, (char*)"Illegal conversion\0"};
+nctemp2451=&nctemp2452;
+nctempchar1* nctemp2449= nctemp2451;
+struct nctempchar1 *nctemp2455;
+static struct nctempchar1 nctemp2456 = {{ 2}, (char*)" \0"};
+nctemp2455=&nctemp2456;
+nctempchar1* nctemp2453= nctemp2455;
+int nctemp2457=SemSerror(nctemp2447,nctemp2449,nctemp2453);
+}
+return 0;
+nctempchar1* nctemp2460= resultype;
+struct nctempchar1 *nctemp2465;
+static struct nctempchar1 nctemp2466 = {{ 4}, (char*)"int\0"};
+nctemp2465=&nctemp2466;
+nctempchar1* nctemp2463= nctemp2465;
+int nctemp2467=LibeStrcmp(nctemp2460,nctemp2463);
+if(nctemp2467)
+{
+nctempchar1* nctemp2471= exptype;
+struct nctempchar1 *nctemp2476;
+static struct nctempchar1 nctemp2477 = {{ 5}, (char*)"char\0"};
+nctemp2476=&nctemp2477;
+nctempchar1* nctemp2474= nctemp2476;
+int nctemp2478=LibeStrcmp(nctemp2471,nctemp2474);
+int nctemp2468 = (nctemp2478 ==0);
+if(nctemp2468)
+{
+nctempchar1* nctemp2483= exptype;
+struct nctempchar1 *nctemp2488;
+static struct nctempchar1 nctemp2489 = {{ 6}, (char*)"float\0"};
+nctemp2488=&nctemp2489;
+nctempchar1* nctemp2486= nctemp2488;
+int nctemp2490=LibeStrcmp(nctemp2483,nctemp2486);
+int nctemp2480 = (nctemp2490 ==0);
+if(nctemp2480)
+{
+struct tree* nctemp2493= p;
+struct nctempchar1 *nctemp2497;
+static struct nctempchar1 nctemp2498 = {{ 19}, (char*)"Illegal conversion\0"};
+nctemp2497=&nctemp2498;
+nctempchar1* nctemp2495= nctemp2497;
+struct nctempchar1 *nctemp2501;
+static struct nctempchar1 nctemp2502 = {{ 2}, (char*)" \0"};
+nctemp2501=&nctemp2502;
+nctempchar1* nctemp2499= nctemp2501;
+int nctemp2503=SemSerror(nctemp2493,nctemp2495,nctemp2499);
+}
 }
 return 0;
 }
 else{
-nctempchar1* nctemp4100= resultype;
-struct nctempchar1 *nctemp4105;
-static struct nctempchar1 nctemp4106 = {{ 6}, (char*)"float\0"};
-nctemp4105=&nctemp4106;
-nctempchar1* nctemp4103= nctemp4105;
-int nctemp4107=LibeStrcmp(nctemp4100,nctemp4103);
-if(nctemp4107)
+nctempchar1* nctemp2506= resultype;
+struct nctempchar1 *nctemp2511;
+static struct nctempchar1 nctemp2512 = {{ 5}, (char*)"char\0"};
+nctemp2511=&nctemp2512;
+nctempchar1* nctemp2509= nctemp2511;
+int nctemp2513=LibeStrcmp(nctemp2506,nctemp2509);
+if(nctemp2513)
 {
-nctempchar1* nctemp4111= exptype;
-struct nctempchar1 *nctemp4116;
-static struct nctempchar1 nctemp4117 = {{ 4}, (char*)"int\0"};
-nctemp4116=&nctemp4117;
-nctempchar1* nctemp4114= nctemp4116;
-int nctemp4118=LibeStrcmp(nctemp4111,nctemp4114);
-int nctemp4108 = (nctemp4118 ==0);
-if(nctemp4108)
+nctempchar1* nctemp2517= exptype;
+struct nctempchar1 *nctemp2522;
+static struct nctempchar1 nctemp2523 = {{ 4}, (char*)"int\0"};
+nctemp2522=&nctemp2523;
+nctempchar1* nctemp2520= nctemp2522;
+int nctemp2524=LibeStrcmp(nctemp2517,nctemp2520);
+int nctemp2514 = (nctemp2524 ==0);
+if(nctemp2514)
 {
-struct tree* nctemp4121= np;
-struct nctempchar1 *nctemp4125;
-static struct nctempchar1 nctemp4126 = {{ 19}, (char*)"Illegal conversion\0"};
-nctemp4125=&nctemp4126;
-nctempchar1* nctemp4123= nctemp4125;
-struct nctempchar1 *nctemp4129;
-static struct nctempchar1 nctemp4130 = {{ 2}, (char*)" \0"};
-nctemp4129=&nctemp4130;
-nctempchar1* nctemp4127= nctemp4129;
-int nctemp4131=ErrSerror(nctemp4121,nctemp4123,nctemp4127);
+struct tree* nctemp2527= p;
+struct nctempchar1 *nctemp2531;
+static struct nctempchar1 nctemp2532 = {{ 19}, (char*)"Illegal conversion\0"};
+nctemp2531=&nctemp2532;
+nctempchar1* nctemp2529= nctemp2531;
+struct nctempchar1 *nctemp2535;
+static struct nctempchar1 nctemp2536 = {{ 2}, (char*)" \0"};
+nctemp2535=&nctemp2536;
+nctempchar1* nctemp2533= nctemp2535;
+int nctemp2537=SemSerror(nctemp2527,nctemp2529,nctemp2533);
+}
+return 0;
+}
+else{
+nctempchar1* nctemp2540= resultype;
+struct nctempchar1 *nctemp2545;
+static struct nctempchar1 nctemp2546 = {{ 6}, (char*)"float\0"};
+nctemp2545=&nctemp2546;
+nctempchar1* nctemp2543= nctemp2545;
+int nctemp2547=LibeStrcmp(nctemp2540,nctemp2543);
+if(nctemp2547)
+{
+nctempchar1* nctemp2551= exptype;
+struct nctempchar1 *nctemp2556;
+static struct nctempchar1 nctemp2557 = {{ 4}, (char*)"int\0"};
+nctemp2556=&nctemp2557;
+nctempchar1* nctemp2554= nctemp2556;
+int nctemp2558=LibeStrcmp(nctemp2551,nctemp2554);
+int nctemp2548 = (nctemp2558 ==0);
+if(nctemp2548)
+{
+struct tree* nctemp2561= np;
+struct nctempchar1 *nctemp2565;
+static struct nctempchar1 nctemp2566 = {{ 19}, (char*)"Illegal conversion\0"};
+nctemp2565=&nctemp2566;
+nctempchar1* nctemp2563= nctemp2565;
+struct nctempchar1 *nctemp2569;
+static struct nctempchar1 nctemp2570 = {{ 2}, (char*)" \0"};
+nctemp2569=&nctemp2570;
+nctempchar1* nctemp2567= nctemp2569;
+int nctemp2571=SemSerror(nctemp2561,nctemp2563,nctemp2567);
 }
 return 0;
 }
@@ -3277,138 +2416,138 @@ int SemNew (struct tree* p)
 struct tree* np;
 struct tree* sp;
 int rank;
-struct tree* nctemp4137= p;
-nctempchar1* nctemp4139=PtreeGetname(nctemp4137);
-nctempchar1* nctemp4135= nctemp4139;
-struct nctempchar1 *nctemp4142;
-static struct nctempchar1 nctemp4143 = {{ 4}, (char*)"new\0"};
-nctemp4142=&nctemp4143;
-nctempchar1* nctemp4140= nctemp4142;
-int nctemp4144=LibeStrcmp(nctemp4135,nctemp4140);
-if(nctemp4144)
+struct tree* nctemp2577= p;
+nctempchar1* nctemp2579=PtreeGetname(nctemp2577);
+nctempchar1* nctemp2575= nctemp2579;
+struct nctempchar1 *nctemp2582;
+static struct nctempchar1 nctemp2583 = {{ 4}, (char*)"new\0"};
+nctemp2582=&nctemp2583;
+nctempchar1* nctemp2580= nctemp2582;
+int nctemp2584=LibeStrcmp(nctemp2575,nctemp2580);
+if(nctemp2584)
 {
-struct tree* nctemp4149= p;
-struct tree* nctemp4151=PtreeMvchild(nctemp4149);
-np =nctemp4151;
-struct tree* nctemp4153= np;
-nctempchar1* nctemp4155=PtreeGetdef(nctemp4153);
-struct tree* nctemp4157= np;
-struct tree* nctemp4161= np;
-nctempchar1* nctemp4163=PtreeGetdef(nctemp4161);
-nctempchar1* nctemp4159= nctemp4163;
-int nctemp4164=PtreeSetype(nctemp4157,nctemp4159);
-struct tree* nctemp4166= np;
-struct tree* nctemp4168= p;
-int nctemp4170=SemCopytype(nctemp4166,nctemp4168);
-struct tree* nctemp4176= np;
-nctempchar1* nctemp4178=PtreeGetarray(nctemp4176);
-nctempchar1* nctemp4174= nctemp4178;
-struct nctempchar1 *nctemp4181;
-static struct nctempchar1 nctemp4182 = {{ 6}, (char*)"array\0"};
-nctemp4181=&nctemp4182;
-nctempchar1* nctemp4179= nctemp4181;
-int nctemp4183=LibeStrcmp(nctemp4174,nctemp4179);
-int nctemp4171 = (nctemp4183 ==0);
-if(nctemp4171)
+struct tree* nctemp2589= p;
+struct tree* nctemp2591=PtreeMvchild(nctemp2589);
+np =nctemp2591;
+struct tree* nctemp2593= np;
+nctempchar1* nctemp2595=PtreeGetdef(nctemp2593);
+struct tree* nctemp2597= np;
+struct tree* nctemp2601= np;
+nctempchar1* nctemp2603=PtreeGetdef(nctemp2601);
+nctempchar1* nctemp2599= nctemp2603;
+int nctemp2604=PtreeSetype(nctemp2597,nctemp2599);
+struct tree* nctemp2606= np;
+struct tree* nctemp2608= p;
+int nctemp2610=SemCopytype(nctemp2606,nctemp2608);
+struct tree* nctemp2616= np;
+nctempchar1* nctemp2618=PtreeGetarray(nctemp2616);
+nctempchar1* nctemp2614= nctemp2618;
+struct nctempchar1 *nctemp2621;
+static struct nctempchar1 nctemp2622 = {{ 6}, (char*)"array\0"};
+nctemp2621=&nctemp2622;
+nctempchar1* nctemp2619= nctemp2621;
+int nctemp2623=LibeStrcmp(nctemp2614,nctemp2619);
+int nctemp2611 = (nctemp2623 ==0);
+if(nctemp2611)
 {
-struct tree* nctemp4190= np;
-nctempchar1* nctemp4192=PtreeGetstruct(nctemp4190);
-nctempchar1* nctemp4188= nctemp4192;
-struct nctempchar1 *nctemp4195;
-static struct nctempchar1 nctemp4196 = {{ 7}, (char*)"struct\0"};
-nctemp4195=&nctemp4196;
-nctempchar1* nctemp4193= nctemp4195;
-int nctemp4197=LibeStrcmp(nctemp4188,nctemp4193);
-int nctemp4185 = (nctemp4197 ==0);
-if(nctemp4185)
+struct tree* nctemp2630= np;
+nctempchar1* nctemp2632=PtreeGetstruct(nctemp2630);
+nctempchar1* nctemp2628= nctemp2632;
+struct nctempchar1 *nctemp2635;
+static struct nctempchar1 nctemp2636 = {{ 7}, (char*)"struct\0"};
+nctemp2635=&nctemp2636;
+nctempchar1* nctemp2633= nctemp2635;
+int nctemp2637=LibeStrcmp(nctemp2628,nctemp2633);
+int nctemp2625 = (nctemp2637 ==0);
+if(nctemp2625)
 {
-struct tree* nctemp4200= np;
-struct nctempchar1 *nctemp4204;
-static struct nctempchar1 nctemp4205 = {{ 44}, (char*)"Argument limited to array or structure type\0"};
-nctemp4204=&nctemp4205;
-nctempchar1* nctemp4202= nctemp4204;
-struct nctempchar1 *nctemp4208;
-static struct nctempchar1 nctemp4209 = {{ 3}, (char*)"  \0"};
-nctemp4208=&nctemp4209;
-nctempchar1* nctemp4206= nctemp4208;
-int nctemp4210=ErrSerror(nctemp4200,nctemp4202,nctemp4206);
+struct tree* nctemp2640= np;
+struct nctempchar1 *nctemp2644;
+static struct nctempchar1 nctemp2645 = {{ 44}, (char*)"Argument limited to array or structure type\0"};
+nctemp2644=&nctemp2645;
+nctempchar1* nctemp2642= nctemp2644;
+struct nctempchar1 *nctemp2648;
+static struct nctempchar1 nctemp2649 = {{ 3}, (char*)"  \0"};
+nctemp2648=&nctemp2649;
+nctempchar1* nctemp2646= nctemp2648;
+int nctemp2650=SemSerror(nctemp2640,nctemp2642,nctemp2646);
 }
 }
-struct tree* nctemp4214= np;
-nctempchar1* nctemp4216=PtreeGetarray(nctemp4214);
-nctempchar1* nctemp4212= nctemp4216;
-struct nctempchar1 *nctemp4219;
-static struct nctempchar1 nctemp4220 = {{ 6}, (char*)"array\0"};
-nctemp4219=&nctemp4220;
-nctempchar1* nctemp4217= nctemp4219;
-int nctemp4221=LibeStrcmp(nctemp4212,nctemp4217);
-if(nctemp4221)
+struct tree* nctemp2654= np;
+nctempchar1* nctemp2656=PtreeGetarray(nctemp2654);
+nctempchar1* nctemp2652= nctemp2656;
+struct nctempchar1 *nctemp2659;
+static struct nctempchar1 nctemp2660 = {{ 6}, (char*)"array\0"};
+nctemp2659=&nctemp2660;
+nctempchar1* nctemp2657= nctemp2659;
+int nctemp2661=LibeStrcmp(nctemp2652,nctemp2657);
+if(nctemp2661)
 {
-struct tree* nctemp4226= np;
-struct tree* nctemp4228=PtreeMvchild(nctemp4226);
-sp =nctemp4228;
-struct tree* nctemp4233= sp;
-struct tree* nctemp4235=PtreeMvchild(nctemp4233);
-sp =nctemp4235;
-struct tree* nctemp4240= sp;
-struct tree* nctemp4242=PtreeMvchild(nctemp4240);
-sp =nctemp4242;
-struct tree* nctemp4247= sp;
-struct tree* nctemp4249=PtreeMvchild(nctemp4247);
-sp =nctemp4249;
+struct tree* nctemp2666= np;
+struct tree* nctemp2668=PtreeMvchild(nctemp2666);
+sp =nctemp2668;
+struct tree* nctemp2673= sp;
+struct tree* nctemp2675=PtreeMvchild(nctemp2673);
+sp =nctemp2675;
+struct tree* nctemp2680= sp;
+struct tree* nctemp2682=PtreeMvchild(nctemp2680);
+sp =nctemp2682;
+struct tree* nctemp2687= sp;
+struct tree* nctemp2689=PtreeMvchild(nctemp2687);
+sp =nctemp2689;
 rank =1;
-int nctemp4254 = (sp ==0);
-if(nctemp4254)
+int nctemp2694 = (sp ==0);
+if(nctemp2694)
 {
-struct tree* nctemp4259= np;
-struct nctempchar1 *nctemp4263;
-static struct nctempchar1 nctemp4264 = {{ 35}, (char*)"Missing array size in new operator\0"};
-nctemp4263=&nctemp4264;
-nctempchar1* nctemp4261= nctemp4263;
-struct nctempchar1 *nctemp4267;
-static struct nctempchar1 nctemp4268 = {{ 2}, (char*)" \0"};
-nctemp4267=&nctemp4268;
-nctempchar1* nctemp4265= nctemp4267;
-int nctemp4269=ErrSerror(nctemp4259,nctemp4261,nctemp4265);
+struct tree* nctemp2699= np;
+struct nctempchar1 *nctemp2703;
+static struct nctempchar1 nctemp2704 = {{ 35}, (char*)"Missing array size in new operator\0"};
+nctemp2703=&nctemp2704;
+nctempchar1* nctemp2701= nctemp2703;
+struct nctempchar1 *nctemp2707;
+static struct nctempchar1 nctemp2708 = {{ 2}, (char*)" \0"};
+nctemp2707=&nctemp2708;
+nctempchar1* nctemp2705= nctemp2707;
+int nctemp2709=SemSerror(nctemp2699,nctemp2701,nctemp2705);
 }
-struct tree* nctemp4271= sp;
-struct tree* nctemp4273=SemExpr(nctemp4271);
-struct tree* nctemp4281= sp;
-struct tree* nctemp4283=PtreeMvsister(nctemp4281);
-sp =nctemp4283;
-int nctemp4274 = (sp !=0);
-int nctemp4285=nctemp4274;
-while(nctemp4285)
+struct tree* nctemp2711= sp;
+struct tree* nctemp2713=SemExpr(nctemp2711);
+struct tree* nctemp2721= sp;
+struct tree* nctemp2723=PtreeMvsister(nctemp2721);
+sp =nctemp2723;
+int nctemp2714 = (sp !=0);
+int nctemp2725=nctemp2714;
+while(nctemp2725)
 {{
-struct tree* nctemp4287= sp;
-struct tree* nctemp4289=SemExpr(nctemp4287);
-int nctemp4298 = rank + 1;
-rank =nctemp4298;
+struct tree* nctemp2727= sp;
+struct tree* nctemp2729=SemExpr(nctemp2727);
+int nctemp2738 = rank + 1;
+rank =nctemp2738;
 }
-struct tree* nctemp4306= sp;
-struct tree* nctemp4308=PtreeMvsister(nctemp4306);
-sp =nctemp4308;
-int nctemp4299 = (sp !=0);
-nctemp4285=nctemp4299;}struct tree* nctemp4311= np;
-int nctemp4313= rank;
-int nctemp4315=PtreeSetrank(nctemp4311,nctemp4313);
-struct tree* nctemp4317= p;
-int nctemp4319= rank;
-int nctemp4321=PtreeSetrank(nctemp4317,nctemp4319);
-struct tree* nctemp4323= p;
-struct nctempchar1 *nctemp4327;
-static struct nctempchar1 nctemp4328 = {{ 5}, (char*)"aref\0"};
-nctemp4327=&nctemp4328;
-nctempchar1* nctemp4325= nctemp4327;
-int nctemp4329=PtreeSetref(nctemp4323,nctemp4325);
+struct tree* nctemp2746= sp;
+struct tree* nctemp2748=PtreeMvsister(nctemp2746);
+sp =nctemp2748;
+int nctemp2739 = (sp !=0);
+nctemp2725=nctemp2739;}struct tree* nctemp2751= np;
+int nctemp2753= rank;
+int nctemp2755=PtreeSetrank(nctemp2751,nctemp2753);
+struct tree* nctemp2757= p;
+int nctemp2759= rank;
+int nctemp2761=PtreeSetrank(nctemp2757,nctemp2759);
+struct tree* nctemp2763= p;
+struct nctempchar1 *nctemp2767;
+static struct nctempchar1 nctemp2768 = {{ 5}, (char*)"aref\0"};
+nctemp2767=&nctemp2768;
+nctempchar1* nctemp2765= nctemp2767;
+int nctemp2769=PtreeSetref(nctemp2763,nctemp2765);
 }
 else{
-struct tree* nctemp4331= p;
-struct nctempchar1 *nctemp4335;
-static struct nctempchar1 nctemp4336 = {{ 5}, (char*)"sref\0"};
-nctemp4335=&nctemp4336;
-nctempchar1* nctemp4333= nctemp4335;
-int nctemp4337=PtreeSetref(nctemp4331,nctemp4333);
+struct tree* nctemp2771= p;
+struct nctempchar1 *nctemp2775;
+static struct nctempchar1 nctemp2776 = {{ 5}, (char*)"sref\0"};
+nctemp2775=&nctemp2776;
+nctempchar1* nctemp2773= nctemp2775;
+int nctemp2777=PtreeSetref(nctemp2771,nctemp2773);
 }
 }
 return 1;
@@ -3416,922 +2555,542 @@ return 1;
 int SemDelete (struct tree* p)
 {
 struct tree* np;
-struct tree* nctemp4342= p;
-nctempchar1* nctemp4344=PtreeGetname(nctemp4342);
-nctempchar1* nctemp4340= nctemp4344;
-struct nctempchar1 *nctemp4347;
-static struct nctempchar1 nctemp4348 = {{ 7}, (char*)"delete\0"};
-nctemp4347=&nctemp4348;
-nctempchar1* nctemp4345= nctemp4347;
-int nctemp4349=LibeStrcmp(nctemp4340,nctemp4345);
-if(nctemp4349)
+struct tree* nctemp2782= p;
+nctempchar1* nctemp2784=PtreeGetname(nctemp2782);
+nctempchar1* nctemp2780= nctemp2784;
+struct nctempchar1 *nctemp2787;
+static struct nctempchar1 nctemp2788 = {{ 7}, (char*)"delete\0"};
+nctemp2787=&nctemp2788;
+nctempchar1* nctemp2785= nctemp2787;
+int nctemp2789=LibeStrcmp(nctemp2780,nctemp2785);
+if(nctemp2789)
 {
-struct tree* nctemp4354= p;
-struct tree* nctemp4356=PtreeMvchild(nctemp4354);
-np =nctemp4356;
-struct tree* nctemp4358= np;
-struct tree* nctemp4360=SemExpr(nctemp4358);
-struct tree* nctemp4366= np;
-nctempchar1* nctemp4368=PtreeGetref(nctemp4366);
-nctempchar1* nctemp4364= nctemp4368;
-struct nctempchar1 *nctemp4371;
-static struct nctempchar1 nctemp4372 = {{ 5}, (char*)"aref\0"};
-nctemp4371=&nctemp4372;
-nctempchar1* nctemp4369= nctemp4371;
-int nctemp4373=LibeStrcmp(nctemp4364,nctemp4369);
-int nctemp4361 = (nctemp4373 ==0);
-if(nctemp4361)
+struct tree* nctemp2794= p;
+struct tree* nctemp2796=PtreeMvchild(nctemp2794);
+np =nctemp2796;
+struct tree* nctemp2798= np;
+struct tree* nctemp2800=SemExpr(nctemp2798);
+struct tree* nctemp2806= np;
+nctempchar1* nctemp2808=PtreeGetref(nctemp2806);
+nctempchar1* nctemp2804= nctemp2808;
+struct nctempchar1 *nctemp2811;
+static struct nctempchar1 nctemp2812 = {{ 5}, (char*)"aref\0"};
+nctemp2811=&nctemp2812;
+nctempchar1* nctemp2809= nctemp2811;
+int nctemp2813=LibeStrcmp(nctemp2804,nctemp2809);
+int nctemp2801 = (nctemp2813 ==0);
+if(nctemp2801)
 {
-struct tree* nctemp4380= np;
-nctempchar1* nctemp4382=PtreeGetref(nctemp4380);
-nctempchar1* nctemp4378= nctemp4382;
-struct nctempchar1 *nctemp4385;
-static struct nctempchar1 nctemp4386 = {{ 5}, (char*)"sref\0"};
-nctemp4385=&nctemp4386;
-nctempchar1* nctemp4383= nctemp4385;
-int nctemp4387=LibeStrcmp(nctemp4378,nctemp4383);
-int nctemp4375 = (nctemp4387 ==0);
-if(nctemp4375)
+struct tree* nctemp2820= np;
+nctempchar1* nctemp2822=PtreeGetref(nctemp2820);
+nctempchar1* nctemp2818= nctemp2822;
+struct nctempchar1 *nctemp2825;
+static struct nctempchar1 nctemp2826 = {{ 5}, (char*)"sref\0"};
+nctemp2825=&nctemp2826;
+nctempchar1* nctemp2823= nctemp2825;
+int nctemp2827=LibeStrcmp(nctemp2818,nctemp2823);
+int nctemp2815 = (nctemp2827 ==0);
+if(nctemp2815)
 {
-struct tree* nctemp4390= p;
-struct nctempchar1 *nctemp4394;
-static struct nctempchar1 nctemp4395 = {{ 25}, (char*)"not a array or structure\0"};
-nctemp4394=&nctemp4395;
-nctempchar1* nctemp4392= nctemp4394;
-struct tree* nctemp4398= p;
-nctempchar1* nctemp4400=PtreeGetdef(nctemp4398);
-nctempchar1* nctemp4396= nctemp4400;
-int nctemp4401=ErrSerror(nctemp4390,nctemp4392,nctemp4396);
+struct tree* nctemp2830= p;
+struct nctempchar1 *nctemp2834;
+static struct nctempchar1 nctemp2835 = {{ 25}, (char*)"not a array or structure\0"};
+nctemp2834=&nctemp2835;
+nctempchar1* nctemp2832= nctemp2834;
+struct tree* nctemp2838= p;
+nctempchar1* nctemp2840=PtreeGetdef(nctemp2838);
+nctempchar1* nctemp2836= nctemp2840;
+int nctemp2841=SemSerror(nctemp2830,nctemp2832,nctemp2836);
 }
 }
 else{
-struct tree* nctemp4403= p;
-struct tree* nctemp4407= np;
-nctempchar1* nctemp4409=PtreeGetype(nctemp4407);
-nctempchar1* nctemp4405= nctemp4409;
-int nctemp4410=PtreeSetype(nctemp4403,nctemp4405);
-struct tree* nctemp4412= p;
-struct tree* nctemp4416= np;
-nctempchar1* nctemp4418=PtreeGetref(nctemp4416);
-nctempchar1* nctemp4414= nctemp4418;
-int nctemp4419=PtreeSetref(nctemp4412,nctemp4414);
+struct tree* nctemp2843= p;
+struct tree* nctemp2847= np;
+nctempchar1* nctemp2849=PtreeGetype(nctemp2847);
+nctempchar1* nctemp2845= nctemp2849;
+int nctemp2850=PtreeSetype(nctemp2843,nctemp2845);
+struct tree* nctemp2852= p;
+struct tree* nctemp2856= np;
+nctempchar1* nctemp2858=PtreeGetref(nctemp2856);
+nctempchar1* nctemp2854= nctemp2858;
+int nctemp2859=PtreeSetref(nctemp2852,nctemp2854);
 }
-}
-return 1;
-}
-int SemSizeof (struct tree* p)
-{
-struct tree* nctemp4424= p;
-nctempchar1* nctemp4426=PtreeGetname(nctemp4424);
-nctempchar1* nctemp4422= nctemp4426;
-struct nctempchar1 *nctemp4429;
-static struct nctempchar1 nctemp4430 = {{ 7}, (char*)"sizeof\0"};
-nctemp4429=&nctemp4430;
-nctempchar1* nctemp4427= nctemp4429;
-int nctemp4431=LibeStrcmp(nctemp4422,nctemp4427);
-if(nctemp4431)
-{
-struct tree* nctemp4433= p;
-struct nctempchar1 *nctemp4437;
-static struct nctempchar1 nctemp4438 = {{ 4}, (char*)"int\0"};
-nctemp4437=&nctemp4438;
-nctempchar1* nctemp4435= nctemp4437;
-int nctemp4439=PtreeSetype(nctemp4433,nctemp4435);
 }
 return 1;
 }
 int SemCmplx (struct tree* p)
 {
 struct tree* np;
-struct tree* nctemp4444= p;
-nctempchar1* nctemp4446=PtreeGetname(nctemp4444);
-nctempchar1* nctemp4442= nctemp4446;
-struct nctempchar1 *nctemp4449;
-static struct nctempchar1 nctemp4450 = {{ 6}, (char*)"cmplx\0"};
-nctemp4449=&nctemp4450;
-nctempchar1* nctemp4447= nctemp4449;
-int nctemp4451=LibeStrcmp(nctemp4442,nctemp4447);
-if(nctemp4451)
+struct tree* nctemp2864= p;
+nctempchar1* nctemp2866=PtreeGetname(nctemp2864);
+nctempchar1* nctemp2862= nctemp2866;
+struct nctempchar1 *nctemp2869;
+static struct nctempchar1 nctemp2870 = {{ 6}, (char*)"cmplx\0"};
+nctemp2869=&nctemp2870;
+nctempchar1* nctemp2867= nctemp2869;
+int nctemp2871=LibeStrcmp(nctemp2862,nctemp2867);
+if(nctemp2871)
 {
-struct tree* nctemp4456= p;
-struct tree* nctemp4458=PtreeMvchild(nctemp4456);
-np =nctemp4458;
-struct tree* nctemp4463= np;
-struct tree* nctemp4465=PtreeMvchild(nctemp4463);
-np =nctemp4465;
-struct tree* nctemp4467= np;
-struct tree* nctemp4469=SemExpr(nctemp4467);
-struct tree* nctemp4475= np;
-nctempchar1* nctemp4477=PtreeGetype(nctemp4475);
-nctempchar1* nctemp4473= nctemp4477;
-struct nctempchar1 *nctemp4480;
-static struct nctempchar1 nctemp4481 = {{ 6}, (char*)"float\0"};
-nctemp4480=&nctemp4481;
-nctempchar1* nctemp4478= nctemp4480;
-int nctemp4482=LibeStrcmp(nctemp4473,nctemp4478);
-int nctemp4470 = (nctemp4482 ==0);
-if(nctemp4470)
+struct tree* nctemp2876= p;
+struct tree* nctemp2878=PtreeMvchild(nctemp2876);
+np =nctemp2878;
+struct tree* nctemp2883= np;
+struct tree* nctemp2885=PtreeMvchild(nctemp2883);
+np =nctemp2885;
+struct tree* nctemp2887= np;
+struct tree* nctemp2889=SemExpr(nctemp2887);
+struct tree* nctemp2895= np;
+nctempchar1* nctemp2897=PtreeGetype(nctemp2895);
+nctempchar1* nctemp2893= nctemp2897;
+struct nctempchar1 *nctemp2900;
+static struct nctempchar1 nctemp2901 = {{ 6}, (char*)"float\0"};
+nctemp2900=&nctemp2901;
+nctempchar1* nctemp2898= nctemp2900;
+int nctemp2902=LibeStrcmp(nctemp2893,nctemp2898);
+int nctemp2890 = (nctemp2902 ==0);
+if(nctemp2890)
 {
-struct tree* nctemp4485= p;
-struct nctempchar1 *nctemp4489;
-static struct nctempchar1 nctemp4490 = {{ 33}, (char*)"Argument to cmplx is not a float\0"};
-nctemp4489=&nctemp4490;
-nctempchar1* nctemp4487= nctemp4489;
-struct tree* nctemp4493= p;
-nctempchar1* nctemp4495=PtreeGetdef(nctemp4493);
-nctempchar1* nctemp4491= nctemp4495;
-int nctemp4496=ErrSerror(nctemp4485,nctemp4487,nctemp4491);
+struct tree* nctemp2905= p;
+struct nctempchar1 *nctemp2909;
+static struct nctempchar1 nctemp2910 = {{ 33}, (char*)"Argument to cmplx is not a float\0"};
+nctemp2909=&nctemp2910;
+nctempchar1* nctemp2907= nctemp2909;
+struct tree* nctemp2913= p;
+nctempchar1* nctemp2915=PtreeGetdef(nctemp2913);
+nctempchar1* nctemp2911= nctemp2915;
+int nctemp2916=SemSerror(nctemp2905,nctemp2907,nctemp2911);
 return 0;
 }
-struct tree* nctemp4503= np;
-nctempchar1* nctemp4505=PtreeGetref(nctemp4503);
-nctempchar1* nctemp4501= nctemp4505;
-struct nctempchar1 *nctemp4508;
-static struct nctempchar1 nctemp4509 = {{ 5}, (char*)"aref\0"};
-nctemp4508=&nctemp4509;
-nctempchar1* nctemp4506= nctemp4508;
-int nctemp4510=LibeStrcmp(nctemp4501,nctemp4506);
-struct tree* nctemp4514= np;
-nctempchar1* nctemp4516=PtreeGetref(nctemp4514);
-nctempchar1* nctemp4512= nctemp4516;
-struct nctempchar1 *nctemp4519;
-static struct nctempchar1 nctemp4520 = {{ 5}, (char*)"sref\0"};
-nctemp4519=&nctemp4520;
-nctempchar1* nctemp4517= nctemp4519;
-int nctemp4521=LibeStrcmp(nctemp4512,nctemp4517);
-int nctemp4498 = (nctemp4510 || nctemp4521);
-if(nctemp4498)
+struct tree* nctemp2923= np;
+nctempchar1* nctemp2925=PtreeGetref(nctemp2923);
+nctempchar1* nctemp2921= nctemp2925;
+struct nctempchar1 *nctemp2928;
+static struct nctempchar1 nctemp2929 = {{ 5}, (char*)"aref\0"};
+nctemp2928=&nctemp2929;
+nctempchar1* nctemp2926= nctemp2928;
+int nctemp2930=LibeStrcmp(nctemp2921,nctemp2926);
+struct tree* nctemp2934= np;
+nctempchar1* nctemp2936=PtreeGetref(nctemp2934);
+nctempchar1* nctemp2932= nctemp2936;
+struct nctempchar1 *nctemp2939;
+static struct nctempchar1 nctemp2940 = {{ 5}, (char*)"sref\0"};
+nctemp2939=&nctemp2940;
+nctempchar1* nctemp2937= nctemp2939;
+int nctemp2941=LibeStrcmp(nctemp2932,nctemp2937);
+int nctemp2918 = (nctemp2930 || nctemp2941);
+if(nctemp2918)
 {
-struct tree* nctemp4523= p;
-struct nctempchar1 *nctemp4527;
-static struct nctempchar1 nctemp4528 = {{ 34}, (char*)"Argument to cmplx is not a scalar\0"};
-nctemp4527=&nctemp4528;
-nctempchar1* nctemp4525= nctemp4527;
-struct tree* nctemp4531= p;
-nctempchar1* nctemp4533=PtreeGetdef(nctemp4531);
-nctempchar1* nctemp4529= nctemp4533;
-int nctemp4534=ErrSerror(nctemp4523,nctemp4525,nctemp4529);
+struct tree* nctemp2943= p;
+struct nctempchar1 *nctemp2947;
+static struct nctempchar1 nctemp2948 = {{ 34}, (char*)"Argument to cmplx is not a scalar\0"};
+nctemp2947=&nctemp2948;
+nctempchar1* nctemp2945= nctemp2947;
+struct tree* nctemp2951= p;
+nctempchar1* nctemp2953=PtreeGetdef(nctemp2951);
+nctempchar1* nctemp2949= nctemp2953;
+int nctemp2954=SemSerror(nctemp2943,nctemp2945,nctemp2949);
 return 0;
 }
-struct tree* nctemp4540= np;
-struct tree* nctemp4542=PtreeMvsister(nctemp4540);
-np =nctemp4542;
-struct tree* nctemp4544= np;
-struct tree* nctemp4546=SemExpr(nctemp4544);
-struct tree* nctemp4552= np;
-nctempchar1* nctemp4554=PtreeGetype(nctemp4552);
-nctempchar1* nctemp4550= nctemp4554;
-struct nctempchar1 *nctemp4557;
-static struct nctempchar1 nctemp4558 = {{ 6}, (char*)"float\0"};
-nctemp4557=&nctemp4558;
-nctempchar1* nctemp4555= nctemp4557;
-int nctemp4559=LibeStrcmp(nctemp4550,nctemp4555);
-int nctemp4547 = (nctemp4559 ==0);
-if(nctemp4547)
+struct tree* nctemp2960= np;
+struct tree* nctemp2962=PtreeMvsister(nctemp2960);
+np =nctemp2962;
+struct tree* nctemp2964= np;
+struct tree* nctemp2966=SemExpr(nctemp2964);
+struct tree* nctemp2972= np;
+nctempchar1* nctemp2974=PtreeGetype(nctemp2972);
+nctempchar1* nctemp2970= nctemp2974;
+struct nctempchar1 *nctemp2977;
+static struct nctempchar1 nctemp2978 = {{ 6}, (char*)"float\0"};
+nctemp2977=&nctemp2978;
+nctempchar1* nctemp2975= nctemp2977;
+int nctemp2979=LibeStrcmp(nctemp2970,nctemp2975);
+int nctemp2967 = (nctemp2979 ==0);
+if(nctemp2967)
 {
-struct tree* nctemp4562= p;
-struct nctempchar1 *nctemp4566;
-static struct nctempchar1 nctemp4567 = {{ 33}, (char*)"Argument to cmplx is not a float\0"};
-nctemp4566=&nctemp4567;
-nctempchar1* nctemp4564= nctemp4566;
-struct tree* nctemp4570= p;
-nctempchar1* nctemp4572=PtreeGetdef(nctemp4570);
-nctempchar1* nctemp4568= nctemp4572;
-int nctemp4573=ErrSerror(nctemp4562,nctemp4564,nctemp4568);
+struct tree* nctemp2982= p;
+struct nctempchar1 *nctemp2986;
+static struct nctempchar1 nctemp2987 = {{ 33}, (char*)"Argument to cmplx is not a float\0"};
+nctemp2986=&nctemp2987;
+nctempchar1* nctemp2984= nctemp2986;
+struct tree* nctemp2990= p;
+nctempchar1* nctemp2992=PtreeGetdef(nctemp2990);
+nctempchar1* nctemp2988= nctemp2992;
+int nctemp2993=SemSerror(nctemp2982,nctemp2984,nctemp2988);
 }
-struct tree* nctemp4579= np;
-nctempchar1* nctemp4581=PtreeGetref(nctemp4579);
-nctempchar1* nctemp4577= nctemp4581;
-struct nctempchar1 *nctemp4584;
-static struct nctempchar1 nctemp4585 = {{ 5}, (char*)"aref\0"};
-nctemp4584=&nctemp4585;
-nctempchar1* nctemp4582= nctemp4584;
-int nctemp4586=LibeStrcmp(nctemp4577,nctemp4582);
-struct tree* nctemp4590= np;
-nctempchar1* nctemp4592=PtreeGetref(nctemp4590);
-nctempchar1* nctemp4588= nctemp4592;
-struct nctempchar1 *nctemp4595;
-static struct nctempchar1 nctemp4596 = {{ 5}, (char*)"sref\0"};
-nctemp4595=&nctemp4596;
-nctempchar1* nctemp4593= nctemp4595;
-int nctemp4597=LibeStrcmp(nctemp4588,nctemp4593);
-int nctemp4574 = (nctemp4586 || nctemp4597);
-if(nctemp4574)
+struct tree* nctemp2999= np;
+nctempchar1* nctemp3001=PtreeGetref(nctemp2999);
+nctempchar1* nctemp2997= nctemp3001;
+struct nctempchar1 *nctemp3004;
+static struct nctempchar1 nctemp3005 = {{ 5}, (char*)"aref\0"};
+nctemp3004=&nctemp3005;
+nctempchar1* nctemp3002= nctemp3004;
+int nctemp3006=LibeStrcmp(nctemp2997,nctemp3002);
+struct tree* nctemp3010= np;
+nctempchar1* nctemp3012=PtreeGetref(nctemp3010);
+nctempchar1* nctemp3008= nctemp3012;
+struct nctempchar1 *nctemp3015;
+static struct nctempchar1 nctemp3016 = {{ 5}, (char*)"sref\0"};
+nctemp3015=&nctemp3016;
+nctempchar1* nctemp3013= nctemp3015;
+int nctemp3017=LibeStrcmp(nctemp3008,nctemp3013);
+int nctemp2994 = (nctemp3006 || nctemp3017);
+if(nctemp2994)
 {
-struct tree* nctemp4599= p;
-struct nctempchar1 *nctemp4603;
-static struct nctempchar1 nctemp4604 = {{ 34}, (char*)"Argument to cmplx is not a scalar\0"};
-nctemp4603=&nctemp4604;
-nctempchar1* nctemp4601= nctemp4603;
-struct tree* nctemp4607= p;
-nctempchar1* nctemp4609=PtreeGetdef(nctemp4607);
-nctempchar1* nctemp4605= nctemp4609;
-int nctemp4610=ErrSerror(nctemp4599,nctemp4601,nctemp4605);
+struct tree* nctemp3019= p;
+struct nctempchar1 *nctemp3023;
+static struct nctempchar1 nctemp3024 = {{ 34}, (char*)"Argument to cmplx is not a scalar\0"};
+nctemp3023=&nctemp3024;
+nctempchar1* nctemp3021= nctemp3023;
+struct tree* nctemp3027= p;
+nctempchar1* nctemp3029=PtreeGetdef(nctemp3027);
+nctempchar1* nctemp3025= nctemp3029;
+int nctemp3030=SemSerror(nctemp3019,nctemp3021,nctemp3025);
 return 0;
 }
-struct tree* nctemp4613= p;
-struct nctempchar1 *nctemp4617;
-static struct nctempchar1 nctemp4618 = {{ 8}, (char*)"complex\0"};
-nctemp4617=&nctemp4618;
-nctempchar1* nctemp4615= nctemp4617;
-int nctemp4619=PtreeSetype(nctemp4613,nctemp4615);
+struct tree* nctemp3033= p;
+struct nctempchar1 *nctemp3037;
+static struct nctempchar1 nctemp3038 = {{ 8}, (char*)"complex\0"};
+nctemp3037=&nctemp3038;
+nctempchar1* nctemp3035= nctemp3037;
+int nctemp3039=PtreeSetype(nctemp3033,nctemp3035);
 }
 return 1;
 }
 int SemRe (struct tree* p)
 {
 struct tree* np;
-struct tree* nctemp4624= p;
-nctempchar1* nctemp4626=PtreeGetname(nctemp4624);
-nctempchar1* nctemp4622= nctemp4626;
-struct nctempchar1 *nctemp4629;
-static struct nctempchar1 nctemp4630 = {{ 3}, (char*)"re\0"};
-nctemp4629=&nctemp4630;
-nctempchar1* nctemp4627= nctemp4629;
-int nctemp4631=LibeStrcmp(nctemp4622,nctemp4627);
-if(nctemp4631)
+struct tree* nctemp3044= p;
+nctempchar1* nctemp3046=PtreeGetname(nctemp3044);
+nctempchar1* nctemp3042= nctemp3046;
+struct nctempchar1 *nctemp3049;
+static struct nctempchar1 nctemp3050 = {{ 3}, (char*)"re\0"};
+nctemp3049=&nctemp3050;
+nctempchar1* nctemp3047= nctemp3049;
+int nctemp3051=LibeStrcmp(nctemp3042,nctemp3047);
+if(nctemp3051)
 {
-struct tree* nctemp4636= p;
-struct tree* nctemp4638=PtreeMvchild(nctemp4636);
-np =nctemp4638;
-struct tree* nctemp4640= np;
-struct tree* nctemp4642=SemExpr(nctemp4640);
-struct tree* nctemp4648= np;
-nctempchar1* nctemp4650=PtreeGetype(nctemp4648);
-nctempchar1* nctemp4646= nctemp4650;
-struct nctempchar1 *nctemp4653;
-static struct nctempchar1 nctemp4654 = {{ 8}, (char*)"complex\0"};
-nctemp4653=&nctemp4654;
-nctempchar1* nctemp4651= nctemp4653;
-int nctemp4655=LibeStrcmp(nctemp4646,nctemp4651);
-int nctemp4643 = (nctemp4655 ==0);
-if(nctemp4643)
+struct tree* nctemp3056= p;
+struct tree* nctemp3058=PtreeMvchild(nctemp3056);
+np =nctemp3058;
+struct tree* nctemp3060= np;
+struct tree* nctemp3062=SemExpr(nctemp3060);
+struct tree* nctemp3068= np;
+nctempchar1* nctemp3070=PtreeGetype(nctemp3068);
+nctempchar1* nctemp3066= nctemp3070;
+struct nctempchar1 *nctemp3073;
+static struct nctempchar1 nctemp3074 = {{ 8}, (char*)"complex\0"};
+nctemp3073=&nctemp3074;
+nctempchar1* nctemp3071= nctemp3073;
+int nctemp3075=LibeStrcmp(nctemp3066,nctemp3071);
+int nctemp3063 = (nctemp3075 ==0);
+if(nctemp3063)
 {
-struct tree* nctemp4658= p;
-struct nctempchar1 *nctemp4662;
-static struct nctempchar1 nctemp4663 = {{ 40}, (char*)"Argument to re is not a of type complex\0"};
-nctemp4662=&nctemp4663;
-nctempchar1* nctemp4660= nctemp4662;
-struct tree* nctemp4666= p;
-nctempchar1* nctemp4668=PtreeGetdef(nctemp4666);
-nctempchar1* nctemp4664= nctemp4668;
-int nctemp4669=ErrSerror(nctemp4658,nctemp4660,nctemp4664);
+struct tree* nctemp3078= p;
+struct nctempchar1 *nctemp3082;
+static struct nctempchar1 nctemp3083 = {{ 40}, (char*)"Argument to re is not a of type complex\0"};
+nctemp3082=&nctemp3083;
+nctempchar1* nctemp3080= nctemp3082;
+struct tree* nctemp3086= p;
+nctempchar1* nctemp3088=PtreeGetdef(nctemp3086);
+nctempchar1* nctemp3084= nctemp3088;
+int nctemp3089=SemSerror(nctemp3078,nctemp3080,nctemp3084);
 return 0;
 }
-struct tree* nctemp4676= np;
-nctempchar1* nctemp4678=PtreeGetref(nctemp4676);
-nctempchar1* nctemp4674= nctemp4678;
-struct nctempchar1 *nctemp4681;
-static struct nctempchar1 nctemp4682 = {{ 5}, (char*)"aref\0"};
-nctemp4681=&nctemp4682;
-nctempchar1* nctemp4679= nctemp4681;
-int nctemp4683=LibeStrcmp(nctemp4674,nctemp4679);
-struct tree* nctemp4687= np;
-nctempchar1* nctemp4689=PtreeGetref(nctemp4687);
-nctempchar1* nctemp4685= nctemp4689;
-struct nctempchar1 *nctemp4692;
-static struct nctempchar1 nctemp4693 = {{ 5}, (char*)"sref\0"};
-nctemp4692=&nctemp4693;
-nctempchar1* nctemp4690= nctemp4692;
-int nctemp4694=LibeStrcmp(nctemp4685,nctemp4690);
-int nctemp4671 = (nctemp4683 || nctemp4694);
-if(nctemp4671)
+struct tree* nctemp3096= np;
+nctempchar1* nctemp3098=PtreeGetref(nctemp3096);
+nctempchar1* nctemp3094= nctemp3098;
+struct nctempchar1 *nctemp3101;
+static struct nctempchar1 nctemp3102 = {{ 5}, (char*)"aref\0"};
+nctemp3101=&nctemp3102;
+nctempchar1* nctemp3099= nctemp3101;
+int nctemp3103=LibeStrcmp(nctemp3094,nctemp3099);
+struct tree* nctemp3107= np;
+nctempchar1* nctemp3109=PtreeGetref(nctemp3107);
+nctempchar1* nctemp3105= nctemp3109;
+struct nctempchar1 *nctemp3112;
+static struct nctempchar1 nctemp3113 = {{ 5}, (char*)"sref\0"};
+nctemp3112=&nctemp3113;
+nctempchar1* nctemp3110= nctemp3112;
+int nctemp3114=LibeStrcmp(nctemp3105,nctemp3110);
+int nctemp3091 = (nctemp3103 || nctemp3114);
+if(nctemp3091)
 {
-struct tree* nctemp4696= p;
-struct nctempchar1 *nctemp4700;
-static struct nctempchar1 nctemp4701 = {{ 31}, (char*)"Argument to re is not a scalar\0"};
-nctemp4700=&nctemp4701;
-nctempchar1* nctemp4698= nctemp4700;
-struct tree* nctemp4704= p;
-nctempchar1* nctemp4706=PtreeGetdef(nctemp4704);
-nctempchar1* nctemp4702= nctemp4706;
-int nctemp4707=ErrSerror(nctemp4696,nctemp4698,nctemp4702);
+struct tree* nctemp3116= p;
+struct nctempchar1 *nctemp3120;
+static struct nctempchar1 nctemp3121 = {{ 31}, (char*)"Argument to re is not a scalar\0"};
+nctemp3120=&nctemp3121;
+nctempchar1* nctemp3118= nctemp3120;
+struct tree* nctemp3124= p;
+nctempchar1* nctemp3126=PtreeGetdef(nctemp3124);
+nctempchar1* nctemp3122= nctemp3126;
+int nctemp3127=SemSerror(nctemp3116,nctemp3118,nctemp3122);
 return 0;
 }
-struct tree* nctemp4710= p;
-struct nctempchar1 *nctemp4714;
-static struct nctempchar1 nctemp4715 = {{ 6}, (char*)"float\0"};
-nctemp4714=&nctemp4715;
-nctempchar1* nctemp4712= nctemp4714;
-int nctemp4716=PtreeSetype(nctemp4710,nctemp4712);
-}
-return 1;
-}
-int SemIm (struct tree* p)
-{
-struct tree* np;
-struct tree* nctemp4721= p;
-nctempchar1* nctemp4723=PtreeGetname(nctemp4721);
-nctempchar1* nctemp4719= nctemp4723;
-struct nctempchar1 *nctemp4726;
-static struct nctempchar1 nctemp4727 = {{ 3}, (char*)"im\0"};
-nctemp4726=&nctemp4727;
-nctempchar1* nctemp4724= nctemp4726;
-int nctemp4728=LibeStrcmp(nctemp4719,nctemp4724);
-if(nctemp4728)
-{
-struct tree* nctemp4733= p;
-struct tree* nctemp4735=PtreeMvchild(nctemp4733);
-np =nctemp4735;
-struct tree* nctemp4737= np;
-struct tree* nctemp4739=SemExpr(nctemp4737);
-struct tree* nctemp4745= np;
-nctempchar1* nctemp4747=PtreeGetype(nctemp4745);
-nctempchar1* nctemp4743= nctemp4747;
-struct nctempchar1 *nctemp4750;
-static struct nctempchar1 nctemp4751 = {{ 8}, (char*)"complex\0"};
-nctemp4750=&nctemp4751;
-nctempchar1* nctemp4748= nctemp4750;
-int nctemp4752=LibeStrcmp(nctemp4743,nctemp4748);
-int nctemp4740 = (nctemp4752 ==0);
-if(nctemp4740)
-{
-struct tree* nctemp4755= p;
-struct nctempchar1 *nctemp4759;
-static struct nctempchar1 nctemp4760 = {{ 38}, (char*)"Argument to re is not of type complex\0"};
-nctemp4759=&nctemp4760;
-nctempchar1* nctemp4757= nctemp4759;
-struct tree* nctemp4763= p;
-nctempchar1* nctemp4765=PtreeGetdef(nctemp4763);
-nctempchar1* nctemp4761= nctemp4765;
-int nctemp4766=ErrSerror(nctemp4755,nctemp4757,nctemp4761);
-return 0;
-}
-struct tree* nctemp4773= np;
-nctempchar1* nctemp4775=PtreeGetref(nctemp4773);
-nctempchar1* nctemp4771= nctemp4775;
-struct nctempchar1 *nctemp4778;
-static struct nctempchar1 nctemp4779 = {{ 5}, (char*)"aref\0"};
-nctemp4778=&nctemp4779;
-nctempchar1* nctemp4776= nctemp4778;
-int nctemp4780=LibeStrcmp(nctemp4771,nctemp4776);
-struct tree* nctemp4784= np;
-nctempchar1* nctemp4786=PtreeGetref(nctemp4784);
-nctempchar1* nctemp4782= nctemp4786;
-struct nctempchar1 *nctemp4789;
-static struct nctempchar1 nctemp4790 = {{ 5}, (char*)"sref\0"};
-nctemp4789=&nctemp4790;
-nctempchar1* nctemp4787= nctemp4789;
-int nctemp4791=LibeStrcmp(nctemp4782,nctemp4787);
-int nctemp4768 = (nctemp4780 || nctemp4791);
-if(nctemp4768)
-{
-struct tree* nctemp4793= p;
-struct nctempchar1 *nctemp4797;
-static struct nctempchar1 nctemp4798 = {{ 31}, (char*)"Argument to re is not a scalar\0"};
-nctemp4797=&nctemp4798;
-nctempchar1* nctemp4795= nctemp4797;
-struct tree* nctemp4801= p;
-nctempchar1* nctemp4803=PtreeGetdef(nctemp4801);
-nctempchar1* nctemp4799= nctemp4803;
-int nctemp4804=ErrSerror(nctemp4793,nctemp4795,nctemp4799);
-return 0;
-}
-struct tree* nctemp4807= p;
-struct nctempchar1 *nctemp4811;
-static struct nctempchar1 nctemp4812 = {{ 6}, (char*)"float\0"};
-nctemp4811=&nctemp4812;
-nctempchar1* nctemp4809= nctemp4811;
-int nctemp4813=PtreeSetype(nctemp4807,nctemp4809);
+struct tree* nctemp3130= p;
+struct nctempchar1 *nctemp3134;
+static struct nctempchar1 nctemp3135 = {{ 6}, (char*)"float\0"};
+nctemp3134=&nctemp3135;
+nctempchar1* nctemp3132= nctemp3134;
+int nctemp3136=PtreeSetype(nctemp3130,nctemp3132);
 }
 return 1;
 }
 int SemLen (struct tree* p)
 {
 struct tree* np;
-struct tree* nctemp4820= p;
-nctempchar1* nctemp4822=PtreeGetname(nctemp4820);
-nctempchar1* nctemp4818= nctemp4822;
-struct nctempchar1 *nctemp4825;
-static struct nctempchar1 nctemp4826 = {{ 4}, (char*)"len\0"};
-nctemp4825=&nctemp4826;
-nctempchar1* nctemp4823= nctemp4825;
-int nctemp4827=LibeStrcmp(nctemp4818,nctemp4823);
-int nctemp4815 = (nctemp4827 ==1);
-if(nctemp4815)
+struct tree* nctemp3143= p;
+nctempchar1* nctemp3145=PtreeGetname(nctemp3143);
+nctempchar1* nctemp3141= nctemp3145;
+struct nctempchar1 *nctemp3148;
+static struct nctempchar1 nctemp3149 = {{ 4}, (char*)"len\0"};
+nctemp3148=&nctemp3149;
+nctempchar1* nctemp3146= nctemp3148;
+int nctemp3150=LibeStrcmp(nctemp3141,nctemp3146);
+int nctemp3138 = (nctemp3150 ==1);
+if(nctemp3138)
 {
-struct tree* nctemp4830= p;
-struct nctempchar1 *nctemp4834;
-static struct nctempchar1 nctemp4835 = {{ 4}, (char*)"int\0"};
-nctemp4834=&nctemp4835;
-nctempchar1* nctemp4832= nctemp4834;
-int nctemp4836=PtreeSetype(nctemp4830,nctemp4832);
-struct tree* nctemp4841= p;
-struct tree* nctemp4843=PtreeMvchild(nctemp4841);
-np =nctemp4843;
-struct tree* nctemp4845= np;
-struct tree* nctemp4847=SemExpr(nctemp4845);
-struct tree* nctemp4853= np;
-nctempchar1* nctemp4855=PtreeGetref(nctemp4853);
-nctempchar1* nctemp4851= nctemp4855;
-struct nctempchar1 *nctemp4858;
-static struct nctempchar1 nctemp4859 = {{ 5}, (char*)"aref\0"};
-nctemp4858=&nctemp4859;
-nctempchar1* nctemp4856= nctemp4858;
-int nctemp4860=LibeStrcmp(nctemp4851,nctemp4856);
-int nctemp4848 = (nctemp4860 ==0);
-if(nctemp4848)
+struct tree* nctemp3153= p;
+struct nctempchar1 *nctemp3157;
+static struct nctempchar1 nctemp3158 = {{ 4}, (char*)"int\0"};
+nctemp3157=&nctemp3158;
+nctempchar1* nctemp3155= nctemp3157;
+int nctemp3159=PtreeSetype(nctemp3153,nctemp3155);
+struct tree* nctemp3164= p;
+struct tree* nctemp3166=PtreeMvchild(nctemp3164);
+np =nctemp3166;
+struct tree* nctemp3168= np;
+struct tree* nctemp3170=SemExpr(nctemp3168);
+struct tree* nctemp3176= np;
+nctempchar1* nctemp3178=PtreeGetref(nctemp3176);
+nctempchar1* nctemp3174= nctemp3178;
+struct nctempchar1 *nctemp3181;
+static struct nctempchar1 nctemp3182 = {{ 5}, (char*)"aref\0"};
+nctemp3181=&nctemp3182;
+nctempchar1* nctemp3179= nctemp3181;
+int nctemp3183=LibeStrcmp(nctemp3174,nctemp3179);
+int nctemp3171 = (nctemp3183 ==0);
+if(nctemp3171)
 {
-struct tree* nctemp4863= p;
-struct nctempchar1 *nctemp4867;
-static struct nctempchar1 nctemp4868 = {{ 13}, (char*)"not an array\0"};
-nctemp4867=&nctemp4868;
-nctempchar1* nctemp4865= nctemp4867;
-struct tree* nctemp4871= p;
-nctempchar1* nctemp4873=PtreeGetdef(nctemp4871);
-nctempchar1* nctemp4869= nctemp4873;
-int nctemp4874=ErrSerror(nctemp4863,nctemp4865,nctemp4869);
+struct tree* nctemp3186= p;
+struct nctempchar1 *nctemp3190;
+static struct nctempchar1 nctemp3191 = {{ 13}, (char*)"not an array\0"};
+nctemp3190=&nctemp3191;
+nctempchar1* nctemp3188= nctemp3190;
+struct tree* nctemp3194= p;
+nctempchar1* nctemp3196=PtreeGetdef(nctemp3194);
+nctempchar1* nctemp3192= nctemp3196;
+int nctemp3197=SemSerror(nctemp3186,nctemp3188,nctemp3192);
 }
-struct tree* nctemp4879= np;
-struct tree* nctemp4881=PtreeMvsister(nctemp4879);
-np =nctemp4881;
-struct tree* nctemp4883= np;
-struct tree* nctemp4885=SemExpr(nctemp4883);
-struct tree* nctemp4889= np;
-nctempchar1* nctemp4891=PtreeGetref(nctemp4889);
-nctempchar1* nctemp4887= nctemp4891;
-struct nctempchar1 *nctemp4894;
-static struct nctempchar1 nctemp4895 = {{ 5}, (char*)"aref\0"};
-nctemp4894=&nctemp4895;
-nctempchar1* nctemp4892= nctemp4894;
-int nctemp4896=LibeStrcmp(nctemp4887,nctemp4892);
-if(nctemp4896)
+struct tree* nctemp3202= np;
+struct tree* nctemp3204=PtreeMvsister(nctemp3202);
+np =nctemp3204;
+struct tree* nctemp3206= np;
+struct tree* nctemp3208=SemExpr(nctemp3206);
+struct tree* nctemp3212= np;
+nctempchar1* nctemp3214=PtreeGetref(nctemp3212);
+nctempchar1* nctemp3210= nctemp3214;
+struct nctempchar1 *nctemp3217;
+static struct nctempchar1 nctemp3218 = {{ 5}, (char*)"aref\0"};
+nctemp3217=&nctemp3218;
+nctempchar1* nctemp3215= nctemp3217;
+int nctemp3219=LibeStrcmp(nctemp3210,nctemp3215);
+if(nctemp3219)
 {
-struct tree* nctemp4898= p;
-struct nctempchar1 *nctemp4902;
-static struct nctempchar1 nctemp4903 = {{ 13}, (char*)"not a scalar\0"};
-nctemp4902=&nctemp4903;
-nctempchar1* nctemp4900= nctemp4902;
-struct tree* nctemp4906= p;
-nctempchar1* nctemp4908=PtreeGetdef(nctemp4906);
-nctempchar1* nctemp4904= nctemp4908;
-int nctemp4909=ErrSerror(nctemp4898,nctemp4900,nctemp4904);
+struct tree* nctemp3221= p;
+struct nctempchar1 *nctemp3225;
+static struct nctempchar1 nctemp3226 = {{ 13}, (char*)"not a scalar\0"};
+nctemp3225=&nctemp3226;
+nctempchar1* nctemp3223= nctemp3225;
+struct tree* nctemp3229= p;
+nctempchar1* nctemp3231=PtreeGetdef(nctemp3229);
+nctempchar1* nctemp3227= nctemp3231;
+int nctemp3232=SemSerror(nctemp3221,nctemp3223,nctemp3227);
 }
-struct tree* nctemp4915= np;
-nctempchar1* nctemp4917=PtreeGetype(nctemp4915);
-nctempchar1* nctemp4913= nctemp4917;
-struct nctempchar1 *nctemp4920;
-static struct nctempchar1 nctemp4921 = {{ 4}, (char*)"int\0"};
-nctemp4920=&nctemp4921;
-nctempchar1* nctemp4918= nctemp4920;
-int nctemp4922=LibeStrcmp(nctemp4913,nctemp4918);
-int nctemp4910 = (nctemp4922 ==0);
-if(nctemp4910)
+struct tree* nctemp3238= np;
+nctempchar1* nctemp3240=PtreeGetype(nctemp3238);
+nctempchar1* nctemp3236= nctemp3240;
+struct nctempchar1 *nctemp3243;
+static struct nctempchar1 nctemp3244 = {{ 4}, (char*)"int\0"};
+nctemp3243=&nctemp3244;
+nctempchar1* nctemp3241= nctemp3243;
+int nctemp3245=LibeStrcmp(nctemp3236,nctemp3241);
+int nctemp3233 = (nctemp3245 ==0);
+if(nctemp3233)
 {
-struct tree* nctemp4925= p;
-struct nctempchar1 *nctemp4929;
-static struct nctempchar1 nctemp4930 = {{ 26}, (char*)"not an integer expression\0"};
-nctemp4929=&nctemp4930;
-nctempchar1* nctemp4927= nctemp4929;
-struct tree* nctemp4933= p;
-nctempchar1* nctemp4935=PtreeGetdef(nctemp4933);
-nctempchar1* nctemp4931= nctemp4935;
-int nctemp4936=ErrSerror(nctemp4925,nctemp4927,nctemp4931);
+struct tree* nctemp3248= p;
+struct nctempchar1 *nctemp3252;
+static struct nctempchar1 nctemp3253 = {{ 26}, (char*)"not an integer expression\0"};
+nctemp3252=&nctemp3253;
+nctempchar1* nctemp3250= nctemp3252;
+struct tree* nctemp3256= p;
+nctempchar1* nctemp3258=PtreeGetdef(nctemp3256);
+nctempchar1* nctemp3254= nctemp3258;
+int nctemp3259=SemSerror(nctemp3248,nctemp3250,nctemp3254);
 }
-struct tree* nctemp4944= np;
-struct tree* nctemp4946=PtreeMvsister(nctemp4944);
-np =nctemp4946;
-int nctemp4937 = (np !=0);
-if(nctemp4937)
+struct tree* nctemp3267= np;
+struct tree* nctemp3269=PtreeMvsister(nctemp3267);
+np =nctemp3269;
+int nctemp3260 = (np !=0);
+if(nctemp3260)
 {
-struct tree* nctemp4949= p;
-struct nctempchar1 *nctemp4953;
-static struct nctempchar1 nctemp4954 = {{ 19}, (char*)"too many arguments\0"};
-nctemp4953=&nctemp4954;
-nctempchar1* nctemp4951= nctemp4953;
-struct tree* nctemp4957= p;
-nctempchar1* nctemp4959=PtreeGetdef(nctemp4957);
-nctempchar1* nctemp4955= nctemp4959;
-int nctemp4960=ErrSerror(nctemp4949,nctemp4951,nctemp4955);
+struct tree* nctemp3272= p;
+struct nctempchar1 *nctemp3276;
+static struct nctempchar1 nctemp3277 = {{ 19}, (char*)"too many arguments\0"};
+nctemp3276=&nctemp3277;
+nctempchar1* nctemp3274= nctemp3276;
+struct tree* nctemp3280= p;
+nctempchar1* nctemp3282=PtreeGetdef(nctemp3280);
+nctempchar1* nctemp3278= nctemp3282;
+int nctemp3283=SemSerror(nctemp3272,nctemp3274,nctemp3278);
 }
 }
 return 1;
 }
-int SemArray (struct tree* p,struct symbol* tp)
+int SemIm (struct tree* p)
 {
 struct tree* np;
-int rank;
-struct tree* nctemp4967= p;
-nctempchar1* nctemp4969=PtreeGetarray(nctemp4967);
-nctempchar1* nctemp4965= nctemp4969;
-struct nctempchar1 *nctemp4972;
-static struct nctempchar1 nctemp4973 = {{ 6}, (char*)"array\0"};
-nctemp4972=&nctemp4973;
-nctempchar1* nctemp4970= nctemp4972;
-int nctemp4974=LibeStrcmp(nctemp4965,nctemp4970);
-int nctemp4962 = (nctemp4974 ==0);
-if(nctemp4962)
+struct tree* nctemp3288= p;
+nctempchar1* nctemp3290=PtreeGetname(nctemp3288);
+nctempchar1* nctemp3286= nctemp3290;
+struct nctempchar1 *nctemp3293;
+static struct nctempchar1 nctemp3294 = {{ 3}, (char*)"im\0"};
+nctemp3293=&nctemp3294;
+nctempchar1* nctemp3291= nctemp3293;
+int nctemp3295=LibeStrcmp(nctemp3286,nctemp3291);
+if(nctemp3295)
 {
-struct tree* nctemp4977= p;
-struct nctempchar1 *nctemp4981;
-static struct nctempchar1 nctemp4982 = {{ 13}, (char*)"Not an array\0"};
-nctemp4981=&nctemp4982;
-nctempchar1* nctemp4979= nctemp4981;
-struct tree* nctemp4985= p;
-nctempchar1* nctemp4987=PtreeGetdef(nctemp4985);
-nctempchar1* nctemp4983= nctemp4987;
-int nctemp4988=ErrSerror(nctemp4977,nctemp4979,nctemp4983);
+struct tree* nctemp3300= p;
+struct tree* nctemp3302=PtreeMvchild(nctemp3300);
+np =nctemp3302;
+struct tree* nctemp3304= np;
+struct tree* nctemp3306=SemExpr(nctemp3304);
+struct tree* nctemp3312= np;
+nctempchar1* nctemp3314=PtreeGetype(nctemp3312);
+nctempchar1* nctemp3310= nctemp3314;
+struct nctempchar1 *nctemp3317;
+static struct nctempchar1 nctemp3318 = {{ 8}, (char*)"complex\0"};
+nctemp3317=&nctemp3318;
+nctempchar1* nctemp3315= nctemp3317;
+int nctemp3319=LibeStrcmp(nctemp3310,nctemp3315);
+int nctemp3307 = (nctemp3319 ==0);
+if(nctemp3307)
+{
+struct tree* nctemp3322= p;
+struct nctempchar1 *nctemp3326;
+static struct nctempchar1 nctemp3327 = {{ 38}, (char*)"Argument to re is not of type complex\0"};
+nctemp3326=&nctemp3327;
+nctempchar1* nctemp3324= nctemp3326;
+struct tree* nctemp3330= p;
+nctempchar1* nctemp3332=PtreeGetdef(nctemp3330);
+nctempchar1* nctemp3328= nctemp3332;
+int nctemp3333=SemSerror(nctemp3322,nctemp3324,nctemp3328);
 return 0;
 }
-struct tree* nctemp4991= p;
-struct nctempchar1 *nctemp4995;
-static struct nctempchar1 nctemp4996 = {{ 11}, (char*)"identifier\0"};
-nctemp4995=&nctemp4996;
-nctempchar1* nctemp4993= nctemp4995;
-int nctemp4997=PtreeSetname(nctemp4991,nctemp4993);
-struct tree* nctemp5002= p;
-struct tree* nctemp5004=PtreeMvchild(nctemp5002);
-np =nctemp5004;
-struct tree* nctemp5010= np;
-nctempchar1* nctemp5012=PtreeGetname(nctemp5010);
-nctempchar1* nctemp5008= nctemp5012;
-struct nctempchar1 *nctemp5015;
-static struct nctempchar1 nctemp5016 = {{ 9}, (char*)"exprlist\0"};
-nctemp5015=&nctemp5016;
-nctempchar1* nctemp5013= nctemp5015;
-int nctemp5017=LibeStrcmp(nctemp5008,nctemp5013);
-int nctemp5005 = (nctemp5017 ==0);
-if(nctemp5005)
+struct tree* nctemp3340= np;
+nctempchar1* nctemp3342=PtreeGetref(nctemp3340);
+nctempchar1* nctemp3338= nctemp3342;
+struct nctempchar1 *nctemp3345;
+static struct nctempchar1 nctemp3346 = {{ 5}, (char*)"aref\0"};
+nctemp3345=&nctemp3346;
+nctempchar1* nctemp3343= nctemp3345;
+int nctemp3347=LibeStrcmp(nctemp3338,nctemp3343);
+struct tree* nctemp3351= np;
+nctempchar1* nctemp3353=PtreeGetref(nctemp3351);
+nctempchar1* nctemp3349= nctemp3353;
+struct nctempchar1 *nctemp3356;
+static struct nctempchar1 nctemp3357 = {{ 5}, (char*)"sref\0"};
+nctemp3356=&nctemp3357;
+nctempchar1* nctemp3354= nctemp3356;
+int nctemp3358=LibeStrcmp(nctemp3349,nctemp3354);
+int nctemp3335 = (nctemp3347 || nctemp3358);
+if(nctemp3335)
 {
-struct tree* nctemp5020= p;
-struct nctempchar1 *nctemp5024;
-static struct nctempchar1 nctemp5025 = {{ 22}, (char*)"Missing array indexes\0"};
-nctemp5024=&nctemp5025;
-nctempchar1* nctemp5022= nctemp5024;
-struct tree* nctemp5028= p;
-nctempchar1* nctemp5030=PtreeGetdef(nctemp5028);
-nctempchar1* nctemp5026= nctemp5030;
-int nctemp5031=ErrSerror(nctemp5020,nctemp5022,nctemp5026);
+struct tree* nctemp3360= p;
+struct nctempchar1 *nctemp3364;
+static struct nctempchar1 nctemp3365 = {{ 31}, (char*)"Argument to re is not a scalar\0"};
+nctemp3364=&nctemp3365;
+nctempchar1* nctemp3362= nctemp3364;
+struct tree* nctemp3368= p;
+nctempchar1* nctemp3370=PtreeGetdef(nctemp3368);
+nctempchar1* nctemp3366= nctemp3370;
+int nctemp3371=SemSerror(nctemp3360,nctemp3362,nctemp3366);
 return 0;
 }
-struct tree* nctemp5040= np;
-struct tree* nctemp5042=PtreeMvchild(nctemp5040);
-np =nctemp5042;
-int nctemp5033 = (np !=0);
-if(nctemp5033)
-{
-rank =0;
-int nctemp5048 = (np !=0);
-int nctemp5052=nctemp5048;
-while(nctemp5052)
-{{
-struct tree* nctemp5054= np;
-struct tree* nctemp5056=SemExpr(nctemp5054);
-struct tree* nctemp5061= np;
-struct tree* nctemp5063=PtreeMvsister(nctemp5061);
-np =nctemp5063;
-int nctemp5072 = rank + 1;
-rank =nctemp5072;
+struct tree* nctemp3374= p;
+struct nctempchar1 *nctemp3378;
+static struct nctempchar1 nctemp3379 = {{ 6}, (char*)"float\0"};
+nctemp3378=&nctemp3379;
+nctempchar1* nctemp3376= nctemp3378;
+int nctemp3380=PtreeSetype(nctemp3374,nctemp3376);
 }
-int nctemp5073 = (np !=0);
-nctemp5052=nctemp5073;}}
-struct symbol* nctemp5081= tp;
-int nctemp5083=SymGetrank(nctemp5081);
-int nctemp5077 = (rank !=nctemp5083);
-if(nctemp5077)
-{
-struct tree* nctemp5085= p;
-struct nctempchar1 *nctemp5089;
-static struct nctempchar1 nctemp5090 = {{ 24}, (char*)"Illegal array dimension\0"};
-nctemp5089=&nctemp5090;
-nctempchar1* nctemp5087= nctemp5089;
-struct tree* nctemp5093= p;
-nctempchar1* nctemp5095=PtreeGetdef(nctemp5093);
-nctempchar1* nctemp5091= nctemp5095;
-int nctemp5096=ErrSerror(nctemp5085,nctemp5087,nctemp5091);
-return 0;
-}
-struct tree* nctemp5099= p;
-int nctemp5101= rank;
-int nctemp5103=PtreeSetrank(nctemp5099,nctemp5101);
 return 1;
 }
-int SemStructure (struct tree* p,struct symbol* tp)
+int SemSizeof (struct tree* p)
 {
-nctempchar1 *temp;
-struct symbol* up;
-struct symbol* uup;
-struct tree* np;
-struct tree* nctemp5110= p;
-nctempchar1* nctemp5112=PtreeGetstruct(nctemp5110);
-nctempchar1* nctemp5108= nctemp5112;
-struct nctempchar1 *nctemp5115;
-static struct nctempchar1 nctemp5116 = {{ 7}, (char*)"struct\0"};
-nctemp5115=&nctemp5116;
-nctempchar1* nctemp5113= nctemp5115;
-int nctemp5117=LibeStrcmp(nctemp5108,nctemp5113);
-int nctemp5105 = (nctemp5117 ==0);
-if(nctemp5105)
+struct tree* nctemp3385= p;
+nctempchar1* nctemp3387=PtreeGetname(nctemp3385);
+nctempchar1* nctemp3383= nctemp3387;
+struct nctempchar1 *nctemp3390;
+static struct nctempchar1 nctemp3391 = {{ 7}, (char*)"sizeof\0"};
+nctemp3390=&nctemp3391;
+nctempchar1* nctemp3388= nctemp3390;
+int nctemp3392=LibeStrcmp(nctemp3383,nctemp3388);
+if(nctemp3392)
 {
-struct tree* nctemp5120= p;
-struct nctempchar1 *nctemp5124;
-static struct nctempchar1 nctemp5125 = {{ 16}, (char*)"Not a structure\0"};
-nctemp5124=&nctemp5125;
-nctempchar1* nctemp5122= nctemp5124;
-struct tree* nctemp5128= p;
-nctempchar1* nctemp5130=PtreeGetdef(nctemp5128);
-nctempchar1* nctemp5126= nctemp5130;
-int nctemp5131=ErrSerror(nctemp5120,nctemp5122,nctemp5126);
-return 0;
+struct tree* nctemp3394= p;
+struct nctempchar1 *nctemp3398;
+static struct nctempchar1 nctemp3399 = {{ 4}, (char*)"int\0"};
+nctemp3398=&nctemp3399;
+nctempchar1* nctemp3396= nctemp3398;
+int nctemp3400=PtreeSetype(nctemp3394,nctemp3396);
 }
-struct tree* nctemp5134= p;
-struct nctempchar1 *nctemp5138;
-static struct nctempchar1 nctemp5139 = {{ 11}, (char*)"identifier\0"};
-nctemp5138=&nctemp5139;
-nctempchar1* nctemp5136= nctemp5138;
-int nctemp5140=PtreeSetname(nctemp5134,nctemp5136);
-struct symbol* nctemp5146= tp;
-nctempchar1* nctemp5148=SymGetype(nctemp5146);
-temp=nctemp5148;
-nctempchar1* nctemp5156= temp;
-struct symbol* nctemp5159=SymLook(nctemp5156);
-up =nctemp5159;
-int nctemp5149 = (up ==0);
-if(nctemp5149)
-{
-nctempchar1* nctemp5168= temp;
-struct symbol* nctemp5171=SymLook(nctemp5168);
-up =nctemp5171;
-int nctemp5161 = (up ==0);
-if(nctemp5161)
-{
-struct tree* nctemp5174= p;
-struct nctempchar1 *nctemp5178;
-static struct nctempchar1 nctemp5179 = {{ 26}, (char*)"Undeclared structure type\0"};
-nctemp5178=&nctemp5179;
-nctempchar1* nctemp5176= nctemp5178;
-struct nctempchar1 *nctemp5182;
-static struct nctempchar1 nctemp5183 = {{ 2}, (char*)" \0"};
-nctemp5182=&nctemp5183;
-nctempchar1* nctemp5180= nctemp5182;
-int nctemp5184=ErrSerror(nctemp5174,nctemp5176,nctemp5180);
-return 0;
-}
-}
-struct symbol* nctemp5189= tp;
-nctempchar1* nctemp5191=SymGetstruct(nctemp5189);
-nctempchar1* nctemp5187= nctemp5191;
-struct nctempchar1 *nctemp5194;
-static struct nctempchar1 nctemp5195 = {{ 10}, (char*)"structdef\0"};
-nctemp5194=&nctemp5195;
-nctempchar1* nctemp5192= nctemp5194;
-int nctemp5196=LibeStrcmp(nctemp5187,nctemp5192);
-if(nctemp5196)
-{
-struct tree* nctemp5198= p;
-struct nctempchar1 *nctemp5202;
-static struct nctempchar1 nctemp5203 = {{ 43}, (char*)"Struct names can not be used as a variable\0"};
-nctemp5202=&nctemp5203;
-nctempchar1* nctemp5200= nctemp5202;
-struct tree* nctemp5206= p;
-nctempchar1* nctemp5208=PtreeGetdef(nctemp5206);
-nctempchar1* nctemp5204= nctemp5208;
-int nctemp5209=ErrSerror(nctemp5198,nctemp5200,nctemp5204);
-return 0;
-}
-struct tree* nctemp5215= p;
-struct tree* nctemp5217=PtreeMvchild(nctemp5215);
-np =nctemp5217;
-int nctemp5218 = (np ==0);
-if(nctemp5218)
-{
-struct tree* nctemp5223= p;
-struct nctempchar1 *nctemp5227;
-static struct nctempchar1 nctemp5228 = {{ 27}, (char*)"Missing structure selector\0"};
-nctemp5227=&nctemp5228;
-nctempchar1* nctemp5225= nctemp5227;
-struct tree* nctemp5231= p;
-nctempchar1* nctemp5233=PtreeGetdef(nctemp5231);
-nctempchar1* nctemp5229= nctemp5233;
-int nctemp5234=ErrSerror(nctemp5223,nctemp5225,nctemp5229);
-return 0;
-}
-struct tree* nctemp5239= p;
-nctempchar1* nctemp5241=PtreeGetarray(nctemp5239);
-nctempchar1* nctemp5237= nctemp5241;
-struct nctempchar1 *nctemp5244;
-static struct nctempchar1 nctemp5245 = {{ 6}, (char*)"array\0"};
-nctemp5244=&nctemp5245;
-nctempchar1* nctemp5242= nctemp5244;
-int nctemp5246=LibeStrcmp(nctemp5237,nctemp5242);
-if(nctemp5246)
-{
-struct tree* nctemp5251= np;
-struct tree* nctemp5253=PtreeMvsister(nctemp5251);
-np =nctemp5253;
-}
-int nctemp5254 = (np ==0);
-if(nctemp5254)
-{
-struct tree* nctemp5259= p;
-struct nctempchar1 *nctemp5263;
-static struct nctempchar1 nctemp5264 = {{ 20}, (char*)"Missing array index\0"};
-nctemp5263=&nctemp5264;
-nctempchar1* nctemp5261= nctemp5263;
-struct tree* nctemp5267= p;
-nctempchar1* nctemp5269=PtreeGetdef(nctemp5267);
-nctempchar1* nctemp5265= nctemp5269;
-int nctemp5270=ErrSerror(nctemp5259,nctemp5261,nctemp5265);
-return 0;
-}
-struct symbol* nctemp5276= up;
-struct symbol* nctemp5278=SymGetable(nctemp5276);
-uup =nctemp5278;
-struct tree* nctemp5288= np;
-nctempchar1* nctemp5290=PtreeGetdef(nctemp5288);
-nctempchar1* nctemp5286= nctemp5290;
-struct symbol* nctemp5291= uup;
-struct symbol* nctemp5293=SymLookup(nctemp5286,nctemp5291);
-tp =nctemp5293;
-int nctemp5279 = (tp ==0);
-if(nctemp5279)
-{
-struct tree* nctemp5296= np;
-struct nctempchar1 *nctemp5300;
-static struct nctempchar1 nctemp5301 = {{ 28}, (char*)"Undeclared structure member\0"};
-nctemp5300=&nctemp5301;
-nctempchar1* nctemp5298= nctemp5300;
-struct tree* nctemp5304= np;
-nctempchar1* nctemp5306=PtreeGetdef(nctemp5304);
-nctempchar1* nctemp5302= nctemp5306;
-int nctemp5307=ErrSerror(nctemp5296,nctemp5298,nctemp5302);
-return 0;
-}
-struct symbol* nctemp5312= tp;
-nctempchar1* nctemp5314=SymGetarray(nctemp5312);
-nctempchar1* nctemp5310= nctemp5314;
-struct nctempchar1 *nctemp5317;
-static struct nctempchar1 nctemp5318 = {{ 6}, (char*)"array\0"};
-nctemp5317=&nctemp5318;
-nctempchar1* nctemp5315= nctemp5317;
-int nctemp5319=LibeStrcmp(nctemp5310,nctemp5315);
-if(nctemp5319)
-{
-struct tree* nctemp5323= np;
-struct tree* nctemp5325=PtreeMvchild(nctemp5323);
-int nctemp5320 = (nctemp5325 !=0);
-if(nctemp5320)
-{
-struct tree* nctemp5328= np;
-struct symbol* nctemp5330= tp;
-int nctemp5332=SemArray(nctemp5328,nctemp5330);
-struct symbol* nctemp5336= tp;
-nctempchar1* nctemp5338=SymGetstruct(nctemp5336);
-nctempchar1* nctemp5334= nctemp5338;
-struct nctempchar1 *nctemp5341;
-static struct nctempchar1 nctemp5342 = {{ 7}, (char*)"struct\0"};
-nctemp5341=&nctemp5342;
-nctempchar1* nctemp5339= nctemp5341;
-int nctemp5343=LibeStrcmp(nctemp5334,nctemp5339);
-if(nctemp5343)
-{
-struct tree* nctemp5345= np;
-struct nctempchar1 *nctemp5349;
-static struct nctempchar1 nctemp5350 = {{ 5}, (char*)"sref\0"};
-nctemp5349=&nctemp5350;
-nctempchar1* nctemp5347= nctemp5349;
-int nctemp5351=PtreeSetref(nctemp5345,nctemp5347);
-}
-}
-else{
-struct tree* nctemp5353= np;
-struct nctempchar1 *nctemp5357;
-static struct nctempchar1 nctemp5358 = {{ 5}, (char*)"aref\0"};
-nctemp5357=&nctemp5358;
-nctempchar1* nctemp5355= nctemp5357;
-int nctemp5359=PtreeSetref(nctemp5353,nctemp5355);
-}
-}
-else{
-struct symbol* nctemp5363= tp;
-nctempchar1* nctemp5365=SymGetstruct(nctemp5363);
-nctempchar1* nctemp5361= nctemp5365;
-struct nctempchar1 *nctemp5368;
-static struct nctempchar1 nctemp5369 = {{ 7}, (char*)"struct\0"};
-nctemp5368=&nctemp5369;
-nctempchar1* nctemp5366= nctemp5368;
-int nctemp5370=LibeStrcmp(nctemp5361,nctemp5366);
-if(nctemp5370)
-{
-struct tree* nctemp5372= np;
-struct nctempchar1 *nctemp5376;
-static struct nctempchar1 nctemp5377 = {{ 5}, (char*)"sref\0"};
-nctemp5376=&nctemp5377;
-nctempchar1* nctemp5374= nctemp5376;
-int nctemp5378=PtreeSetref(nctemp5372,nctemp5374);
-}
-}
-struct tree* nctemp5380= np;
-struct symbol* nctemp5384= tp;
-nctempchar1* nctemp5386=SymGetype(nctemp5384);
-nctempchar1* nctemp5382= nctemp5386;
-int nctemp5387=PtreeSetype(nctemp5380,nctemp5382);
-struct tree* nctemp5389= np;
-struct symbol* nctemp5393= tp;
-nctempchar1* nctemp5395=SymGetarray(nctemp5393);
-nctempchar1* nctemp5391= nctemp5395;
-int nctemp5396=PtreeSetarray(nctemp5389,nctemp5391);
-struct tree* nctemp5398= np;
-struct symbol* nctemp5402= tp;
-int nctemp5404=SymGetrank(nctemp5402);
-int nctemp5400= nctemp5404;
-int nctemp5405=PtreeSetrank(nctemp5398,nctemp5400);
-struct tree* nctemp5407= np;
-struct symbol* nctemp5411= tp;
-nctempchar1* nctemp5413=SymGetlval(nctemp5411);
-nctempchar1* nctemp5409= nctemp5413;
-int nctemp5414=PtreeSetlval(nctemp5407,nctemp5409);
-struct tree* nctemp5416= p;
-struct symbol* nctemp5420= tp;
-nctempchar1* nctemp5422=SymGetype(nctemp5420);
-nctempchar1* nctemp5418= nctemp5422;
-int nctemp5423=PtreeSetype(nctemp5416,nctemp5418);
-struct tree* nctemp5425= p;
-struct tree* nctemp5429= np;
-nctempchar1* nctemp5431=PtreeGetref(nctemp5429);
-nctempchar1* nctemp5427= nctemp5431;
-int nctemp5432=PtreeSetref(nctemp5425,nctemp5427);
-struct tree* nctemp5434= p;
-struct symbol* nctemp5438= tp;
-int nctemp5440=SymGetrank(nctemp5438);
-int nctemp5436= nctemp5440;
-int nctemp5441=PtreeSetrank(nctemp5434,nctemp5436);
 return 1;
-}
-struct tree* SemExprlist (struct tree* p)
-{
-struct tree* nctemp5446= p;
-nctempchar1* nctemp5448=PtreeGetname(nctemp5446);
-nctempchar1* nctemp5444= nctemp5448;
-struct nctempchar1 *nctemp5451;
-static struct nctempchar1 nctemp5452 = {{ 9}, (char*)"exprlist\0"};
-nctemp5451=&nctemp5452;
-nctempchar1* nctemp5449= nctemp5451;
-int nctemp5453=LibeStrcmp(nctemp5444,nctemp5449);
-if(nctemp5453)
-{
-struct tree* nctemp5458= p;
-struct tree* nctemp5460=PtreeMvchild(nctemp5458);
-p =nctemp5460;
-int nctemp5461 = (p !=0);
-int nctemp5465=nctemp5461;
-while(nctemp5465)
-{{
-struct tree* nctemp5467= p;
-struct tree* nctemp5469=SemExpr(nctemp5467);
-struct tree* nctemp5474= p;
-struct tree* nctemp5476=PtreeMvsister(nctemp5474);
-p =nctemp5476;
-}
-int nctemp5477 = (p !=0);
-nctemp5465=nctemp5477;}}
-return p;
 }
 int SemComparetype (struct tree* p,struct tree* np)
 {
 int rval;
 rval =1;
-struct tree* nctemp5491= p;
-nctempchar1* nctemp5493=PtreeGetype(nctemp5491);
-nctempchar1* nctemp5489= nctemp5493;
-struct tree* nctemp5496= np;
-nctempchar1* nctemp5498=PtreeGetype(nctemp5496);
-nctempchar1* nctemp5494= nctemp5498;
-int nctemp5499=LibeStrcmp(nctemp5489,nctemp5494);
-int nctemp5486 = (nctemp5499 ==0);
-if(nctemp5486)
+struct tree* nctemp3411= p;
+nctempchar1* nctemp3413=PtreeGetype(nctemp3411);
+nctempchar1* nctemp3409= nctemp3413;
+struct tree* nctemp3416= np;
+nctempchar1* nctemp3418=PtreeGetype(nctemp3416);
+nctempchar1* nctemp3414= nctemp3418;
+int nctemp3419=LibeStrcmp(nctemp3409,nctemp3414);
+int nctemp3406 = (nctemp3419 ==0);
+if(nctemp3406)
 {
 rval =0;
 }
-struct tree* nctemp5510= p;
-nctempchar1* nctemp5512=PtreeGetref(nctemp5510);
-nctempchar1* nctemp5508= nctemp5512;
-struct tree* nctemp5515= np;
-nctempchar1* nctemp5517=PtreeGetref(nctemp5515);
-nctempchar1* nctemp5513= nctemp5517;
-int nctemp5518=LibeStrcmp(nctemp5508,nctemp5513);
-int nctemp5505 = (nctemp5518 ==0);
-if(nctemp5505)
+struct tree* nctemp3430= p;
+nctempchar1* nctemp3432=PtreeGetref(nctemp3430);
+nctempchar1* nctemp3428= nctemp3432;
+struct tree* nctemp3435= np;
+nctempchar1* nctemp3437=PtreeGetref(nctemp3435);
+nctempchar1* nctemp3433= nctemp3437;
+int nctemp3438=LibeStrcmp(nctemp3428,nctemp3433);
+int nctemp3425 = (nctemp3438 ==0);
+if(nctemp3425)
 {
-struct tree* nctemp5523= np;
-nctempchar1* nctemp5525=PtreeGetname(nctemp5523);
-nctempchar1* nctemp5521= nctemp5525;
-struct nctempchar1 *nctemp5528;
-static struct nctempchar1 nctemp5529 = {{ 10}, (char*)"iconstant\0"};
-nctemp5528=&nctemp5529;
-nctempchar1* nctemp5526= nctemp5528;
-int nctemp5530=LibeStrcmp(nctemp5521,nctemp5526);
-if(nctemp5530)
+struct tree* nctemp3443= np;
+nctempchar1* nctemp3445=PtreeGetname(nctemp3443);
+nctempchar1* nctemp3441= nctemp3445;
+struct nctempchar1 *nctemp3448;
+static struct nctempchar1 nctemp3449 = {{ 10}, (char*)"iconstant\0"};
+nctemp3448=&nctemp3449;
+nctempchar1* nctemp3446= nctemp3448;
+int nctemp3450=LibeStrcmp(nctemp3441,nctemp3446);
+if(nctemp3450)
 {
-struct tree* nctemp5534= np;
-nctempchar1* nctemp5536=PtreeGetdef(nctemp5534);
-nctempchar1* nctemp5532= nctemp5536;
-struct nctempchar1 *nctemp5539;
-static struct nctempchar1 nctemp5540 = {{ 2}, (char*)"0\0"};
-nctemp5539=&nctemp5540;
-nctempchar1* nctemp5537= nctemp5539;
-int nctemp5541=LibeStrcmp(nctemp5532,nctemp5537);
-if(nctemp5541)
+struct tree* nctemp3454= np;
+nctempchar1* nctemp3456=PtreeGetdef(nctemp3454);
+nctempchar1* nctemp3452= nctemp3456;
+struct nctempchar1 *nctemp3459;
+static struct nctempchar1 nctemp3460 = {{ 2}, (char*)"0\0"};
+nctemp3459=&nctemp3460;
+nctempchar1* nctemp3457= nctemp3459;
+int nctemp3461=LibeStrcmp(nctemp3452,nctemp3457);
+if(nctemp3461)
 {
 rval =1;
 }
@@ -4344,23 +3103,23 @@ rval =0;
 }
 }
 else{
-struct tree* nctemp5559= p;
-nctempchar1* nctemp5561=PtreeGetref(nctemp5559);
-nctempchar1* nctemp5557= nctemp5561;
-struct nctempchar1 *nctemp5564;
-static struct nctempchar1 nctemp5565 = {{ 5}, (char*)"aref\0"};
-nctemp5564=&nctemp5565;
-nctempchar1* nctemp5562= nctemp5564;
-int nctemp5566=LibeStrcmp(nctemp5557,nctemp5562);
-int nctemp5554 = (nctemp5566 ==1);
-if(nctemp5554)
+struct tree* nctemp3479= p;
+nctempchar1* nctemp3481=PtreeGetref(nctemp3479);
+nctempchar1* nctemp3477= nctemp3481;
+struct nctempchar1 *nctemp3484;
+static struct nctempchar1 nctemp3485 = {{ 5}, (char*)"aref\0"};
+nctemp3484=&nctemp3485;
+nctempchar1* nctemp3482= nctemp3484;
+int nctemp3486=LibeStrcmp(nctemp3477,nctemp3482);
+int nctemp3474 = (nctemp3486 ==1);
+if(nctemp3474)
 {
-struct tree* nctemp5571= p;
-int nctemp5573=PtreeGetrank(nctemp5571);
-struct tree* nctemp5575= np;
-int nctemp5577=PtreeGetrank(nctemp5575);
-int nctemp5568 = (nctemp5573 !=nctemp5577);
-if(nctemp5568)
+struct tree* nctemp3491= p;
+int nctemp3493=PtreeGetrank(nctemp3491);
+struct tree* nctemp3495= np;
+int nctemp3497=PtreeGetrank(nctemp3495);
+int nctemp3488 = (nctemp3493 !=nctemp3497);
+if(nctemp3488)
 {
 rval =0;
 }
@@ -4368,47 +3127,1907 @@ rval =0;
 }
 return rval;
 }
-int SemCopytype (struct tree* p,struct tree* np)
+struct tree* SemAsgexpr (struct tree* p)
 {
-struct tree* nctemp5584= np;
-struct tree* nctemp5588= p;
-nctempchar1* nctemp5590=PtreeGetype(nctemp5588);
-nctempchar1* nctemp5586= nctemp5590;
-int nctemp5591=PtreeSetype(nctemp5584,nctemp5586);
-struct tree* nctemp5593= np;
-struct tree* nctemp5597= p;
-nctempchar1* nctemp5599=PtreeGetstruct(nctemp5597);
-nctempchar1* nctemp5595= nctemp5599;
-int nctemp5600=PtreeSetstruct(nctemp5593,nctemp5595);
-struct tree* nctemp5602= np;
-struct tree* nctemp5606= p;
-nctempchar1* nctemp5608=PtreeGetarray(nctemp5606);
-nctempchar1* nctemp5604= nctemp5608;
-int nctemp5609=PtreeSetarray(nctemp5602,nctemp5604);
-struct tree* nctemp5611= np;
-struct tree* nctemp5615= p;
-nctempchar1* nctemp5617=PtreeGetref(nctemp5615);
-nctempchar1* nctemp5613= nctemp5617;
-int nctemp5618=PtreeSetref(nctemp5611,nctemp5613);
-struct tree* nctemp5620= np;
-struct tree* nctemp5624= p;
-nctempchar1* nctemp5626=PtreeGetlval(nctemp5624);
-nctempchar1* nctemp5622= nctemp5626;
-int nctemp5627=PtreeSetlval(nctemp5620,nctemp5622);
-struct tree* nctemp5629= np;
-struct tree* nctemp5633= p;
-int nctemp5635=PtreeGetrank(nctemp5633);
-int nctemp5631= nctemp5635;
-int nctemp5636=PtreeSetrank(nctemp5629,nctemp5631);
-return 1;
+struct tree* np;
+struct tree* nctemp3507= p;
+struct tree* nctemp3509=PtreeMvchild(nctemp3507);
+np =nctemp3509;
+struct tree* nctemp3515= np;
+nctempchar1* nctemp3517=PtreeGetlval(nctemp3515);
+nctempchar1* nctemp3513= nctemp3517;
+struct nctempchar1 *nctemp3520;
+static struct nctempchar1 nctemp3521 = {{ 5}, (char*)"lval\0"};
+nctemp3520=&nctemp3521;
+nctempchar1* nctemp3518= nctemp3520;
+int nctemp3522=LibeStrcmp(nctemp3513,nctemp3518);
+int nctemp3510 = (nctemp3522 ==0);
+if(nctemp3510)
+{
+struct tree* nctemp3525= np;
+struct nctempchar1 *nctemp3529;
+static struct nctempchar1 nctemp3530 = {{ 17}, (char*)"Not a left value\0"};
+nctemp3529=&nctemp3530;
+nctempchar1* nctemp3527= nctemp3529;
+struct tree* nctemp3533= np;
+nctempchar1* nctemp3535=PtreeGetdef(nctemp3533);
+nctempchar1* nctemp3531= nctemp3535;
+int nctemp3536=SemSerror(nctemp3525,nctemp3527,nctemp3531);
+}
+else{
+struct tree* nctemp3538= p;
+struct nctempchar1 *nctemp3542;
+static struct nctempchar1 nctemp3543 = {{ 5}, (char*)"lval\0"};
+nctemp3542=&nctemp3543;
+nctempchar1* nctemp3540= nctemp3542;
+int nctemp3544=PtreeSetlval(nctemp3538,nctemp3540);
+}
+struct tree* nctemp3546= np;
+struct tree* nctemp3548= p;
+int nctemp3550=SemCopytype(nctemp3546,nctemp3548);
+return p;
+}
+struct tree* SemRelexpr (struct tree* p)
+{
+struct tree* np;
+struct tree* rp;
+struct tree* nctemp3556= p;
+struct tree* nctemp3558=PtreeMvchild(nctemp3556);
+np =nctemp3558;
+struct tree* nctemp3563= np;
+struct tree* nctemp3565=PtreeMvsister(nctemp3563);
+rp =nctemp3565;
+struct tree* nctemp3571= p;
+nctempchar1* nctemp3573=PtreeGetdef(nctemp3571);
+nctempchar1* nctemp3569= nctemp3573;
+struct nctempchar1 *nctemp3576;
+static struct nctempchar1 nctemp3577 = {{ 3}, (char*)"==\0"};
+nctemp3576=&nctemp3577;
+nctempchar1* nctemp3574= nctemp3576;
+int nctemp3578=LibeStrcmp(nctemp3569,nctemp3574);
+int nctemp3566 = (nctemp3578 ==0);
+if(nctemp3566)
+{
+struct tree* nctemp3585= p;
+nctempchar1* nctemp3587=PtreeGetdef(nctemp3585);
+nctempchar1* nctemp3583= nctemp3587;
+struct nctempchar1 *nctemp3590;
+static struct nctempchar1 nctemp3591 = {{ 3}, (char*)"!=\0"};
+nctemp3590=&nctemp3591;
+nctempchar1* nctemp3588= nctemp3590;
+int nctemp3592=LibeStrcmp(nctemp3583,nctemp3588);
+int nctemp3580 = (nctemp3592 ==0);
+if(nctemp3580)
+{
+struct tree* nctemp3599= np;
+nctempchar1* nctemp3601=PtreeGetref(nctemp3599);
+nctempchar1* nctemp3597= nctemp3601;
+struct nctempchar1 *nctemp3604;
+static struct nctempchar1 nctemp3605 = {{ 5}, (char*)"aref\0"};
+nctemp3604=&nctemp3605;
+nctempchar1* nctemp3602= nctemp3604;
+int nctemp3606=LibeStrcmp(nctemp3597,nctemp3602);
+struct tree* nctemp3610= np;
+nctempchar1* nctemp3612=PtreeGetref(nctemp3610);
+nctempchar1* nctemp3608= nctemp3612;
+struct nctempchar1 *nctemp3615;
+static struct nctempchar1 nctemp3616 = {{ 5}, (char*)"sref\0"};
+nctemp3615=&nctemp3616;
+nctempchar1* nctemp3613= nctemp3615;
+int nctemp3617=LibeStrcmp(nctemp3608,nctemp3613);
+int nctemp3594 = (nctemp3606 || nctemp3617);
+if(nctemp3594)
+{
+struct tree* nctemp3619= p;
+struct nctempchar1 *nctemp3623;
+static struct nctempchar1 nctemp3624 = {{ 18}, (char*)"Illegal operation\0"};
+nctemp3623=&nctemp3624;
+nctempchar1* nctemp3621= nctemp3623;
+struct nctempchar1 *nctemp3627;
+static struct nctempchar1 nctemp3628 = {{ 2}, (char*)" \0"};
+nctemp3627=&nctemp3628;
+nctempchar1* nctemp3625= nctemp3627;
+int nctemp3629=SemSerror(nctemp3619,nctemp3621,nctemp3625);
+}
+else{
+struct tree* nctemp3635= rp;
+nctempchar1* nctemp3637=PtreeGetref(nctemp3635);
+nctempchar1* nctemp3633= nctemp3637;
+struct nctempchar1 *nctemp3640;
+static struct nctempchar1 nctemp3641 = {{ 5}, (char*)"aref\0"};
+nctemp3640=&nctemp3641;
+nctempchar1* nctemp3638= nctemp3640;
+int nctemp3642=LibeStrcmp(nctemp3633,nctemp3638);
+struct tree* nctemp3646= np;
+nctempchar1* nctemp3648=PtreeGetref(nctemp3646);
+nctempchar1* nctemp3644= nctemp3648;
+struct nctempchar1 *nctemp3651;
+static struct nctempchar1 nctemp3652 = {{ 5}, (char*)"sref\0"};
+nctemp3651=&nctemp3652;
+nctempchar1* nctemp3649= nctemp3651;
+int nctemp3653=LibeStrcmp(nctemp3644,nctemp3649);
+int nctemp3630 = (nctemp3642 || nctemp3653);
+if(nctemp3630)
+{
+struct tree* nctemp3655= p;
+struct nctempchar1 *nctemp3659;
+static struct nctempchar1 nctemp3660 = {{ 18}, (char*)"Illegal operation\0"};
+nctemp3659=&nctemp3660;
+nctempchar1* nctemp3657= nctemp3659;
+struct nctempchar1 *nctemp3663;
+static struct nctempchar1 nctemp3664 = {{ 2}, (char*)" \0"};
+nctemp3663=&nctemp3664;
+nctempchar1* nctemp3661= nctemp3663;
+int nctemp3665=SemSerror(nctemp3655,nctemp3657,nctemp3661);
+}
+}
+}
+else{
+struct tree* nctemp3669= np;
+nctempchar1* nctemp3671=PtreeGetype(nctemp3669);
+nctempchar1* nctemp3667= nctemp3671;
+struct nctempchar1 *nctemp3674;
+static struct nctempchar1 nctemp3675 = {{ 8}, (char*)"complex\0"};
+nctemp3674=&nctemp3675;
+nctempchar1* nctemp3672= nctemp3674;
+int nctemp3676=LibeStrcmp(nctemp3667,nctemp3672);
+if(nctemp3676)
+{
+struct tree* nctemp3678= p;
+struct nctempchar1 *nctemp3682;
+static struct nctempchar1 nctemp3683 = {{ 18}, (char*)"Illegal operation\0"};
+nctemp3682=&nctemp3683;
+nctempchar1* nctemp3680= nctemp3682;
+struct nctempchar1 *nctemp3686;
+static struct nctempchar1 nctemp3687 = {{ 2}, (char*)" \0"};
+nctemp3686=&nctemp3687;
+nctempchar1* nctemp3684= nctemp3686;
+int nctemp3688=SemSerror(nctemp3678,nctemp3680,nctemp3684);
+}
+}
+}
+struct tree* nctemp3690= p;
+struct nctempchar1 *nctemp3694;
+static struct nctempchar1 nctemp3695 = {{ 4}, (char*)"int\0"};
+nctemp3694=&nctemp3695;
+nctempchar1* nctemp3692= nctemp3694;
+int nctemp3696=PtreeSetype(nctemp3690,nctemp3692);
+struct tree* nctemp3698= p;
+struct nctempchar1 *nctemp3702;
+static struct nctempchar1 nctemp3703 = {{ 5}, (char*)"void\0"};
+nctemp3702=&nctemp3703;
+nctempchar1* nctemp3700= nctemp3702;
+int nctemp3704=PtreeSetlval(nctemp3698,nctemp3700);
+struct tree* nctemp3706= p;
+struct nctempchar1 *nctemp3710;
+static struct nctempchar1 nctemp3711 = {{ 5}, (char*)"void\0"};
+nctemp3710=&nctemp3711;
+nctempchar1* nctemp3708= nctemp3710;
+int nctemp3712=PtreeSetstruct(nctemp3706,nctemp3708);
+return p;
+}
+struct tree* SemAddexpr (struct tree* p)
+{
+struct tree* np;
+struct tree* rp;
+struct tree* nctemp3718= p;
+struct tree* nctemp3720=PtreeMvchild(nctemp3718);
+np =nctemp3720;
+struct tree* nctemp3725= np;
+struct tree* nctemp3727=PtreeMvsister(nctemp3725);
+rp =nctemp3727;
+struct tree* nctemp3731= np;
+nctempchar1* nctemp3733=PtreeGetref(nctemp3731);
+nctempchar1* nctemp3729= nctemp3733;
+struct nctempchar1 *nctemp3736;
+static struct nctempchar1 nctemp3737 = {{ 5}, (char*)"sref\0"};
+nctemp3736=&nctemp3737;
+nctempchar1* nctemp3734= nctemp3736;
+int nctemp3738=LibeStrcmp(nctemp3729,nctemp3734);
+if(nctemp3738)
+{
+struct tree* nctemp3740= np;
+struct nctempchar1 *nctemp3744;
+static struct nctempchar1 nctemp3745 = {{ 18}, (char*)"Illegal operation\0"};
+nctemp3744=&nctemp3745;
+nctempchar1* nctemp3742= nctemp3744;
+struct nctempchar1 *nctemp3748;
+static struct nctempchar1 nctemp3749 = {{ 2}, (char*)" \0"};
+nctemp3748=&nctemp3749;
+nctempchar1* nctemp3746= nctemp3748;
+int nctemp3750=SemSerror(nctemp3740,nctemp3742,nctemp3746);
+}
+else{
+struct tree* nctemp3754= rp;
+nctempchar1* nctemp3756=PtreeGetref(nctemp3754);
+nctempchar1* nctemp3752= nctemp3756;
+struct nctempchar1 *nctemp3759;
+static struct nctempchar1 nctemp3760 = {{ 5}, (char*)"sref\0"};
+nctemp3759=&nctemp3760;
+nctempchar1* nctemp3757= nctemp3759;
+int nctemp3761=LibeStrcmp(nctemp3752,nctemp3757);
+if(nctemp3761)
+{
+struct tree* nctemp3763= np;
+struct nctempchar1 *nctemp3767;
+static struct nctempchar1 nctemp3768 = {{ 18}, (char*)"Illegal operation\0"};
+nctemp3767=&nctemp3768;
+nctempchar1* nctemp3765= nctemp3767;
+struct nctempchar1 *nctemp3771;
+static struct nctempchar1 nctemp3772 = {{ 2}, (char*)" \0"};
+nctemp3771=&nctemp3772;
+nctempchar1* nctemp3769= nctemp3771;
+int nctemp3773=SemSerror(nctemp3763,nctemp3765,nctemp3769);
+}
+else{
+struct tree* nctemp3775= np;
+struct tree* nctemp3777= p;
+int nctemp3779=SemCopytype(nctemp3775,nctemp3777);
+struct tree* nctemp3781= p;
+struct nctempchar1 *nctemp3785;
+static struct nctempchar1 nctemp3786 = {{ 5}, (char*)"void\0"};
+nctemp3785=&nctemp3786;
+nctempchar1* nctemp3783= nctemp3785;
+int nctemp3787=PtreeSetlval(nctemp3781,nctemp3783);
+}
+}
+return p;
+}
+struct tree* SemBinexpr (struct tree* p)
+{
+struct tree* leftp;
+struct tree* rightp;
+struct tree* np;
+np =p;
+struct tree* nctemp3796= p;
+nctempchar1* nctemp3798=PtreeGetname(nctemp3796);
+nctempchar1* nctemp3794= nctemp3798;
+struct nctempchar1 *nctemp3801;
+static struct nctempchar1 nctemp3802 = {{ 8}, (char*)"binexpr\0"};
+nctemp3801=&nctemp3802;
+nctempchar1* nctemp3799= nctemp3801;
+int nctemp3803=LibeStrcmp(nctemp3794,nctemp3799);
+if(nctemp3803)
+{
+struct tree* nctemp3808= p;
+struct tree* nctemp3810=PtreeMvchild(nctemp3808);
+p =nctemp3810;
+struct tree* nctemp3815= p;
+struct tree* nctemp3817=SemUnexpr(nctemp3815);
+leftp =nctemp3817;
+struct tree* nctemp3822= p;
+struct tree* nctemp3824=PtreeMvsister(nctemp3822);
+p =nctemp3824;
+struct tree* nctemp3829= p;
+struct tree* nctemp3831=SemUnexpr(nctemp3829);
+rightp =nctemp3831;
+struct tree* nctemp3835= leftp;
+struct tree* nctemp3837= rightp;
+int nctemp3839=SemComparetype(nctemp3835,nctemp3837);
+int nctemp3832 = (nctemp3839 ==0);
+if(nctemp3832)
+{
+struct tree* nctemp3842= p;
+struct nctempchar1 *nctemp3846;
+static struct nctempchar1 nctemp3847 = {{ 11}, (char*)"Type error\0"};
+nctemp3846=&nctemp3847;
+nctempchar1* nctemp3844= nctemp3846;
+struct nctempchar1 *nctemp3850;
+static struct nctempchar1 nctemp3851 = {{ 2}, (char*)" \0"};
+nctemp3850=&nctemp3851;
+nctempchar1* nctemp3848= nctemp3850;
+int nctemp3852=SemSerror(nctemp3842,nctemp3844,nctemp3848);
+return p;
+}
+else{
+struct tree* nctemp3857= np;
+nctempchar1* nctemp3859=PtreeGetdef(nctemp3857);
+nctempchar1* nctemp3855= nctemp3859;
+struct nctempchar1 *nctemp3862;
+static struct nctempchar1 nctemp3863 = {{ 2}, (char*)"=\0"};
+nctemp3862=&nctemp3863;
+nctempchar1* nctemp3860= nctemp3862;
+int nctemp3864=LibeStrcmp(nctemp3855,nctemp3860);
+if(nctemp3864)
+{
+struct tree* nctemp3866= np;
+struct tree* nctemp3868=SemAsgexpr(nctemp3866);
+}
+else{
+struct tree* nctemp3892= np;
+nctempchar1* nctemp3894=PtreeGetdef(nctemp3892);
+nctempchar1* nctemp3890= nctemp3894;
+struct nctempchar1 *nctemp3897;
+static struct nctempchar1 nctemp3898 = {{ 3}, (char*)"!=\0"};
+nctemp3897=&nctemp3898;
+nctempchar1* nctemp3895= nctemp3897;
+int nctemp3899=LibeStrcmp(nctemp3890,nctemp3895);
+struct tree* nctemp3903= np;
+nctempchar1* nctemp3905=PtreeGetdef(nctemp3903);
+nctempchar1* nctemp3901= nctemp3905;
+struct nctempchar1 *nctemp3908;
+static struct nctempchar1 nctemp3909 = {{ 3}, (char*)"==\0"};
+nctemp3908=&nctemp3909;
+nctempchar1* nctemp3906= nctemp3908;
+int nctemp3910=LibeStrcmp(nctemp3901,nctemp3906);
+int nctemp3887 = (nctemp3899 || nctemp3910);
+struct tree* nctemp3914= np;
+nctempchar1* nctemp3916=PtreeGetdef(nctemp3914);
+nctempchar1* nctemp3912= nctemp3916;
+struct nctempchar1 *nctemp3919;
+static struct nctempchar1 nctemp3920 = {{ 3}, (char*)"||\0"};
+nctemp3919=&nctemp3920;
+nctempchar1* nctemp3917= nctemp3919;
+int nctemp3921=LibeStrcmp(nctemp3912,nctemp3917);
+int nctemp3884 = (nctemp3887 || nctemp3921);
+struct tree* nctemp3925= np;
+nctempchar1* nctemp3927=PtreeGetdef(nctemp3925);
+nctempchar1* nctemp3923= nctemp3927;
+struct nctempchar1 *nctemp3930;
+static struct nctempchar1 nctemp3931 = {{ 3}, (char*)"<=\0"};
+nctemp3930=&nctemp3931;
+nctempchar1* nctemp3928= nctemp3930;
+int nctemp3932=LibeStrcmp(nctemp3923,nctemp3928);
+int nctemp3881 = (nctemp3884 || nctemp3932);
+struct tree* nctemp3936= np;
+nctempchar1* nctemp3938=PtreeGetdef(nctemp3936);
+nctempchar1* nctemp3934= nctemp3938;
+struct nctempchar1 *nctemp3941;
+static struct nctempchar1 nctemp3942 = {{ 3}, (char*)">=\0"};
+nctemp3941=&nctemp3942;
+nctempchar1* nctemp3939= nctemp3941;
+int nctemp3943=LibeStrcmp(nctemp3934,nctemp3939);
+int nctemp3878 = (nctemp3881 || nctemp3943);
+struct tree* nctemp3947= np;
+nctempchar1* nctemp3949=PtreeGetdef(nctemp3947);
+nctempchar1* nctemp3945= nctemp3949;
+struct nctempchar1 *nctemp3952;
+static struct nctempchar1 nctemp3953 = {{ 2}, (char*)"<\0"};
+nctemp3952=&nctemp3953;
+nctempchar1* nctemp3950= nctemp3952;
+int nctemp3954=LibeStrcmp(nctemp3945,nctemp3950);
+int nctemp3875 = (nctemp3878 || nctemp3954);
+struct tree* nctemp3958= np;
+nctempchar1* nctemp3960=PtreeGetdef(nctemp3958);
+nctempchar1* nctemp3956= nctemp3960;
+struct nctempchar1 *nctemp3963;
+static struct nctempchar1 nctemp3964 = {{ 2}, (char*)">\0"};
+nctemp3963=&nctemp3964;
+nctempchar1* nctemp3961= nctemp3963;
+int nctemp3965=LibeStrcmp(nctemp3956,nctemp3961);
+int nctemp3872 = (nctemp3875 || nctemp3965);
+struct tree* nctemp3969= np;
+nctempchar1* nctemp3971=PtreeGetdef(nctemp3969);
+nctempchar1* nctemp3967= nctemp3971;
+struct nctempchar1 *nctemp3974;
+static struct nctempchar1 nctemp3975 = {{ 3}, (char*)"&&\0"};
+nctemp3974=&nctemp3975;
+nctempchar1* nctemp3972= nctemp3974;
+int nctemp3976=LibeStrcmp(nctemp3967,nctemp3972);
+int nctemp3869 = (nctemp3872 || nctemp3976);
+if(nctemp3869)
+{
+struct tree* nctemp3978= np;
+struct tree* nctemp3980=SemRelexpr(nctemp3978);
+}
+else{
+struct tree* nctemp3992= np;
+nctempchar1* nctemp3994=PtreeGetdef(nctemp3992);
+nctempchar1* nctemp3990= nctemp3994;
+struct nctempchar1 *nctemp3997;
+static struct nctempchar1 nctemp3998 = {{ 2}, (char*)"+\0"};
+nctemp3997=&nctemp3998;
+nctempchar1* nctemp3995= nctemp3997;
+int nctemp3999=LibeStrcmp(nctemp3990,nctemp3995);
+struct tree* nctemp4003= np;
+nctempchar1* nctemp4005=PtreeGetdef(nctemp4003);
+nctempchar1* nctemp4001= nctemp4005;
+struct nctempchar1 *nctemp4008;
+static struct nctempchar1 nctemp4009 = {{ 2}, (char*)"-\0"};
+nctemp4008=&nctemp4009;
+nctempchar1* nctemp4006= nctemp4008;
+int nctemp4010=LibeStrcmp(nctemp4001,nctemp4006);
+int nctemp3987 = (nctemp3999 || nctemp4010);
+struct tree* nctemp4014= np;
+nctempchar1* nctemp4016=PtreeGetdef(nctemp4014);
+nctempchar1* nctemp4012= nctemp4016;
+struct nctempchar1 *nctemp4019;
+static struct nctempchar1 nctemp4020 = {{ 2}, (char*)"*\0"};
+nctemp4019=&nctemp4020;
+nctempchar1* nctemp4017= nctemp4019;
+int nctemp4021=LibeStrcmp(nctemp4012,nctemp4017);
+int nctemp3984 = (nctemp3987 || nctemp4021);
+struct tree* nctemp4025= np;
+nctempchar1* nctemp4027=PtreeGetdef(nctemp4025);
+nctempchar1* nctemp4023= nctemp4027;
+struct nctempchar1 *nctemp4030;
+static struct nctempchar1 nctemp4031 = {{ 2}, (char*)"/\0"};
+nctemp4030=&nctemp4031;
+nctempchar1* nctemp4028= nctemp4030;
+int nctemp4032=LibeStrcmp(nctemp4023,nctemp4028);
+int nctemp3981 = (nctemp3984 || nctemp4032);
+if(nctemp3981)
+{
+struct tree* nctemp4034= np;
+struct tree* nctemp4036=SemAddexpr(nctemp4034);
+}
+}
+}
+return np;
+}
+}
+else{
+struct tree* nctemp4039= p;
+struct tree* nctemp4041=SemUnexpr(nctemp4039);
+return nctemp4041;
+}
+}
+struct tree* SemExpr (struct tree* p)
+{
+struct tree* sp;
+struct tree* nctemp4046= p;
+struct tree* nctemp4048=PtreeMvchild(nctemp4046);
+sp =nctemp4048;
+struct tree* nctemp4053= sp;
+struct tree* nctemp4055=SemBinexpr(nctemp4053);
+sp =nctemp4055;
+struct tree* nctemp4057= sp;
+struct tree* nctemp4059= p;
+int nctemp4061=SemCopytype(nctemp4057,nctemp4059);
+return p;
+}
+struct tree* SemUnexpr (struct tree* p)
+{
+struct tree* np;
+np =p;
+struct tree* nctemp4070= p;
+nctempchar1* nctemp4072=PtreeGetname(nctemp4070);
+nctempchar1* nctemp4068= nctemp4072;
+struct nctempchar1 *nctemp4075;
+static struct nctempchar1 nctemp4076 = {{ 7}, (char*)"unexpr\0"};
+nctemp4075=&nctemp4076;
+nctempchar1* nctemp4073= nctemp4075;
+int nctemp4077=LibeStrcmp(nctemp4068,nctemp4073);
+if(nctemp4077)
+{
+struct tree* nctemp4082= p;
+struct tree* nctemp4084=PtreeMvchild(nctemp4082);
+p =nctemp4084;
+struct tree* nctemp4089= p;
+struct tree* nctemp4091=SemPrimexpr(nctemp4089);
+p =nctemp4091;
+struct tree* nctemp4093= p;
+struct tree* nctemp4095= np;
+int nctemp4097=SemCopytype(nctemp4093,nctemp4095);
+return np;
+}
+else{
+struct tree* nctemp4100= p;
+struct tree* nctemp4102=SemPrimexpr(nctemp4100);
+return nctemp4102;
+}
+}
+struct tree* SemPrimexpr (struct tree* p)
+{
+struct tree* nctemp4106= p;
+nctempchar1* nctemp4108=PtreeGetname(nctemp4106);
+nctempchar1* nctemp4104= nctemp4108;
+struct nctempchar1 *nctemp4111;
+static struct nctempchar1 nctemp4112 = {{ 11}, (char*)"identifier\0"};
+nctemp4111=&nctemp4112;
+nctempchar1* nctemp4109= nctemp4111;
+int nctemp4113=LibeStrcmp(nctemp4104,nctemp4109);
+if(nctemp4113)
+{
+struct tree* nctemp4115= p;
+int nctemp4117=SemId(nctemp4115);
+return p;
+}
+else{
+struct tree* nctemp4122= p;
+nctempchar1* nctemp4124=PtreeGetname(nctemp4122);
+nctempchar1* nctemp4120= nctemp4124;
+struct nctempchar1 *nctemp4127;
+static struct nctempchar1 nctemp4128 = {{ 6}, (char*)"fcall\0"};
+nctemp4127=&nctemp4128;
+nctempchar1* nctemp4125= nctemp4127;
+int nctemp4129=LibeStrcmp(nctemp4120,nctemp4125);
+if(nctemp4129)
+{
+struct tree* nctemp4131= p;
+int nctemp4133=SemFcall(nctemp4131);
+return p;
+}
+else{
+struct tree* nctemp4138= p;
+nctempchar1* nctemp4140=PtreeGetname(nctemp4138);
+nctempchar1* nctemp4136= nctemp4140;
+struct nctempchar1 *nctemp4143;
+static struct nctempchar1 nctemp4144 = {{ 5}, (char*)"cast\0"};
+nctemp4143=&nctemp4144;
+nctempchar1* nctemp4141= nctemp4143;
+int nctemp4145=LibeStrcmp(nctemp4136,nctemp4141);
+if(nctemp4145)
+{
+struct tree* nctemp4147= p;
+int nctemp4149=SemCast(nctemp4147);
+return p;
+}
+else{
+struct tree* nctemp4154= p;
+nctempchar1* nctemp4156=PtreeGetname(nctemp4154);
+nctempchar1* nctemp4152= nctemp4156;
+struct nctempchar1 *nctemp4159;
+static struct nctempchar1 nctemp4160 = {{ 4}, (char*)"new\0"};
+nctemp4159=&nctemp4160;
+nctempchar1* nctemp4157= nctemp4159;
+int nctemp4161=LibeStrcmp(nctemp4152,nctemp4157);
+if(nctemp4161)
+{
+struct tree* nctemp4163= p;
+int nctemp4165=SemNew(nctemp4163);
+return p;
+}
+else{
+struct tree* nctemp4170= p;
+nctempchar1* nctemp4172=PtreeGetname(nctemp4170);
+nctempchar1* nctemp4168= nctemp4172;
+struct nctempchar1 *nctemp4175;
+static struct nctempchar1 nctemp4176 = {{ 7}, (char*)"delete\0"};
+nctemp4175=&nctemp4176;
+nctempchar1* nctemp4173= nctemp4175;
+int nctemp4177=LibeStrcmp(nctemp4168,nctemp4173);
+if(nctemp4177)
+{
+struct tree* nctemp4179= p;
+int nctemp4181=SemDelete(nctemp4179);
+return p;
+}
+else{
+struct tree* nctemp4186= p;
+nctempchar1* nctemp4188=PtreeGetname(nctemp4186);
+nctempchar1* nctemp4184= nctemp4188;
+struct nctempchar1 *nctemp4191;
+static struct nctempchar1 nctemp4192 = {{ 6}, (char*)"cmplx\0"};
+nctemp4191=&nctemp4192;
+nctempchar1* nctemp4189= nctemp4191;
+int nctemp4193=LibeStrcmp(nctemp4184,nctemp4189);
+if(nctemp4193)
+{
+struct tree* nctemp4195= p;
+int nctemp4197=SemCmplx(nctemp4195);
+return p;
+}
+else{
+struct tree* nctemp4202= p;
+nctempchar1* nctemp4204=PtreeGetname(nctemp4202);
+nctempchar1* nctemp4200= nctemp4204;
+struct nctempchar1 *nctemp4207;
+static struct nctempchar1 nctemp4208 = {{ 3}, (char*)"re\0"};
+nctemp4207=&nctemp4208;
+nctempchar1* nctemp4205= nctemp4207;
+int nctemp4209=LibeStrcmp(nctemp4200,nctemp4205);
+if(nctemp4209)
+{
+struct tree* nctemp4211= p;
+int nctemp4213=SemRe(nctemp4211);
+return p;
+}
+else{
+struct tree* nctemp4218= p;
+nctempchar1* nctemp4220=PtreeGetname(nctemp4218);
+nctempchar1* nctemp4216= nctemp4220;
+struct nctempchar1 *nctemp4223;
+static struct nctempchar1 nctemp4224 = {{ 4}, (char*)"len\0"};
+nctemp4223=&nctemp4224;
+nctempchar1* nctemp4221= nctemp4223;
+int nctemp4225=LibeStrcmp(nctemp4216,nctemp4221);
+if(nctemp4225)
+{
+struct tree* nctemp4227= p;
+int nctemp4229=SemLen(nctemp4227);
+return p;
+}
+else{
+struct tree* nctemp4234= p;
+nctempchar1* nctemp4236=PtreeGetname(nctemp4234);
+nctempchar1* nctemp4232= nctemp4236;
+struct nctempchar1 *nctemp4239;
+static struct nctempchar1 nctemp4240 = {{ 3}, (char*)"im\0"};
+nctemp4239=&nctemp4240;
+nctempchar1* nctemp4237= nctemp4239;
+int nctemp4241=LibeStrcmp(nctemp4232,nctemp4237);
+if(nctemp4241)
+{
+struct tree* nctemp4243= p;
+int nctemp4245=SemIm(nctemp4243);
+return p;
+}
+else{
+struct tree* nctemp4250= p;
+nctempchar1* nctemp4252=PtreeGetname(nctemp4250);
+nctempchar1* nctemp4248= nctemp4252;
+struct nctempchar1 *nctemp4255;
+static struct nctempchar1 nctemp4256 = {{ 7}, (char*)"sizeof\0"};
+nctemp4255=&nctemp4256;
+nctempchar1* nctemp4253= nctemp4255;
+int nctemp4257=LibeStrcmp(nctemp4248,nctemp4253);
+if(nctemp4257)
+{
+struct tree* nctemp4259= p;
+int nctemp4261=SemSizeof(nctemp4259);
+return p;
+}
+else{
+struct tree* nctemp4266= p;
+nctempchar1* nctemp4268=PtreeGetname(nctemp4266);
+nctempchar1* nctemp4264= nctemp4268;
+struct nctempchar1 *nctemp4271;
+static struct nctempchar1 nctemp4272 = {{ 10}, (char*)"iconstant\0"};
+nctemp4271=&nctemp4272;
+nctempchar1* nctemp4269= nctemp4271;
+int nctemp4273=LibeStrcmp(nctemp4264,nctemp4269);
+if(nctemp4273)
+{
+struct tree* nctemp4275= p;
+struct nctempchar1 *nctemp4279;
+static struct nctempchar1 nctemp4280 = {{ 4}, (char*)"int\0"};
+nctemp4279=&nctemp4280;
+nctempchar1* nctemp4277= nctemp4279;
+int nctemp4281=PtreeSetype(nctemp4275,nctemp4277);
+return p;
+}
+else{
+struct tree* nctemp4286= p;
+nctempchar1* nctemp4288=PtreeGetname(nctemp4286);
+nctempchar1* nctemp4284= nctemp4288;
+struct nctempchar1 *nctemp4291;
+static struct nctempchar1 nctemp4292 = {{ 10}, (char*)"rconstant\0"};
+nctemp4291=&nctemp4292;
+nctempchar1* nctemp4289= nctemp4291;
+int nctemp4293=LibeStrcmp(nctemp4284,nctemp4289);
+if(nctemp4293)
+{
+struct tree* nctemp4295= p;
+struct nctempchar1 *nctemp4299;
+static struct nctempchar1 nctemp4300 = {{ 6}, (char*)"float\0"};
+nctemp4299=&nctemp4300;
+nctempchar1* nctemp4297= nctemp4299;
+int nctemp4301=PtreeSetype(nctemp4295,nctemp4297);
+return p;
+}
+else{
+struct tree* nctemp4306= p;
+nctempchar1* nctemp4308=PtreeGetname(nctemp4306);
+nctempchar1* nctemp4304= nctemp4308;
+struct nctempchar1 *nctemp4311;
+static struct nctempchar1 nctemp4312 = {{ 10}, (char*)"sconstant\0"};
+nctemp4311=&nctemp4312;
+nctempchar1* nctemp4309= nctemp4311;
+int nctemp4313=LibeStrcmp(nctemp4304,nctemp4309);
+if(nctemp4313)
+{
+struct tree* nctemp4315= p;
+struct nctempchar1 *nctemp4319;
+static struct nctempchar1 nctemp4320 = {{ 5}, (char*)"char\0"};
+nctemp4319=&nctemp4320;
+nctempchar1* nctemp4317= nctemp4319;
+int nctemp4321=PtreeSetype(nctemp4315,nctemp4317);
+struct tree* nctemp4323= p;
+struct nctempchar1 *nctemp4327;
+static struct nctempchar1 nctemp4328 = {{ 5}, (char*)"aref\0"};
+nctemp4327=&nctemp4328;
+nctempchar1* nctemp4325= nctemp4327;
+int nctemp4329=PtreeSetref(nctemp4323,nctemp4325);
+struct tree* nctemp4331= p;
+int nctemp4333= 1;
+int nctemp4335=PtreeSetrank(nctemp4331,nctemp4333);
+return p;
+}
+else{
+struct tree* nctemp4338= p;
+struct tree* nctemp4340=SemBinexpr(nctemp4338);
+return nctemp4340;
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
 }
 int SemCopyparallel (struct tree* p,struct tree* np)
 {
-struct tree* nctemp5639= p;
-struct tree* nctemp5643= np;
-nctempchar1* nctemp5645=PtreeGetparallel(nctemp5643);
-nctempchar1* nctemp5641= nctemp5645;
-int nctemp5646=PtreeSetparallel(nctemp5639,nctemp5641);
+struct tree* nctemp4342= p;
+struct tree* nctemp4346= np;
+nctempchar1* nctemp4348=PtreeGetparallel(nctemp4346);
+nctempchar1* nctemp4344= nctemp4348;
+int nctemp4349=PtreeSetparallel(nctemp4342,nctemp4344);
+return 1;
+}
+int SemArgtypes (struct tree* p,struct symbol* tp)
+{
+nctempchar1 *name;
+struct symbol* nctemp4356= tp;
+nctempchar1* nctemp4358=SymGetname(nctemp4356);
+name=nctemp4358;
+struct tree* nctemp4360= p;
+struct symbol* nctemp4362= tp;
+int nctemp4364=SemArgtype(nctemp4360,nctemp4362);
+struct tree* nctemp4369= p;
+struct tree* nctemp4371=PtreeMvchild(nctemp4369);
+p =nctemp4371;
+struct tree* nctemp4377= p;
+nctempchar1* nctemp4379=PtreeGetname(nctemp4377);
+nctempchar1* nctemp4375= nctemp4379;
+struct nctempchar1 *nctemp4382;
+static struct nctempchar1 nctemp4383 = {{ 8}, (char*)"arglist\0"};
+nctemp4382=&nctemp4383;
+nctempchar1* nctemp4380= nctemp4382;
+int nctemp4384=LibeStrcmp(nctemp4375,nctemp4380);
+int nctemp4372 = (nctemp4384 ==0);
+if(nctemp4372)
+{
+struct symbol* nctemp4393= tp;
+struct symbol* nctemp4395=SymGetable(nctemp4393);
+tp =nctemp4395;
+int nctemp4386 = (tp !=0);
+if(nctemp4386)
+{
+struct tree* nctemp4398= p;
+struct nctempchar1 *nctemp4402;
+static struct nctempchar1 nctemp4403 = {{ 54}, (char*)"Function arguments does not match forward declaration\0"};
+nctemp4402=&nctemp4403;
+nctempchar1* nctemp4400= nctemp4402;
+struct tree* nctemp4406= p;
+nctempchar1* nctemp4408=PtreeGetdef(nctemp4406);
+nctempchar1* nctemp4404= nctemp4408;
+int nctemp4409=SemSerror(nctemp4398,nctemp4400,nctemp4404);
+return 0;
+}
+return 1;
+}
+struct tree* nctemp4418= p;
+struct tree* nctemp4420=PtreeMvchild(nctemp4418);
+struct tree* nctemp4416= nctemp4420;
+struct tree* nctemp4421=PtreeMvchild(nctemp4416);
+p =nctemp4421;
+struct symbol* nctemp4426= tp;
+struct symbol* nctemp4428=SymGetable(nctemp4426);
+tp =nctemp4428;
+struct nctempchar1 *nctemp4435;
+static struct nctempchar1 nctemp4436 = {{ 9}, (char*)"#arglist\0"};
+nctemp4435=&nctemp4436;
+nctempchar1* nctemp4433= nctemp4435;
+struct symbol* nctemp4437= tp;
+struct symbol* nctemp4439=SymLookup(nctemp4433,nctemp4437);
+tp =nctemp4439;
+int nctemp4440 = (tp ==0);
+if(nctemp4440)
+{
+struct tree* nctemp4445= p;
+struct nctempchar1 *nctemp4449;
+static struct nctempchar1 nctemp4450 = {{ 54}, (char*)"Function Arguments does not match forward declaration\0"};
+nctemp4449=&nctemp4450;
+nctempchar1* nctemp4447= nctemp4449;
+nctempchar1* nctemp4451= name;
+int nctemp4454=SemSerror(nctemp4445,nctemp4447,nctemp4451);
+}
+else{
+struct symbol* nctemp4459= tp;
+struct symbol* nctemp4461=SymGetable(nctemp4459);
+tp =nctemp4461;
+}
+struct symbol* nctemp4466= tp;
+struct symbol* nctemp4468=SymMvnext(nctemp4466);
+tp =nctemp4468;
+int nctemp4469 = (p !=0);
+int nctemp4473=nctemp4469;
+while(nctemp4473)
+{{
+struct tree* nctemp4475= p;
+struct symbol* nctemp4477= tp;
+int nctemp4479=SemArgtype(nctemp4475,nctemp4477);
+struct tree* nctemp4484= p;
+struct tree* nctemp4486=PtreeMvsister(nctemp4484);
+p =nctemp4486;
+struct symbol* nctemp4491= tp;
+struct symbol* nctemp4493=SymMvnext(nctemp4491);
+tp =nctemp4493;
+}
+int nctemp4494 = (p !=0);
+nctemp4473=nctemp4494;}return 1;
+}
+int SemFdef2 (struct tree* p,struct symbol* tp)
+{
+struct tree* np;
+struct tree* sp;
+struct symbol* fname;
+struct symbol* fsub;
+struct symbol* arg;
+struct symbol* argsub;
+struct symbol* args;
+struct symbol* up;
+struct symbol* ftp;
+struct symbol* uup;
+struct symbol* ltp;
+struct symbol* atp;
+nctempchar1 *type;
+int rank;
+struct tree* nctemp4500= p;
+struct nctempchar1 *nctemp4504;
+static struct nctempchar1 nctemp4505 = {{ 5}, (char*)"fdef\0"};
+nctemp4504=&nctemp4505;
+nctempchar1* nctemp4502= nctemp4504;
+int nctemp4506=PtreeSetname(nctemp4500,nctemp4502);
+struct symbol* nctemp4508= tp;
+struct nctempchar1 *nctemp4512;
+static struct nctempchar1 nctemp4513 = {{ 5}, (char*)"void\0"};
+nctemp4512=&nctemp4513;
+nctempchar1* nctemp4510= nctemp4512;
+int nctemp4514=SymSetforw(nctemp4508,nctemp4510);
+struct tree* nctemp4519= p;
+struct tree* nctemp4521=PtreeMvchild(nctemp4519);
+np =nctemp4521;
+struct symbol* nctemp4526=SymMktable();
+ltp =nctemp4526;
+struct symbol* nctemp4528= ltp;
+struct symbol* nctemp4530=SymSetltp(nctemp4528);
+struct nctempchar1 *nctemp4537;
+static struct nctempchar1 nctemp4538 = {{ 6}, (char*)"#self\0"};
+nctemp4537=&nctemp4538;
+nctempchar1* nctemp4535= nctemp4537;
+struct symbol* nctemp4539= ltp;
+struct symbol* nctemp4541=SymMkname(nctemp4535,nctemp4539);
+up =nctemp4541;
+struct symbol* nctemp4543= up;
+struct tree* nctemp4547= p;
+nctempchar1* nctemp4549=PtreeGetdef(nctemp4547);
+nctempchar1* nctemp4545= nctemp4549;
+int nctemp4550=SymSetfunc(nctemp4543,nctemp4545);
+struct tree* nctemp4556= np;
+nctempchar1* nctemp4558=PtreeGetname(nctemp4556);
+nctempchar1* nctemp4554= nctemp4558;
+struct nctempchar1 *nctemp4561;
+static struct nctempchar1 nctemp4562 = {{ 8}, (char*)"arglist\0"};
+nctemp4561=&nctemp4562;
+nctempchar1* nctemp4559= nctemp4561;
+int nctemp4563=LibeStrcmp(nctemp4554,nctemp4559);
+int nctemp4551 = (nctemp4563 ==1);
+if(nctemp4551)
+{
+struct tree* nctemp4569= np;
+struct tree* nctemp4571=PtreeMvsister(nctemp4569);
+sp =nctemp4571;
+}
+else{
+sp =np;
+}
+struct tree* nctemp4581= np;
+nctempchar1* nctemp4583=PtreeGetname(nctemp4581);
+nctempchar1* nctemp4579= nctemp4583;
+struct nctempchar1 *nctemp4586;
+static struct nctempchar1 nctemp4587 = {{ 8}, (char*)"arglist\0"};
+nctemp4586=&nctemp4587;
+nctempchar1* nctemp4584= nctemp4586;
+int nctemp4588=LibeStrcmp(nctemp4579,nctemp4584);
+int nctemp4576 = (nctemp4588 ==1);
+if(nctemp4576)
+{
+struct tree* nctemp4594= np;
+struct tree* nctemp4596=PtreeMvchild(nctemp4594);
+np =nctemp4596;
+struct nctempchar1 *nctemp4603;
+static struct nctempchar1 nctemp4604 = {{ 9}, (char*)"#arglist\0"};
+nctemp4603=&nctemp4604;
+nctempchar1* nctemp4601= nctemp4603;
+struct symbol* nctemp4605= ltp;
+struct symbol* nctemp4607=SymMkname(nctemp4601,nctemp4605);
+up =nctemp4607;
+struct symbol* nctemp4612=SymMktable();
+ftp =nctemp4612;
+struct symbol* nctemp4614= up;
+struct symbol* nctemp4616= ftp;
+struct symbol* nctemp4618=SymSetable(nctemp4614,nctemp4616);
+struct tree* nctemp4620= np;
+struct symbol* nctemp4622= ftp;
+int nctemp4624=SemDeclarations(nctemp4620,nctemp4622);
+}
+struct tree* nctemp4626= p;
+struct symbol* nctemp4628= tp;
+int nctemp4630=SemArgtypes(nctemp4626,nctemp4628);
+struct symbol* nctemp4632= tp;
+int nctemp4634= 1;
+int nctemp4636=SymSetemit(nctemp4632,nctemp4634);
+struct tree* nctemp4638= sp;
+int nctemp4640=SemCompstmnt(nctemp4638);
+struct tree* nctemp4642= p;
+struct tree* nctemp4644= sp;
+int nctemp4646=SemCopyparallel(nctemp4642,nctemp4644);
+return 1;
+}
+int Semisnobody (struct tree* p)
+{
+struct tree* np;
+struct tree* nctemp4652= p;
+struct tree* nctemp4654=PtreeMvchild(nctemp4652);
+np =nctemp4654;
+struct tree* nctemp4660= np;
+nctempchar1* nctemp4662=PtreeGetname(nctemp4660);
+nctempchar1* nctemp4658= nctemp4662;
+struct nctempchar1 *nctemp4665;
+static struct nctempchar1 nctemp4666 = {{ 8}, (char*)"arglist\0"};
+nctemp4665=&nctemp4666;
+nctempchar1* nctemp4663= nctemp4665;
+int nctemp4667=LibeStrcmp(nctemp4658,nctemp4663);
+int nctemp4655 = (nctemp4667 ==1);
+if(nctemp4655)
+{
+struct tree* nctemp4673= np;
+struct tree* nctemp4675=PtreeMvsister(nctemp4673);
+np =nctemp4675;
+struct tree* nctemp4680= np;
+struct tree* nctemp4682=PtreeMvchild(nctemp4680);
+np =nctemp4682;
+int nctemp4683 = (np ==0);
+if(nctemp4683)
+{
+return 1;
+}
+else{
+return 0;
+}
+}
+else{
+struct tree* nctemp4694= np;
+nctempchar1* nctemp4696=PtreeGetname(nctemp4694);
+nctempchar1* nctemp4692= nctemp4696;
+struct nctempchar1 *nctemp4699;
+static struct nctempchar1 nctemp4700 = {{ 10}, (char*)"compstmnt\0"};
+nctemp4699=&nctemp4700;
+nctempchar1* nctemp4697= nctemp4699;
+int nctemp4701=LibeStrcmp(nctemp4692,nctemp4697);
+int nctemp4689 = (nctemp4701 ==1);
+if(nctemp4689)
+{
+struct tree* nctemp4707= np;
+struct tree* nctemp4709=PtreeMvchild(nctemp4707);
+np =nctemp4709;
+int nctemp4710 = (np ==0);
+if(nctemp4710)
+{
+return 1;
+}
+else{
+return 0;
+}
+}
+}
+}
+int SemFdef (struct tree* p,struct symbol* tp)
+{
+struct tree* np;
+struct tree* sp;
+struct symbol* fname;
+struct symbol* fsub;
+struct symbol* arg;
+struct symbol* argsub;
+struct symbol* args;
+struct symbol* up;
+struct symbol* ftp;
+struct symbol* uup;
+struct symbol* ltp;
+struct symbol* atp;
+struct symbol* qp;
+nctempchar1 *type;
+int rank;
+int nobody;
+struct tree* nctemp4719= p;
+nctempchar1* nctemp4721=PtreeGetarray(nctemp4719);
+nctempchar1* nctemp4717= nctemp4721;
+struct nctempchar1 *nctemp4724;
+static struct nctempchar1 nctemp4725 = {{ 6}, (char*)"array\0"};
+nctemp4724=&nctemp4725;
+nctempchar1* nctemp4722= nctemp4724;
+int nctemp4726=LibeStrcmp(nctemp4717,nctemp4722);
+if(nctemp4726)
+{
+rank =1;
+struct tree* nctemp4735= p;
+struct tree* nctemp4737=PtreeMvchild(nctemp4735);
+np =nctemp4737;
+struct tree* nctemp4742= np;
+struct tree* nctemp4744=PtreeMvchild(nctemp4742);
+sp =nctemp4744;
+struct tree* nctemp4749= np;
+struct tree* nctemp4751=PtreeMvsister(nctemp4749);
+np =nctemp4751;
+struct tree* nctemp4759= sp;
+struct tree* nctemp4761=PtreeMvsister(nctemp4759);
+sp =nctemp4761;
+int nctemp4752 = (sp !=0);
+int nctemp4763=nctemp4752;
+while(nctemp4763)
+{{
+int nctemp4772 = rank + 1;
+rank =nctemp4772;
+}
+struct tree* nctemp4780= sp;
+struct tree* nctemp4782=PtreeMvsister(nctemp4780);
+sp =nctemp4782;
+int nctemp4773 = (sp !=0);
+nctemp4763=nctemp4773;}}
+else{
+rank =0;
+struct tree* nctemp4792= p;
+struct tree* nctemp4794=PtreeMvchild(nctemp4792);
+np =nctemp4794;
+}
+struct tree* nctemp4796= p;
+int nctemp4798= rank;
+int nctemp4800=PtreeSetrank(nctemp4796,nctemp4798);
+struct tree* nctemp4802= p;
+struct tree* nctemp4804= np;
+int nctemp4806=SemCopytype(nctemp4802,nctemp4804);
+struct tree* nctemp4808= np;
+struct tree* nctemp4812= p;
+nctempchar1* nctemp4814=PtreeGetdef(nctemp4812);
+nctempchar1* nctemp4810= nctemp4814;
+int nctemp4815=PtreeSetype(nctemp4808,nctemp4810);
+p =np;
+nobody =0;
+struct tree* nctemp4827= p;
+int nctemp4829=Semisnobody(nctemp4827);
+int nctemp4824 = (nctemp4829 ==1);
+if(nctemp4824)
+{
+struct tree* nctemp4832= p;
+struct nctempchar1 *nctemp4836;
+static struct nctempchar1 nctemp4837 = {{ 5}, (char*)"forw\0"};
+nctemp4836=&nctemp4837;
+nctempchar1* nctemp4834= nctemp4836;
+int nctemp4838=PtreeSetforw(nctemp4832,nctemp4834);
+nobody =1;
+}
+struct tree* nctemp4852= p;
+nctempchar1* nctemp4854=PtreeGetdef(nctemp4852);
+nctempchar1* nctemp4850= nctemp4854;
+struct symbol* nctemp4855= tp;
+struct symbol* nctemp4857=SymMkname(nctemp4850,nctemp4855);
+fname =nctemp4857;
+int nctemp4843 = (fname ==0);
+if(nctemp4843)
+{
+struct tree* nctemp4865= p;
+nctempchar1* nctemp4867=PtreeGetdef(nctemp4865);
+nctempchar1* nctemp4863= nctemp4867;
+struct symbol* nctemp4868= tp;
+struct symbol* nctemp4870=SymLookup(nctemp4863,nctemp4868);
+qp =nctemp4870;
+struct symbol* nctemp4876= qp;
+nctempchar1* nctemp4878=SymGetforw(nctemp4876);
+nctempchar1* nctemp4874= nctemp4878;
+struct nctempchar1 *nctemp4881;
+static struct nctempchar1 nctemp4882 = {{ 5}, (char*)"forw\0"};
+nctemp4881=&nctemp4882;
+nctempchar1* nctemp4879= nctemp4881;
+int nctemp4883=LibeStrcmp(nctemp4874,nctemp4879);
+int nctemp4871 = (nctemp4883 !=1);
+if(nctemp4871)
+{
+struct tree* nctemp4886= np;
+struct nctempchar1 *nctemp4890;
+static struct nctempchar1 nctemp4891 = {{ 25}, (char*)"Function already defined\0"};
+nctemp4890=&nctemp4891;
+nctempchar1* nctemp4888= nctemp4890;
+struct tree* nctemp4894= p;
+nctempchar1* nctemp4896=PtreeGetdef(nctemp4894);
+nctempchar1* nctemp4892= nctemp4896;
+int nctemp4897=SemSerror(nctemp4886,nctemp4888,nctemp4892);
+}
+else{
+struct tree* nctemp4899= p;
+struct symbol* nctemp4901= qp;
+int nctemp4903=SemFdef2(nctemp4899,nctemp4901);
+return 1;
+}
+}
+struct symbol* nctemp4906= fname;
+struct tree* nctemp4910= p;
+nctempchar1* nctemp4912=PtreeGetype(nctemp4910);
+nctempchar1* nctemp4908= nctemp4912;
+int nctemp4913=SymSetype(nctemp4906,nctemp4908);
+struct symbol* nctemp4915= fname;
+struct tree* nctemp4919= p;
+nctempchar1* nctemp4921=PtreeGetstruct(nctemp4919);
+nctempchar1* nctemp4917= nctemp4921;
+int nctemp4922=SymSetstruct(nctemp4915,nctemp4917);
+struct symbol* nctemp4924= fname;
+struct tree* nctemp4928= p;
+nctempchar1* nctemp4930=PtreeGetarray(nctemp4928);
+nctempchar1* nctemp4926= nctemp4930;
+int nctemp4931=SymSetarray(nctemp4924,nctemp4926);
+struct symbol* nctemp4933= fname;
+struct tree* nctemp4937= p;
+int nctemp4939=PtreeGetrank(nctemp4937);
+int nctemp4935= nctemp4939;
+int nctemp4940=SymSetrank(nctemp4933,nctemp4935);
+struct symbol* nctemp4942= fname;
+struct nctempchar1 *nctemp4946;
+static struct nctempchar1 nctemp4947 = {{ 5}, (char*)"fdef\0"};
+nctemp4946=&nctemp4947;
+nctempchar1* nctemp4944= nctemp4946;
+int nctemp4948=SymSetfunc(nctemp4942,nctemp4944);
+int nctemp4949 = (nobody ==1);
+if(nctemp4949)
+{
+struct symbol* nctemp4954= fname;
+struct nctempchar1 *nctemp4958;
+static struct nctempchar1 nctemp4959 = {{ 5}, (char*)"forw\0"};
+nctemp4958=&nctemp4959;
+nctempchar1* nctemp4956= nctemp4958;
+int nctemp4960=SymSetforw(nctemp4954,nctemp4956);
+}
+struct tree* nctemp4965= p;
+struct tree* nctemp4967=PtreeMvchild(nctemp4965);
+np =nctemp4967;
+struct symbol* nctemp4972=SymMktable();
+ltp =nctemp4972;
+struct symbol* nctemp4974= ltp;
+struct symbol* nctemp4976=SymSetltp(nctemp4974);
+struct nctempchar1 *nctemp4983;
+static struct nctempchar1 nctemp4984 = {{ 6}, (char*)"#self\0"};
+nctemp4983=&nctemp4984;
+nctempchar1* nctemp4981= nctemp4983;
+struct symbol* nctemp4985= ltp;
+struct symbol* nctemp4987=SymMkname(nctemp4981,nctemp4985);
+up =nctemp4987;
+struct symbol* nctemp4989= up;
+struct tree* nctemp4993= p;
+nctempchar1* nctemp4995=PtreeGetdef(nctemp4993);
+nctempchar1* nctemp4991= nctemp4995;
+int nctemp4996=SymSetfunc(nctemp4989,nctemp4991);
+struct tree* nctemp5002= np;
+nctempchar1* nctemp5004=PtreeGetname(nctemp5002);
+nctempchar1* nctemp5000= nctemp5004;
+struct nctempchar1 *nctemp5007;
+static struct nctempchar1 nctemp5008 = {{ 8}, (char*)"arglist\0"};
+nctemp5007=&nctemp5008;
+nctempchar1* nctemp5005= nctemp5007;
+int nctemp5009=LibeStrcmp(nctemp5000,nctemp5005);
+int nctemp4997 = (nctemp5009 ==1);
+if(nctemp4997)
+{
+struct tree* nctemp5015= np;
+struct tree* nctemp5017=PtreeMvsister(nctemp5015);
+sp =nctemp5017;
+}
+else{
+sp =np;
+}
+struct tree* nctemp5027= np;
+nctempchar1* nctemp5029=PtreeGetname(nctemp5027);
+nctempchar1* nctemp5025= nctemp5029;
+struct nctempchar1 *nctemp5032;
+static struct nctempchar1 nctemp5033 = {{ 8}, (char*)"arglist\0"};
+nctemp5032=&nctemp5033;
+nctempchar1* nctemp5030= nctemp5032;
+int nctemp5034=LibeStrcmp(nctemp5025,nctemp5030);
+int nctemp5022 = (nctemp5034 ==1);
+if(nctemp5022)
+{
+struct tree* nctemp5040= np;
+struct tree* nctemp5042=PtreeMvchild(nctemp5040);
+np =nctemp5042;
+struct nctempchar1 *nctemp5049;
+static struct nctempchar1 nctemp5050 = {{ 9}, (char*)"#arglist\0"};
+nctemp5049=&nctemp5050;
+nctempchar1* nctemp5047= nctemp5049;
+struct symbol* nctemp5051= ltp;
+struct symbol* nctemp5053=SymMkname(nctemp5047,nctemp5051);
+up =nctemp5053;
+struct symbol* nctemp5058=SymMktable();
+ftp =nctemp5058;
+struct symbol* nctemp5060= up;
+struct symbol* nctemp5062= ftp;
+struct symbol* nctemp5064=SymSetable(nctemp5060,nctemp5062);
+struct tree* nctemp5066= np;
+struct symbol* nctemp5068= ftp;
+int nctemp5070=SemDeclarations(nctemp5066,nctemp5068);
+struct symbol* nctemp5075=SymMktable();
+fsub =nctemp5075;
+struct symbol* nctemp5077= fname;
+struct symbol* nctemp5079= fsub;
+struct symbol* nctemp5081=SymSetable(nctemp5077,nctemp5079);
+struct nctempchar1 *nctemp5088;
+static struct nctempchar1 nctemp5089 = {{ 9}, (char*)"#arglist\0"};
+nctemp5088=&nctemp5089;
+nctempchar1* nctemp5086= nctemp5088;
+struct symbol* nctemp5090= fsub;
+struct symbol* nctemp5092=SymMkname(nctemp5086,nctemp5090);
+arg =nctemp5092;
+struct symbol* nctemp5097=SymMktable();
+argsub =nctemp5097;
+struct symbol* nctemp5099= arg;
+struct symbol* nctemp5101= argsub;
+struct symbol* nctemp5103=SymSetable(nctemp5099,nctemp5101);
+struct symbol* nctemp5105= ftp;
+struct symbol* nctemp5107= argsub;
+int nctemp5109=SymCpytble(nctemp5105,nctemp5107);
+}
+struct tree* nctemp5111= sp;
+int nctemp5113=SemCompstmnt(nctemp5111);
+struct tree* nctemp5115= p;
+struct tree* nctemp5117= sp;
+int nctemp5119=SemCopyparallel(nctemp5115,nctemp5117);
+return 1;
+}
+int SemExtdecl (struct tree* p)
+{
+struct tree* sp;
+struct tree* np;
+struct tree* nctemp5124= p;
+nctempchar1* nctemp5126=PtreeGetname(nctemp5124);
+nctempchar1* nctemp5122= nctemp5126;
+struct nctempchar1 *nctemp5129;
+static struct nctempchar1 nctemp5130 = {{ 8}, (char*)"extdecl\0"};
+nctemp5129=&nctemp5130;
+nctempchar1* nctemp5127= nctemp5129;
+int nctemp5131=LibeStrcmp(nctemp5122,nctemp5127);
+if(nctemp5131)
+{
+struct tree* nctemp5136= p;
+struct tree* nctemp5138=PtreeMvchild(nctemp5136);
+np =nctemp5138;
+struct tree* nctemp5140= np;
+struct nctempchar1 *nctemp5144;
+static struct nctempchar1 nctemp5145 = {{ 7}, (char*)"global\0"};
+nctemp5144=&nctemp5145;
+nctempchar1* nctemp5142= nctemp5144;
+int nctemp5146=PtreeSetglobal(nctemp5140,nctemp5142);
+struct tree* nctemp5152= np;
+nctempchar1* nctemp5154=PtreeGetname(nctemp5152);
+nctempchar1* nctemp5150= nctemp5154;
+struct nctempchar1 *nctemp5157;
+static struct nctempchar1 nctemp5158 = {{ 7}, (char*)"import\0"};
+nctemp5157=&nctemp5158;
+nctempchar1* nctemp5155= nctemp5157;
+int nctemp5159=LibeStrcmp(nctemp5150,nctemp5155);
+int nctemp5147 = (nctemp5159 ==1);
+if(nctemp5147)
+{
+struct tree* nctemp5162= np;
+struct symbol* nctemp5166=SymGetetp();
+struct symbol* nctemp5164= nctemp5166;
+int nctemp5167=SemImport(nctemp5162,nctemp5164);
+return 1;
+}
+int nctemp5169 = (np !=0);
+int nctemp5173=nctemp5169;
+while(nctemp5173)
+{{
+struct tree* nctemp5178= np;
+struct tree* nctemp5180=PtreeMvchild(nctemp5178);
+sp =nctemp5180;
+struct tree* nctemp5184= np;
+nctempchar1* nctemp5186=PtreeGetarray(nctemp5184);
+nctempchar1* nctemp5182= nctemp5186;
+struct nctempchar1 *nctemp5189;
+static struct nctempchar1 nctemp5190 = {{ 6}, (char*)"array\0"};
+nctemp5189=&nctemp5190;
+nctempchar1* nctemp5187= nctemp5189;
+int nctemp5191=LibeStrcmp(nctemp5182,nctemp5187);
+if(nctemp5191)
+{
+struct tree* nctemp5196= sp;
+struct tree* nctemp5198=PtreeMvsister(nctemp5196);
+sp =nctemp5198;
+}
+struct tree* nctemp5202= sp;
+nctempchar1* nctemp5204=PtreeGetname(nctemp5202);
+nctempchar1* nctemp5200= nctemp5204;
+struct nctempchar1 *nctemp5207;
+static struct nctempchar1 nctemp5208 = {{ 10}, (char*)"structdec\0"};
+nctemp5207=&nctemp5208;
+nctempchar1* nctemp5205= nctemp5207;
+int nctemp5209=LibeStrcmp(nctemp5200,nctemp5205);
+if(nctemp5209)
+{
+struct tree* nctemp5211= np;
+struct symbol* nctemp5215=SymGetetp();
+struct symbol* nctemp5213= nctemp5215;
+int nctemp5216=SemStructdecl(nctemp5211,nctemp5213);
+}
+else{
+struct tree* nctemp5220= sp;
+nctempchar1* nctemp5222=PtreeGetname(nctemp5220);
+nctempchar1* nctemp5218= nctemp5222;
+struct nctempchar1 *nctemp5225;
+static struct nctempchar1 nctemp5226 = {{ 5}, (char*)"fdef\0"};
+nctemp5225=&nctemp5226;
+nctempchar1* nctemp5223= nctemp5225;
+int nctemp5227=LibeStrcmp(nctemp5218,nctemp5223);
+if(nctemp5227)
+{
+struct tree* nctemp5229= np;
+struct symbol* nctemp5233=SymGetetp();
+struct symbol* nctemp5231= nctemp5233;
+int nctemp5234=SemFdef(nctemp5229,nctemp5231);
+}
+else{
+struct tree* nctemp5236= np;
+struct symbol* nctemp5240=SymGetetp();
+struct symbol* nctemp5238= nctemp5240;
+int nctemp5241=SemDeclaration(nctemp5236,nctemp5238);
+}
+}
+struct tree* nctemp5246= np;
+struct tree* nctemp5248=PtreeMvsister(nctemp5246);
+np =nctemp5248;
+}
+int nctemp5249 = (np !=0);
+nctemp5173=nctemp5249;}}
+return 1;
+}
+int SemSem (struct tree* p,struct symbol* tp)
+{
+struct symbol* ltp;
+struct symbol* nctemp5255= tp;
+struct symbol* nctemp5257=SymSetetp(nctemp5255);
+ltp =0;
+struct symbol* nctemp5263= ltp;
+struct symbol* nctemp5265=SymSetltp(nctemp5263);
+struct tree* nctemp5267= p;
+int nctemp5269=SemExtdecl(nctemp5267);
+return 1;
+}
+int SemWhilestmnt (struct tree* p)
+{
+struct tree* q;
+q =p;
+struct tree* nctemp5279= p;
+struct tree* nctemp5281=PtreeMvchild(nctemp5279);
+p =nctemp5281;
+struct tree* nctemp5283= p;
+struct tree* nctemp5285=SemExpr(nctemp5283);
+struct tree* nctemp5287= p;
+int nctemp5289= 1;
+int nctemp5291=PtreeSetopexpr(nctemp5287,nctemp5289);
+struct tree* nctemp5296= p;
+struct tree* nctemp5298=PtreeMvsister(nctemp5296);
+p =nctemp5298;
+struct tree* nctemp5300= p;
+int nctemp5302=SemStmnt(nctemp5300);
+struct tree* nctemp5304= q;
+struct tree* nctemp5306= p;
+int nctemp5308=SemCopyparallel(nctemp5304,nctemp5306);
+return 1;
+}
+int SemForstmnt (struct tree* p)
+{
+struct tree* q;
+q =p;
+struct tree* nctemp5318= p;
+struct tree* nctemp5320=PtreeMvchild(nctemp5318);
+p =nctemp5320;
+struct tree* nctemp5322= p;
+struct tree* nctemp5324=SemExpr(nctemp5322);
+struct tree* nctemp5326= p;
+int nctemp5328= 1;
+int nctemp5330=PtreeSetopexpr(nctemp5326,nctemp5328);
+struct tree* nctemp5335= p;
+struct tree* nctemp5337=PtreeMvsister(nctemp5335);
+p =nctemp5337;
+struct tree* nctemp5339= p;
+struct tree* nctemp5341=SemExpr(nctemp5339);
+struct tree* nctemp5343= p;
+int nctemp5345= 1;
+int nctemp5347=PtreeSetopexpr(nctemp5343,nctemp5345);
+struct tree* nctemp5352= p;
+struct tree* nctemp5354=PtreeMvsister(nctemp5352);
+p =nctemp5354;
+struct tree* nctemp5356= p;
+struct tree* nctemp5358=SemExpr(nctemp5356);
+struct tree* nctemp5360= p;
+int nctemp5362= 1;
+int nctemp5364=PtreeSetopexpr(nctemp5360,nctemp5362);
+struct tree* nctemp5369= p;
+struct tree* nctemp5371=PtreeMvsister(nctemp5369);
+p =nctemp5371;
+struct tree* nctemp5373= p;
+int nctemp5375=SemStmnt(nctemp5373);
+struct tree* nctemp5377= q;
+struct tree* nctemp5379= p;
+int nctemp5381=SemCopyparallel(nctemp5377,nctemp5379);
+return 1;
+}
+int SemParallelstmnt (struct tree* p)
+{
+struct tree* sp;
+struct tree* rp;
+int rank;
+rank =0;
+struct tree* nctemp5391= p;
+struct tree* nctemp5393=PtreeMvchild(nctemp5391);
+sp =nctemp5393;
+struct tree* nctemp5398= sp;
+struct tree* nctemp5400=PtreeMvchild(nctemp5398);
+sp =nctemp5400;
+int nctemp5401 = (sp !=0);
+int nctemp5405=nctemp5401;
+while(nctemp5405)
+{{
+struct tree* nctemp5410= sp;
+struct tree* nctemp5412=PtreeMvchild(nctemp5410);
+rp =nctemp5412;
+struct tree* nctemp5414= rp;
+struct tree* nctemp5416=SemExpr(nctemp5414);
+struct tree* nctemp5418= rp;
+int nctemp5420= 1;
+int nctemp5422=PtreeSetopexpr(nctemp5418,nctemp5420);
+struct tree* nctemp5427= rp;
+struct tree* nctemp5429=PtreeMvsister(nctemp5427);
+rp =nctemp5429;
+struct tree* nctemp5431= rp;
+struct tree* nctemp5433=SemExpr(nctemp5431);
+struct tree* nctemp5435= rp;
+int nctemp5437= 1;
+int nctemp5439=PtreeSetopexpr(nctemp5435,nctemp5437);
+struct tree* nctemp5447= rp;
+struct tree* nctemp5449=PtreeMvsister(nctemp5447);
+rp =nctemp5449;
+int nctemp5440 = (rp !=0);
+if(nctemp5440)
+{
+struct tree* nctemp5452= rp;
+struct tree* nctemp5454=SemExpr(nctemp5452);
+struct tree* nctemp5456= rp;
+int nctemp5458= 1;
+int nctemp5460=PtreeSetopexpr(nctemp5456,nctemp5458);
+}
+struct tree* nctemp5464= sp;
+struct tree* nctemp5466=PtreeMvsister(nctemp5464);
+int nctemp5461 = (nctemp5466 !=0);
+if(nctemp5461)
+{
+struct tree* nctemp5472= sp;
+struct tree* nctemp5474=PtreeMvsister(nctemp5472);
+rp =nctemp5474;
+}
+struct tree* nctemp5479= sp;
+struct tree* nctemp5481=PtreeMvsister(nctemp5479);
+sp =nctemp5481;
+int nctemp5490 = rank + 1;
+rank =nctemp5490;
+}
+int nctemp5491 = (sp !=0);
+nctemp5405=nctemp5491;}struct tree* nctemp5496= p;
+int nctemp5498= rank;
+int nctemp5500=PtreeSetrank(nctemp5496,nctemp5498);
+struct tree* nctemp5505= p;
+struct tree* nctemp5507=PtreeMvchild(nctemp5505);
+sp =nctemp5507;
+struct tree* nctemp5512= sp;
+struct tree* nctemp5514=PtreeMvsister(nctemp5512);
+sp =nctemp5514;
+struct tree* nctemp5516= sp;
+int nctemp5518=SemStmnt(nctemp5516);
+return 1;
+}
+int SemIfstmnt (struct tree* p)
+{
+struct tree* q;
+q =p;
+struct tree* nctemp5528= p;
+struct tree* nctemp5530=PtreeMvchild(nctemp5528);
+p =nctemp5530;
+struct tree* nctemp5532= p;
+struct tree* nctemp5534=SemExpr(nctemp5532);
+struct tree* nctemp5536= p;
+int nctemp5538= 1;
+int nctemp5540=PtreeSetopexpr(nctemp5536,nctemp5538);
+struct tree* nctemp5545= p;
+struct tree* nctemp5547=PtreeMvsister(nctemp5545);
+p =nctemp5547;
+struct tree* nctemp5549= p;
+int nctemp5551=SemStmnt(nctemp5549);
+struct tree* nctemp5553= q;
+struct tree* nctemp5555= p;
+int nctemp5557=SemCopyparallel(nctemp5553,nctemp5555);
+struct tree* nctemp5565= p;
+struct tree* nctemp5567=PtreeMvsister(nctemp5565);
+p =nctemp5567;
+int nctemp5558 = (p !=0);
+if(nctemp5558)
+{
+struct tree* nctemp5572= p;
+nctempchar1* nctemp5574=PtreeGetname(nctemp5572);
+nctempchar1* nctemp5570= nctemp5574;
+struct nctempchar1 *nctemp5577;
+static struct nctempchar1 nctemp5578 = {{ 5}, (char*)"else\0"};
+nctemp5577=&nctemp5578;
+nctempchar1* nctemp5575= nctemp5577;
+int nctemp5579=LibeStrcmp(nctemp5570,nctemp5575);
+if(nctemp5579)
+{
+struct tree* nctemp5584= p;
+struct tree* nctemp5586=PtreeMvchild(nctemp5584);
+p =nctemp5586;
+struct tree* nctemp5588= p;
+int nctemp5590=SemStmnt(nctemp5588);
+}
+}
+return 1;
+}
+int SemReturnstmnt (struct tree* p)
+{
+struct tree* sp;
+struct symbol* up;
+struct tree* nctemp5596= p;
+struct tree* nctemp5598=PtreeMvchild(nctemp5596);
+sp =nctemp5598;
+int nctemp5599 = (sp !=0);
+if(nctemp5599)
+{
+struct tree* nctemp5604= sp;
+struct tree* nctemp5606=SemExpr(nctemp5604);
+struct tree* nctemp5608= sp;
+int nctemp5610= 1;
+int nctemp5612=PtreeSetopexpr(nctemp5608,nctemp5610);
+struct nctempchar1 *nctemp5619;
+static struct nctempchar1 nctemp5620 = {{ 6}, (char*)"#self\0"};
+nctemp5619=&nctemp5620;
+nctempchar1* nctemp5617= nctemp5619;
+struct symbol* nctemp5623=SymGetltp();
+struct symbol* nctemp5621= nctemp5623;
+struct symbol* nctemp5624=SymLookup(nctemp5617,nctemp5621);
+up =nctemp5624;
+struct symbol* nctemp5631= up;
+nctempchar1* nctemp5633=SymGetfunc(nctemp5631);
+nctempchar1* nctemp5629= nctemp5633;
+struct symbol* nctemp5634=SymLook(nctemp5629);
+up =nctemp5634;
+struct tree* nctemp5636= p;
+struct symbol* nctemp5640= up;
+nctempchar1* nctemp5642=SymGetype(nctemp5640);
+nctempchar1* nctemp5638= nctemp5642;
+int nctemp5643=PtreeSetype(nctemp5636,nctemp5638);
+struct tree* nctemp5645= p;
+struct symbol* nctemp5649= up;
+nctempchar1* nctemp5651=SymGetstruct(nctemp5649);
+nctempchar1* nctemp5647= nctemp5651;
+int nctemp5652=PtreeSetstruct(nctemp5645,nctemp5647);
+struct tree* nctemp5654= p;
+struct symbol* nctemp5658= up;
+nctempchar1* nctemp5660=SymGetarray(nctemp5658);
+nctempchar1* nctemp5656= nctemp5660;
+int nctemp5661=PtreeSetarray(nctemp5654,nctemp5656);
+struct tree* nctemp5663= p;
+struct tree* nctemp5667= sp;
+nctempchar1* nctemp5669=PtreeGetref(nctemp5667);
+nctempchar1* nctemp5665= nctemp5669;
+int nctemp5670=PtreeSetref(nctemp5663,nctemp5665);
+struct tree* nctemp5672= p;
+struct symbol* nctemp5676= up;
+int nctemp5678=SymGetrank(nctemp5676);
+int nctemp5674= nctemp5678;
+int nctemp5679=PtreeSetrank(nctemp5672,nctemp5674);
+struct tree* nctemp5683= p;
+struct tree* nctemp5685= sp;
+int nctemp5687=SemComparetype(nctemp5683,nctemp5685);
+int nctemp5680 = (nctemp5687 ==0);
+if(nctemp5680)
+{
+struct tree* nctemp5690= p;
+struct nctempchar1 *nctemp5694;
+static struct nctempchar1 nctemp5695 = {{ 26}, (char*)"Return type is incorrect \0"};
+nctemp5694=&nctemp5695;
+nctempchar1* nctemp5692= nctemp5694;
+struct nctempchar1 *nctemp5698;
+static struct nctempchar1 nctemp5699 = {{ 2}, (char*)" \0"};
+nctemp5698=&nctemp5699;
+nctempchar1* nctemp5696= nctemp5698;
+int nctemp5700=SemSerror(nctemp5690,nctemp5692,nctemp5696);
+}
+}
+return 1;
+}
+int SemStmnt (struct tree* p)
+{
+struct tree* q;
+int parflag;
+parflag =0;
+q =p;
+struct tree* nctemp5713= p;
+nctempchar1* nctemp5715=PtreeGetname(nctemp5713);
+nctempchar1* nctemp5711= nctemp5715;
+struct nctempchar1 *nctemp5718;
+static struct nctempchar1 nctemp5719 = {{ 13}, (char*)"declarations\0"};
+nctemp5718=&nctemp5719;
+nctempchar1* nctemp5716= nctemp5718;
+int nctemp5720=LibeStrcmp(nctemp5711,nctemp5716);
+if(nctemp5720)
+{
+struct tree* nctemp5722= p;
+struct symbol* nctemp5726=SymGetltp();
+struct symbol* nctemp5724= nctemp5726;
+int nctemp5727=SemDeclarations(nctemp5722,nctemp5724);
+struct tree* nctemp5732= p;
+struct tree* nctemp5734=PtreeMvsister(nctemp5732);
+p =nctemp5734;
+}
+int nctemp5735 = (p !=0);
+int nctemp5739=nctemp5735;
+while(nctemp5739)
+{{
+struct tree* nctemp5743= p;
+nctempchar1* nctemp5745=PtreeGetname(nctemp5743);
+nctempchar1* nctemp5741= nctemp5745;
+struct nctempchar1 *nctemp5748;
+static struct nctempchar1 nctemp5749 = {{ 5}, (char*)"expr\0"};
+nctemp5748=&nctemp5749;
+nctempchar1* nctemp5746= nctemp5748;
+int nctemp5750=LibeStrcmp(nctemp5741,nctemp5746);
+if(nctemp5750)
+{
+struct tree* nctemp5752= p;
+struct tree* nctemp5754=SemExpr(nctemp5752);
+struct tree* nctemp5756= p;
+int nctemp5758= 1;
+int nctemp5760=PtreeSetopexpr(nctemp5756,nctemp5758);
+}
+struct tree* nctemp5764= p;
+nctempchar1* nctemp5766=PtreeGetname(nctemp5764);
+nctempchar1* nctemp5762= nctemp5766;
+struct nctempchar1 *nctemp5769;
+static struct nctempchar1 nctemp5770 = {{ 10}, (char*)"compstmnt\0"};
+nctemp5769=&nctemp5770;
+nctempchar1* nctemp5767= nctemp5769;
+int nctemp5771=LibeStrcmp(nctemp5762,nctemp5767);
+if(nctemp5771)
+{
+struct tree* nctemp5773= p;
+int nctemp5775=SemCompstmnt(nctemp5773);
+}
+struct tree* nctemp5779= p;
+nctempchar1* nctemp5781=PtreeGetname(nctemp5779);
+nctempchar1* nctemp5777= nctemp5781;
+struct nctempchar1 *nctemp5784;
+static struct nctempchar1 nctemp5785 = {{ 6}, (char*)"while\0"};
+nctemp5784=&nctemp5785;
+nctempchar1* nctemp5782= nctemp5784;
+int nctemp5786=LibeStrcmp(nctemp5777,nctemp5782);
+if(nctemp5786)
+{
+struct tree* nctemp5788= p;
+int nctemp5790=SemWhilestmnt(nctemp5788);
+}
+struct tree* nctemp5794= p;
+nctempchar1* nctemp5796=PtreeGetname(nctemp5794);
+nctempchar1* nctemp5792= nctemp5796;
+struct nctempchar1 *nctemp5799;
+static struct nctempchar1 nctemp5800 = {{ 4}, (char*)"for\0"};
+nctemp5799=&nctemp5800;
+nctempchar1* nctemp5797= nctemp5799;
+int nctemp5801=LibeStrcmp(nctemp5792,nctemp5797);
+if(nctemp5801)
+{
+struct tree* nctemp5803= p;
+int nctemp5805=SemForstmnt(nctemp5803);
+}
+struct tree* nctemp5809= p;
+nctempchar1* nctemp5811=PtreeGetname(nctemp5809);
+nctempchar1* nctemp5807= nctemp5811;
+struct nctempchar1 *nctemp5814;
+static struct nctempchar1 nctemp5815 = {{ 9}, (char*)"parallel\0"};
+nctemp5814=&nctemp5815;
+nctempchar1* nctemp5812= nctemp5814;
+int nctemp5816=LibeStrcmp(nctemp5807,nctemp5812);
+if(nctemp5816)
+{
+parflag =1;
+}
+struct tree* nctemp5824= p;
+nctempchar1* nctemp5826=PtreeGetname(nctemp5824);
+nctempchar1* nctemp5822= nctemp5826;
+struct nctempchar1 *nctemp5829;
+static struct nctempchar1 nctemp5830 = {{ 3}, (char*)"if\0"};
+nctemp5829=&nctemp5830;
+nctempchar1* nctemp5827= nctemp5829;
+int nctemp5831=LibeStrcmp(nctemp5822,nctemp5827);
+if(nctemp5831)
+{
+struct tree* nctemp5833= p;
+int nctemp5835=SemIfstmnt(nctemp5833);
+}
+struct tree* nctemp5839= p;
+nctempchar1* nctemp5841=PtreeGetname(nctemp5839);
+nctempchar1* nctemp5837= nctemp5841;
+struct nctempchar1 *nctemp5844;
+static struct nctempchar1 nctemp5845 = {{ 7}, (char*)"return\0"};
+nctemp5844=&nctemp5845;
+nctempchar1* nctemp5842= nctemp5844;
+int nctemp5846=LibeStrcmp(nctemp5837,nctemp5842);
+if(nctemp5846)
+{
+struct tree* nctemp5848= p;
+int nctemp5850=SemReturnstmnt(nctemp5848);
+}
+struct tree* nctemp5855= p;
+struct tree* nctemp5857=PtreeMvsister(nctemp5855);
+p =nctemp5857;
+}
+int nctemp5858 = (p !=0);
+nctemp5739=nctemp5858;}int nctemp5862 = (parflag ==1);
+if(nctemp5862)
+{
+struct tree* nctemp5867= q;
+struct nctempchar1 *nctemp5871;
+static struct nctempchar1 nctemp5872 = {{ 9}, (char*)"parallel\0"};
+nctemp5871=&nctemp5872;
+nctempchar1* nctemp5869= nctemp5871;
+int nctemp5873=PtreeSetparallel(nctemp5867,nctemp5869);
+}
+return 1;
+}
+int SemCompstmnt (struct tree* p)
+{
+struct tree* q;
+int parflag;
+parflag =0;
+q =p;
+struct tree* nctemp5887= p;
+struct tree* nctemp5889=PtreeMvchild(nctemp5887);
+p =nctemp5889;
+int nctemp5890 = (p ==0);
+if(nctemp5890)
+{
+return 1;
+}
+struct tree* nctemp5898= p;
+nctempchar1* nctemp5900=PtreeGetname(nctemp5898);
+nctempchar1* nctemp5896= nctemp5900;
+struct nctempchar1 *nctemp5903;
+static struct nctempchar1 nctemp5904 = {{ 13}, (char*)"declarations\0"};
+nctemp5903=&nctemp5904;
+nctempchar1* nctemp5901= nctemp5903;
+int nctemp5905=LibeStrcmp(nctemp5896,nctemp5901);
+if(nctemp5905)
+{
+struct tree* nctemp5909= p;
+struct tree* nctemp5911=PtreeMvchild(nctemp5909);
+struct tree* nctemp5907= nctemp5911;
+struct symbol* nctemp5914=SymGetltp();
+struct symbol* nctemp5912= nctemp5914;
+int nctemp5915=SemDeclarations(nctemp5907,nctemp5912);
+struct tree* nctemp5920= p;
+struct tree* nctemp5922=PtreeMvsister(nctemp5920);
+p =nctemp5922;
+}
+int nctemp5923 = (p !=0);
+int nctemp5927=nctemp5923;
+while(nctemp5927)
+{{
+struct tree* nctemp5931= p;
+nctempchar1* nctemp5933=PtreeGetname(nctemp5931);
+nctempchar1* nctemp5929= nctemp5933;
+struct nctempchar1 *nctemp5936;
+static struct nctempchar1 nctemp5937 = {{ 5}, (char*)"expr\0"};
+nctemp5936=&nctemp5937;
+nctempchar1* nctemp5934= nctemp5936;
+int nctemp5938=LibeStrcmp(nctemp5929,nctemp5934);
+if(nctemp5938)
+{
+struct tree* nctemp5940= p;
+struct tree* nctemp5942=SemExpr(nctemp5940);
+struct tree* nctemp5944= p;
+int nctemp5946= 1;
+int nctemp5948=PtreeSetopexpr(nctemp5944,nctemp5946);
+}
+struct tree* nctemp5952= p;
+nctempchar1* nctemp5954=PtreeGetname(nctemp5952);
+nctempchar1* nctemp5950= nctemp5954;
+struct nctempchar1 *nctemp5957;
+static struct nctempchar1 nctemp5958 = {{ 6}, (char*)"while\0"};
+nctemp5957=&nctemp5958;
+nctempchar1* nctemp5955= nctemp5957;
+int nctemp5959=LibeStrcmp(nctemp5950,nctemp5955);
+if(nctemp5959)
+{
+struct tree* nctemp5961= p;
+int nctemp5963=SemWhilestmnt(nctemp5961);
+}
+struct tree* nctemp5967= p;
+nctempchar1* nctemp5969=PtreeGetname(nctemp5967);
+nctempchar1* nctemp5965= nctemp5969;
+struct nctempchar1 *nctemp5972;
+static struct nctempchar1 nctemp5973 = {{ 4}, (char*)"for\0"};
+nctemp5972=&nctemp5973;
+nctempchar1* nctemp5970= nctemp5972;
+int nctemp5974=LibeStrcmp(nctemp5965,nctemp5970);
+if(nctemp5974)
+{
+struct tree* nctemp5976= p;
+int nctemp5978=SemForstmnt(nctemp5976);
+}
+struct tree* nctemp5982= p;
+nctempchar1* nctemp5984=PtreeGetname(nctemp5982);
+nctempchar1* nctemp5980= nctemp5984;
+struct nctempchar1 *nctemp5987;
+static struct nctempchar1 nctemp5988 = {{ 9}, (char*)"parallel\0"};
+nctemp5987=&nctemp5988;
+nctempchar1* nctemp5985= nctemp5987;
+int nctemp5989=LibeStrcmp(nctemp5980,nctemp5985);
+if(nctemp5989)
+{
+struct tree* nctemp5991= p;
+int nctemp5993=SemParallelstmnt(nctemp5991);
+struct tree* nctemp5995= p;
+struct nctempchar1 *nctemp5999;
+static struct nctempchar1 nctemp6000 = {{ 9}, (char*)"parallel\0"};
+nctemp5999=&nctemp6000;
+nctempchar1* nctemp5997= nctemp5999;
+int nctemp6001=PtreeSetparallel(nctemp5995,nctemp5997);
+}
+struct tree* nctemp6005= p;
+nctempchar1* nctemp6007=PtreeGetname(nctemp6005);
+nctempchar1* nctemp6003= nctemp6007;
+struct nctempchar1 *nctemp6010;
+static struct nctempchar1 nctemp6011 = {{ 3}, (char*)"if\0"};
+nctemp6010=&nctemp6011;
+nctempchar1* nctemp6008= nctemp6010;
+int nctemp6012=LibeStrcmp(nctemp6003,nctemp6008);
+if(nctemp6012)
+{
+struct tree* nctemp6014= p;
+int nctemp6016=SemIfstmnt(nctemp6014);
+}
+struct tree* nctemp6020= p;
+nctempchar1* nctemp6022=PtreeGetname(nctemp6020);
+nctempchar1* nctemp6018= nctemp6022;
+struct nctempchar1 *nctemp6025;
+static struct nctempchar1 nctemp6026 = {{ 7}, (char*)"return\0"};
+nctemp6025=&nctemp6026;
+nctempchar1* nctemp6023= nctemp6025;
+int nctemp6027=LibeStrcmp(nctemp6018,nctemp6023);
+if(nctemp6027)
+{
+struct tree* nctemp6029= p;
+int nctemp6031=SemReturnstmnt(nctemp6029);
+}
+struct tree* nctemp6035= p;
+nctempchar1* nctemp6037=PtreeGetparallel(nctemp6035);
+nctempchar1* nctemp6033= nctemp6037;
+struct nctempchar1 *nctemp6040;
+static struct nctempchar1 nctemp6041 = {{ 9}, (char*)"parallel\0"};
+nctemp6040=&nctemp6041;
+nctempchar1* nctemp6038= nctemp6040;
+int nctemp6042=LibeStrcmp(nctemp6033,nctemp6038);
+if(nctemp6042)
+{
+parflag =1;
+}
+struct tree* nctemp6051= p;
+struct tree* nctemp6053=PtreeMvsister(nctemp6051);
+p =nctemp6053;
+}
+int nctemp6054 = (p !=0);
+nctemp5927=nctemp6054;}int nctemp6058 = (parflag ==1);
+if(nctemp6058)
+{
+struct tree* nctemp6063= q;
+struct nctempchar1 *nctemp6067;
+static struct nctempchar1 nctemp6068 = {{ 9}, (char*)"parallel\0"};
+nctemp6067=&nctemp6068;
+nctempchar1* nctemp6065= nctemp6067;
+int nctemp6069=PtreeSetparallel(nctemp6063,nctemp6065);
+}
 return 1;
 }
 }

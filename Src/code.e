@@ -599,23 +599,24 @@ int CodeFdefgpu(struct tree p) :
 
   tp = SymLookup(PtreeGetdef(p), SymGetetp());
 
-  if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
-    CodeEs(p, "struct ");
-  end
-  if(LibeStrcmp(SymGetarray(tp),"array") == OK):
-    CodeEs(p, "nctemp");
-  end
-  CodeEs(p, SymGetype(tp));
-  if(LibeStrcmp(SymGetarray(tp),"array") == OK):
-    CodeEd(SymGetrank(tp));
-    CodeEs(p," *");
-  end
-  if(LibeStrcmp(SymGetstruct(tp),"struct")==OK):
-    CodeEs(p,"*");
-  end
+
+# if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
+#   CodeEs(p, "struct ");
+# end
+# if(LibeStrcmp(SymGetarray(tp),"array") == OK):
+#   CodeEs(p, "nctemp");
+# end
+# CodeEs(p, SymGetype(tp));
+# if(LibeStrcmp(SymGetarray(tp),"array") == OK):
+#   CodeEd(SymGetrank(tp));
+#   CodeEs(p," *");
+# end
+# if(LibeStrcmp(SymGetstruct(tp),"struct")==OK):
+#   CodeEs(p,"*");
+# end
 
   CodeEs(p,"__global__"); 
-  CodeEs(p,"void");
+  CodeEs(p," void");
   CodeEs(p, " ");
   CodeEs(p,"kernel_");
   CodeEs(p, SymGetname(tp)); 
@@ -662,7 +663,7 @@ int CodeFdewrappergpu(struct tree p) :
   struct tree top;
   struct symbol tp, toptp;
   int noarg;
-
+  p=PtreeMvchild(p);
   noarg=0;
   tp = SymLookup(PtreeGetdef(p), SymGetetp());
   SymSetltp(SymGetable(tp));
@@ -2594,7 +2595,7 @@ int CodeFdef(struct tree p):
     CodeFdefcpu(p);
   end
   else if(CodeGetarch() == CUDA):
-    if(LibeStrcmp(PtreeGetparallel(p),"parallel")==OK):
+    if(LibeStrcmp(PtreeGetparallel(PtreeMvchild(p)),"parallel")==OK):
       CodeFdefgpu(p);
       CodeFdewrappergpu(p);
     end

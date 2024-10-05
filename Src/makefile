@@ -92,7 +92,7 @@ install :  lib $(EC) $(EXEL)-install
 	   cp -r ../Bin/* ../Arch/Bin
 	   cp $(EC) $(BIN)/
 	   cp libe$(ARCH).a $(LIB)
-	   cp libe.i $(INC)
+	   cp libe.m $(LIB)
 	   cp $(EXEL)-install $(BIN)/$(EXEL)
 	   ./genboot-$(ARCH).sh
            
