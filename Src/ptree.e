@@ -323,7 +323,10 @@ int PtreeSetdef(struct tree p, char [*] def) :
   # Returns: OK 
   #   
  
-  p.def=PtreeSetfield(p.def, def);
+  if((def != NULL) && (p != NULL)):
+    delete(p.def);
+    p.def=LibeStrsave(def);
+  end
   return(OK);
 end 
    
@@ -353,10 +356,11 @@ int PtreeSetype(struct tree p, char [*] type) :
   # Returns: OK 
   #   
  
-  p.type=PtreeSetfield(p.type, type);
-
+  if((type != NULL) && (p != NULL)):
+    delete(p.type);
+    p.type=LibeStrsave(type);
+  end
   return(OK);
-
 end 
    
 char [*] PtreeGetype(struct tree p) :
@@ -385,8 +389,10 @@ int PtreeSetstruct(struct tree p, char [*] structure) :
   # Returns: OK 
   #
 
-  p.structure=PtreeSetfield(p.structure, structure);
-
+  if((structure != NULL) && (p != NULL)):
+    delete(p.structure);
+    p.structure=LibeStrsave(structure);
+  end
   return(OK);
 
 end 
@@ -418,8 +424,10 @@ int PtreeSetempr(struct tree p, char [*] tempr) :
   # Returns: OK 
   #
  
-  p.tempr=PtreeSetfield(p.tempr, tempr);
-
+  if((tempr != NULL) && (p != NULL)):
+    delete(p.tempr);
+    p.tempr=LibeStrsave(tempr);
+  end
   return(OK);
 
 end 
@@ -448,7 +456,10 @@ int PtreeSetempi(struct tree p, char [*] tempi) :
   # Returns: OK 
   #
 
-  p.tempi=PtreeSetfield(p.tempi, tempi);
+  if((tempi != NULL) && (p != NULL)):
+    delete(p.tempi);
+    p.tempi=LibeStrsave(tempi);
+  end
   return(OK);
 end 
    
@@ -568,7 +579,10 @@ int PtreeSetlval(struct tree p, char [*] lval) :
   # Returns: OK 
   #
 
-  p.lval=PtreeSetfield(p.lval, lval);
+  if((lval != NULL) && (p != NULL)):
+    delete(p.lval);
+    p.lval=LibeStrsave(lval);
+  end
   return(OK);
 
 end 
@@ -598,10 +612,11 @@ int PtreeSetarray(struct tree p, char [*] array) :
   # Returns: OK 
   #
 
-  p.array=PtreeSetfield(p.array, array);
-
+  if((array != NULL) && (p != NULL)):
+    delete(p.array);
+    p.array=LibeStrsave(array);
+  end
   return(OK);
-
 end 
    
 char [*] PtreeGetarray(struct tree p) :   
@@ -629,7 +644,10 @@ int PtreeSetparallel(struct tree p, char [*] paral) :
   # Returns: OK 
   #
  
-  p.paral=PtreeSetfield(p.paral, paral);
+  if((paral != NULL) && (p != NULL)):
+    delete(p.paral);
+    p.paral=LibeStrsave(paral);
+  end
   return(OK);
 
 end 
@@ -659,10 +677,11 @@ int PtreeSetref(struct tree p, char [*] ref) :
   # Returns: OK 
   #
 
-  p.ref=PtreeSetfield(p.ref, ref);
-
+  if((ref != NULL) && (p != NULL)):
+    delete(p.ref);
+    p.ref=LibeStrsave(ref);
+  end
   return(OK);
-
 end 
    
 char [*] PtreeGetref(struct tree p) :    
@@ -690,10 +709,11 @@ int PtreeSetdescr(struct tree p, char [*] descr) :
   # Returns: OK 
   #
  
-  p.descr=PtreeSetfield(p.descr, descr);
-
+  if((descr != NULL) && (p != NULL)):
+    delete(p.descr);
+    p.descr=LibeStrsave(descr);
+  end
   return(OK);
-
 end 
    
 char [*] PtreeGetdescr(struct tree p) :    
@@ -721,10 +741,11 @@ int PtreeSetglobal(struct tree p, char [*] global) :
   # Returns: OK 
   #
  
-  p.global=PtreeSetfield(p.global, global);
-
+  if((global != NULL) && (p != NULL)):
+    delete(p.global);
+    p.global=LibeStrsave(global);
+  end
   return(OK);
-
 end 
    
 char [*] PtreeGetglobal(struct tree p) :   
@@ -804,10 +825,12 @@ end
 
 int PtreeSetforw(struct tree p, char [*] forw)
 :
-
   # PtreeSetforw sets the forward field.
 
-  p.forw=PtreeSetfield(p.forw, forw);
+  if((forw != NULL) && (p != NULL)):
+    delete(p.forw);
+    p.forw=LibeStrsave(forw);
+  end
   return(OK);
 end
 
