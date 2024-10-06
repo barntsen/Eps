@@ -15,7 +15,7 @@ ARCH=cpu
 #ARCH=hip
 
 #Copy machine depenent header file
-cp m-$ARCH.i m.i
+cp m-$ARCH.e m.e
 
 #Copy the correct runtime library file 
 cp run$ARCH.e run$ARCH.c 

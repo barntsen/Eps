@@ -44,7 +44,6 @@ int SemImport(struct tree p, struct symbol etp) :
   if(fd == ERR): 
     path = ScanPath();
     sysfile = LibeStradd(path,file);
-    LibePs(sysfile); LibePs("\n");
     fd = LibeOpen(sysfile,"r");
     delete(sysfile);
     delete(path);
@@ -418,7 +417,6 @@ int SemId(struct tree p) :
     else if(LibeStrcmp(PtreeGetname(np), "selector"))
       SemStructure(p,tp);
   end 
- 
   else:
     if(LibeStrcmp(PtreeGetarray(p),"array"))
       PtreeSetref(p,"aref");

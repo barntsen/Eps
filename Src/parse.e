@@ -69,16 +69,11 @@ int ParseIniparse() :
 end 
 
 # Forward declarations
-struct tree ParseExpr() : 
-end
-struct tree ParseAsgexpr(struct tree p):
-end
-struct tree ParseStmnt() :
-end
-struct tree ParseElsestmnt() :
-end
-struct tree ParseCompstmnt() :
-end
+struct tree ParseExpr() : end
+struct tree ParseAsgexpr(struct tree p):end
+struct tree ParseStmnt() : end
+struct tree ParseElsestmnt() : end
+struct tree ParseCompstmnt() : end
 
 int ParseError(char [*] s) :
   
@@ -299,7 +294,7 @@ struct tree ParseType() :
 
   struct tree np, sp;
 
-  if((lookahead == INT)   ||          # Basic types    
+  if((lookahead == INT)   ||      
     (lookahead == REAL)   ||
     (lookahead == CHAR)   ||
     (lookahead == CONST)  ||
@@ -307,8 +302,7 @@ struct tree ParseType() :
     np = ParseMknode("type", ScanGetext());
     ParseMatch(lookahead);
   end 
- 
-  else if(lookahead == STRUCT) :     # Structure type  
+  else if(lookahead == STRUCT) : 
     ParseMatch(lookahead);
     np = ParseMknode("type", ScanGetext());
     PtreeSetstruct(np, "struct");
@@ -500,6 +494,7 @@ struct tree ParsePrimexpr(struct tree p) :
     ParseError("Syntax error");              # No match  
   return sp;
 end 
+
 struct tree ParseUnexpr(struct tree p) :
 
   # ParseUnexpr parses unary expressions. 
@@ -627,6 +622,7 @@ struct tree ParseRelexprseq(struct tree p) :
 
   return (sp);
 end 
+
 struct tree ParseRelexpr(struct tree p) :
 
   # ParseRelexpr parses relational expressions.
