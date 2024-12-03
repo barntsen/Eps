@@ -64,6 +64,30 @@ struct symbol SymGetetp() :
   return(SymEtp);
 
 end
+
+int SymIstemp(char [*] name):
+
+  char [*] t;
+  int lnc;
+  int i;
+
+  lnc=len("nctemp",0)-1;
+  if(len(name,0) < lnc):
+    return(ERR);
+  end
+  t = LibeStrsave("nctemp");
+  for (i=0; i<lnc; i=i+1):
+    if(name[i] != t[i]):
+      return(ERR);
+    end
+  end
+  delete(t);
+  return(OK);
+
+end    
+
+  
+
  
 struct symbol SymSetetp( struct symbol etp) :
 
@@ -156,12 +180,22 @@ struct symbol SymMkname(char [*] name, struct symbol tp) :
     np.forw = LibeStrsave("void");
     np.emit = OK;
   end 
-  else
+  else :
     np = NULL;
+  end
 
   return(np);          # Return pointer to node  
 
 end     
+
+struct symbol SymGetable(struct symbol np) :
+
+  # SymGetable gets a table.
+
+  return(np.tbl);
+
+end
+
 
 struct symbol SymRmname(char [*] name, struct symbol tp) :
 
@@ -259,35 +293,26 @@ struct symbol SymSetable(struct symbol np, struct symbol tp) :
 
 end
  
-struct symbol SymGetable(struct symbol np) :
-
-  # SymGetable gets a table.
-
-  return(np.tbl);
-
-end
-
-char [*] SymSetfield(char [*] field, char [*] value) :
-
-  # SymField sets a character field.     
-
-  if(field != NULL)
-    delete(field);
-  if(value == NULL) :
-    field = NULL;
-  end
-  else : 
-    field = LibeStrsave(value);
-  end
-  return(field);
-
-end
  
-int SymSetype(struct symbol np, char [*] type) :
+int SymSetname(struct symbol p, char [*] name) :
+
+  # SymSetname sets the node field.
+
+  if((name != NULL) && (p != NULL)):
+    delete(p.name);
+    p.name = LibeStrsave(name);
+  end
+  return(OK);
+
+end
+int SymSetype(struct symbol p, char [*] type) :
 
   # SymSetype sets type.     
 
-  np.type = SymSetfield(np.type, type);
+  if((type != NULL) && (p != NULL)):
+    delete(p.type);
+    p.type = LibeStrsave(type);
+  end
   return(OK);
 
 end
@@ -300,11 +325,14 @@ char [*] SymGetype(struct symbol np) :
 
 end
  
-int SymSetfunc(struct symbol np, char [*] func) :
+int SymSetfunc(struct symbol p, char [*] func) :
 
   # SymSetfunc sets the function field.     
 
-  np.func = SymSetfield(np.func, func);
+  if((func != NULL) && (p != NULL)):
+    delete(p.func);
+    p.func = LibeStrsave(func);
+  end
   return(OK);
 
 end
@@ -317,11 +345,14 @@ char [*] SymGetfunc(struct symbol np) :
 
 end
  
-int SymSetarray(struct symbol np, char [*] array) :
+int SymSetarray(struct symbol p, char [*] array) :
 
   # SymSetarray sets the array field.     
 
-  np.array = SymSetfield(np.array, array);
+  if((array != NULL) && (p != NULL)):
+    delete(p.array);
+    p.array = LibeStrsave(array);
+  end
   return(OK);
 
 end
@@ -334,11 +365,14 @@ char [*] SymGetarray(struct symbol np) :
 
 end
 
-int SymSetstruct(struct symbol np, char [*] structure) :
+int SymSetstruct(struct symbol p, char [*] structure) :
 
  # SymSetstruct sets the structure field.     
- 
-  np.structure = SymSetfield(np.structure, structure);
+
+  if((structure != NULL) && (p != NULL)):
+    delete(p.structure);
+    p.structure = LibeStrsave(structure);
+  end
   return(OK);
 
 end
@@ -351,11 +385,14 @@ char [*] SymGetstruct(struct symbol np) :
 
 end
  
-int SymSetident(struct symbol np, char [*] ident) :
+int SymSetident(struct symbol p, char [*] ident) :
 
   # SymSetident sets the identifier field.     
 
-  np.ident = SymSetfield(np.ident, ident);
+  if((ident != NULL) && (p != NULL)):
+    delete(p.ident);
+    p.ident = LibeStrsave(ident);
+  end
   return(OK);
 
 end
@@ -368,11 +405,14 @@ char [*] SymGetident(struct symbol np) :
 
 end
  
-int SymSetlval(struct symbol np, char [*] lval) :
+int SymSetlval(struct symbol p, char [*] lval) :
 
   # SymSetlval sets the lval field.     
 
-  np.lval = SymSetfield(np.lval, lval);
+  if((lval != NULL) && (p != NULL)):
+    delete(p.lval);
+    p.lval = LibeStrsave(lval);
+  end
   return(OK);
 
 end
@@ -418,11 +458,14 @@ int SymGetemit(struct symbol np) :
 
 end
  
-int SymSetref(struct symbol np, char  [*] ref) :
+int SymSetref(struct symbol p, char  [*] ref) :
 
   # SymSetref sets the ref field.     
 
-  np.ref = SymSetfield(np.ref, ref);
+  if((ref != NULL) && (p != NULL)):
+    delete(p.ref);
+    p.ref = LibeStrsave(ref);
+  end
   return(OK);
 
 end
@@ -435,11 +478,14 @@ char [*] SymGetref(struct symbol np) :
 
 end
 
-int SymSetmodule(struct symbol np, char  [*] module) :
+int SymSetmodule(struct symbol p, char  [*] module) :
 
   # SymSetmodule sets the module field.     
 
-  np.module = SymSetfield(np.module, module);
+  if((module != NULL) && (p != NULL)):
+    delete(p.module);
+    p.module = LibeStrsave(module);
+  end
   return(OK);
 
 end
@@ -452,12 +498,16 @@ char [*] SymGetmodule(struct symbol np) :
 
 end
 
-int SymSetforw(struct symbol np, char  [*] forw) :
+int SymSetforw(struct symbol p, char  [*] forw) :
 
   # SymSetmodule sets the forw field.
 
-  np.forw = SymSetfield(np.forw, forw);
+  if((forw != NULL) && (p != NULL)):
+    delete(p.forw);
+    p.forw = LibeStrsave(forw);
+  end
   return(OK);
+
 end
 
 char [*] SymGetforw(struct symbol np) :
@@ -467,11 +517,14 @@ char [*] SymGetforw(struct symbol np) :
   return(np.forw);
 end
  
-int SymSetdescr(struct symbol np, char [*] descr) :
+int SymSetdescr(struct symbol p, char [*] descr) :
 
   # SymSetdescr sets the descr field.     
 
-  np.descr = SymSetfield(np.descr, descr);
+  if((descr != NULL) && (p != NULL)):
+    delete(p.descr);
+    p.descr = LibeStrsave(descr);
+  end
   return(OK);
 
 end
@@ -484,18 +537,21 @@ char [*] SymGetdescr(struct symbol np) :
 
 end
 
-int SymSetglobal(struct symbol np, char [*] global) :
+int SymSetglobal(struct symbol p, char [*] global) :
 
   # SymSetglobal sets the global field.     
- 
-  np.global = SymSetfield(np.global, global);
+
+  if((global != NULL) && (p != NULL)):
+    delete(p.global);
+    p.global = LibeStrsave(global);
+  end
   return(OK);
 
 end
  
 char [*] SymGetglobal(struct symbol np) :
 
-  # SymGetdescr gets the global field.
+  # SymGetgloabl gets the global field.
 
   return(np.global);
 
@@ -647,23 +703,23 @@ struct symbol SymAddtble(struct symbol tp, struct symbol sp) :
 
 end 
  
-int SymPrsym(int fp,struct symbol p, int level) :
+int SymPrsym(int fp,struct symbol p, int level) : 
 
   # SymPrsym prints the symbol table.
 
   int i;
-  #int fp;
   struct symbol tp;
        
-  #fp = stdout;
-  if(p == NULL)
+  if(p == NULL):
     return(ERR);
+  end
   while(p != NULL):
     i = 0;
     while(i <= level):
       LibePuts(fp, " ");
       i = i + 1;
     end
+
     LibePuts(fp, p.name); LibePuts(fp, " ");    
     LibePuts(fp, p.type); LibePuts(fp, " ");    
     LibePuts(fp, p.func); LibePuts(fp, " ");    
@@ -680,22 +736,48 @@ int SymPrsym(int fp,struct symbol p, int level) :
     LibePuts(fp, p.forw); LibePuts(fp, " ");    
     LibePuts(fp,"\n");
     LibeFlush(fp);
-
+ 
     if(p.tbl != NULL):
-       tp = p.tbl;
-       level = level + 1;
-       SymPrsym(fp,tp, level);
-       level = level - 1;
+        tp = p.tbl;
+        level = level + 1;
+        SymPrsym(fp,tp, level);
+        level = level - 1;
     end
     p = p.next;
- end
     LibeFlush(fp);
-    return(OK);
+  end
+
+  return(OK);
 end
+
+#int SymRmtemp(struct symbol tp) :
+
+  # SymRmtemp removes temporaries starting with "nctemp"
+  
+#  struct symbol stp;
+#  struct symbol qp;
+
+#  qp=tp;
+#  if(qp == NULL):
+#    return(OK);
+#  end
+
+#  while(qp != NULL): 
+#    stp = SymGetable(qp);
+#    SymRmtemp(stp);
+#    if (SymIstemp(SymGetname(qp)) == OK):
+      #LibePs("name: "); LibePs(SymGetname(qp)); LibePs("\n");
+#      SymRmname(SymGetname(qp),qp);
+#    end
+#    qp = SymMvnext(qp);
+#  end
+#  return(OK);
+
+#end     
 
 int SymExport(int fp,struct symbol p, int level) :
 
-  # SymPrsym prints the symbol table.
+  # SymExport prints the symbol table.
 
   int i;
   struct symbol tp;
@@ -704,13 +786,17 @@ int SymExport(int fp,struct symbol p, int level) :
   if(p == NULL)
     return(ERR);
 
+  # Remove temporaries from the exported table
+  #SymRmtemp(p);
+
   # Make a dummy table to print the "first" entry
   tq = SymMktable();
   SymPrsym(fp,tq,0);
 
   p = p.next;  
   while(p != NULL):
-    if(LibeStrcmp(p.module,"void") == OK) :
+    if(SymIstemp(p.name)==ERR):
+    if(LibeStrcmp(p.module,"void") == OK):
       LibePuts(fp," ");
       LibePuts(fp, p.name); LibePuts(fp, " ");
       LibePuts(fp, p.type); LibePuts(fp, " ");
@@ -729,6 +815,7 @@ int SymExport(int fp,struct symbol p, int level) :
       LibeFlush(fp);
 
       SymPrsym(fp,SymGetable(p),1);
+    end
     end
     p = p.next;
   end
@@ -771,7 +858,7 @@ int Symgetline(int fp, struct symbol np, char [*] module):
   # in the node pointed to by np
 
     LibeGetw(fp,field);
-    SymSetfield(np.name,field); 
+    SymSetname(np,field); 
 
     LibeGetw(fp,field);
     SymSetype(np,field);
@@ -817,6 +904,7 @@ int Symgetline(int fp, struct symbol np, char [*] module):
   return(indent);
 
 end
+
 int SymReadsym(int fp, struct symbol rtbl, char [*] module) :
 
   # SymReadsym reads the symbol table from a file.

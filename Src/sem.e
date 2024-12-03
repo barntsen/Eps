@@ -1393,6 +1393,7 @@ int SemFdef(struct tree p, struct symbol tp) :
       SemSerror(np,"Function already defined", PtreeGetdef(p));
     end
     else :
+      # Handle function forward declarations 
       SemFdef2(p,qp);
       return(OK); 
     end

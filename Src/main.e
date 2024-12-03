@@ -22,7 +22,14 @@ int MainError(char [*] s) :
   #
   # Returns : Prints error and exits.
 
-  ErrError(ScanGetfile(),ScanGetline(), s);
+  if((ScanGetfile() != NULL) && (ScanGetline() != NULL)):
+     ErrError(ScanGetfile(),ScanGetline(), s);
+  end
+  else :
+     LibePuts(stderr,"File extension have to be .c\n");
+     LibeExit();
+  end
+  
 end
 
 int MainHelp(int arch):
@@ -373,7 +380,6 @@ int Main(struct MainArg [*] MainArgs) :
   CodeInit();    
   CodeArraycheckoff();
   CodeDebugoff();
-  LibePs("ARCH: "); LibePi(ARCH); LibePs("\n");
   CodeSetarch(ARCH);
 
    

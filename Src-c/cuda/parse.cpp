@@ -161,56 +161,6 @@ int unbflg;
 int errflg;
 int eoflg;
 int fd;
-char nctemp5673;
-char nctemp5845;
-char nctemp5861;
-char nctemp5902;
-char nctemp5994;
-char nctemp6010;
-char nctemp6053;
-char nctemp6137;
-int nctemp6138;
-int nctemp6139;
-int nctemp6140;
-int nctemp6141;
-int nctemp6142;
-int nctemp6143;
-int nctemp6144;
-char nctemp6391;
-char nctemp6420;
-char nctemp6484;
-char nctemp6490;
-char nctemp6496;
-char nctemp6577;
-int nctemp6578;
-int nctemp6579;
-int nctemp6580;
-int nctemp6581;
-int nctemp6582;
-int nctemp6583;
-int nctemp6584;
-char nctemp6645;
-int nctemp6646;
-int nctemp6647;
-int nctemp6648;
-char nctemp6655;
-int nctemp6656;
-int nctemp6657;
-int nctemp6658;
-int nctemp6659;
-int nctemp6660;
-int nctemp6661;
-int nctemp6662;
-char nctemp6884;
-int nctemp6885;
-int nctemp6886;
-int nctemp6887;
-char nctemp6924;
-int nctemp6925;
-int nctemp6926;
-int nctemp6927;
-char nctemp7350;
-char nctemp7395;
 };
 typedef struct nctempLibeFdescr1 {int d[1]; struct LibeFdescr *a; } nctempLibeFdescr1;
 struct nctempLibeFdescr2 {int d[2]; struct LibeFdescr *a; } ;
@@ -270,85 +220,6 @@ int topexpr;
 nctempchar1 *descr;
 struct tree* child;
 struct tree* sister;
-char nctemp9;
-char nctemp12;
-char nctemp15;
-char nctemp18;
-char nctemp21;
-char nctemp24;
-char nctemp27;
-char nctemp30;
-char nctemp33;
-char nctemp36;
-char nctemp66;
-char nctemp75;
-char nctemp84;
-char nctemp94;
-char nctemp108;
-char nctemp118;
-char nctemp128;
-char nctemp138;
-char nctemp148;
-char nctemp158;
-char nctemp168;
-char nctemp178;
-char nctemp188;
-char nctemp198;
-char nctemp336;
-char nctemp340;
-char nctemp348;
-char nctemp364;
-char nctemp368;
-char nctemp376;
-char nctemp392;
-char nctemp396;
-char nctemp404;
-char nctemp420;
-char nctemp424;
-char nctemp432;
-char nctemp448;
-char nctemp452;
-char nctemp460;
-char nctemp476;
-char nctemp480;
-char nctemp488;
-char nctemp496;
-char nctemp512;
-char nctemp516;
-char nctemp544;
-char nctemp548;
-char nctemp556;
-char nctemp572;
-char nctemp576;
-char nctemp584;
-char nctemp600;
-char nctemp604;
-char nctemp612;
-char nctemp628;
-char nctemp632;
-char nctemp640;
-char nctemp656;
-char nctemp660;
-char nctemp668;
-char nctemp684;
-char nctemp688;
-char nctemp696;
-char nctemp724;
-char nctemp728;
-char nctemp736;
-char nctemp780;
-char nctemp795;
-char nctemp810;
-char nctemp825;
-char nctemp840;
-char nctemp855;
-char nctemp870;
-char nctemp899;
-char nctemp1040;
-char nctemp1055;
-char nctemp1070;
-char nctemp1085;
-char nctemp1100;
 };
 typedef struct nctemptree1 {int d[1]; struct tree *a; } nctemptree1;
 struct nctemptree2 {int d[2]; struct tree *a; } ;
@@ -2413,89 +2284,96 @@ struct tree* nctemp2620= sp;
 struct tree* nctemp2622= imp;
 int nctemp2624=PtreeAddchild(nctemp2620,nctemp2622);
 }
-}
 return sp;
 }
-int nctemp2626 = (lookahead ==58);
-if(nctemp2626)
+else{
+struct nctempchar1 *nctemp2629;
+static struct nctempchar1 nctemp2630 = {{ 13}, (char*)"Syntax error\0"};
+nctemp2629=&nctemp2630;
+nctempchar1* nctemp2627= nctemp2629;
+int nctemp2631=ParseError(nctemp2627);
+}
+}
+int nctemp2632 = (lookahead ==58);
+if(nctemp2632)
 {
-struct nctempchar1 *nctemp2636;
-static struct nctempchar1 nctemp2637 = {{ 8}, (char*)"extdecl\0"};
-nctemp2636=&nctemp2637;
-nctempchar1* nctemp2634= nctemp2636;
-struct nctempchar1 *nctemp2640;
-static struct nctempchar1 nctemp2641 = {{ 5}, (char*)"void\0"};
-nctemp2640=&nctemp2641;
-nctempchar1* nctemp2638= nctemp2640;
-struct tree* nctemp2642=ParseMknode(nctemp2634,nctemp2638);
-sp =nctemp2642;
-struct tree* nctemp2644= sp;
-struct tree* nctemp2646= np;
-int nctemp2648=PtreeAddchild(nctemp2644,nctemp2646);
-int nctemp2650= lookahead;
-int nctemp2652=ParseMatch(nctemp2650);
-struct tree* nctemp2654= np;
-int nctemp2656=ParseStructdeclar(nctemp2654);
+struct nctempchar1 *nctemp2642;
+static struct nctempchar1 nctemp2643 = {{ 8}, (char*)"extdecl\0"};
+nctemp2642=&nctemp2643;
+nctempchar1* nctemp2640= nctemp2642;
+struct nctempchar1 *nctemp2646;
+static struct nctempchar1 nctemp2647 = {{ 5}, (char*)"void\0"};
+nctemp2646=&nctemp2647;
+nctempchar1* nctemp2644= nctemp2646;
+struct tree* nctemp2648=ParseMknode(nctemp2640,nctemp2644);
+sp =nctemp2648;
+struct tree* nctemp2650= sp;
+struct tree* nctemp2652= np;
+int nctemp2654=PtreeAddchild(nctemp2650,nctemp2652);
+int nctemp2656= lookahead;
+int nctemp2658=ParseMatch(nctemp2656);
+struct tree* nctemp2660= np;
+int nctemp2662=ParseStructdeclar(nctemp2660);
 return sp;
 }
-int nctemp2658 = (lookahead ==1);
-if(nctemp2658)
+int nctemp2664 = (lookahead ==1);
+if(nctemp2664)
 {
-struct nctempchar1 *nctemp2668;
-static struct nctempchar1 nctemp2669 = {{ 8}, (char*)"extdecl\0"};
-nctemp2668=&nctemp2669;
-nctempchar1* nctemp2666= nctemp2668;
-struct nctempchar1 *nctemp2672;
-static struct nctempchar1 nctemp2673 = {{ 5}, (char*)"void\0"};
-nctemp2672=&nctemp2673;
-nctempchar1* nctemp2670= nctemp2672;
-struct tree* nctemp2674=ParseMknode(nctemp2666,nctemp2670);
-sp =nctemp2674;
-struct tree* nctemp2676= sp;
-struct tree* nctemp2678= np;
-int nctemp2680=PtreeAddchild(nctemp2676,nctemp2678);
-struct nctempchar1 *nctemp2687;
-static struct nctempchar1 nctemp2688 = {{ 11}, (char*)"identifier\0"};
-nctemp2687=&nctemp2688;
-nctempchar1* nctemp2685= nctemp2687;
-nctempchar1* nctemp2691=ScanGetext();
-nctempchar1* nctemp2689= nctemp2691;
-struct tree* nctemp2692=ParseMknode(nctemp2685,nctemp2689);
-mp =nctemp2692;
-struct tree* nctemp2694= np;
-struct tree* nctemp2696= mp;
-int nctemp2698=PtreeAddchild(nctemp2694,nctemp2696);
-int nctemp2700= lookahead;
-int nctemp2702=ParseMatch(nctemp2700);
-int nctemp2703 = (lookahead ==44);
-if(nctemp2703)
+struct nctempchar1 *nctemp2674;
+static struct nctempchar1 nctemp2675 = {{ 8}, (char*)"extdecl\0"};
+nctemp2674=&nctemp2675;
+nctempchar1* nctemp2672= nctemp2674;
+struct nctempchar1 *nctemp2678;
+static struct nctempchar1 nctemp2679 = {{ 5}, (char*)"void\0"};
+nctemp2678=&nctemp2679;
+nctempchar1* nctemp2676= nctemp2678;
+struct tree* nctemp2680=ParseMknode(nctemp2672,nctemp2676);
+sp =nctemp2680;
+struct tree* nctemp2682= sp;
+struct tree* nctemp2684= np;
+int nctemp2686=PtreeAddchild(nctemp2682,nctemp2684);
+struct nctempchar1 *nctemp2693;
+static struct nctempchar1 nctemp2694 = {{ 11}, (char*)"identifier\0"};
+nctemp2693=&nctemp2694;
+nctempchar1* nctemp2691= nctemp2693;
+nctempchar1* nctemp2697=ScanGetext();
+nctempchar1* nctemp2695= nctemp2697;
+struct tree* nctemp2698=ParseMknode(nctemp2691,nctemp2695);
+mp =nctemp2698;
+struct tree* nctemp2700= np;
+struct tree* nctemp2702= mp;
+int nctemp2704=PtreeAddchild(nctemp2700,nctemp2702);
+int nctemp2706= lookahead;
+int nctemp2708=ParseMatch(nctemp2706);
+int nctemp2709 = (lookahead ==44);
+if(nctemp2709)
 {
-struct tree* nctemp2708= np;
-int nctemp2710=ParseIdseq(nctemp2708);
-int nctemp2712= 59;
-int nctemp2714=ParseMatch(nctemp2712);
+struct tree* nctemp2714= np;
+int nctemp2716=ParseIdseq(nctemp2714);
+int nctemp2718= 59;
+int nctemp2720=ParseMatch(nctemp2718);
 }
 else{
-int nctemp2715 = (lookahead ==40);
-if(nctemp2715)
+int nctemp2721 = (lookahead ==40);
+if(nctemp2721)
 {
-int nctemp2720= 40;
-int nctemp2722=ParseMatch(nctemp2720);
-struct tree* nctemp2724= mp;
-int nctemp2726=ParseFdef(nctemp2724);
+int nctemp2726= 40;
+int nctemp2728=ParseMatch(nctemp2726);
+struct tree* nctemp2730= mp;
+int nctemp2732=ParseFdef(nctemp2730);
 }
 else{
-int nctemp2727 = (lookahead ==61);
-if(nctemp2727)
+int nctemp2733 = (lookahead ==61);
+if(nctemp2733)
 {
-int nctemp2732= lookahead;
-int nctemp2734=ParseMatch(nctemp2732);
-struct tree* nctemp2736= mp;
-int nctemp2738=ParseConstdecl(nctemp2736);
+int nctemp2738= lookahead;
+int nctemp2740=ParseMatch(nctemp2738);
+struct tree* nctemp2742= mp;
+int nctemp2744=ParseConstdecl(nctemp2742);
 }
 else{
-int nctemp2740= 59;
-int nctemp2742=ParseMatch(nctemp2740);
+int nctemp2746= 59;
+int nctemp2748=ParseMatch(nctemp2746);
 }
 }
 }
@@ -2506,14 +2384,14 @@ struct tree* ParseParse ()
 {
 struct tree* np;
 np =0;
-int nctemp2748 = (lookahead ==19);
-if(nctemp2748)
+int nctemp2754 = (lookahead ==19);
+if(nctemp2754)
 {
 return np;
 }
 else{
-struct tree* nctemp2757=ParseExtdecl();
-np =nctemp2757;
+struct tree* nctemp2763=ParseExtdecl();
+np =nctemp2763;
 }
 return np;
 }

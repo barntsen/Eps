@@ -894,11 +894,13 @@ char [*] CodeSconstant(struct tree p) :
 
   # Set the length  of the string  
 
-  tmp2 =CodeNewtemp("char");
+  #tmp2 =CodeNewtemp("char");
+  tmp2 = CodeMktemp();
   CodeEs(p, "struct nctempchar1 *");
   CodeEs(p, tmp2);
   CodeEs(p,";\n");
-  tmp = CodeNewtemp("char");
+# tmp = CodeNewtemp("char");
+  tmp = CodeMktemp();
   CodeEs(p, "static struct nctempchar1 ");
   CodeEs(p, tmp);
   CodeEs(p, " = ");
@@ -1128,7 +1130,9 @@ char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
   int i;
 
   name = PtreeGetdef(p);
-  temp = CodeNewtemp(PtreeGetype(p));
+  #temp = CodeNewtemp(PtreeGetype(p));
+  temp = CodeMktemp();
+  
   tp=SymLook(name);
   if(tp==0):CodeError(name);end
   sp = PtreeMvchild(p);
@@ -1305,8 +1309,10 @@ char [*] CodeNew(struct tree p) :
   int i;
 
   # Create temporaries to hold return value (pointer) and total dimension  
-  pointer = CodeNewtemp(PtreeGetype(p));
-  totdim = CodeNewtemp(PtreeGetype(p));
+  #pointer = CodeNewtemp(PtreeGetype(p));
+  pointer = CodeMktemp();
+  #totdim = CodeNewtemp(PtreeGetype(p));
+  totdim = CodeMktemp();
 
   # Get structure and array type flags  
   p = PtreeMvchild(p);
@@ -1521,7 +1527,8 @@ char [*] CodeLen(struct tree p) :
   char [*] index;
   
   char[*] tempr;
-  tempr = CodeNewtemp(PtreeGetype(p));
+  #tempr = CodeNewtemp(PtreeGetype(p));
+  tempr = CodeMktemp();
   np = PtreeMvchild(p);
   temp = CodeExpr(np);
   sp = PtreeMvsister(np);
@@ -1546,7 +1553,8 @@ char [*] CodeCmplx(struct tree p) :
   struct tree np;
   struct tree sp;
   char [*] q,r,tempr;
-  tempr = CodeNewtemp(PtreeGetype(p));
+  #tempr = CodeNewtemp(PtreeGetype(p));
+  tempr = CodeMktemp();
   
   np = PtreeMvchild(p);
   np = PtreeMvchild(np);
@@ -1577,7 +1585,7 @@ char [*] CodeIm(struct tree p) :
  
   struct tree np;
   char [*] q, tempr;
-  tempr = CodeNewtemp(PtreeGetype(p));
+  tempr = CodeMktemp();
   
   np = PtreeMvchild(p);
   q = CodeExpr(np);
@@ -1602,7 +1610,8 @@ char [*] CodeRe(struct tree p) :
   np = PtreeMvchild(p);
   q = CodeExpr(np);
 
-  tmp= CodeNewtemp(PtreeGetype(p));
+  #tmp= CodeNewtemp(PtreeGetype(p));
+  tmp= CodeMktemp();
   CodeEs(p, PtreeGetype(p));
   CodeEs(p, " ");
   CodeEs(p, tmp);
@@ -1631,7 +1640,8 @@ char [*] CodeFcall(struct tree p) :
     end
   end
   while(sp != NULL):
-    ntemp = CodeNewtemp(PtreeGetype(sp));
+    #ntemp = CodeNewtemp(PtreeGetype(sp));
+    ntemp = CodeMktemp();
     PtreeSetempr(sp,ntemp);
     temp = CodeExpr(sp);
     if(LibeStrcmp(PtreeGetref(sp),"aref") == OK):
@@ -1655,7 +1665,8 @@ char [*] CodeFcall(struct tree p) :
     sp = PtreeMvsister(sp);  
   end
 
-  ntemp = CodeNewtemp(PtreeGetype(p));
+  #ntemp = CodeNewtemp(PtreeGetype(p));
+  ntemp = CodeMktemp();
     if(LibeStrcmp(PtreeGetref(p),"aref") == OK):
       CodeEs(p,"nctemp");
       CodeEs(p,PtreeGetype(p));
@@ -1703,8 +1714,11 @@ char [*] CodeCast(struct tree p) :
   char [*] pointer, descr,tmp;
   char [*] type;
 
-  pointer = CodeNewtemp(PtreeGetype(p));
-  descr= CodeNewtemp(PtreeGetype(p));
+  #pointer = CodeNewtemp(PtreeGetype(p));
+  pointer = CodeMktemp();
+  
+  #descr= CodeNewtemp(PtreeGetype(p));
+  descr= CodeMktemp();
   type = PtreeGetype(p);
 
   if(LibeStrcmp(PtreeGetname(p),"cast")==OK):
@@ -1712,7 +1726,8 @@ char [*] CodeCast(struct tree p) :
     sp = PtreeMvsister(np);
     expr = CodeExpr(sp);
     if(LibeStrcmp(PtreeGetref(np),"sref")==OK):
-      tmp = CodeNewtemp(PtreeGetype(p));
+      #tmp = CodeNewtemp(PtreeGetype(p));
+      tmp = CodeMktemp();
       CodeEs(p,type);
       CodeEs(p," ");
       CodeEs(p,tmp);
@@ -1831,7 +1846,8 @@ char [*] CodeUnexpr(struct tree p) :
  
   char [*] tmp;
   char [*] tempr;
-  tempr=CodeNewtemp(PtreeGetype(p));
+  #tempr=CodeNewtemp(PtreeGetype(p));
+  tempr=CodeMktemp();
 
   if(LibeStrcmp(PtreeGetname(p),"unexpr")==OK):
     if(LibeStrcmp(PtreeGetype(p),"complex")==OK):
@@ -1874,7 +1890,8 @@ char  [*] CodeAddexpr(struct tree p, char [*] lval, char [*] rval) :
   char [*] opr;
 
   type = PtreeGetype(p);
-  tempr = CodeNewtemp(type);
+  #tempr = CodeNewtemp(type);
+  tempr = CodeMktemp();
   opr  = PtreeGetdef(p);
   if(LibeStrcmp(type, "complex") == OK):
     if((LibeStrcmp(opr, "+") == OK)||
@@ -1970,8 +1987,10 @@ char [*] CodeBinexpr(struct tree p) :
 
   if(LibeStrcmp(PtreeGetname(p), "binexpr") == OK):
     type=PtreeGetype(p);
-    tempr = CodeNewtemp(type);
-    tempi = CodeNewtemp(type);
+    #tempr = CodeNewtemp(type);
+    tempr = CodeMktemp();
+    #tempi = CodeNewtemp(type);
+    tempi = CodeMktemp();
     np = PtreeMvchild(p);
     lval = CodeUnexpr(np); 
     rval = CodeUnexpr(PtreeMvsister(np));
@@ -2094,7 +2113,7 @@ int CodeWhilestmnt(struct tree p) :
   p = PtreeMvchild(p);
   sp = p;
   cond = CodeExpr(sp);
-  tmp = CodeNewtemp(PtreeGetype(sp));
+  tmp = CodeMktemp();
   CodeEs(p,PtreeGetype(sp));
   CodeEs(p," ");
   CodeEs(p,tmp);
@@ -2217,7 +2236,8 @@ end
   rank = PtreeGetrank(p);           # Get no of slices              
   p = PtreeMvchild(p);              # Move to sliceseq              
   psliceseq = p;                    # Save pointer to slice seq                     
-  nmax = CodeNewtemp(PtreeGetype(p));# Save temporary               
+# nmax = CodeNewtemp(PtreeGetype(p));# Save temporary               
+  nmax = CodeMktemp();              # Save temporary               
 
   # First rank   
   p = PtreeMvchild(psliceseq);      # Move to first slice  

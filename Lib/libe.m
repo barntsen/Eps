@@ -1,4 +1,4 @@
- #first void void void -1212933648 1 void void void void void void void void 
+ #first void void void 0 1 void void void void void void void void 
  ZERO iconstant void void 0 0 void identifier lval void 48 global void 
  EOS iconstant void void 0 0 void identifier lval void 0 global void 
  NULL iconstant void void 0 0 void identifier lval void 0 global void 
@@ -135,9 +135,9 @@
  LibeLnmax float void void 0 0 void identifier lval void void global void 
  LibeLnmin float void void 0 0 void identifier lval void void global void 
  LibeMod int fdef void 0 0 void void void void void void void 
-  #first void void void -1219527744 1 void void void void void void void void 
+  #first void void void 0 1 void void void void void void void void 
   #arglist void void void 0 1 void void void void void void void void 
-   #first void void void -1219514192 1 void void void void void void void void 
+   #first void void void 0 1 void void void void void void void void 
    n int void void 0 1 void identifier lval void void void void void 
    r int void void 0 1 void identifier lval void void void void void 
  LibeSqrt float fdef void 0 0 void void void void void void void 
@@ -151,9 +151,9 @@
    #first void void void 0 1 void void void void void void void void 
    x float void void 0 1 void identifier lval void void void void void 
  LibeExp float fdef void 0 0 void void void void void void void 
-  #first void void void -1219315872 1 void void void void void void void void 
+  #first void void void 0 1 void void void void void void void void 
   #arglist void void void 0 1 void void void void void void void void 
-   #first void void void -1219251328 1 void void void void void void void void 
+   #first void void void 0 1 void void void void void void void void 
    x float void void 0 1 void identifier lval void void void void void 
  LibeSincos float fdef void 0 0 void void void void void void void 
   #first void void void 0 1 void void void void void void void void 
@@ -185,7 +185,7 @@
  LibeArccos float fdef void 0 0 void void void void void void void 
   #first void void void 0 1 void void void void void void void void 
   #arglist void void void 0 1 void void void void void void void void 
-   #first void void void -1218984432 1 void void void void void void void void 
+   #first void void void 0 1 void void void void void void void void 
    x float void void 0 1 void identifier lval void void void void void 
  LibeAtan float fdef void 0 0 void void void void void void void 
   #first void void void 0 1 void void void void void void void void 
@@ -205,14 +205,14 @@
    exponent float void void 0 1 void identifier lval void void void void void 
  LibeMathinit int fdef void 0 0 void void void void void void void 
  LibeStrlen int fdef void 0 0 void void void void void void void 
-  #first void void void -1218058912 1 void void void void void void void void 
+  #first void void void 0 1 void void void void void void void void 
   #arglist void void void 0 1 void void void void void void void void 
-   #first void void void -1218046496 1 void void void void void void void void 
+   #first void void void 0 1 void void void void void void void void 
    s char void array 1 1 void identifier lval void void void void void 
  LibeStrcmp int fdef void 0 0 void void void void void void void 
-  #first void void void -1217994112 1 void void void void void void void void 
+  #first void void void 0 1 void void void void void void void void 
   #arglist void void void 0 1 void void void void void void void void 
-   #first void void void -1218592064 1 void void void void void void void void 
+   #first void void void 0 1 void void void void void void void void 
    s char void array 1 1 void identifier lval void void void void void 
    t char void array 1 1 void identifier lval void void void void void 
  LibeStrev int fdef void 0 0 void void void void void void void 
@@ -299,9 +299,9 @@
    nfrac int void void 0 1 void identifier lval void void void void void 
    s char void array 1 1 void identifier lval void void void void void 
  LibeFtoa int fdef void 0 0 void void void void void void void 
-  #first void void void -1215535760 1 void void void void void void void void 
+  #first void void void 0 1 void void void void void void void void 
   #arglist void void void 0 1 void void void void void void void void 
-   #first void void void -1215399168 1 void void void void void void void void 
+   #first void void void 0 1 void void void void void void void void 
    f float void void 0 1 void identifier lval void void void void void 
    fmt char void array 1 1 void identifier lval void void void void void 
    s char void array 1 1 void identifier lval void void void void void 
@@ -317,65 +317,15 @@
   errflg int void void 0 1 void identifier lval void void void void void 
   eoflg int void void 0 1 void identifier lval void void void void void 
   fd int void void 0 1 void identifier lval void void void void void 
-  nctemp5673 char void void 0 0 void void void void void void void void 
-  nctemp5845 char void void 0 0 void void void void void void void void 
-  nctemp5861 char void void 0 0 void void void void void void void void 
-  nctemp5902 char void void 0 0 void void void void void void void void 
-  nctemp5994 char void void 0 0 void void void void void void void void 
-  nctemp6010 char void void 0 0 void void void void void void void void 
-  nctemp6053 char void void 0 0 void void void void void void void void 
-  nctemp6137 char void void 0 0 void void void void void void void void 
-  nctemp6138 int void void 0 0 void void void void void void void void 
-  nctemp6139 int void void 0 0 void void void void void void void void 
-  nctemp6140 int void void 0 0 void void void void void void void void 
-  nctemp6141 int void void 0 0 void void void void void void void void 
-  nctemp6142 int void void 0 0 void void void void void void void void 
-  nctemp6143 int void void 0 0 void void void void void void void void 
-  nctemp6144 int void void 0 0 void void void void void void void void 
-  nctemp6391 char void void 0 0 void void void void void void void void 
-  nctemp6420 char void void 0 0 void void void void void void void void 
-  nctemp6484 char void void 0 0 void void void void void void void void 
-  nctemp6490 char void void 0 0 void void void void void void void void 
-  nctemp6496 char void void 0 0 void void void void void void void void 
-  nctemp6577 char void void 0 0 void void void void void void void void 
-  nctemp6578 int void void 0 0 void void void void void void void void 
-  nctemp6579 int void void 0 0 void void void void void void void void 
-  nctemp6580 int void void 0 0 void void void void void void void void 
-  nctemp6581 int void void 0 0 void void void void void void void void 
-  nctemp6582 int void void 0 0 void void void void void void void void 
-  nctemp6583 int void void 0 0 void void void void void void void void 
-  nctemp6584 int void void 0 0 void void void void void void void void 
-  nctemp6645 char void void 0 0 void void void void void void void void 
-  nctemp6646 int void void 0 0 void void void void void void void void 
-  nctemp6647 int void void 0 0 void void void void void void void void 
-  nctemp6648 int void void 0 0 void void void void void void void void 
-  nctemp6655 char void void 0 0 void void void void void void void void 
-  nctemp6656 int void void 0 0 void void void void void void void void 
-  nctemp6657 int void void 0 0 void void void void void void void void 
-  nctemp6658 int void void 0 0 void void void void void void void void 
-  nctemp6659 int void void 0 0 void void void void void void void void 
-  nctemp6660 int void void 0 0 void void void void void void void void 
-  nctemp6661 int void void 0 0 void void void void void void void void 
-  nctemp6662 int void void 0 0 void void void void void void void void 
-  nctemp6884 char void void 0 0 void void void void void void void void 
-  nctemp6885 int void void 0 0 void void void void void void void void 
-  nctemp6886 int void void 0 0 void void void void void void void void 
-  nctemp6887 int void void 0 0 void void void void void void void void 
-  nctemp6924 char void void 0 0 void void void void void void void void 
-  nctemp6925 int void void 0 0 void void void void void void void void 
-  nctemp6926 int void void 0 0 void void void void void void void void 
-  nctemp6927 int void void 0 0 void void void void void void void void 
-  nctemp7350 char void void 0 0 void void void void void void void void 
-  nctemp7395 char void void 0 0 void void void void void void void void 
  LIBEFMAX iconstant void void 0 0 void identifier lval void 40 global void 
  LibeFarr LibeFdescr void array 1 0 struct identifier lval void void global void 
  BUFSIZE iconstant void void 0 0 void identifier lval void 1024 global void 
  LibeTmpstr char void array 1 0 void identifier lval void void global void 
  LibeIoinit int fdef void 0 0 void void void void void void void 
  LibeFlushbuff int fdef void 0 0 void void void void void void void 
-  #first void void void -1214790528 1 void void void void void void void void 
+  #first void void void 0 1 void void void void void void void void 
   #arglist void void void 0 1 void void void void void void void void 
-   #first void void void -1214784160 1 void void void void void void void void 
+   #first void void void 0 1 void void void void void void void void 
    fp int void void 0 1 void identifier lval void void void void void 
  LibeFillbuff int fdef void 0 0 void void void void void void void 
   #first void void void 0 1 void void void void void void void void 

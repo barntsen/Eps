@@ -5,9 +5,8 @@
 # EBNF notation. 
 #    parse           = import | extdecl
 #    import          = IMPORT ID
-#    extdecl         = type   ':' structdeclar 
-#                      | ID  [idseq] | fdef
-#    fdef            = ID '(' [arglist] ')' [compstmnt]
+#    extdecl         = fdef | type   ':' structdeclar | ID  [idseq] 
+#    fdef            = DEF type ID '(' [arglist] ')' [compstmnt]
 #    type            = INT | REAL | COMPLEX | CHAR | CONST  
 #                      | STRUCT ID   [ '['arrayarg']' ]
 #    structdeclar   = declarations 'END'
@@ -1128,8 +1127,9 @@ struct tree ParseCompstmnt() :
         PtreeAddchild(np, sp);
       ParseMatch(END);                            # ':'             
   end 
-  else
+  else :
     np = NULL;
+  end
 
   return (np);
 end 
@@ -1177,8 +1177,11 @@ struct tree ParseExtdecl() :
         sp  = ParseMknode("extdecl","void");
         PtreeAddchild(sp,imp);
       end
-    end
     return(sp);
+    end
+    else :
+      ParseError("Syntax error");
+    end
   end
 
   if(lookahead == COLON):            # ":"  
