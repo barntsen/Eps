@@ -23,628 +23,515 @@
 import libe
 
 # Symbol table data structures
-# 
 
 struct symbol : # basic table entry  
-      char [*] name;               # Name                         
-      char [*] type;               # Basic type                   
-      char [*] func;               # Flag for function            
-      char [*] array;              # Flag for array               
-      int  rank;                   # Rank of array                
-      char [*] structure;          # Flag for structure           
-      char [*] ident;              # Flag for identifier          
-      char [*] lval;               # Flag for left value          
-      char [*] descr;              # Descr field                  
-      char [*] global;             # Global field  
-      char [*] ref;                # Flag for  reference          
-      char [*] module;             # Module name
-      char [*] forw;               # forw field
-      int  emit;                   # The emit flag                
-      struct symbol tbl;            # next table                   
-      struct symbol next;           # next entry in chain          
-      struct symbol last;           # last entry in chain          
-end 
+      char [*] name                # Name                         
+      char [*] type                # Basic type                   
+      char [*] func                # Flag for function            
+      char [*] array               # Flag for array               
+      int  rank                    # Rank of array                
+      char [*] structure           # Flag for structure           
+      char [*] ident               # Flag for identifier          
+      char [*] lval                # Flag for left value          
+      char [*] descr               # Descr field                  
+      char [*] global              # Global field  
+      char [*] ref                 # Flag for  reference          
+      char [*] module              # Module name
+      char [*] forw                # forw field
+      int  emit                    # The emit flag                
+      struct symbol tbl             # next table                   
+      struct symbol next            # next entry in chain          
+      struct symbol last            # last entry in chain          
+    
   
-const NTBL=400;
+const NTBL=400 
 
 # SymEtp is the external Symbol Table
-struct symbol SymEtp;       
+struct symbol SymEtp        
 
 # SymLtp is the local symbol table
-struct symbol SymLtp;       
+struct symbol SymLtp        
 
 # SymStp is the string table (not used)
-struct symbol SymStp;      
- 
+struct symbol SymStp       
 
 struct symbol SymGetetp() :
 
   # SymGetetp gets the symbol table.                 
 
-  return(SymEtp);
-
-end
+  return(SymEtp) 
 
 int SymIstemp(char [*] name):
 
-  char [*] t;
-  int lnc;
-  int i;
+  # SymIstemp checks if the name starts with "nctemp"
+  #
+  # Arguments :
+  #  name : Variable name
+  #
+  # Return OK if the name starts with "nctemp"
+  #        ERR if not
 
-  lnc=len("nctemp",0)-1;
+  char [*] t 
+  int lnc 
+  int i 
+
+  lnc=len("nctemp",0)-1 
   if(len(name,0) < lnc):
-    return(ERR);
-  end
-  t = LibeStrsave("nctemp");
-  for (i=0; i<lnc; i=i+1):
+    return(ERR) 
+     
+  t = LibeStrsave("nctemp") 
+  for (i=0; i<lnc;  i=i+1):
     if(name[i] != t[i]):
-      return(ERR);
-    end
-  end
-  delete(t);
-  return(OK);
+      return(ERR) 
+     
+  delete(t) 
+  return(OK) 
 
-end    
-
-  
-
- 
 struct symbol SymSetetp( struct symbol etp) :
 
-  # SymSetetp sets the symbol tableend                 
+  # SymSetetp sets the symbol table                    
 
-  SymEtp = etp;
-  return(SymEtp);
-
-end
+  SymEtp = etp 
+  return(SymEtp) 
 
 struct symbol SymGetltp() :
 
   # SymGetltp gets the local symbol table.                 
  
-  return(SymLtp);
-
-end
+  return(SymLtp) 
 
 struct symbol SymSetltp( struct symbol ltp) :
 
   # SymSetltp sets the local symbol table.                 
  
-  SymLtp = ltp;
-  return(SymLtp);
-
-end
+  SymLtp = ltp 
+  return(SymLtp) 
 
 struct symbol SymGetstp() :
 
  # SymGetstp gets the string table.                 
  
-  return(SymStp);
-
-end
+  return(SymStp) 
  
 struct symbol SymSetstp( struct symbol stp) :
 
   # SymSetstp -- sets the string table.                 
 
-  SymStp = stp;
-  return(SymStp);
-
-end
+  SymStp = stp 
+  return(SymStp) 
 
 struct symbol SymLookup(char [*] s, struct symbol tp) :
 
   # SymLookup looks for name s                 
  
-  struct symbol np;
+  struct symbol np 
       
-  np = tp;
+  np = tp 
   while(np != NULL): 
-    if (LibeStrcmp(s, np.name) == OK)
-      return(np);       # found it  
-    np = np.next;
-  end
-  return(np=NULL);       # not found  
- end
- 
+    if (LibeStrcmp(s, np.name) == OK) :
+      return(np)        # found it  
+    np = np.next 
+     
+  return(np=NULL)        # not found  
+    
 struct symbol SymMkname(char [*] name, struct symbol tp) :
 
-  # SymMkname makes a name.     
-
-  struct symbol np, lp;
+  struct symbol np
+  struct symbol lp
 
   if((np = SymLookup(name, tp)) == NULL) :  # not found  
-    np = new(struct symbol);
+    np = new(struct symbol) 
     if (np == NULL):
-      return(np);
-    end
+      return(np) 
+       
     if((np.name = LibeStrsave(name)) == NULL):
-      return(np=NULL);
-    end
-    lp = tp.last;
-    lp.next = np;
-    tp.last = np;
-    np.next = NULL;
-    np.type = LibeStrsave("void");
-    np.func = LibeStrsave("void");
-    np.array = LibeStrsave("void");
-    np.structure = LibeStrsave("void");
-    np.tbl = NULL;
-    np.ident = LibeStrsave("void");
-    np.rank = 0;
-    np.lval = LibeStrsave("void");
-    np.ref = LibeStrsave("void");
-    np.descr = LibeStrsave("void");
-    np.global = LibeStrsave("void");
-    np.module = LibeStrsave("void");
-    np.forw = LibeStrsave("void");
-    np.emit = OK;
-  end 
+      return(np=NULL) 
+       
+    lp = tp.last 
+    lp.next = np 
+    tp.last = np 
+    np.next = NULL 
+    np.type = LibeStrsave("void") 
+    np.func = LibeStrsave("void") 
+    np.array = LibeStrsave("void") 
+    np.structure = LibeStrsave("void") 
+    np.tbl = NULL 
+    np.ident = LibeStrsave("void") 
+    np.rank = 0 
+    np.lval = LibeStrsave("void") 
+    np.ref = LibeStrsave("void") 
+    np.descr = LibeStrsave("void") 
+    np.global = LibeStrsave("void") 
+    np.module = LibeStrsave("void") 
+    np.forw = LibeStrsave("void") 
+    np.emit = OK 
   else :
-    np = NULL;
-  end
-
-  return(np);          # Return pointer to node  
-
-end     
+    np = NULL 
+  return(np)           # Return pointer to node  
 
 struct symbol SymGetable(struct symbol np) :
 
   # SymGetable gets a table.
 
-  return(np.tbl);
-
-end
-
+  return(np.tbl) 
 
 struct symbol SymRmname(char [*] name, struct symbol tp) :
 
   # SymRmname removes a name.     
  
-  struct symbol np, sp, prev;
-  np = tp;
-  sp = NULL;
-  prev = np;
+  struct symbol np, sp, prev 
+  np = tp 
+  sp = NULL 
+  prev = np 
   while(np != NULL): 
     if (LibeStrcmp(name, np.name) == OK):
-      sp = np;
-      np = NULL;
-    end
+      sp = np 
+      np = NULL 
     else:
-      prev = np;
-      np = np.next;
-    end
-  end 
- np = sp;
- if(np == NULL) 
-   return(np);
-
- if(np.next == NULL)
-   prev.last = prev;
-   prev.next = np.next;
-   delete(np.name);
-   delete(np.type);
-   delete(np.func); 
-   delete(np.array);
-   delete(np.structure);
-   delete(np.tbl);
-   delete(np.ident);
-   delete(np.lval);
-   delete(np.ref);
-   delete(np.descr);
-  return(prev);
-end     
- 
+      prev = np 
+      np = np.next 
+  np = sp 
+  if(np == NULL): 
+    return(np) 
+  if(np.next == NULL):
+    prev.last = prev 
+  prev.next = np.next 
+  delete(np.name) 
+  delete(np.type) 
+  delete(np.func)  
+  delete(np.array) 
+  delete(np.structure) 
+  delete(np.tbl) 
+  delete(np.ident) 
+  delete(np.lval) 
+  delete(np.ref) 
+  delete(np.descr) 
+  return(prev) 
+        
 char [*] SymGetname(struct symbol np) :
 
   # SymGetname gets a name.
 
-  return(np.name);
-
-end
+  return(np.name) 
  
 struct symbol SymMktable() :
 
   # SymMktable  makes a new symbol table.     
 
-  struct symbol tp;   # Table pointer  
+  struct symbol tp    # Table pointer  
 
-  tp = new(struct symbol);
+  tp = new(struct symbol) 
   if (tp == NULL):
-    return(tp);
-  end
-  tp.name =  LibeStrsave("#first");
-  tp.type =  LibeStrsave("void");
-  tp.tbl =   NULL;
-  tp.func =  LibeStrsave("void");
-  tp.ref =   LibeStrsave("void");
-  tp.descr =  LibeStrsave("void");
-  tp.array = LibeStrsave("void");
-  tp.structure =  LibeStrsave("void");
-  tp.ident =  LibeStrsave("void");
-  tp.lval =  LibeStrsave("void");
-  tp.global = LibeStrsave("void");
-  tp.module = LibeStrsave("void");
-  tp.forw = LibeStrsave("void");
-  tp.emit = OK;
-  tp.next =  NULL;
-  tp.last = tp;
+    return(tp) 
+     
+  tp.name =  LibeStrsave("#first") 
+  tp.type =  LibeStrsave("void") 
+  tp.tbl =   NULL 
+  tp.func =  LibeStrsave("void") 
+  tp.ref =   LibeStrsave("void") 
+  tp.descr =  LibeStrsave("void") 
+  tp.array = LibeStrsave("void") 
+  tp.structure =  LibeStrsave("void") 
+  tp.ident =  LibeStrsave("void") 
+  tp.lval =  LibeStrsave("void") 
+  tp.global = LibeStrsave("void") 
+  tp.module = LibeStrsave("void") 
+  tp.forw = LibeStrsave("void") 
+  tp.emit = OK 
+  tp.next =  NULL 
+  tp.last = tp 
+  return(tp)            # Return pointer to first node  
 
-  return(tp);           # Return pointer to first node  
-
-end     
- 
 struct symbol  SymMvnext(struct symbol np) :
 
  # SymMvnext moves to next node.     
 
-  if(np == NULL)
-    return(np) ;
-  else
-    return (np.next);
-end
+  if(np == NULL):
+    return(np)  
+  else :
+    return (np.next) 
  
 struct symbol SymSetable(struct symbol np, struct symbol tp) :
 
   # SymSetable sets a table.     
 
-  np.tbl = tp;
-  return(np);
-
-end
- 
+  np.tbl = tp 
+  return(np) 
  
 int SymSetname(struct symbol p, char [*] name) :
 
   # SymSetname sets the node field.
 
   if((name != NULL) && (p != NULL)):
-    delete(p.name);
-    p.name = LibeStrsave(name);
-  end
-  return(OK);
-
-end
+    delete(p.name) 
+    p.name = LibeStrsave(name) 
+  return(OK) 
+   
 int SymSetype(struct symbol p, char [*] type) :
 
   # SymSetype sets type.     
 
   if((type != NULL) && (p != NULL)):
-    delete(p.type);
-    p.type = LibeStrsave(type);
-  end
-  return(OK);
-
-end
+    delete(p.type) 
+    p.type = LibeStrsave(type) 
+  return(OK) 
  
 char [*] SymGetype(struct symbol np) :
 
   # SymGetype gets type.
 
-  return(np.type);
-
-end
+  return(np.type) 
  
 int SymSetfunc(struct symbol p, char [*] func) :
 
   # SymSetfunc sets the function field.     
 
   if((func != NULL) && (p != NULL)):
-    delete(p.func);
-    p.func = LibeStrsave(func);
-  end
-  return(OK);
-
-end
+    delete(p.func) 
+    p.func = LibeStrsave(func) 
+  return(OK) 
  
 char [*] SymGetfunc(struct symbol np) :
 
   # SymGetfunc gets the function field.
 
-  return(np.func);
-
-end
+  return(np.func) 
  
 int SymSetarray(struct symbol p, char [*] array) :
 
   # SymSetarray sets the array field.     
 
   if((array != NULL) && (p != NULL)):
-    delete(p.array);
-    p.array = LibeStrsave(array);
-  end
-  return(OK);
-
-end
+    delete(p.array) 
+    p.array = LibeStrsave(array) 
+  return(OK) 
  
 char [*] SymGetarray(struct symbol np) :
 
   # SymGetarray gets the array field.
 
-  return(np.array);
-
-end
+  return(np.array) 
 
 int SymSetstruct(struct symbol p, char [*] structure) :
 
  # SymSetstruct sets the structure field.     
 
   if((structure != NULL) && (p != NULL)):
-    delete(p.structure);
-    p.structure = LibeStrsave(structure);
-  end
-  return(OK);
-
-end
+    delete(p.structure) 
+    p.structure = LibeStrsave(structure) 
+  return(OK) 
  
 char [*] SymGetstruct(struct symbol np) :
 
  # SymGetstruct gets the structure field.
 
- return(np.structure);
-
-end
+ return(np.structure) 
  
 int SymSetident(struct symbol p, char [*] ident) :
 
   # SymSetident sets the identifier field.     
 
   if((ident != NULL) && (p != NULL)):
-    delete(p.ident);
-    p.ident = LibeStrsave(ident);
-  end
-  return(OK);
-
-end
+    delete(p.ident) 
+    p.ident = LibeStrsave(ident) 
+  return(OK) 
 
 char [*] SymGetident(struct symbol np) :
 
   # SymGetident gets the identifier field.
  
-  return(np.ident);
-
-end
+  return(np.ident) 
  
 int SymSetlval(struct symbol p, char [*] lval) :
 
   # SymSetlval sets the lval field.     
 
   if((lval != NULL) && (p != NULL)):
-    delete(p.lval);
-    p.lval = LibeStrsave(lval);
-  end
-  return(OK);
-
-end
+    delete(p.lval) 
+    p.lval = LibeStrsave(lval) 
+  return(OK) 
  
 char [*] SymGetlval(struct symbol np) :
 
   #SymGetlval -- get the lval field.
 
-  return(np.lval);
+  return(np.lval) 
 
-end
- 
 int SymSetrank(struct symbol np, int rank) :
 
   #SymSetrank sets the rank field.     
 
-  np.rank = rank;
-  return(OK);
-
-end
+  np.rank = rank 
+  return(OK) 
 
 int SymGetrank(struct symbol np) :
 
   # SymGetrank gets the rank field.
  
-     return(np.rank);
-end
+     return(np.rank) 
  
 int SymSetemit(struct symbol np, int emit) :
 
   # SymSetemit sets the emit field.     
 
-   np.emit = emit;
-   return(OK);
-
-end
+   np.emit = emit 
+   return(OK) 
  
 int SymGetemit(struct symbol np) :
 
   # SymGetrank gets the rank field.
 
-  return(np.emit);
-
-end
+  return(np.emit) 
  
 int SymSetref(struct symbol p, char  [*] ref) :
 
   # SymSetref sets the ref field.     
 
   if((ref != NULL) && (p != NULL)):
-    delete(p.ref);
-    p.ref = LibeStrsave(ref);
-  end
-  return(OK);
-
-end
+    delete(p.ref) 
+    p.ref = LibeStrsave(ref) 
+     
+  return(OK) 
  
 char [*] SymGetref(struct symbol np) :
 
   # SymGetref  gets the ref field.
 
-  return(np.ref);
-
-end
+  return(np.ref) 
 
 int SymSetmodule(struct symbol p, char  [*] module) :
 
   # SymSetmodule sets the module field.     
 
   if((module != NULL) && (p != NULL)):
-    delete(p.module);
-    p.module = LibeStrsave(module);
-  end
-  return(OK);
-
-end
+    delete(p.module) 
+    p.module = LibeStrsave(module) 
+     
+  return(OK) 
 
 char [*] SymGetmodule(struct symbol np) :
 
   # SymGetmodule  gets the module field.
 
-  return(np.module);
-
-end
+  return(np.module) 
 
 int SymSetforw(struct symbol p, char  [*] forw) :
 
   # SymSetmodule sets the forw field.
 
   if((forw != NULL) && (p != NULL)):
-    delete(p.forw);
-    p.forw = LibeStrsave(forw);
-  end
-  return(OK);
-
-end
+    delete(p.forw) 
+    p.forw = LibeStrsave(forw) 
+  return(OK) 
 
 char [*] SymGetforw(struct symbol np) :
 
   # SymGetmodule  gets the forw field.
 
-  return(np.forw);
-end
+  return(np.forw) 
  
 int SymSetdescr(struct symbol p, char [*] descr) :
 
   # SymSetdescr sets the descr field.     
 
   if((descr != NULL) && (p != NULL)):
-    delete(p.descr);
-    p.descr = LibeStrsave(descr);
-  end
-  return(OK);
-
-end
+    delete(p.descr) 
+    p.descr = LibeStrsave(descr) 
+  return(OK) 
  
 char [*] SymGetdescr(struct symbol np) :
 
   # SymGetdescr gets the descr field.
 
-  return(np.descr);
-
-end
+  return(np.descr) 
 
 int SymSetglobal(struct symbol p, char [*] global) :
 
   # SymSetglobal sets the global field.     
 
   if((global != NULL) && (p != NULL)):
-    delete(p.global);
-    p.global = LibeStrsave(global);
-  end
-  return(OK);
-
-end
+    delete(p.global) 
+    p.global = LibeStrsave(global) 
+  return(OK) 
  
 char [*] SymGetglobal(struct symbol np) :
 
   # SymGetgloabl gets the global field.
 
-  return(np.global);
-
-end
+  return(np.global) 
  
 int SymRmtable(struct symbol p) :
 
   # SymRmtable removes the symbol table.
 
-  struct symbol next, prev;
+  struct symbol next, prev 
 
-  if(p==NULL)return(ERR);
-  prev=NULL;
+  if(p==NULL)return(ERR) 
+  prev=NULL 
   while(p != NULL):
-    next=p.next;
+    next=p.next 
     if(LibeStrcmp("#arglist", p.name)==ERR):    
       if(LibeStrcmp("#self", p.name) == ERR):
-      if(LibeStrcmp("#first", p.name) == ERR):
-      if(p.tbl != NULL):
-        SymRmtable(p.tbl);
-        p.tbl=NULL;
-      end
-      if(prev != NULL)
-        prev.next = next;
-      delete(p.name);
-      delete(p.type);
-      delete(p.func); 
-      delete(p.array);
-      delete(p.structure);
-      delete(p.tbl);
-      delete(p.ident);
-      delete(p.lval);
-      delete(p.ref);
-      delete(p.descr);
-      delete(p);
-    end
-    end
-    end
-    else
-      prev=p;
-    p=next;
-  end
-  return(OK);
-
-end
+        if(LibeStrcmp("#first", p.name) == ERR):
+          if(p.tbl != NULL):
+            SymRmtable(p.tbl) 
+            p.tbl=NULL 
+          if(prev != NULL):
+            prev.next = next 
+          delete(p.name) 
+          delete(p.type) 
+          delete(p.func)  
+          delete(p.array) 
+          delete(p.structure) 
+          delete(p.tbl) 
+          delete(p.ident) 
+          delete(p.lval) 
+          delete(p.ref) 
+          delete(p.descr) 
+          delete(p) 
+    else:
+      prev=p 
+    p=next 
+  return(OK) 
 
 struct symbol SymLook(char [*] name) :
 
   # SymLook finds identifier.
  
-  struct symbol tp, ap;
+  struct symbol tp, ap 
 
   if((tp = SymLookup(name, SymEtp)) == NULL):
     if((tp = SymLookup(name, SymLtp)) == NULL):
-      tp = SymLookup("#arglist", SymLtp);
-      if(tp==0) return(tp);
-      ap = SymGetable(tp);
-      if(ap==0) return(ap);
+      tp = SymLookup("#arglist", SymLtp) 
+      if(tp==0) return(tp) 
+      ap = SymGetable(tp) 
+      if(ap==0) return(ap) 
       if((tp = SymLookup(name,ap)) == NULL): 
-        tp = SymLookup(name, SymEtp);
-      end
-    end
-  end
-  return(tp);
-
-end 
- 
+        tp = SymLookup(name, SymEtp) 
+  return(tp) 
 
 int SymCpytble(struct symbol tp, struct symbol up) :
 
  # SymCpytble copies table.
  
-  struct symbol wp;
+  struct symbol wp 
 
-  tp = SymMvnext(tp);
+  tp = SymMvnext(tp) 
   while(tp != NULL):
-    wp = SymMkname(SymGetname(tp),up); 
-    SymSetype(wp,SymGetype(tp));
-    SymSetfunc(wp,SymGetfunc(tp));
-    SymSetarray(wp,SymGetarray(tp));
-    SymSetrank(wp,SymGetrank(tp));
-    SymSetstruct(wp,SymGetstruct(tp));
-    SymSetident(wp,SymGetident(tp));
-    SymSetlval(wp,SymGetlval(tp));
-    SymSetref(wp,SymGetref(tp));
-    SymSetdescr(wp,SymGetdescr(tp));
-    SymSetemit(wp,SymGetemit(tp));
-    SymSetmodule(wp,SymGetmodule(tp));
-    tp = SymMvnext(tp);
-  end
-  return(OK);
-
-end 
+    wp = SymMkname(SymGetname(tp),up)  
+    SymSetype(wp,SymGetype(tp)) 
+    SymSetfunc(wp,SymGetfunc(tp)) 
+    SymSetarray(wp,SymGetarray(tp)) 
+    SymSetrank(wp,SymGetrank(tp)) 
+    SymSetstruct(wp,SymGetstruct(tp)) 
+    SymSetident(wp,SymGetident(tp)) 
+    SymSetlval(wp,SymGetlval(tp)) 
+    SymSetref(wp,SymGetref(tp)) 
+    SymSetdescr(wp,SymGetdescr(tp)) 
+    SymSetemit(wp,SymGetemit(tp)) 
+    SymSetmodule(wp,SymGetmodule(tp)) 
+    tp = SymMvnext(tp) 
+  return(OK) 
 
 struct symbol SymAddtble(struct symbol tp, struct symbol sp) :
 
@@ -659,251 +546,210 @@ struct symbol SymAddtble(struct symbol tp, struct symbol sp) :
  #   a new table containing all symbols in table 1 and table 2.
  #   The new table is returned.
 
-  struct symbol start;
-  struct symbol start2;
-  struct symbol prev;
+  struct symbol start 
+  struct symbol start2 
+  struct symbol prev 
 
-  start = tp;
+  start = tp 
   
   if(sp == NULL):
-    return(start);
-  end
+    return(start) 
+     
 
   if(tp == NULL):
-    return(start);
-  end
+    return(start) 
+     
 
   # If the module table is empty, do nothing
   if(SymMvnext(sp) == NULL):
-    return(start);
-  end
+    return(start) 
+     
 
   #Update the table last pointer 
-  tp.last = sp.last;
+  tp.last = sp.last 
 
-  tp = SymMvnext(tp); #Move to first entry
+  tp = SymMvnext(tp)  #Move to first entry
   
   # If the external table is empty, add the module
   # table to the external table and return.
   if(tp == NULL) :
-    start.next = SymMvnext(sp);
-    return(start);
-  end 
+    start.next = SymMvnext(sp) 
+    return(start) 
+      
 
-  # Move to the end of the external table and
+  # Move to the     of the external table and
   # add the module table
   while(tp != NULL) :
-    prev = tp;
-    tp = SymMvnext(tp);
-  end
-  tp = prev;
-  tp.next = SymMvnext(sp);
+    prev = tp 
+    tp = SymMvnext(tp) 
+     
+  tp = prev 
+  tp.next = SymMvnext(sp) 
 
-  return(start);
+  return(start) 
 
-end 
- 
 int SymPrsym(int fp,struct symbol p, int level) : 
 
   # SymPrsym prints the symbol table.
 
-  int i;
-  struct symbol tp;
+  int i 
+  struct symbol tp 
        
   if(p == NULL):
-    return(ERR);
-  end
+    return(ERR) 
+     
   while(p != NULL):
-    i = 0;
+    i = 0 
     while(i <= level):
-      LibePuts(fp, " ");
-      i = i + 1;
-    end
+      LibePuts(fp, " ") 
+      i = i + 1 
 
-    LibePuts(fp, p.name); LibePuts(fp, " ");    
-    LibePuts(fp, p.type); LibePuts(fp, " ");    
-    LibePuts(fp, p.func); LibePuts(fp, " ");    
-    LibePuts(fp, p.array); LibePuts(fp, " ");    
-    LibePuti(fp, p.rank); LibePuts(fp, " ");    
-    LibePuti(fp, p.emit); LibePuts(fp, " ");    
-    LibePuts(fp, p.structure); LibePuts(fp, " ");    
-    LibePuts(fp, p.ident); LibePuts(fp, " ");    
-    LibePuts(fp, p.lval); LibePuts(fp, " ");    
-    LibePuts(fp, p.ref); LibePuts(fp, " ");    
-    LibePuts(fp, p.descr); LibePuts(fp, " ");    
-    LibePuts(fp, p.global); LibePuts(fp, " ");    
-    LibePuts(fp, p.module); LibePuts(fp, " ");    
-    LibePuts(fp, p.forw); LibePuts(fp, " ");    
-    LibePuts(fp,"\n");
-    LibeFlush(fp);
+    LibePuts(fp, p.name);  LibePuts(fp, " ")     
+    LibePuts(fp, p.type);  LibePuts(fp, " ")     
+    LibePuts(fp, p.func);  LibePuts(fp, " ")     
+    LibePuts(fp, p.array); LibePuts(fp, " ")     
+    LibePuti(fp, p.rank);  LibePuts(fp, " ")     
+    LibePuti(fp, p.emit);  LibePuts(fp, " ")     
+    LibePuts(fp, p.structure); LibePuts(fp, " ")     
+    LibePuts(fp, p.ident);     LibePuts(fp, " ")     
+    LibePuts(fp, p.lval);      LibePuts(fp, " ")     
+    LibePuts(fp, p.ref);       LibePuts(fp, " ")     
+    LibePuts(fp, p.descr);     LibePuts(fp, " ")     
+    LibePuts(fp, p.global);    LibePuts(fp, " ")     
+    LibePuts(fp, p.module);    LibePuts(fp, " ")     
+    LibePuts(fp, p.forw);      LibePuts(fp, " ")     
+    LibePuts(fp,"\n") 
+    LibeFlush(fp) 
  
     if(p.tbl != NULL):
-        tp = p.tbl;
-        level = level + 1;
-        SymPrsym(fp,tp, level);
-        level = level - 1;
-    end
-    p = p.next;
-    LibeFlush(fp);
-  end
-
-  return(OK);
-end
-
-#int SymRmtemp(struct symbol tp) :
-
-  # SymRmtemp removes temporaries starting with "nctemp"
-  
-#  struct symbol stp;
-#  struct symbol qp;
-
-#  qp=tp;
-#  if(qp == NULL):
-#    return(OK);
-#  end
-
-#  while(qp != NULL): 
-#    stp = SymGetable(qp);
-#    SymRmtemp(stp);
-#    if (SymIstemp(SymGetname(qp)) == OK):
-      #LibePs("name: "); LibePs(SymGetname(qp)); LibePs("\n");
-#      SymRmname(SymGetname(qp),qp);
-#    end
-#    qp = SymMvnext(qp);
-#  end
-#  return(OK);
-
-#end     
+      tp = p.tbl 
+      level = level + 1 
+      SymPrsym(fp,tp, level) 
+      level = level - 1 
+    p = p.next 
+    LibeFlush(fp) 
+  return(OK) 
 
 int SymExport(int fp,struct symbol p, int level) :
 
   # SymExport prints the symbol table.
 
-  int i;
-  struct symbol tp;
-  struct symbol tq;
+  int i 
+  struct symbol tp 
+  struct symbol tq 
        
-  if(p == NULL)
-    return(ERR);
+  if(p == NULL):
+    return(ERR) 
 
   # Remove temporaries from the exported table
-  #SymRmtemp(p);
+  #SymRmtemp(p) 
 
   # Make a dummy table to print the "first" entry
-  tq = SymMktable();
-  SymPrsym(fp,tq,0);
+  tq = SymMktable() 
+  SymPrsym(fp,tq,0) 
 
-  p = p.next;  
+  p = p.next   
   while(p != NULL):
-    if(SymIstemp(p.name)==ERR):
-    if(LibeStrcmp(p.module,"void") == OK):
-      LibePuts(fp," ");
-      LibePuts(fp, p.name); LibePuts(fp, " ");
-      LibePuts(fp, p.type); LibePuts(fp, " ");
-      LibePuts(fp, p.func); LibePuts(fp, " ");
-      LibePuts(fp, p.array); LibePuts(fp, " ");
-      LibePuti(fp, p.rank); LibePuts(fp, " ");
-      LibePuti(fp, p.emit); LibePuts(fp, " ");
-      LibePuts(fp, p.structure); LibePuts(fp, " ");
-      LibePuts(fp, p.ident); LibePuts(fp, " ");
-      LibePuts(fp, p.lval); LibePuts(fp, " ");
-      LibePuts(fp, p.ref); LibePuts(fp, " ");
-      LibePuts(fp, p.descr); LibePuts(fp, " ");
-      LibePuts(fp, p.global); LibePuts(fp, " ");
-      LibePuts(fp, p.module); LibePuts(fp, " ");
-      LibePuts(fp,"\n");
-      LibeFlush(fp);
-
-      SymPrsym(fp,SymGetable(p),1);
-    end
-    end
-    p = p.next;
-  end
-  LibeFlush(fp);
-  return(OK);
-
-end
+    if(SymIstemp(p.name) == ERR):
+      if(LibeStrcmp(p.module,"void") == OK):
+        LibePuts(fp," ") 
+        LibePuts(fp, p.name);  LibePuts(fp, " ") 
+        LibePuts(fp, p.type);  LibePuts(fp, " ") 
+        LibePuts(fp, p.func);  LibePuts(fp, " ") 
+        LibePuts(fp, p.array); LibePuts(fp, " ") 
+        LibePuti(fp, p.rank);  LibePuts(fp, " ") 
+        LibePuti(fp, p.emit);  LibePuts(fp, " ") 
+        LibePuts(fp, p.structure); LibePuts(fp, " ") 
+        LibePuts(fp, p.ident);     LibePuts(fp, " ") 
+        LibePuts(fp, p.lval);      LibePuts(fp, " ") 
+        LibePuts(fp, p.ref);       LibePuts(fp, " ") 
+        LibePuts(fp, p.descr);     LibePuts(fp, " ") 
+        LibePuts(fp, p.global);    LibePuts(fp, " ") 
+        LibePuts(fp, p.module);    LibePuts(fp, " ") 
+        LibePuts(fp,"\n") 
+        LibeFlush(fp) 
+        SymPrsym(fp,SymGetable(p),1) 
+    p = p.next 
+  LibeFlush(fp) 
+  return(OK) 
 
 int Symgetline(int fp, struct symbol np, char [*] module):
-# 
+  
 # Symgetline reads an single line (record) from a symbol 
 # table stored in a file.
-  int indent;
-  int ch;
-  int tmp;
-  char [*] field;
 
-  field = new(char [NTBL]);
+  int indent 
+  int ch 
+  int tmp 
+  char [*] field 
 
-  indent =0;
+  field = new(char [NTBL]) 
+
+  indent =0 
 
   # Read the current line
-  ch=OK;
+  ch=OK 
   if((ch=LibeGetc(fp)) == EOF):
-    return(-1);
-  end
+    return(-1) 
+     
   else: 
     # Back up one character
-    LibeUngetc(fp);
-  end
+    LibeUngetc(fp) 
+     
 
   #Get the number of whitespace characters at the beginning of the line
   while((ch=LibeGetc(fp)) == SPACE): 
-    indent = indent+1;
-  end
+    indent = indent+1 
+     
   # Back up one character
-  LibeUngetc(fp);
+  LibeUngetc(fp) 
 
   # Get the fields in the current line and set into fields
   # in the node pointed to by np
 
-    LibeGetw(fp,field);
-    SymSetname(np,field); 
+  LibeGetw(fp,field) 
+  SymSetname(np,field)  
 
-    LibeGetw(fp,field);
-    SymSetype(np,field);
+  LibeGetw(fp,field) 
+  SymSetype(np,field) 
 
-    LibeGetw(fp,field);
-    SymSetfunc(np,field);
+  LibeGetw(fp,field) 
+  SymSetfunc(np,field) 
 
-    LibeGetw(fp,field);
-    SymSetarray(np,field);
+  LibeGetw(fp,field) 
+  SymSetarray(np,field) 
     
-    LibeGetw(fp,field);
-    SymSetrank(np,LibeAtoi(field));
+  LibeGetw(fp,field) 
+  SymSetrank(np,LibeAtoi(field)) 
 
-    LibeGetw(fp,field);
-    SymSetemit(np,LibeAtoi(field));
+  LibeGetw(fp,field) 
+  SymSetemit(np,LibeAtoi(field)) 
 
-    LibeGetw(fp,field);
-    SymSetstruct(np,field);
+  LibeGetw(fp,field) 
+  SymSetstruct(np,field) 
 
-    LibeGetw(fp,field);
-    SymSetident(np,field);
+  LibeGetw(fp,field) 
+  SymSetident(np,field) 
 
-    LibeGetw(fp,field);
-    SymSetlval(np,field);
+  LibeGetw(fp,field) 
+  SymSetlval(np,field) 
 
-    LibeGetw(fp,field);
-    SymSetref(np,field);
+  LibeGetw(fp,field) 
+  SymSetref(np,field) 
 
-    LibeGetw(fp,field);
-    SymSetdescr(np,field);
+  LibeGetw(fp,field) 
+  SymSetdescr(np,field) 
 
-    LibeGetw(fp,field);
-    SymSetglobal(np,field);
+  LibeGetw(fp,field) 
+  SymSetglobal(np,field) 
 
-    LibeGetw(fp,field);
-    SymSetmodule(np,module);
+  LibeGetw(fp,field) 
+  SymSetmodule(np,module) 
     
-
   #Read the rest of the line including the new line character.
   while((ch=LibeGetc(fp)) != NL): 
-    tmp=1;
-  end
-  return(indent);
-
-end
+    tmp=1 
+  return(indent) 
 
 int SymReadsym(int fp, struct symbol rtbl, char [*] module) :
 
@@ -958,93 +804,80 @@ int SymReadsym(int fp, struct symbol rtbl, char [*] module) :
   #          the entry containing the subtable.
   #
 
-  int indent;         # Indentation of current table line
-  int oldindent;      # Indentation of previpus table line
-  struct symbol tbl;  # Current table pointer
-  struct symbol ntbl; # Pointer to new subtable 
-  struct symbol np;   # Pointer to table entry
-  struct symbol mp;   # Pointer to table entry
-  struct symbol ttbl; # Dummy table
-  int i;              # Iteration index
-
+  int indent          # Indentation of current table line
+  int oldindent       # Indentation of previpus table line
+  struct symbol tbl   # Current table pointer
+  struct symbol ntbl  # Pointer to new subtable 
+  struct symbol np    # Pointer to table entry
+  struct symbol mp    # Pointer to table entry
+  struct symbol ttbl  # Dummy table
+  int i               # Iteration index
 
   # Save the root node of the symbol table
-  tbl=rtbl;
+  tbl=rtbl 
 
   # Make a dummy table and create a dummy name
-  ttbl=SymMktable();
-  SymSetmodule(ttbl,module);
-  mp = SymMkname("dummy",ttbl);
+  ttbl=SymMktable() 
+  SymSetmodule(ttbl,module) 
+  mp = SymMkname("dummy",ttbl) 
 
   # Skip the first line of the table
-  indent=Symgetline(fp,mp,module);
+  indent=Symgetline(fp,mp,module) 
        
   # Initialize the old and current indents
-  oldindent = 1;
-  indent=1;
+  oldindent = 1 
+  indent=1 
 
   while(OK):
     # Get a table line and exit if the
     # indent is negative.
-    indent=Symgetline(fp,mp,module);
+    indent=Symgetline(fp,mp,module) 
     if(indent <0):
-      return(OK);
-    end
+      return(OK) 
+       
     # If this is the first line of a subtable, skip
     # the first record.
     if(LibeStrcmp(mp.name,"#first")==OK):
-      indent=Symgetline(fp,mp,module);
-    end
+      indent=Symgetline(fp,mp,module) 
+       
 
     # The entry is in the current table
     if(indent == oldindent):
-      SymCpytble(ttbl,tbl);
-      oldindent=indent;
-    end
+      SymCpytble(ttbl,tbl) 
+      oldindent=indent 
+       
  
     # The entry is in a subtable, 
     # create a new table
     if(indent > oldindent):
       # Make new table
-      ntbl=SymMktable();
-#     SymSetmodule(tbl,module);
-      SymSetmodule(ntbl,module);
+      ntbl=SymMktable() 
+      SymSetmodule(ntbl,module) 
       # Get the last record in the current table 
-      np=tbl.last;
+      np=tbl.last 
       # Store the new table in the last
       # record of the current table using the
       # "tbl" field.
-      SymSetable(np,ntbl);
+      SymSetable(np,ntbl) 
       # Update current table to new table
-      tbl=ntbl;
+      tbl=ntbl 
       # Copy content to new table
-      SymCpytble(ttbl,tbl);
-      oldindent = indent;
-    end
+      SymCpytble(ttbl,tbl) 
+      oldindent = indent 
+       
 
     # The entry is in the enclosing table,
     # move to the entry by starting from the
     # root table and counting indents using
     # the "last" field.
     if(indent < oldindent):
-      tbl=rtbl;
+      tbl=rtbl 
       if(indent == 1):
-        tbl=rtbl;
-      end 
+        tbl=rtbl 
       else:
         for(i=0; i<indent; i=i+1):
-          tbl=SymGetable(tbl.last);
-        end
-      end
-      SymCpytble(ttbl,tbl);
-      oldindent=indent;
-    end
-  end
-
-  LibeClose(fp);
-  return(OK);
-
-end
-
-
-
+          tbl=SymGetable(tbl.last) 
+      SymCpytble(ttbl,tbl) 
+      oldindent=indent 
+  LibeClose(fp) 
+  return(OK) 

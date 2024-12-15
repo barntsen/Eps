@@ -1,5 +1,3 @@
-# Error reporting
-#
 
 import libe
 
@@ -19,19 +17,20 @@ int ErrError(char [*] file, int line, char [*] s):
   # immediately aborts after the error message has been printed.
   #
 
-  LibePuts(stderr,"file: "); 
-  LibePuts(stderr, file);
-  LibePuts(stderr," -- line "); 
-  LibePuti(stderr, line);
-  LibePuts(stderr, " : ");
-  LibePuts(stderr, LibeStrsave(s));  LibePuts(stderr, "\n");
-  LibeFlush(stderr);
-  LibeExit(); 
-  return(OK);
-end
+  LibePuts(stderr,"file: ")  
+  LibePuts(stderr, file) 
+  LibePuts(stderr," -- line ")  
+  LibePuti(stderr, line) 
+  LibePuts(stderr, " : ") 
+  LibePuts(stderr, LibeStrsave(s))   
+  LibePuts(stderr, "\n") 
+  LibeFlush(stderr) 
+  LibeExit()  
+  return(OK) 
+   
 
-int ErrSerror(char [*] file, char [*] fname, int lineno, 
-              char [*] s1, char [*] s2) :
+int ErrSerror(char [*] file, char [*] fname, int lineno,char [*] s1, char [*] s2) : 
+              
 
   # ErrSerror prints semantic error messages.
   #
@@ -48,19 +47,22 @@ int ErrSerror(char [*] file, char [*] fname, int lineno,
   # line number) and then exits.
   #
 
-  LibePuts(stderr,"file: ");
-  LibePuts(stderr, file); LibePuts(stderr," ");
-  LibePuts(stderr, " function: "); LibePuts(stderr,fname); LibePuts(stderr," ");
-  LibePuts(stderr, " line ");
-  LibePuti(stderr, lineno); LibePuts(stderr, ": ");
-  if(s1 != NULL)
-    LibePuts(stderr, s1);   LibePuts(stderr, ": ");
-  if(s2 != NULL)
-    LibePuts(stderr, s2);   LibePuts(stderr, "\n");
-  LibeFlush(stderr);
-  LibeExit();
+  LibePuts(stderr,"file: ") 
+  LibePuts(stderr, file)  
+  LibePuts(stderr," ") 
+  LibePuts(stderr, " function: ")  
+  LibePuts(stderr,fname)  
+  LibePuts(stderr," ") 
+  LibePuts(stderr, " line ") 
+  LibePuti(stderr, lineno)  
+  LibePuts(stderr, ": ") 
+  if(s1 != NULL):
+    LibePuts(stderr, s1)    
+    LibePuts(stderr, ": ") 
+  if(s2 != NULL):
+    LibePuts(stderr, s2)    
+    LibePuts(stderr, "\n") 
+  LibeFlush(stderr) 
+  LibeExit() 
 
-  return(OK);
-
-end
-
+  return(OK) 

@@ -3,53 +3,108 @@
 # Eps grammar
 # The complete grammar of the epsilon language is given below using the
 # EBNF notation. 
-#    parse           = import | extdecl
-#    import          = IMPORT ID
-#    extdecl         = fdef | type   ':' structdeclar | ID  [idseq] 
-#    fdef            = DEF type ID '(' [arglist] ')' [compstmnt]
-#    type            = INT | REAL | COMPLEX | CHAR | CONST  
-#                      | STRUCT ID   [ '['arrayarg']' ]
-#    structdeclar   = declarations 'END'
-#    idseq          = ',' ID  [idseq] 
-#    arrayarg       = * | ',' arrayarg
-#    arglist        = type [ID] [argseq] 
-#    argseq         = ',' [ID]  argseq  
-#    declarations   = declaration [declarations]
-#    declaration    = type ID (idseq | constdecl ';')
-#    constdecl      = "=" expr ';'
-#    compstmnt      = ':' declarations | stmntlist 'END' 
-#    stmntlist      = stmnt | stmnt stmntlist   
-#    stmnt          = (ifstmnt| compstmnt| whilestmnt| forstmnt 
-#                             | parallelstmnt|return| expr) ';'
-#    ifstmnt        = IF '(' expr')' stmnt elsestmnt
-#    elsestmnt      = ELSE stmnt 
-#    whilestmnt     = WHILE '(' expr')' stmnt 
-#    forstmnt       = FOR '(' expr ';' expr ';' expr')' stmnt 
-#    parallelstmnt  = PARALLEL '('  sliceseq ')' stmnt 
-#    sliceseq       = slice [, sliceseq]
-#    slice          = expr ':' expr [':' expr ] 
-#    returnstmnt    = RETURN  expr
-#    exprlist       = expr exprseq 
-#    exprseq        = ',' expr [ exprseq ]
-#    expr           = asgexpr 
-#    asgexpr        = relexpr asgexprseq 
-#    asgexprseq     = '='    relexpr asgexprseq 
-#    relexpr        = addexpr relexprseq
-#    relexprseq     = ( '<' | '>' | '<=' | '>=' '||' 
+# The symbols have the following meaning:
+#
+# Productions : lowercase words
+# Selection   : |
+# Tokens      : Capitalized words
+# Optional    : []
+# Literal     : 'a'
+# Grouping    : ()
+#
+#    parse = 
+#        import 
+#      | fdef 
+#      | extdecl
+#      | STOP
+#
+#   import = IMPORT ID NL
+#
+#   fdef   = DEF type ID '(' [arglist] ')' [compstmnt]
+#
+#   extdecl = 
+#        type   ':' NL IND structdeclar 
+#      | ID  [idseq] NL 
+#      | '=' expr  NL 
+#
+#   type = 
+#        INT 
+#      | REAL 
+#      | COMPLEX 
+#      | CHAR 
+#      | CONST  
+#      | STRUCT ID 
+#      | [ '['arrayarg']' ]
+#
+#   structdeclar = declarations DIND
+#   idseq        = ',' ID  [idseq] 
+#   arrayarg     = 
+#        * 
+#      | ',' arrayarg
+#
+#   arglist      = type [ID] [argseq] 
+#   argseq       = ',' [ID]  argseq  
+#   declarations = declaration [declarations]
+#   declaration  = type ID 
+#      | [idseq] 
+#      | constdecl  NL
+#
+#   constdecl    = "=" expr ';'
+#
+#   compstmnt      = 
+#       ':'  NL IND declarations 
+#      | stmntlist DIND 
+#
+#   stmntlist = stmnt [stmntlist]
+#
+#   stmnt  = 
+#      |ifstmnt
+#      |compstmnt
+#      |whilestmnt
+#      |forstmnt 
+#      |parallelstmnt
+#      |return NL
+#      |PASS NL
+#      |expr ';' NL
+#
+#   ifstmnt        = IF '(' expr')' stmnt elsestmnt
+#   elsestmnt      = ELSE stmnt 
+#   whilestmnt     = WHILE '(' expr')' stmnt 
+#   forstmnt       = FOR '(' expr ';' expr ';' expr')' stmnt 
+#   parallelstmnt  = PARALLEL '('  sliceseq ')' stmnt 
+#   sliceseq       = slice [, sliceseq]
+#   slice          = expr ':' expr [':' expr ] 
+#   returnstmnt    = RETURN  expr
+#   exprlist       = expr exprseq 
+#   exprseq        = ',' expr [ exprseq ]
+#   expr           = asgexpr 
+#   asgexpr        = relexpr asgexprseq 
+#   asgexprseq     = '='    relexpr asgexprseq 
+#   relexpr        = addexpr relexprseq
+#   relexprseq     = 
+#     '<'  
+#   | '>' 
+#   | '<=' 
+#   | '>=' 
+#   | '||' 
 #                 | "&&" | "!=" | "==" ) 
 #    addexpr        = multexpr addexprseq
 #    addexpseq      = ['+'|'-'  multexpr addexprseq] 
 #    multexpr       = unexpr  multexprseq   
 #    multexprseq    = ['*'|'/' unexpr multexprseq] 
 #    unexpr         = primexpr | '-' unexpr 
-#    primexpr       = ID ['[' exprlist ']'] 
-#                     | '(' exprlist ')'] ) 
-#                     |  ['.' ident]
-#                     | CAST '(' type ',' asgexpr ')'  
-#                     | SCONST | ICONST | RCONST | NEW '(' type ')'  
-#                     | CMPLX '(' expr ')' 
-#                     | IM '(' expr ')'| RE '(' expr ')'
-#   ident             =  ID  [ '['exprlist ']' ] 
+#    primexpr = 
+#      | ident
+#      | '(' exprlist ')'] ) 
+#      | CAST '(' type ',' asgexpr ')'  
+#      | SCONST 
+#      | ICONST 
+#      | RCONST 
+#      | NEW '(' type ')'  
+#      | CMPLX '(' expr ')' 
+#      | IM '(' expr ')'
+#      | RE '(' expr ')'
+#      ident =  ID  [ '['exprlist ']' ] ['.' ident] 
 
 import libe     # Library interface              
 import ptree    # Parse Tree routines interface  
@@ -65,14 +120,29 @@ int ParseIniparse() :
 
  lookahead = ScanGetok();
  return(OK);
-end 
+
+ 
 
 # Forward declarations
-struct tree ParseExpr() : end
-struct tree ParseAsgexpr(struct tree p):end
-struct tree ParseStmnt() : end
-struct tree ParseElsestmnt() : end
-struct tree ParseCompstmnt() : end
+struct tree ParseExpr() : 
+  pass
+
+struct tree ParseAsgexpr(struct tree p):
+  pass
+
+
+struct tree ParseStmnt() : 
+  pass
+
+
+struct tree ParseElsestmnt() : 
+  pass
+
+
+struct tree ParseCompstmnt() : 
+  pass
+
+
 
 int ParseError(char [*] s) :
   
@@ -83,9 +153,9 @@ int ParseError(char [*] s) :
   #
   # Returns : Exits
   #
-
   ErrError(ScanGetfile(),ScanGetline(), s);
-end
+
+
 
 int ParseGetlookahead() :
   
@@ -95,7 +165,8 @@ int ParseGetlookahead() :
   #
 
   return (lookahead);       # Return lookahead token     
-end 
+
+ 
 
 int ParseMatch(int t) :
   
@@ -111,15 +182,19 @@ int ParseMatch(int t) :
 
   if(lookahead == t):
     lookahead = ScanGetok();
-  end 
-         
+  
+ 
   else :
+    LibePs("Was expecting: "); LibePi(t); LibePs(", but got: "); 
+    LibePi(lookahead); LibePs("\n");
     ParseError("syntax error");
     lookahead = ScanGetok();
-  end 
+  
+ 
  
   return(OK);
-end 
+
+ 
 
 struct tree ParseMknode(char [*] name, char [*] def) :
 
@@ -143,7 +218,8 @@ struct tree ParseMknode(char [*] name, char [*] def) :
   PtreeSetline(p,ScanGetline());
   PtreeSetfile(p,ScanGetfile());
   return(p);
-end
+
+
 
 struct tree ParseExprseq(struct tree p) :
 
@@ -163,9 +239,11 @@ struct tree ParseExprseq(struct tree p) :
     ParseMatch(lookahead);
     PtreeAddsister(p, ParseExpr());
     ParseExprseq(p);
-  end 
+  
+ 
   return p=NULL;
-end 
+
+ 
 
 struct tree ParseExprlist() :
 
@@ -180,12 +258,16 @@ struct tree ParseExprlist() :
     sp = ParseMknode("exprlist", "void");
     PtreeAddchild(sp, np);
     ParseExprseq(np);
-  end 
+  
  
-  else
+ 
+  else:
     sp = NULL;
+  
+
   return sp;
-end 
+
+ 
 
 int ParseArrayarg(struct tree p) :
 
@@ -202,25 +284,35 @@ int ParseArrayarg(struct tree p) :
     if(lookahead == COMMA):            
       ParseMatch(lookahead);
       ParseArrayarg(p);
-    end 
+    
  
-    else
+ 
+    else:
       return(OK);
-  end 
+    
+
+  
+ 
  
   else:
     sp = ParseMknode("arrayargs", "void");
     PtreeAddchild(p,sp);
     np = ParseExprlist();
-    if(sp != NULL)
+    if(sp != NULL):
       PtreeAddchild(sp,np);
-    else
+    
+
+    else:
       ParseError("Syntax error");
+    
+
     return(OK);
-  end 
+  
+ 
  
   return(OK);
-end 
+
+ 
 
 int ParseIdseq(struct tree p) :
 
@@ -236,12 +328,16 @@ int ParseIdseq(struct tree p) :
     PtreeAddchild(p, sp);
     ParseMatch(ID);        
     ParseIdseq(p);
-  end 
+  
  
-  else
+ 
+  else:
     return(OK);
+  
+
   return(OK);
-end 
+
+ 
  
  
 int ParseConstdecl(struct tree p) :
@@ -253,11 +349,13 @@ int ParseConstdecl(struct tree p) :
   struct tree np;
 
   np=ParseExpr();
-  if(np != NULL)
+  if(np != NULL):
    PtreeAddchild(p,np);
-  ParseMatch(SEMICOLON);      # ";"     
+  
+
   return(OK);
-end 
+
+ 
 
 struct tree ParseIdent() :
 
@@ -276,14 +374,17 @@ struct tree ParseIdent() :
       np = ParseExprlist();
       PtreeAddchild(sp, np);
       ParseMatch(RB);
-    end 
+    
  
-   end 
+   
  
-  else
+  else:
     sp = NULL;
+  
+
   return sp;
-end 
+
+ 
 
 struct tree ParseType() :
 
@@ -293,39 +394,49 @@ struct tree ParseType() :
 
   struct tree np, sp;
 
-  if((lookahead == INT)   ||      
-    (lookahead == REAL)   ||
-    (lookahead == CHAR)   ||
-    (lookahead == CONST)  ||
+  if((lookahead == INT)   || \
+    (lookahead == REAL)   || \
+    (lookahead == CHAR)   || \
+    (lookahead == CONST)  || \
     (lookahead == COMPLEX)):
     np = ParseMknode("type", ScanGetext());
     ParseMatch(lookahead);
-  end 
+  
+ 
   else if(lookahead == STRUCT) : 
     ParseMatch(lookahead);
     np = ParseMknode("type", ScanGetext());
     PtreeSetstruct(np, "struct");
     ParseMatch(ID);
-  end 
+  
+ 
   else :
     np = NULL;
-  end
+  
+
 
   if(lookahead == LB):
+    if(np==NULL):
+      ParseError("Missing type");
+    
+
     ParseMatch(lookahead);
     PtreeSetarray(np, "array");
     sp = ParseMknode("arrayargs", "void");
     PtreeAddchild(np,sp);
     ParseArrayarg(sp);
     ParseMatch(RB);
-  end 
+  
+ 
 
   return (np);
-end 
+
+ 
 
 struct tree ParsePrimexpr(struct tree p) :
 
-  # ParsePrimexpr -- parse primary expressionsend 
+  # ParsePrimexpr -- parse primary expressions
+ 
   # The following part of the grammar is implemented:
   #  primexpr       = ID ['[' exprlist ']'] | '(' exprlist ')'] ) | ['.' ident]
   #              | CAST '(' type ',' asgexpr ')'  
@@ -349,150 +460,137 @@ struct tree ParsePrimexpr(struct tree p) :
         np = ParseIdent();
         PtreeAddchild(sp,np);
         PtreeSetname(np, "selector");
-      end 
- 
-    end 
- 
+
     else if(lookahead == LP):           # Function call         
       ParseMatch(lookahead);
       PtreeSetname(sp,"fcall");
       np=NULL;
       if(lookahead != RP):
         np = ParseExprlist();
-      end 
- 
       ParseMatch(RP);
-      if(np != NULL) 
+      if(np != NULL): 
         PtreeAddchild(sp,np);
-    end 
- 
+
     else if(lookahead == POINT):         # Structure reference  
       ParseMatch(POINT);
       np = ParseIdent();
       PtreeAddchild(sp,np);
       PtreeSetname(np, "selector");
-    end 
- 
-  end 
- 
+
   else if(lookahead == CAST):           # Cast         
-    ParseMatch(lookahead);
-    sp=ParseMknode("cast", "void");
-    ParseMatch(LP);
-    np=ParseType();
-    if(np == NULL)
+      ParseMatch(lookahead);
+      sp=ParseMknode("cast", "void");
+      ParseMatch(LP);
+      np=ParseType();
+      if(np == NULL):
        ParseError("Syntax error");
-    else
+      else:
        PtreeAddchild(sp,np);
-    ParseMatch(COMMA);
-    np = ParseExpr();
-       PtreeAddchild(sp,np);
-    ParseMatch(RP);
-  end 
- 
+      ParseMatch(COMMA);
+      np = ParseExpr();
+      PtreeAddchild(sp,np);
+      ParseMatch(RP);
+  
   else if(lookahead == NEW):           # The new operator   
-    ParseMatch(lookahead);
-    sp=ParseMknode("new", "void");
-    ParseMatch(LP);
-    np=ParseType();
-    if(np == NULL)
-       ParseError("Syntax error");
-    else
-       PtreeAddchild(sp,np);
-    ParseMatch(RP);
-  end 
- 
- else if(lookahead == DELETE):         # The delete operator   
-    ParseMatch(lookahead);
-    sp=ParseMknode("delete", "void");
-    ParseMatch(LP);
-    np=ParseExpr();
-    if(np == NULL)
-       ParseError("Syntax error");
-    else
-       PtreeAddchild(sp,np);
-    ParseMatch(RP);
-  end 
- 
+      ParseMatch(lookahead);
+      sp=ParseMknode("new", "void");
+      ParseMatch(LP);
+      np=ParseType();
+      if(np == NULL):
+        ParseError("Syntax error");
+      else:
+        PtreeAddchild(sp,np);
+
+      ParseMatch(RP);
+  
+  else if(lookahead == DELETE):         # The delete operator   
+      ParseMatch(lookahead);
+      sp=ParseMknode("delete", "void");
+      ParseMatch(LP);
+      np=ParseExpr();
+      if(np == NULL) :
+        ParseError("Syntax error");
+      else:
+        PtreeAddchild(sp,np);
+
+      ParseMatch(RP);
+
   else if(lookahead == CMPLX):           # The cmplx operator   
-    ParseMatch(lookahead);
-    sp=ParseMknode("cmplx", "void");
-    ParseMatch(LP);
-    np = ParseExprlist();
-    if(np == NULL)
-       ParseError("Syntax error");
-    else
-       PtreeAddchild(sp,np);
-    ParseMatch(RP);
-  end 
+      ParseMatch(lookahead);
+      sp=ParseMknode("cmplx", "void");
+      ParseMatch(LP);
+      np = ParseExprlist();
+      if(np == NULL) :
+        ParseError("Syntax error");
+      else:
+        PtreeAddchild(sp,np);
+
+      ParseMatch(RP);
  
   else if(lookahead == RE):           # The re operator   
-    ParseMatch(lookahead);
-    sp=ParseMknode("re", "void");
-    ParseMatch(LP);
-    np = ParseExpr();
-    if(np == NULL)
-       ParseError("Syntax error");
-    else
-       PtreeAddchild(sp,np);
-    ParseMatch(RP);
-  end 
+      ParseMatch(lookahead);
+      sp=ParseMknode("re", "void");
+      ParseMatch(LP);
+      np = ParseExpr();
+      if(np == NULL):
+        ParseError("Syntax error");
+      else:
+        PtreeAddchild(sp,np);
+
+      ParseMatch(RP);
  
   else if(lookahead == IM):           # The im operator   
-    ParseMatch(lookahead);
-    sp=ParseMknode("im", "void");
-    ParseMatch(LP);
-    np = ParseExpr();
-    if(np == NULL)
-       ParseError("Syntax error");
-    else
-       PtreeAddchild(sp,np);
-    ParseMatch(RP);
-  end 
+      ParseMatch(lookahead);
+      sp=ParseMknode("im", "void");
+      ParseMatch(LP);
+      np = ParseExpr();
+      if(np == NULL):
+        ParseError("Syntax error");
+      else:
+        PtreeAddchild(sp,np);
+
+      ParseMatch(RP);
  
   else if(lookahead == LEN):           # The im operator   
-    ParseMatch(lookahead);
-    sp=ParseMknode("len", "void");
-    ParseMatch(LP);
-    np = ParseExpr();
-    if(np == NULL)
-       ParseError("Syntax error");
-    else
+      ParseMatch(lookahead);
+      sp=ParseMknode("len", "void");
+      ParseMatch(LP);
+      np = ParseExpr();
+      if(np == NULL) :
+        ParseError("Syntax error");
+      else:
        PtreeAddchild(sp,np);
-    ParseMatch(COMMA);
-    rp = ParseExpr();
-    if(rp == NULL)
-       ParseError("Syntax error");
-    else
+
+      ParseMatch(COMMA);
+
+      rp = ParseExpr();
+      if(rp == NULL) :
+        ParseError("Syntax error");
+      else:
        PtreeAddsister(np,rp);
-    ParseMatch(RP);
-  end 
+
+      ParseMatch(RP);
  
   else if(lookahead == ICONST) :           # Integer constant  
-        sp = ParseMknode("iconstant", ScanGetext());
-        ParseMatch(ICONST); 
-  end 
- 
+      sp = ParseMknode("iconstant", ScanGetext());
+      ParseMatch(ICONST); 
+  
   else if(lookahead == RCONST) :           # Float   constant  
-    sp = ParseMknode("rconstant", ScanGetext());
-    ParseMatch(RCONST); 
-  end 
+      sp = ParseMknode("rconstant", ScanGetext());
+      ParseMatch(RCONST); 
  
   else if(lookahead == SCONST) :          # String constant   
-    sp = ParseMknode("sconstant", ScanGetext());
-    ParseMatch(SCONST); 
-  end 
- 
+      sp = ParseMknode("sconstant", ScanGetext());
+      ParseMatch(SCONST); 
+  
   else if(lookahead == LP):           # Parenthized expression  
-    ParseMatch(LP); 
-    sp = ParseAsgexpr(p); 
-    ParseMatch(RP); 
-  end 
- 
-  else
-    ParseError("Syntax error");              # No match  
+      ParseMatch(LP); 
+      sp = ParseAsgexpr(p); 
+      ParseMatch(RP); 
+  else :
+      ParseError("Syntax error");              # No match  
+
   return sp;
-end 
 
 struct tree ParseUnexpr(struct tree p) :
 
@@ -507,13 +605,13 @@ struct tree ParseUnexpr(struct tree p) :
     ParseMatch(lookahead); 
     np = ParseUnexpr(p);
     PtreeAddchild(sp, np);
-  end 
  
-  else
+  else:
     sp = ParsePrimexpr(p);
 
-    return (sp); 
-end 
+  return (sp); 
+
+ 
 
 struct tree ParseMultexprseq(struct tree p) :
 
@@ -523,21 +621,24 @@ struct tree ParseMultexprseq(struct tree p) :
             
   struct tree np, rp, sp;
 
-  if((lookahead == STAR)  || 
-    (lookahead == SLASH)): 
+  if((lookahead == STAR)  || (lookahead == SLASH)): 
      np = ParseMknode("binexpr", ScanGetext());   
      ParseMatch(lookahead); 
      PtreeAddchild(np, p);           
      rp = ParseUnexpr(np);
      PtreeAddchild(np, rp);         
      sp = ParseMultexprseq(np);            
-  end 
+  
  
-  else
+ 
+  else:
     sp = p;
+  
+
 
   return (sp);
-end 
+
+ 
  
 struct tree ParseMultexpr(struct tree p) :
 
@@ -550,7 +651,8 @@ struct tree ParseMultexpr(struct tree p) :
   np = ParseUnexpr(p);   
   np = ParseMultexprseq(np);  
   return (np);
-end 
+
+ 
 
 struct tree ParseAddexprseq(struct tree p) :
 
@@ -560,21 +662,19 @@ struct tree ParseAddexprseq(struct tree p) :
 
   struct tree np, rp, sp;
 
-  if((lookahead == PLUS)  ||        
-    (lookahead == MINUS)): 
+  if((lookahead == PLUS)  || (lookahead == MINUS)):
      np = ParseMknode("binexpr", ScanGetext()); 
      ParseMatch(lookahead);      
      PtreeAddchild(np, p);      
      rp = ParseMultexpr(np); 
      PtreeAddchild(np, rp);
      sp = ParseAddexprseq(np); 
-  end 
- 
-  else
+  else:
      sp = p;
 
   return (sp);
-end 
+
+ 
   
  
  
@@ -589,7 +689,8 @@ struct tree ParseAddexpr(struct tree p) :
   np = ParseMultexpr(p);             
   np = ParseAddexprseq(np);  
   return (np);
-end 
+
+ 
 
 struct tree ParseRelexprseq(struct tree p) :
 
@@ -600,27 +701,19 @@ struct tree ParseRelexprseq(struct tree p) :
             
   struct tree np, rp, sp;
 
-  if((lookahead == LT)  ||        
-    (lookahead == GT)  ||
-    (lookahead == GE)  ||
-    (lookahead == EQ)  ||
-    (lookahead == NE)  ||
-    (lookahead == OR)  ||
-    (lookahead == AND) ||
-    (lookahead == LE)): 
-    np = ParseMknode("binexpr", ScanGetext()); 
-    ParseMatch(lookahead);      
-    PtreeAddchild(np, p);      
-    rp = ParseAddexpr(np); 
-    PtreeAddchild(np, rp);
-    sp = ParseRelexprseq(np); 
-  end 
- 
-  else
-    sp = p;
-
+  if((lookahead == LT) || (lookahead == GT)  ||  (lookahead == GE)  ||  (lookahead == EQ)  || (lookahead == NE)  ||   (lookahead == OR)  ||  (lookahead == AND) ||  (lookahead == LE)):
+      np = ParseMknode("binexpr", ScanGetext()); 
+      ParseMatch(lookahead);      
+      PtreeAddchild(np, p);      
+      rp = ParseAddexpr(np); 
+      PtreeAddchild(np, rp);
+      sp = ParseRelexprseq(np); 
+  else:
+      sp = p;
+  
   return (sp);
-end 
+
+ 
 
 struct tree ParseRelexpr(struct tree p) :
 
@@ -633,7 +726,8 @@ struct tree ParseRelexpr(struct tree p) :
   np = ParseAddexpr(p);             
   np = ParseRelexprseq(np);  
   return (np);
-end 
+
+ 
 
 struct tree ParseAsgexprseq(struct tree p) :
 
@@ -650,13 +744,17 @@ struct tree ParseAsgexprseq(struct tree p) :
     rp = ParseRelexpr(np); 
     sp = ParseAsgexprseq(rp);
     PtreeAddchild(np, sp);
-  end 
+  
  
-  else
+ 
+  else:
     np = p;
+  
+
 
   return (np);
-end 
+
+ 
 struct tree ParseAsgexpr(struct tree p) :
 
   # Parameters :
@@ -674,7 +772,8 @@ struct tree ParseAsgexpr(struct tree p) :
   np = ParseRelexpr(p);             
   np = ParseAsgexprseq(np);  
   return np;
-end 
+
+ 
 
 struct tree ParseExpr() :
 
@@ -690,9 +789,11 @@ struct tree ParseExpr() :
      sp = ParseMknode("expr","void");
      PtreeAddchild(sp, np);
      np = sp;
-  end 
+  
+ 
   return (np);
-end 
+
+ 
 
 struct tree ParseDeclaration() :
 
@@ -703,35 +804,40 @@ struct tree ParseDeclaration() :
   struct tree mp, np;
 
   np = ParseType();             # type  
-  if(np != NULL):
-    if(lookahead == ID):        # ID   
-      mp=ParseMknode("identifier", ScanGetext());  
-      PtreeAddchild(np,mp);
-      ParseMatch(lookahead);
-
-      if(lookahead == COMMA):
-        ParseIdseq(np);
-        ParseMatch(SEMICOLON);
-      end 
- 
-      else if(lookahead == ASSIGN):
-        ParseMatch(lookahead);
-        ParseConstdecl(mp);
-      end 
- 
-      else
-        ParseMatch(SEMICOLON);
-    end 
+  if(np == NULL):
+    return(np);
   
-    else
-      ParseError("Syntax error");
-  end 
+
+
+  if(lookahead == ID):        # ID   
+    mp=ParseMknode("identifier", ScanGetext());  
+    PtreeAddchild(np,mp);
+    ParseMatch(lookahead);
+
+    if(lookahead == COMMA):
+      ParseIdseq(np);
+    
  
-  else
-    np = NULL;                     
+    else if(lookahead == ASSIGN):
+      ParseMatch(lookahead);
+      ParseConstdecl(mp);
+    
+ 
+    if(lookahead == SEMICOLON):
+      ParseMatch(SEMICOLON);
+    
+
+    ParseMatch(NL);
+  
+
+  else:
+    ParseError("Missing variable in type statement");
+  
 
   return (np);
-end 
+
+ 
+
 struct tree ParseDeclarations():
 
   # ParseDeclarations parses declarations
@@ -744,17 +850,21 @@ struct tree ParseDeclarations():
   if(np != NULL):
     sp = ParseMknode("declarations", "void");
     PtreeAddchild(sp,np);
-  end 
+  
  
-  else
+  else:
     return np=NULL;
+  
+
 
   while((np=ParseDeclaration()) != NULL):
     PtreeAddchild(sp,np);
-  end 
+  
+ 
  
   return(sp);
-end 
+
+ 
 
 int ParseArgseq(struct tree p) :
 
@@ -772,15 +882,19 @@ int ParseArgseq(struct tree p) :
         sp = ParseMknode("identifier", ScanGetext());
         PtreeAddchild(np, sp);
         ParseMatch(ID);        
-      end 
+      
+ 
  
       ParseArgseq(p);
-    end 
+    
  
-  end 
+ 
+  
+ 
  
   return (OK);
-end 
+
+ 
  
  
 struct tree ParseArglist() :
@@ -798,16 +912,11 @@ struct tree ParseArglist() :
        mp = ParseMknode("identifier", ScanGetext());
        PtreeAddchild(np, mp);
        ParseMatch(ID);        
-    end 
-     ParseArgseq(sp);      
-  end 
- 
+    ParseArgseq(sp);      
   else:
     sp = NULL;
-  end 
  
   return (sp);
-end 
  
 int ParseStructdeclar(struct tree p) :
 
@@ -820,9 +929,10 @@ int ParseStructdeclar(struct tree p) :
   PtreeAddchild(p,np);
   sp = ParseDeclarations();
   PtreeAddchild(np,sp);
-  ParseMatch(END);
+  ParseMatch(DIND);
   return (OK);
-end 
+
+ 
 
 struct tree ParseWhilestmnt() :
 
@@ -835,19 +945,25 @@ struct tree ParseWhilestmnt() :
     np = ParseMknode("while", "void");
     ParseMatch(WHILE);
     ParseMatch(LP);
-    if((sp = ParseExpr()) != NULL)
+    if((sp = ParseExpr()) != NULL):
       PtreeAddchild(np, sp);
+    
+
     ParseMatch(RP);
     sp = ParseStmnt();
     PtreeAddchild(np, sp);
     sp = np;
-  end 
+  
  
-  else
+ 
+  else:
     sp = NULL;
+  
+
 
   return (sp);
-end 
+
+ 
 
 struct tree ParseReturnstmnt() :
 
@@ -860,17 +976,26 @@ struct tree ParseReturnstmnt() :
   if(lookahead == RETURN):
     np = ParseMknode("return", "void");
     ParseMatch(RETURN);
-    if((sp = ParseExpr()) != NULL)
+    if((sp = ParseExpr()) != NULL):
       PtreeAddchild(np, sp);
       sp = np;
-      ParseMatch(SEMICOLON);
-  end 
+      if(lookahead == SEMICOLON):
+        ParseMatch(SEMICOLON);
+      
+
+      ParseMatch(NL);
+    
+
+  
  
-  else
+  else:
     sp = NULL;
+  
+
 
   return (sp);
-end 
+
+ 
  
 struct tree ParseForstmnt() :
 
@@ -880,28 +1005,29 @@ struct tree ParseForstmnt() :
 
   struct tree np, sp, rp;
   if(lookahead == FOR):
-    np = ParseMknode("for", "void");
+      np = ParseMknode("for", "void");
       ParseMatch(FOR);
       ParseMatch(LP);
-      if((sp = ParseExpr()) != NULL)
+      if((sp = ParseExpr()) != NULL):
          PtreeAddchild(np, sp);
       ParseMatch(SEMICOLON);
-      if((rp = ParseExpr()) != NULL)
+      if((rp = ParseExpr()) != NULL):
          PtreeAddsister(sp, rp);
       ParseMatch(SEMICOLON);
-      if((rp = ParseExpr()) != NULL)
+      if((rp = ParseExpr()) != NULL):
         PtreeAddsister(sp, rp);
       ParseMatch(RP);
       sp = ParseStmnt();
       PtreeAddchild(np, sp);
       sp = np;
-  end 
- 
-  else
+  else:
     sp = NULL;
+  
+
 
   return (sp);
-end 
+
+ 
 
 struct tree ParseSlice() :
 
@@ -915,28 +1041,31 @@ struct tree ParseSlice() :
       np=ParseMknode("slice","void");
       PtreeAddchild(np,sp);
       ParseMatch(COLON);
-      if((rp = ParseExpr()) != NULL)
+      if((rp = ParseExpr()) != NULL):
          PtreeAddchild(np, rp);
       if(lookahead == COLON):
         ParseMatch(COLON);
         if((rp = ParseExpr()) != NULL):
           PtreeAddchild(np, rp);
-        end 
- 
         else :
           ParseError("Syntax error");
-        end 
+        
  
-      end 
  
-   end 
+      
+ 
+ 
+   
+ 
  
    else :
      ParseError("Syntax error");
-   end 
+   
+ 
  
    return (np);
-end 
+
+ 
 
 struct tree ParseSliceseq(struct tree np) :
 
@@ -948,25 +1077,30 @@ struct tree ParseSliceseq(struct tree np) :
 
    if((sp = ParseSlice()) != NULL):
        PtreeAddchild(np,sp);
-   end 
+   
+ 
  
    else:
      ParseError("Syntax error");
-   end 
+   
+ 
  
   
    if(lookahead == COMMA):
      ParseMatch(COMMA);
      ParseSliceseq(np);
-   end 
+   
+ 
  
    else :
      return(np);
-   end 
+   
+ 
  
 
    return(np);
-end 
+
+ 
 
 struct tree ParseParallelstmnt() :
 
@@ -982,7 +1116,7 @@ struct tree ParseParallelstmnt() :
     ParseMatch(LP);
     rp = ParseMknode("sliceseq", "void");
     PtreeAddchild(np,rp);
-    if((sp = ParseSliceseq(rp)) == NULL)
+    if((sp = ParseSliceseq(rp)) == NULL):
       ParseError("Syntax error");
 
     if(lookahead == RP):
@@ -990,19 +1124,25 @@ struct tree ParseParallelstmnt() :
       sp = ParseStmnt();
       PtreeAddchild(np, sp);
       return(np);
-    end 
+    
+ 
  
     else :
       ParseError("Syntax error");
-    end 
+    
  
-  end 
  
-  else
+  
+ 
+ 
+  else:
     return(rp=NULL);
+  
+
 
   return(rp=NULL);
-end 
+
+ 
  
 struct tree ParseElsestmnt() :
 
@@ -1016,12 +1156,13 @@ struct tree ParseElsestmnt() :
     np = ParseMknode("else", "void");
     sp = ParseStmnt();
     PtreeAddchild(np, sp);
- end 
  
- else
-   np = NULL;
- return  (np);
-end 
+  else:
+    np = NULL;
+
+  return  (np);
+
+ 
  
 struct tree ParseIfstmnt() :
 
@@ -1030,24 +1171,27 @@ struct tree ParseIfstmnt() :
   #  ifstmnt = IF '(' expr')' stmnt elsestmnt
 
   struct tree np, sp;
+
   if(lookahead == IF):
     np = ParseMknode("if", "void");
     ParseMatch(IF);
     ParseMatch(LP);
-    if((sp = ParseExpr()) != NULL)
+    if((sp = ParseExpr()) != NULL):
       PtreeAddchild(np, sp);
     ParseMatch(RP);
     sp = ParseStmnt();
     PtreeAddchild(np, sp);
-    if((sp = ParseElsestmnt()) != NULL)
+    if((sp = ParseElsestmnt()) != NULL):
       PtreeAddchild(np, sp);
     sp = np;
-  end 
  
-  else
+  else:
     sp = NULL;
+  
+
   return (sp);
-end 
+
+ 
  
 struct tree ParseStmnt() :
 
@@ -1058,36 +1202,48 @@ struct tree ParseStmnt() :
 
   struct tree np;
 
-  if((np = ParseWhilestmnt())!= NULL)
+  if((np = ParseWhilestmnt())!= NULL):
     return np;
-  else if((np = ParseReturnstmnt())!= NULL)
+  else if((np = ParseReturnstmnt())!= NULL):
     return np;
-  else if((np = ParseForstmnt())!= NULL)
+  else if((np = ParseForstmnt())!= NULL):
     return np;
-  else if((np = ParseForstmnt())!= NULL)
+  else if((np = ParseParallelstmnt())!= NULL):
     return np;
-  else if((np = ParseParallelstmnt())!= NULL)
+  else if((np = ParseIfstmnt())!= NULL):
     return np;
-  else if((np = ParseIfstmnt())!= NULL)
+  
+
+  else if((np = ParseCompstmnt()) != NULL):
     return np;
-  else if((np = ParseCompstmnt()) != NULL)
-    return np;
-  else if(lookahead == SEMICOLON):
-    ParseMatch(lookahead);
-    return (ParseMknode("void", "void"));
-  end 
- 
-  else if(lookahead == END):
+  else if(lookahead == DIND):
     return (np=NULL);
-  end 
- 
+  else if(lookahead == PASS):
+    ParseMatch(PASS);
+    ParseMatch(NL);
+    return (np=NULL);
+  
+
   else: 
     np = ParseExpr(); 
-    ParseMatch(SEMICOLON);
+    if(lookahead == SEMICOLON):
+      ParseMatch(SEMICOLON);
+    
+
+    if(lookahead == NL):
+      ParseMatch(NL);
+    
+
+#   else:
+#     ParseMatch(NL);
+#   
+
     return (np);
-  end 
+  
  
-end 
+ 
+
+ 
 
 struct tree ParseStmntlist() :
 
@@ -1102,10 +1258,12 @@ struct tree ParseStmntlist() :
   while(sp != NULL):       # stmntlist   
     sp = ParseStmnt();
     PtreeAddsister(np, sp);
-  end 
+  
+ 
  
   return (np);
-end 
+
+ 
 
 struct tree ParseCompstmnt() :
 
@@ -1119,20 +1277,21 @@ struct tree ParseCompstmnt() :
 
     np = ParseMknode("compstmnt","void");
     ParseMatch(COLON);                     
+    ParseMatch(NL);
+    ParseMatch(IND);
     sp = ParseDeclarations();                     # declarations    
-    if(sp != NULL)
+    if(sp != NULL):
       PtreeAddchild(np, sp);
-      sp = ParseStmntlist();                      # stmntlist       
-      if(sp != NULL)
-        PtreeAddchild(np, sp);
-      ParseMatch(END);                            # ':'             
-  end 
+    sp = ParseStmntlist();                      # stmntlist       
+    if(sp != NULL):
+      PtreeAddchild(np, sp);
+    ParseMatch(DIND);                            # ':'             
   else :
     np = NULL;
-  end
 
   return (np);
-end 
+
+ 
  
 int ParseFdef(struct tree p) :
 
@@ -1147,17 +1306,21 @@ int ParseFdef(struct tree p) :
   np = ParseArglist();
   if( np!= NULL) :
     PtreeAddchild(p, np);
-  end
+  
+
   ParseMatch(RP);
   np = NULL;
   np = ParseCompstmnt();
-  if( np!= NULL)
+  if( np!= NULL):
     PtreeAddchild(p, np);
-  else
+  else:
     ParseError("Missing function body");
+  
+
 
   return (OK);
-end 
+
+ 
  
 struct tree ParseExtdecl() :
 
@@ -1174,25 +1337,23 @@ struct tree ParseExtdecl() :
       if(lookahead == ID) :
         imp = ParseMknode("import",ScanGetext());
         ParseMatch(ID);
+        ParseMatch(NL);
         sp  = ParseMknode("extdecl","void");
         PtreeAddchild(sp,imp);
-      end
-    return(sp);
-    end
+      return(sp);
     else :
       ParseError("Syntax error");
-    end
-  end
-
+    
   if(lookahead == COLON):            # ":"  
-   sp = ParseMknode("extdecl", "void");
-   PtreeAddchild(sp,np);
     ParseMatch(lookahead);
+    ParseMatch(NL);
+    ParseMatch(IND);
+    sp = ParseMknode("extdecl", "void");
+    PtreeAddchild(sp,np);
     ParseStructdeclar(np);
     return(sp);
-  end 
 
- if(lookahead == ID):        # ID  
+  if(lookahead == ID):        # ID  
    sp = ParseMknode("extdecl", "void");
    PtreeAddchild(sp,np);
    mp=ParseMknode("identifier", ScanGetext());  
@@ -1200,23 +1361,28 @@ struct tree ParseExtdecl() :
    ParseMatch(lookahead);
    if(lookahead == COMMA):        # idseq 
      ParseIdseq(np);
-     ParseMatch(SEMICOLON);
-   end
+     if(lookahead == SEMICOLON):
+       ParseMatch(SEMICOLON);
+     ParseMatch(NL);
+
    else if(lookahead==LP):       # "("    
      ParseMatch(LP);
      ParseFdef(mp);
-   end 
+ 
    else if(lookahead == ASSIGN): # Constant  
      ParseMatch(lookahead);
      ParseConstdecl(mp);
-   end 
+     ParseMatch(NL);
+   
+ 
    else :
-     ParseMatch(SEMICOLON);
-   end
- end
+     if(lookahead == SEMICOLON):
+       ParseMatch(SEMICOLON);
+     ParseMatch(NL);
+   
+  return (sp);
 
- return (sp);
-end 
+ 
 
 struct tree ParseParse() :
 
@@ -1228,11 +1394,13 @@ struct tree ParseParse() :
   struct tree np;
 
   np = NULL;
-  if(lookahead == STOP)
+  if(lookahead == STOP):
     return np;                 
   else:
     np = ParseExtdecl();                        
-  end 
+  
+ 
 
   return (np);                
-end 
+
+ 

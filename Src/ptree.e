@@ -40,32 +40,32 @@
 # printing the tree.
 
 import libe   # Library interface  
-import err     # Error interface    
+import err    # Error interface    
 
 # Parse tree node datastructure
 #
 struct tree :        # Basic node             
-  char [*] name;     # Node name              
-  char [*] def;      # Definition             
-  char [*] type;     # Basic type             
-  char [*] structure;# Struct  flag           
-  int      line;     # Line no                
-  char [*] file;     # Input file name        
-  char [*] tempr;    # Temp real value        
-  char [*] tempi;    # Temp imaginary value     
-  char [*] lval;     # Lval field             
-  char [*] array;    # Array field            
-  char [*] paral;    # Parallel field         
-  char [*] global;   # global field         
-  char [*] forw;     # forw field         
-  char [*] ref;      # Ref  field             
-  int rank;          # Array rank field        
-  int simple;        # Simple field           
-  int topexpr;       # Top level expr field   
-  char [*] descr;    # Descriptor field       
-  struct tree child; # Child node            
-  struct tree sister; # Sister node           
-end 
+  char [*] name      # Node name              
+  char [*] def       # Definition             
+  char [*] type      # Basic type             
+  char [*] structure # Struct  flag           
+  int      line      # Line no                
+  char [*] file      # Input file name        
+  char [*] tempr     # Temp real value        
+  char [*] tempi     # Temp imaginary value     
+  char [*] lval      # Lval field             
+  char [*] array     # Array field            
+  char [*] paral     # Parallel field         
+  char [*] global    # global field         
+  char [*] forw      # forw field         
+  char [*] ref       # Ref  field             
+  int rank           # Array rank field        
+  int simple         # Simple field           
+  int topexpr        # Top level expr field   
+  char [*] descr     # Descriptor field       
+  struct tree child  # Child node            
+  struct tree sister  # Sister node           
+    
   
 int PtreeInit() :
    
@@ -76,9 +76,9 @@ int PtreeInit() :
   # Returns: OK
   #
 
-  return(OK);
+  return(OK) 
 
-end 
+    
  
 int PtreeRmnode(struct tree p) : 
 
@@ -92,21 +92,22 @@ int PtreeRmnode(struct tree p) :
   # PtreeRmnode removes a single node.
   #
 
-  if(p == NULL)
-    return (OK);
-  delete(p.name);
-  delete(p.def);
-  delete(p.type);
-  delete(p.structure);
-  delete(p.tempr);
-  delete(p.tempi);
-  delete(p.lval);
-  delete(p.array);
-  delete(p.ref);
-  delete(p.descr);
-  delete(p);
-  return(OK);
- end 
+  if(p == NULL):
+    return (OK) 
+     
+  delete(p.name) 
+  delete(p.def) 
+  delete(p.type) 
+  delete(p.structure) 
+  delete(p.tempr) 
+  delete(p.tempi) 
+  delete(p.lval) 
+  delete(p.array) 
+  delete(p.ref) 
+  delete(p.descr) 
+  delete(p) 
+  return(OK) 
+     
                       
 int PtreeRmtree(struct tree p) : 
   
@@ -122,14 +123,11 @@ int PtreeRmtree(struct tree p) :
   #
 
   if(p != NULL):
-    PtreeRmtree(p.child);
-    PtreeRmtree(p.sister);
-    PtreeRmnode(p);
-  end 
- 
-  return(OK);
+    PtreeRmtree(p.child) 
+    PtreeRmtree(p.sister) 
+    PtreeRmnode(p) 
 
-end 
+  return(OK) 
                       
 struct tree PtreeMknode( char [*] name, char [*] def ) :  
 
@@ -146,31 +144,29 @@ struct tree PtreeMknode( char [*] name, char [*] def ) :
   # and sets the name and def fields.
   #
 
-  struct tree p; 
+  struct tree p  
 
-  p = new(struct tree);
-  p.def = LibeStrsave(def);
-  p.name = LibeStrsave(name);
-  p.type =  LibeStrsave("void");    
-  p.structure = LibeStrsave("void"); 
-  p.line =  0;
-  p.file =  LibeStrsave("void");
-  p.tempr = LibeStrsave("void");         
-  p.tempi = LibeStrsave("void");      
-  p.lval =  LibeStrsave("void");       
-  p.array = LibeStrsave("void");      
-  p.paral = LibeStrsave("void");      
-  p.ref =   LibeStrsave("void");        
-  p.descr = LibeStrsave("void");  
-  p.global = LibeStrsave("void");  
-  p.forw = LibeStrsave("void");  
-  p.rank = 0;
-  p.simple = EMPTY;
-  p.child = NULL;
-  p.sister = NULL;
-  return (p);
-
-end 
+  p = new(struct tree) 
+  p.def = LibeStrsave(def) 
+  p.name = LibeStrsave(name) 
+  p.type =  LibeStrsave("void")     
+  p.structure = LibeStrsave("void")  
+  p.line =  0 
+  p.file =  LibeStrsave("void") 
+  p.tempr = LibeStrsave("void")          
+  p.tempi = LibeStrsave("void")       
+  p.lval =  LibeStrsave("void")        
+  p.array = LibeStrsave("void")       
+  p.paral = LibeStrsave("void")       
+  p.ref =   LibeStrsave("void")         
+  p.descr = LibeStrsave("void")   
+  p.global = LibeStrsave("void")   
+  p.forw = LibeStrsave("void")   
+  p.rank = 0 
+  p.simple = EMPTY 
+  p.child = NULL 
+  p.sister = NULL 
+  return (p) 
  
 int PtreeAddchild(struct tree parent, struct tree child): 
 
@@ -186,21 +182,19 @@ int PtreeAddchild(struct tree parent, struct tree child):
   # and sets the name and def fields.
   #
 
-  struct tree p, prev; 
+  struct tree p, prev  
 
   if((p = parent.child) == NULL):
-    parent.child = child;
-    return (OK);
-  end 
- 
-  prev = parent.child;
+    parent.child = child 
+    return (OK) 
+
+  prev = parent.child 
   while ((p = p.sister) != NULL):
-    prev = p;           
-  end 
+    prev = p            
  
-  prev.sister = child;
-  return(OK);
-end 
+  prev.sister = child 
+  return(OK) 
+    
  
 int PtreeAddsister(struct tree sister, struct tree newnode) :
 
@@ -216,17 +210,17 @@ int PtreeAddsister(struct tree sister, struct tree newnode) :
   # moves until the last sister node
   # is found and the new node is added.
 
-  struct tree p, prev; 
+  struct tree p, prev  
        
-  p = sister;
-  prev = p;
+  p = sister 
+  prev = p 
   while ((p = p.sister) != NULL):
-    prev = p;           
-  end 
+    prev = p            
+      
  
-  prev.sister = newnode;
-  return(OK);
-end 
+  prev.sister = newnode 
+  return(OK) 
+    
  
 struct tree PtreeMvsister(struct tree p) :
    
@@ -239,9 +233,9 @@ struct tree PtreeMvsister(struct tree p) :
   #  A sister node 
   #   
 
-  return(p.sister);
+  return(p.sister) 
 
-end 
+    
                       
 struct tree PtreeMvchild(struct tree p):  
    
@@ -254,9 +248,9 @@ struct tree PtreeMvchild(struct tree p):
   #  A child node 
   #   
 
-  return(p.child);
+  return(p.child) 
 
-end 
+    
 
 char [*] PtreeSetfield(char [*] field, char [*] value) :    
 
@@ -270,14 +264,14 @@ char [*] PtreeSetfield(char [*] field, char [*] value) :
   #   contents of field
   #
 
-  char [*] t;
+  char [*] t 
 
-  t=field;
-  field=LibeStrsave(value);
-  delete(t);
-  return(field);
+  t=field 
+  field=LibeStrsave(value) 
+  delete(t) 
+  return(field) 
 
-end 
+    
                       
 int PtreeSetname(struct tree p, char [*] name) :
 
@@ -291,12 +285,12 @@ int PtreeSetname(struct tree p, char [*] name) :
   #   
 
   if((name != NULL) && (p != NULL)):
-    delete(p.name);
-    p.name=LibeStrsave(name);
-  end
-  return(OK);
+    delete(p.name) 
+    p.name=LibeStrsave(name) 
+     
+  return(OK) 
 
-end 
+    
    
 char  [*] PtreeGetname(struct tree p): 
 
@@ -308,9 +302,9 @@ char  [*] PtreeGetname(struct tree p):
   #   node name
   #   
 
-  return(p.name);
+  return(p.name) 
 
-end 
+    
    
 int PtreeSetdef(struct tree p, char [*] def) :
    
@@ -324,11 +318,11 @@ int PtreeSetdef(struct tree p, char [*] def) :
   #   
  
   if((def != NULL) && (p != NULL)):
-    delete(p.def);
-    p.def=LibeStrsave(def);
-  end
-  return(OK);
-end 
+    delete(p.def) 
+    p.def=LibeStrsave(def) 
+     
+  return(OK) 
+    
    
 char [*] PtreeGetdef(struct tree p) : 
 
@@ -341,9 +335,9 @@ char [*] PtreeGetdef(struct tree p) :
   #  definition field
   #   
 
-  return(p.def);
+  return(p.def) 
 
-end 
+    
    
 int PtreeSetype(struct tree p, char [*] type) :
    
@@ -357,11 +351,11 @@ int PtreeSetype(struct tree p, char [*] type) :
   #   
  
   if((type != NULL) && (p != NULL)):
-    delete(p.type);
-    p.type=LibeStrsave(type);
-  end
-  return(OK);
-end 
+    delete(p.type) 
+    p.type=LibeStrsave(type) 
+     
+  return(OK) 
+    
    
 char [*] PtreeGetype(struct tree p) :
    
@@ -374,9 +368,9 @@ char [*] PtreeGetype(struct tree p) :
   #  type field
   #   
 
-  return(p.type);
+  return(p.type) 
 
-end 
+    
    
 int PtreeSetstruct(struct tree p, char [*] structure) :
 
@@ -390,12 +384,12 @@ int PtreeSetstruct(struct tree p, char [*] structure) :
   #
 
   if((structure != NULL) && (p != NULL)):
-    delete(p.structure);
-    p.structure=LibeStrsave(structure);
-  end
-  return(OK);
+    delete(p.structure) 
+    p.structure=LibeStrsave(structure) 
+     
+  return(OK) 
 
-end 
+    
    
 char [*] PtreeGetstruct(struct tree p) :    
 
@@ -409,9 +403,9 @@ char [*] PtreeGetstruct(struct tree p) :
   #  structure field
   #   
 
-  return(p.structure);
+  return(p.structure) 
 
-end 
+    
    
 int PtreeSetempr(struct tree p, char [*] tempr) :
 
@@ -425,12 +419,12 @@ int PtreeSetempr(struct tree p, char [*] tempr) :
   #
  
   if((tempr != NULL) && (p != NULL)):
-    delete(p.tempr);
-    p.tempr=LibeStrsave(tempr);
-  end
-  return(OK);
+    delete(p.tempr) 
+    p.tempr=LibeStrsave(tempr) 
+     
+  return(OK) 
 
-end 
+    
    
 char  [*] PtreeGetempr(struct tree p) : 
 
@@ -442,8 +436,8 @@ char  [*] PtreeGetempr(struct tree p) :
   # Returns: tempr field
   #
 
-  return(p.tempr);
-end 
+  return(p.tempr) 
+    
    
 int PtreeSetempi(struct tree p, char [*] tempi) :
 
@@ -457,11 +451,11 @@ int PtreeSetempi(struct tree p, char [*] tempi) :
   #
 
   if((tempi != NULL) && (p != NULL)):
-    delete(p.tempi);
-    p.tempi=LibeStrsave(tempi);
-  end
-  return(OK);
-end 
+    delete(p.tempi) 
+    p.tempi=LibeStrsave(tempi) 
+     
+  return(OK) 
+    
    
 char  [*] PtreeGetempi(struct tree p) :  
 
@@ -473,9 +467,9 @@ char  [*] PtreeGetempi(struct tree p) :
   # Returns: tempi field
   #
 
-   return(p.tempi);
+   return(p.tempi) 
 
-end 
+    
    
 int PtreeGetline(struct tree p):    
 
@@ -487,12 +481,11 @@ int PtreeGetline(struct tree p):
   # Returns: line field
   #
 
-  return(p.line);
+  return(p.line) 
 
-end 
+    
    
-int PtreeSetline(struct tree p, int line)    
-:
+int PtreeSetline(struct tree p, int line):    
 
   #PtreeSetline sets the line no of the node.
   #
@@ -503,9 +496,9 @@ int PtreeSetline(struct tree p, int line)
   # Returns: OK 
   #
  
-  p.line=line;
-  return(OK); 
-end 
+  p.line=line 
+  return(OK)  
+    
    
 char [*] PtreeGetfile(struct tree p) :    
 
@@ -517,8 +510,8 @@ char [*] PtreeGetfile(struct tree p) :
   # Returns: file field.
   #
   
-  return(p.file);
-end 
+  return(p.file) 
+    
 
 int PtreeSetfile(struct tree p, char [*] file) :   
   
@@ -531,12 +524,12 @@ int PtreeSetfile(struct tree p, char [*] file) :
   # Returns : OK
 
   if((file != NULL) && (p != NULL)): 
-    delete(p.file);
-    p.file=LibeStrsave(file);
-  end
-  return(OK);
+    delete(p.file) 
+    p.file=LibeStrsave(file) 
+     
+  return(OK) 
 
-end 
+    
    
 int PtreeSetrank(struct tree p, int rank) :   
 
@@ -549,10 +542,10 @@ int PtreeSetrank(struct tree p, int rank) :
   # Returns: OK 
   #
  
-  p.rank = rank;
-  return(OK);
+  p.rank = rank 
+  return(OK) 
 
-end 
+    
    
 int PtreeGetrank(struct tree p) :    
 
@@ -564,9 +557,9 @@ int PtreeGetrank(struct tree p) :
   # Returns: rank field.
   #
 
-  return(p.rank);
+  return(p.rank) 
 
-end 
+    
    
 int PtreeSetlval(struct tree p, char [*] lval) :
   
@@ -580,12 +573,12 @@ int PtreeSetlval(struct tree p, char [*] lval) :
   #
 
   if((lval != NULL) && (p != NULL)):
-    delete(p.lval);
-    p.lval=LibeStrsave(lval);
-  end
-  return(OK);
+    delete(p.lval) 
+    p.lval=LibeStrsave(lval) 
+     
+  return(OK) 
 
-end 
+    
  
 char  [*] PtreeGetlval(struct tree p) :
 
@@ -597,9 +590,9 @@ char  [*] PtreeGetlval(struct tree p) :
   # Returns: lval field.
   #
 
-  return(p.lval);
+  return(p.lval) 
 
-end 
+    
    
 int PtreeSetarray(struct tree p, char [*] array) :   
 
@@ -613,11 +606,11 @@ int PtreeSetarray(struct tree p, char [*] array) :
   #
 
   if((array != NULL) && (p != NULL)):
-    delete(p.array);
-    p.array=LibeStrsave(array);
-  end
-  return(OK);
-end 
+    delete(p.array) 
+    p.array=LibeStrsave(array) 
+     
+  return(OK) 
+    
    
 char [*] PtreeGetarray(struct tree p) :   
 
@@ -629,9 +622,9 @@ char [*] PtreeGetarray(struct tree p) :
   # Returns: array field.
   #
 
-  return(p.array);
+  return(p.array) 
 
-end 
+    
    
 int PtreeSetparallel(struct tree p, char [*] paral) :    
 
@@ -645,12 +638,12 @@ int PtreeSetparallel(struct tree p, char [*] paral) :
   #
  
   if((paral != NULL) && (p != NULL)):
-    delete(p.paral);
-    p.paral=LibeStrsave(paral);
-  end
-  return(OK);
+    delete(p.paral) 
+    p.paral=LibeStrsave(paral) 
+     
+  return(OK) 
 
-end 
+    
    
 char [*] PtreeGetparallel(struct tree p) :    
 
@@ -662,9 +655,9 @@ char [*] PtreeGetparallel(struct tree p) :
   # Returns: paral field.
   #
 
-  return(p.paral);
+  return(p.paral) 
 
-end 
+    
    
 int PtreeSetref(struct tree p, char [*] ref) :   
 
@@ -678,11 +671,11 @@ int PtreeSetref(struct tree p, char [*] ref) :
   #
 
   if((ref != NULL) && (p != NULL)):
-    delete(p.ref);
-    p.ref=LibeStrsave(ref);
-  end
-  return(OK);
-end 
+    delete(p.ref) 
+    p.ref=LibeStrsave(ref) 
+     
+  return(OK) 
+    
    
 char [*] PtreeGetref(struct tree p) :    
 
@@ -694,9 +687,9 @@ char [*] PtreeGetref(struct tree p) :
   # Returns: ref field.
   #
  
-  return(p.ref);
+  return(p.ref) 
 
-end 
+    
    
 int PtreeSetdescr(struct tree p, char [*] descr) :    
 
@@ -710,11 +703,11 @@ int PtreeSetdescr(struct tree p, char [*] descr) :
   #
  
   if((descr != NULL) && (p != NULL)):
-    delete(p.descr);
-    p.descr=LibeStrsave(descr);
-  end
-  return(OK);
-end 
+    delete(p.descr) 
+    p.descr=LibeStrsave(descr) 
+     
+  return(OK) 
+    
    
 char [*] PtreeGetdescr(struct tree p) :    
 
@@ -726,9 +719,9 @@ char [*] PtreeGetdescr(struct tree p) :
   # Returns: descr field.
   #
  
-  return(p.descr);
+  return(p.descr) 
 
-end 
+    
    
 int PtreeSetglobal(struct tree p, char [*] global) :    
 
@@ -742,11 +735,11 @@ int PtreeSetglobal(struct tree p, char [*] global) :
   #
  
   if((global != NULL) && (p != NULL)):
-    delete(p.global);
-    p.global=LibeStrsave(global);
-  end
-  return(OK);
-end 
+    delete(p.global) 
+    p.global=LibeStrsave(global) 
+     
+  return(OK) 
+    
    
 char [*] PtreeGetglobal(struct tree p) :   
 
@@ -758,9 +751,9 @@ char [*] PtreeGetglobal(struct tree p) :
   # Returns: global field.
   #
  
-  return(p.global);
+  return(p.global) 
 
-end 
+    
    
 int PtreeSetopexpr(struct tree p, int topexpr) :    
 
@@ -773,11 +766,11 @@ int PtreeSetopexpr(struct tree p, int topexpr) :
   # Returns: OK 
   #
  
-  p.topexpr = OK;
+  p.topexpr = OK 
 
-  return(OK);
+  return(OK) 
 
-end 
+    
    
 int PtreeGetopexpr(struct tree p) :    
 
@@ -789,9 +782,9 @@ int PtreeGetopexpr(struct tree p) :
   # Returns: topexpr field.
   #
 
-    return(p.topexpr);
+    return(p.topexpr) 
 
-end 
+    
    
 int PtreeSetsimple(struct tree p, int simple) :    
 
@@ -804,10 +797,10 @@ int PtreeSetsimple(struct tree p, int simple) :
   # Returns: OK 
   #
  
-  p.simple = simple;
-  return(OK);
+  p.simple = simple 
+  return(OK) 
 
-end 
+    
    
 int PtreeGetsimple(struct tree p) :   
 
@@ -819,29 +812,28 @@ int PtreeGetsimple(struct tree p) :
   # Returns: simple field.
   #
  
-  return(p.simple);
+  return(p.simple) 
 
-end 
+    
 
-int PtreeSetforw(struct tree p, char [*] forw)
-:
+int PtreeSetforw(struct tree p, char [*] forw) :
+
   # PtreeSetforw sets the forward field.
 
   if((forw != NULL) && (p != NULL)):
-    delete(p.forw);
-    p.forw=LibeStrsave(forw);
-  end
-  return(OK);
-end
+    delete(p.forw) 
+    p.forw=LibeStrsave(forw) 
+     
+  return(OK) 
+   
 
-char [*] PtreeGetforw(struct tree p)
-:
+char [*] PtreeGetforw(struct tree p) :
 
   #PtreeGetforw  -- Get the forward field
 
 
-  return(p.forw);
-end
+  return(p.forw) 
+   
 
    
 int PtreePrtree(struct tree p, int level) :
@@ -864,66 +856,52 @@ int PtreePrtree(struct tree p, int level) :
   # For level > 1 the corresponding levels of the
   # tree are printed.
  
-  int i;
-  int fp;
+  int i 
+  int fp 
        
-  fp = stdout;
+  fp = stdout 
 
   if (p != NULL):
-    i = 0;
+    i = 0 
     while( i < level):
-      LibePuts(fp, " ");
-      i = i + 1;
-    end 
+      LibePuts(fp, " ") 
+      i = i + 1 
  
-    LibePuts(fp, p.name); LibePuts(fp," ");
-    LibePuts(fp, p.def);  LibePuts(fp," ");
-    LibePuts(fp, p.type); LibePuts(fp," ");
-    LibePuts(fp, p.structure); LibePuts(fp," ");
-    LibePuts(fp, p.array); LibePuts(fp," ");
-    LibePuts(fp, p.paral); LibePuts(fp," ");
-    LibePuts(fp, p.global); LibePuts(fp," ");
-    LibePuti(fp, p.rank);  LibePuts(fp," ");
-    LibePuts(fp, p.forw);  LibePuts(fp," ");
+    LibePuts(fp, p.name); LibePuts(fp," ") 
+    LibePuts(fp, p.def) ; LibePuts(fp," ") 
+    LibePuts(fp, p.type); LibePuts(fp," ") 
+    LibePuts(fp, p.structure); LibePuts(fp," ") 
+    LibePuts(fp, p.array);     LibePuts(fp," ") 
+    LibePuts(fp, p.paral);     LibePuts(fp," ") 
+    LibePuts(fp, p.global);    LibePuts(fp," ") 
+    LibePuti(fp, p.rank);      LibePuts(fp," ") 
+    LibePuts(fp, p.forw);      LibePuts(fp," ") 
     if(p.simple==OK):
-      LibePuts(fp, "simple"); LibePuts(fp," ");
-    end 
- 
+      LibePuts(fp, "simple");    LibePuts(fp," ") 
     else if(p.simple==EMPTY):
-      LibePuts(fp, "empty"); LibePuts(fp," ");
-    end 
- 
+      LibePuts(fp, "empty");     LibePuts(fp," ") 
     else:
-      LibePuts(fp, "nonsimple"); LibePuts(fp," ");
-    end 
- 
+      LibePuts(fp, "nonsimple"); LibePuts(fp," ") 
     if(p.topexpr==OK):
-      LibePuts(fp, "topexpr"); LibePuts(fp," ");
-    end 
- 
+      LibePuts(fp, "topexpr");   LibePuts(fp," ") 
     else if(p.topexpr==ERR):
-      LibePuts(fp, "void"); LibePuts(fp," ");
-    end 
- 
+      LibePuts(fp, "void");      LibePuts(fp," ") 
     else:
-      LibePuts(fp, "nonsimple"); LibePuts(fp," ");
-    end 
+      LibePuts(fp, "nonsimple"); LibePuts(fp," ") 
  
-    LibePuti(fp, p.line);  LibePuts(fp," ");
-    LibePuts(fp, p.tempr); LibePuts(fp," ");
-    LibePuts(fp, p.tempi); LibePuts(fp," ");
-    LibePuts(fp, p.lval);  LibePuts(fp," ");
-    LibePuts(fp, p.ref);   LibePuts(fp," ");
-    LibePuts(fp, p.descr); LibePuts(fp," ");
-    LibePuts(fp, "\n");
+    LibePuti(fp, p.line);  LibePuts(fp," ") 
+    LibePuts(fp, p.tempr); LibePuts(fp," ") 
+    LibePuts(fp, p.tempi); LibePuts(fp," ") 
+    LibePuts(fp, p.lval);  LibePuts(fp," ") 
+    LibePuts(fp, p.ref);   LibePuts(fp," ") 
+    LibePuts(fp, p.descr); LibePuts(fp," ") 
+    LibePuts(fp, "\n") 
 
-    level = level + 1;
-    PtreePrtree(p.child, level);
-    level = level - 1;
-    PtreePrtree(p.sister,level);
-  end 
- 
-  LibeFlush(fp);
-  return(OK);
-end 
+    level = level + 1 
+    PtreePrtree(p.child, level) 
+    level = level - 1 
+    PtreePrtree(p.sister,level) 
+      
+  LibeFlush(fp) 
+  return(OK) 
  

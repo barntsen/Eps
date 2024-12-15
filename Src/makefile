@@ -30,7 +30,7 @@
     BIN=../Bin
     LIB=../Lib
     INC=../Inc
-    ECFLAGS=
+    ECFLAGS= -g
     LDFLAGS=
 
 # The compiler executable
