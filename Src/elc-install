@@ -13,4 +13,4 @@ for i in $*
 do
   FILES="$FILES $i" ;
 done 
-nvcc -L$LIB $FILES -lecuda -lcudart
+nvcc -Xcompiler "-z muldefs" -L$LIB $FILES -lecuda -lcudart
