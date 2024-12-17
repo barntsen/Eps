@@ -7,7 +7,7 @@
 #
 # Productions : lowercase words
 # Selection   : |
-# Tokens      : Capitalized words
+# FINAl       : Capitalized words
 # Optional    : []
 # Literal     : 'a'
 # Grouping    : ()
@@ -25,7 +25,6 @@
 #   extdecl = 
 #        type   ':' NL IND structdeclar 
 #      | ID  [idseq] NL 
-#      | '=' expr  NL 
 #
 #   type = 
 #        INT 
@@ -44,18 +43,18 @@
 #
 #   arglist      = type [ID] [argseq] 
 #   argseq       = ',' [ID]  argseq  
-#   declarations = declaration [declarations]
+#   declarations = declaration [';'] NL [declarations]
 #   declaration  = type ID 
 #      | [idseq] 
-#      | constdecl  NL
+#      | constdecl  
 #
-#   constdecl    = "=" expr ';'
+#   constdecl    = "=" expr [';'] NL
 #
 #   compstmnt      = 
 #       ':'  NL IND declarations 
 #      | stmntlist DIND 
 #
-#   stmntlist = stmnt [stmntlist]
+#   stmntlist = stmnt [';'] NL [stmntlist]
 #
 #   stmnt  = 
 #      |ifstmnt
@@ -65,7 +64,7 @@
 #      |parallelstmnt
 #      |return NL
 #      |PASS NL
-#      |expr ';' NL
+#      |expr 
 #
 #   ifstmnt        = IF '(' expr')' stmnt elsestmnt
 #   elsestmnt      = ELSE stmnt 
@@ -82,17 +81,21 @@
 #   asgexprseq     = '='    relexpr asgexprseq 
 #   relexpr        = addexpr relexprseq
 #   relexprseq     = 
-#     '<'  
-#   | '>' 
-#   | '<=' 
-#   | '>=' 
-#   | '||' 
-#                 | "&&" | "!=" | "==" ) 
+#       '<'  
+#     | '>' 
+#     | '<=' 
+#     | '>=' 
+#     | '||' 
+#     | "&&" 
+#     | "!=" 
+#     | "==" ) 
+#
 #    addexpr        = multexpr addexprseq
 #    addexpseq      = ['+'|'-'  multexpr addexprseq] 
 #    multexpr       = unexpr  multexprseq   
 #    multexprseq    = ['*'|'/' unexpr multexprseq] 
 #    unexpr         = primexpr | '-' unexpr 
+
 #    primexpr = 
 #      | ident
 #      | '(' exprlist ')'] ) 
@@ -104,7 +107,8 @@
 #      | CMPLX '(' expr ')' 
 #      | IM '(' expr ')'
 #      | RE '(' expr ')'
-#      ident =  ID  [ '['exprlist ']' ] ['.' ident] 
+#
+#    ident =  ID  [ '['exprlist ']' ] ['.' ident] 
 
 import libe     # Library interface              
 import ptree    # Parse Tree routines interface  

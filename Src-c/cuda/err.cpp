@@ -296,13 +296,13 @@ if(nctemp131)
 int nctemp137= 4;
 nctempchar1* nctemp139= s1;
 int nctemp142=LibePuts(nctemp137,nctemp139);
-}
 int nctemp144= 4;
 struct nctempchar1 *nctemp148;
 static struct nctempchar1 nctemp149 = {{ 3}, (char*)": \0"};
 nctemp148=&nctemp149;
 nctempchar1* nctemp146= nctemp148;
 int nctemp150=LibePuts(nctemp144,nctemp146);
+}
 nctempchar1 *nctemp152 =s2;
 int nctemp151 =(nctemp152!=0);
 if(nctemp151)
@@ -310,13 +310,13 @@ if(nctemp151)
 int nctemp157= 4;
 nctempchar1* nctemp159= s2;
 int nctemp162=LibePuts(nctemp157,nctemp159);
-}
 int nctemp164= 4;
 struct nctempchar1 *nctemp168;
 static struct nctempchar1 nctemp169 = {{ 3}, (char*)"\n\0"};
 nctemp168=&nctemp169;
 nctempchar1* nctemp166= nctemp168;
 int nctemp170=LibePuts(nctemp164,nctemp166);
+}
 int nctemp172= 4;
 int nctemp174=LibeFlush(nctemp172);
 int nctemp176=LibeExit();

@@ -1,13 +1,12 @@
 ## The eps compilers makefile
 
-
 # Comment out for the ecc (cuda version) compiler
-#ARCH=cuda
-#C=nvcc -x cu -Xcompiler "-z muldefs"
-#EXEC=ecc
-#EL=nvcc -L. -Xcompiler "-z muldefs" 
-#EXEL=elc
-#EXT=cpp
+ARCH=cuda
+C=nvcc -x cu -Xcompiler "-z muldefs"
+EXEC=ecc
+EL=nvcc -L. -Xcompiler "-z muldefs" 
+EXEL=elc
+EXT=cpp
 
 # Comment out for the ech (hip version) compiler
 #  ARCH=hip
@@ -18,12 +17,12 @@
 #  EXT=cpp
 
 # Comment out for the ec (cpu version) compiler
-  ARCH=cpu
-  C=gcc
-  EXEC=ec
-  EL=gcc 
-  EXEL=el
-  EXT=c
+# ARCH=cpu
+# C=gcc
+# EXEC=ec
+# EL=gcc 
+# EXEL=el
+# EXT=c
 
 # Definitions
     EC=./$(EXEC)
@@ -33,33 +32,37 @@
     ECFLAGS= -g
     LDFLAGS=
 
+%.o : %.m
+	
+	
+
 # The compiler executable
-$(ARCH):    main.o scan.o parse.o ptree.o sem.o sym.o code.o   \
-            err.o scanpath.o libe.o run$(ARCH)c.o run.o m.o
+$(ARCH):    main.o scan.m parse.m ptree.m sem.m sym.m code.m   \
+            err.m scanpath.m libe.m run$(ARCH)c.o run.o m.m
 	    $(EL) $(LDFLAGS) -o $(EXEC)1 main.o scan.o parse.o \
             ptree.o sem.o code.o sym.o err.o scanpath.o libe.o \
             run$(ARCH)c.o -lm
 
-main.o:      main.e m.o scan.o parse.o ptree.o sem.o code.o sym.o libe.o \
-             scan.o scanpath.o err.o run.o 
+main.o:      main.e m.m scan.m parse.m ptree.m sem.m code.m sym.m libe.m \
+             scan.m scanpath.m err.m run.o 
 	     $(EC) $(ECFLAGS) main.e 
-scan.o:      scan.e libe.o err.o scanpath.o
+scan.m:      scan.e libe.m err.m scanpath.m
 	     $(EC) $(ECFLAGS) scan.e 
-scanpath.o:  scanpath.e libe.o
+scanpath.m:  scanpath.e libe.m
 	     $(EC) $(ECFLAGS) scanpath.e 
-parse.o:     parse.e libe.o ptree.o err.o scan.o
+parse.m:     parse.e libe.m ptree.m err.m scan.m
 	     $(EC) $(ECFLAGS) parse.e 
-ptree.o:     ptree.e libe.o err.o 
+ptree.m:     ptree.e libe.m err.m 
 	     $(EC) $(ECFLAGS) ptree.e 
-sem.o:       sem.e sym.o libe.o ptree.o err.o m.o  
+sem.m:       sem.e sym.m libe.m ptree.m err.m m.m  
 	     $(EC) $(ECFLAGS) sem.e 
-sym.o:       sym.e libe.o err.o 
+sym.m:       sym.e libe.o err.o 
 	     $(EC) $(ECFLAGS) sym.e 
-code.o:      code.e libe.o sym.o ptree.o err.o m.o scan.o 
+code.m:      code.e libe.m sym.m ptree.m err.m m.m scan.m 
 	     $(EC) $(ECFLAGS) code.e 
-err.o:	     err.e libe.o
+err.m:	     err.e libe.m
 	     $(EC) $(ECFLAGS) err.e 
-m.o:         m.e
+m.m:         m.e
 	     cp m-$(ARCH).e m.e
 	     $(EC) $(ECFLAGS) m.e
 run.o:	     run.e
@@ -68,10 +71,10 @@ run.o:	     run.e
 # Libraries
 lib:           lib$(ARCH).a  
 
-lib$(ARCH).a:  libe.o run$(ARCH).o
+lib$(ARCH).a:  libe.m run$(ARCH).o
 	       ar rcs libe$(ARCH).a libe.o run$(ARCH).o 
 
-libe.o:        libe.e run.m
+libe.m:        libe.e run.m
 	       $(EC)  $(ECFLAGS) libe.e   
 
 run.m:         run.e	
