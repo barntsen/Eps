@@ -67,16 +67,16 @@ int SemImport(struct tree p, struct symbol etp) :
   SymReadsym(fd,stp,module);
   LibeClose(fd);
 
-  tp = SymMvnext(stp) ; 
-  while(tp != NULL) :  
-    if(SymLookup(name,etp) != NULL) :
-      prev=tp;
-      tp=SymMvnext(tp);
-      SymRmname(name,stp);  
-    
-
-    else :
-      tp=SymMvnext(tp);
+  #tp = SymMvnext(stp) ; 
+  #while(tp != NULL) :  
+  #  if(SymLookup(name,etp) != NULL) :
+  #    prev=tp;
+  #    tp=SymMvnext(tp);
+  #    SymRmname(name,stp);  
+  #  
+  #
+  #  else :
+  #    tp=SymMvnext(tp);
     
       
   

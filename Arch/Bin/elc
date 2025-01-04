@@ -13,4 +13,4 @@ for i in $*
 do
   FILES="$FILES $i" ;
 done 
-nvcc -L$LIB $FILES -lecuda -lcudart
+nvcc -use-fast-math -Xcompiler "-z muldefs" --compiler-options "-ffast-math" -L$LIB $FILES -lecuda -lcudart

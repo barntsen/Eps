@@ -23,7 +23,7 @@ int MainError(char [*] s) :
   if((ScanGetfile() != NULL) && (ScanGetline() != NULL)):
     ErrError(ScanGetfile(),ScanGetline(), s)  
   else :
-    LibePuts(stderr,"File extension have to be .c\n") 
+    LibePuts(stderr,"File extension have to be .e\n") 
     LibeExit() 
 
 int MainHelp(int arch):
@@ -161,7 +161,7 @@ char [*] MainFmod(char [*] infile):
   return(outfile) 
     
 
-const CMDLEN=80         # Length of command line
+const CMDLEN=160         # Length of command line
 
 int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):
 
@@ -183,7 +183,7 @@ int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):
   int l                 # Temp varibale to hold string length of 
                         # input file name
   l=len(file,0) 
-  tmp= "gcc -c " 
+  tmp= "gcc -c -ffast-math " 
   cmd = new(char[CMDLEN]) 
   LibeStrcpy(tmp,cmd) 
 
@@ -231,24 +231,18 @@ int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show):
   int l                 # Temp varibale to hold string length of 
                         # input file name
   l=len(file,0) 
-  tmp= "nvcc -c -x cu " 
+  tmp= "nvcc -arch=all -use_fast_math --compiler-options -O2 --compiler-options -ffast-math  -c -x cu " 
   cmd = new(char[CMDLEN]) 
   LibeStrcpy(tmp,cmd) 
 
   if(debug == OK):
     LibeStrcat(" -g ",cmd) 
-      
- 
 
   if(optimize == OK):
     LibeStrcat(" -O3 ",cmd) 
-      
- 
 
   if(openmp == OK):
     LibeStrcat(" -fopenmp ",cmd) 
-      
- 
 
   LibeStrcat(file,cmd) 
   LibeStrcat("\n",cmd) 

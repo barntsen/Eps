@@ -1,12 +1,12 @@
 ## The eps compilers makefile
 
 # Comment out for the ecc (cuda version) compiler
-ARCH=cuda
-C=nvcc -x cu -Xcompiler "-z muldefs"
-EXEC=ecc
-EL=nvcc -L. -Xcompiler "-z muldefs" 
-EXEL=elc
-EXT=cpp
+ ARCH=cuda
+ C=nvcc -x cu -Xcompiler "-z muldefs"
+ EXEC=ecc
+ EL=nvcc -L. -Xcompiler "-z muldefs" 
+ EXEL=elc
+ EXT=cpp
 
 # Comment out for the ech (hip version) compiler
 #  ARCH=hip
@@ -29,7 +29,7 @@ EXT=cpp
     BIN=../Bin
     LIB=../Lib
     INC=../Inc
-    ECFLAGS= -g
+    ECFLAGS=-g
     LDFLAGS=
 
 %.o : %.m
