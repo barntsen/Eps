@@ -1066,7 +1066,6 @@ nctemp1121=nctemp1240;}return 1;
 struct symbol* SymAddtble (struct symbol* tp,struct symbol* sp)
 {
 struct symbol* start;
-struct symbol* start2;
 struct symbol* prev;
 start =tp;
 int nctemp1249 = (sp ==0);
@@ -1298,8 +1297,6 @@ nctemp1331=nctemp1624;}return 1;
 }
 int SymExport (int fp,struct symbol* p,int level)
 {
-int i;
-struct symbol* tp;
 struct symbol* tq;
 int nctemp1629 = (p ==0);
 if(nctemp1629)

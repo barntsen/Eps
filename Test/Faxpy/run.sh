@@ -3,7 +3,8 @@ export NBLOCKS=1024
 export NTHREADS=1024
 
 echo "Running cuda version:"
-./faxpy2dcuda
+time ./faxpy2dcuda
 
-echo "Running cpu version:"
-./faxpy2dcpu
+
+echo "Running fortran version:"
+time ./test

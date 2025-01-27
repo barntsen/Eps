@@ -40,11 +40,8 @@ int SemImport(struct tree p, struct symbol etp) :
   char [*] file;
   char [*] path;
   char [*] sysfile;
-  char [*] name;
   int fd;
   struct symbol stp;  # Module symbol table
-  struct symbol sp,tp;
-  struct symbol prev;
 
   module=PtreeGetdef(p);
   file = LibeStradd(module,".m");
@@ -1390,14 +1387,7 @@ int SemFdef2(struct tree p, struct symbol tp) :
   #   Annotated "fdecl" subtree and entry in symbol table
  
   struct tree np, sp;
-  struct symbol fname;     # Function name node
-  struct symbol fsub;      # Subtable to fname
-  struct symbol arg;       # Subtable to fsub for argument list
-  struct symbol argsub;    # Subtable to arg for arguments
-  struct symbol args;      # Subtable to argsub for arguments
-  struct symbol  up, ftp, uup, ltp, atp;
-  char [*] type;
-  int rank;
+  struct symbol  up, ftp, ltp;
 
   # Set the name of the node
   PtreeSetname(p, "fdef");
@@ -1487,7 +1477,6 @@ int Semisnobody(struct tree p) :
 
   struct tree np;
 
-
   # Move to the arglist or function body
   np = PtreeMvchild(p);     
 
@@ -1497,28 +1486,16 @@ int Semisnobody(struct tree p) :
     np=PtreeMvchild(np);     #Move to the function body
     if(np==NULL):
       return(OK);
-    
-
     else :
       return(ERR);
-    
-
-  
-
   else if(LibeStrcmp(PtreeGetname(np),"compstmnt")==OK):
     np=PtreeMvchild(np);     #Move to the function body
     if(np==NULL):
       return(OK);
-    
-
     else:
       return(ERR);
-    
 
-  
-
-
-
+  return(ERR);
 
 int SemFdef(struct tree p, struct symbol tp) :
 
@@ -1536,9 +1513,7 @@ int SemFdef(struct tree p, struct symbol tp) :
   struct symbol fsub;      # Subtable to fname
   struct symbol arg;       # Subtable to fsub for argument list
   struct symbol argsub;    # Subtable to arg for arguments
-  struct symbol args;      # Subtable to argsub for arguments
-  struct symbol  up, ftp, uup, ltp, atp, qp;
-  char [*] type;
+  struct symbol  up, ftp, ltp, qp;
   int rank;
   int nobody;
 

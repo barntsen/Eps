@@ -111,6 +111,8 @@ int ScanError(char [*] s):
 
   ErrError(ScanGetfile(), ScanGetline(), s) 
 
+  return(OK)
+
 int ScanPush(int l):
 
   # ScanPush pushes one item on the stack
@@ -228,7 +230,6 @@ int ScanBlank()  :
 
   int c 
   int indent 
-  int tmp 
   
   # Count indentation
   indent=0 
@@ -273,8 +274,8 @@ int ScanWhite()  :
   # Returns:
   #   OK
 
+  int d
   int c 
-  int d 
 
   while(((c=ScanGetch()) == SPACE) || (c == TAB)):
     d = 0  

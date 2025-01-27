@@ -27,6 +27,8 @@ int CodeError(char [*] s) :
 
   ErrError(ScanGetfile(), ScanGetline(), s);
 
+  return(OK)
+
 
 
 # CodeArch is a module variable holding the
@@ -302,9 +304,7 @@ int CodeIdeclarations(struct tree p, struct symbol tp):
     CodeEs(p,";\n");
     tp = SymMvnext(tp);
   
-
-
-
+  return(OK);  
 
 int CodeStructdefsym(struct tree p, struct symbol tp):
 
@@ -363,8 +363,6 @@ int CodeStructdefsym(struct tree p, struct symbol tp):
   CodeEs(p, ";\n");
   return(OK);
 
-
-
 int CodeFdefcpusym(struct tree  p, struct symbol tp):
 
   # CodeFdefcpusym creates code for a function proptotype
@@ -385,21 +383,17 @@ int CodeFdefcpusym(struct tree  p, struct symbol tp):
 
   if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
     CodeEs(p, "struct ");
-  
 
   if(LibeStrcmp(SymGetarray(tp),"array") == OK):
     CodeEs(p, "nctemp");
-  
 
   CodeEs(p, SymGetype(tp));
   if(LibeStrcmp(SymGetarray(tp),"array") == OK):
     CodeEd(SymGetrank(tp));
     CodeEs(p," *");
-  
 
   if(LibeStrcmp(SymGetstruct(tp),"struct")==OK):
     CodeEs(p,"*");
-  
 
   CodeEs(p, " ");
   CodeEs(p, SymGetname(tp));
@@ -411,14 +405,11 @@ int CodeFdefcpusym(struct tree  p, struct symbol tp):
   if(tp == NULL):
     CodeEs(p,");\n");
     return(OK);
-  
 
   tp = SymMvnext(tp);
   tp = SymGetable(tp);
   if(tp == NULL):
     return(OK);
-  
-
 
   tp=SymMvnext(tp);
   while(tp != NULL) :
@@ -426,16 +417,10 @@ int CodeFdefcpusym(struct tree  p, struct symbol tp):
     tp = SymMvnext(tp);
     if(tp != NULL) :
       CodeEs(p,",");
-    
-
     else :
       CodeEs(p,");\n");
-    
-
   
-
-
-
+  return(OK);
 
 int CodeImport(struct tree p, struct symbol tp):
 
@@ -463,25 +448,15 @@ int CodeImport(struct tree p, struct symbol tp):
     if(LibeStrcmp(SymGetmodule(tp),module) == OK):
       if(LibeStrcmp(SymGetstruct(tp), "structdef")==OK):
           CodeStructdefsym(p,tp);
-      
-
       else if(LibeStrcmp(SymGetfunc(tp), "fdef")==OK):
           CodeFdefcpusym(p,tp);
-      
-
       else :
         CodeIdeclaration(p,tp);
         CodeEs(p,";\n");
-      
-
-    
 
     tp = SymMvnext(tp);
-  
 
-      
-
-
+  return(OK);
 
 int CodeStructdef(struct tree p, struct symbol tp): 
   pass
@@ -494,14 +469,12 @@ int CodeFdefcpu(struct tree p) :
 
   # CodeFdefcpu generates code for a regular cpu
 
-  struct symbol tp;
-  struct tree   top;
+  struct symbol tp
   int noarg;
   int forw;
 
   noarg=0;
   forw=0;
-  top = p; # Save the top of the function def
 
   # We are at the type node for the function
   if(LibeStrcmp(PtreeGetarray(p),"array") == OK):
@@ -513,39 +486,27 @@ int CodeFdefcpu(struct tree p) :
     p = PtreeMvsister(p);
     if(LibeStrcmp(PtreeGetforw(p),"forw")== OK) :
       forw=1;
-    
-
-  
-
   else :
     # Move to the fdef node
     p=PtreeMvchild(p); 
     if(LibeStrcmp(PtreeGetforw(p),"forw")== OK) :
       forw=1;
-    
-
-  
-
 
   tp = SymLookup(PtreeGetdef(p), SymGetetp());
 
   if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
     CodeEs(p, "struct ");
-  
 
   if(LibeStrcmp(SymGetarray(tp),"array") == OK):
     CodeEs(p, "nctemp");
-  
 
   CodeEs(p, SymGetype(tp));
   if(LibeStrcmp(SymGetarray(tp),"array") == OK):
     CodeEd(SymGetrank(tp));
     CodeEs(p," *");
-  
 
   if(LibeStrcmp(SymGetstruct(tp),"struct")==OK):
     CodeEs(p,"*");
-  
 
   CodeEs(p, " ");
   CodeEs(p, SymGetname(tp)); 
@@ -554,8 +515,6 @@ int CodeFdefcpu(struct tree p) :
   # Check for missing arglist
   if(PtreeMvchild(p) != NULL):
     p = PtreeMvchild(p);
-  
-
 
   if(LibeStrcmp(PtreeGetname(p), "arglist") == OK):
     tp = SymGetable(tp);
@@ -565,33 +524,21 @@ int CodeFdefcpu(struct tree p) :
       CodeIdeclaration(p, tp);
       if(SymMvnext(tp)!=NULL):
         CodeEs(p,",");
-      
 
       noarg=noarg+1;
-    
-
-  
-
   CodeEs(p, ")\n");
 
   # Done if forward declaration
   if(forw == 1):
     CodeEs(p,";\n");
     return(OK);
-  
-
 
   if(PtreeMvsister(p) != NULL) :
     CodeCompstmnt(PtreeMvsister(p));
-  
-
   else :
     CodeCompstmnt(p);
-  
 
   return(OK);
-
-
 
 int CodeFdeclkernel(struct tree p) :
 
@@ -649,13 +596,11 @@ int CodeFdefgpu(struct tree p) :
   # CodeFdefgpu generates code for gpu global functions.
 
   struct symbol tp;
-  struct tree   top;
   int noarg;
   int forw;
 
   noarg=0;
   forw=0;
-  top = p; # Save the top of the function def
 
   # We are at the type node for the function
   if(LibeStrcmp(PtreeGetarray(p),"array") == OK):
@@ -667,41 +612,13 @@ int CodeFdefgpu(struct tree p) :
     p = PtreeMvsister(p);
     if(LibeStrcmp(PtreeGetforw(p),"forw")== OK) :
       forw=1;
-    
-
-  
-
   else :
     # Move to the fdef node
     p=PtreeMvchild(p); 
     if(LibeStrcmp(PtreeGetforw(p),"forw")== OK) :
       forw=1;
     
-
-  
-
-
   tp = SymLookup(PtreeGetdef(p), SymGetetp());
-
-
-# if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
-#   CodeEs(p, "struct ");
-# 
-
-# if(LibeStrcmp(SymGetarray(tp),"array") == OK):
-#   CodeEs(p, "nctemp");
-# 
-
-# CodeEs(p, SymGetype(tp));
-# if(LibeStrcmp(SymGetarray(tp),"array") == OK):
-#   CodeEd(SymGetrank(tp));
-#   CodeEs(p," *");
-# 
-
-# if(LibeStrcmp(SymGetstruct(tp),"struct")==OK):
-#   CodeEs(p,"*");
-# 
-
 
   CodeEs(p,"__global__"); 
   CodeEs(p," void");
@@ -724,33 +641,20 @@ int CodeFdefgpu(struct tree p) :
       CodeIdeclaration(p, tp);
       if(SymMvnext(tp)!=NULL):
         CodeEs(p,",");
-      
-
       noarg=noarg+1;
-    
-
-  
-
   CodeEs(p, ")\n");
 
   # Done if forward declaration
   if(forw == 1):
     CodeEs(p,";\n");
     return(OK);
-  
-
 
   if(PtreeMvsister(p) != NULL) :
     CodeCompstmnt(PtreeMvsister(p));
-  
-
   else :
     CodeCompstmnt(p);
-  
 
   return(OK);
-
-
 
 int CodeFdewrappergpu(struct tree p) :
 
@@ -3027,6 +2931,13 @@ int CodePreamblecuda() :
     "typedef struct nctempcomplex1 { int d[1]; complex *a;} nctempcomplex1; \n");
   PtreeSetline(p,8);
 
+  if(CodeArraycheck() == OK):
+    CodeEs(p, \
+    "static struct nctempchar1 nctempstringx = {0, NULL};\n");
+    CodeEs(p, \
+    "static struct nctempchar1 *nctempstring = &nctempstringx;\n");
+    PtreeSetline(p,8);
+
   CodeEs(p, \
     "typedef struct nctempfloat2 { int d[2]; float *a;} nctempfloat2; \n");
   PtreeSetline(p,10);
@@ -3126,11 +3037,11 @@ int CodePreamblehip() :
     "typedef struct nctempcomplex1 { int d[1]; complex *a;} nctempcomplex1; \n");
   PtreeSetline(p,8);
 
-  #if(CodeArraycheck() == OK):
-  #  CodeEs(p, 
-  #  "static struct nctempchar1 nctempstring = {0, NULL};\n");
-  #  PtreeSetline(p,8);
-  #
+  if(CodeArraycheck() == OK):
+    CodeEs(p,  \
+    "static struct nctempchar1 nctempstring = {0, NULL};\n");
+    PtreeSetline(p,8);
+  
 
   CodeEs(p,\
     "typedef struct nctempfloat2 { int d[2]; float *a;} nctempfloat2; \n");

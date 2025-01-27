@@ -26,6 +26,8 @@ int MainError(char [*] s) :
     LibePuts(stderr,"File extension have to be .e\n") 
     LibeExit() 
 
+  return(OK)
+
 int MainHelp(int arch):
 
   # MainHelp prints help message.
@@ -180,43 +182,40 @@ int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):
 
   char [*] tmp          # String temporary 
   char [*] cmd          # Command line for compiling
-  int l                 # Temp varibale to hold string length of 
                         # input file name
-  l=len(file,0) 
-  tmp= "gcc -c -ffast-math " 
-  cmd = new(char[CMDLEN]) 
-  LibeStrcpy(tmp,cmd) 
+  cmd = "gcc -c -ffast-math " 
 
   if(debug == OK):
-    LibeStrcat(" -g ",cmd) 
-      
+    cmd=LibeStradd(cmd," -g ") 
 
   if(optimize == OK):
-    LibeStrcat(" -O ",cmd) 
-      
+    cmd=LibeStradd(cmd," -O2 ") 
 
   if(openmp == OK):
-    LibeStrcat(" -fopenmp ",cmd) 
+    cmd=LibeStradd(cmd," -fopenmp ") 
       
+  cmd=LibeStradd(cmd,file)
 
-  LibeStrcat(file,cmd) 
-  LibeStrcat("\n",cmd) 
+  tmp=cmd
+  cmd=LibeStradd(tmp,"\n")
+  delete(tmp)
+
   if(show == OK):
     LibePuts(stderr,cmd) 
     LibeFlush(stderr) 
       
- 
   LibeSystem(cmd) 
-  delete(cmd) 
-  cmd = new(char[len("rm ",0)+l+2]) 
-  LibeStrcpy("rm ",cmd) 
-  LibeStrcat(file,cmd) 
-  LibeStrcat("\n",cmd) 
+
+  cmd = LibeStradd("rm ",file) 
+
+  tmp=cmd
+  cmd = LibeStradd(cmd,"\n") 
+  delete(tmp)
+
   if(show == OK):
     LibePuts(stderr,cmd) 
     LibeFlush(stderr) 
       
- 
   LibeSystem(cmd) 
   delete(cmd) 
   return(OK) 
@@ -224,43 +223,43 @@ int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):
      
 int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show):
 
-  # MainCcompcuda invokes the nvcc compiler to generate object code for nvidia gpus.
+  # MainCcompcuda invokes the nvcc compiler to generate object 
+  #code for nvidia gpus.
 
   char [*] tmp          # String temporary 
   char [*] cmd          # Command line for compiling
   int l                 # Temp varibale to hold string length of 
                         # input file name
   l=len(file,0) 
-  tmp= "nvcc -arch=all -use_fast_math --compiler-options -O2 --compiler-options -ffast-math  -c -x cu " 
-  cmd = new(char[CMDLEN]) 
-  LibeStrcpy(tmp,cmd) 
+  cmd= "nvcc -arch=native -use_fast_math --compiler-options -O2 "
+  cmd = LibeStradd(cmd," --compiler-options -ffast-math  -c -x cu ") 
 
   if(debug == OK):
-    LibeStrcat(" -g ",cmd) 
+    cmd=LibeStradd(cmd, " -g ") 
 
   if(optimize == OK):
-    LibeStrcat(" -O3 ",cmd) 
+    cmd=LibeStradd(cmd, " -O2 ") 
 
   if(openmp == OK):
-    LibeStrcat(" -fopenmp ",cmd) 
+    cmd=LibeStradd(cmd, " -fopenmp ") 
 
-  LibeStrcat(file,cmd) 
-  LibeStrcat("\n",cmd) 
+  cmd=LibeStradd(cmd,file) 
+  tmp=cmd
+  cmd=LibeStradd(cmd,"\n") 
+  delete(tmp)
   if(show == OK):
     LibePuts(stderr,cmd) 
     LibeFlush(stderr) 
       
- 
   LibeSystem(cmd) 
   delete(cmd) 
   cmd = new(char[len("rm ",0)+l+2]) 
-  LibeStrcpy("rm ",cmd) 
-  LibeStrcat(file,cmd) 
-  LibeStrcat("\n",cmd) 
+  cmd=LibeStradd("rm ",file) 
+  tmp=cmd
+  cmd=LibeStradd(cmd,"\n");
   if(show == OK):
     LibePuts(stderr,cmd) 
     LibeFlush(stderr) 
-      
  
   LibeSystem(cmd) 
   delete(cmd) 

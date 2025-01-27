@@ -1,6 +1,6 @@
 #!/bin/sh
 
-nvcc -x cu -o ecc --compiler-options "-z muldefs"  *.cpp
+nvcc -arch=native -O2 -x cu -o ecc --compiler-options -O2 --compiler-options "-z muldefs"  *.cpp
 
 exit
 mv ecc ../../Bin

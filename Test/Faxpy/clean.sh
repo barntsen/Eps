@@ -1,4 +1,4 @@
 #!/bin/sh
 
-rm *.o *.m
-rm faxpy2dcpu faxpy2dcuda
+rm *.o *.m *.mod
+rm faxpy2dcpu faxpy2dcuda faxpy2dgpu

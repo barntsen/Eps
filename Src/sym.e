@@ -547,7 +547,6 @@ struct symbol SymAddtble(struct symbol tp, struct symbol sp) :
  #   The new table is returned.
 
   struct symbol start 
-  struct symbol start2 
   struct symbol prev 
 
   start = tp 
@@ -634,8 +633,6 @@ int SymExport(int fp,struct symbol p, int level) :
 
   # SymExport prints the symbol table.
 
-  int i 
-  struct symbol tp 
   struct symbol tq 
        
   if(p == NULL):
@@ -680,7 +677,7 @@ int Symgetline(int fp, struct symbol np, char [*] module):
 
   int indent 
   int ch 
-  int tmp 
+  int tmp
   char [*] field 
 
   field = new(char [NTBL]) 

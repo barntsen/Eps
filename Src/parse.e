@@ -150,7 +150,10 @@ int ParseError(char [*] s) :
   #
   # Returns : Exits
   #
+
   ErrError(ScanGetfile(),ScanGetline(), s);
+
+  return(OK);
 
 int ParseGetlookahead() :
   
@@ -200,7 +203,6 @@ struct tree ParseMknode(char [*] name, char [*] def) :
   # line no field of the node.
 
   struct tree p; 
-  char [*] s;
 
   p = PtreeMknode(name,def);
   PtreeSetline(p,ScanGetline());
