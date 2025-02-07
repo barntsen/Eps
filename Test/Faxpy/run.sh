@@ -1,10 +1,9 @@
 #!/bin/sh
-export NBLOCKS=1024
-export NTHREADS=1024
+export NBLOCKS=31250
+export NTHREADS=128
 
-echo "Running cuda version:"
-time ./faxpy2dcuda
+echo "Cuda version:"
+nsys profile ./tfaxpy2de
 
-
-echo "Running fortran version:"
-time ./test
+echo "Fortran version:"
+nsys profile ./tfaxpy2df

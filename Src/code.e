@@ -1107,56 +1107,37 @@ int CodeArrayex(int line, char [*] qual, char [*] sel, char [*] name, \
     CodeEs(p,qual);
     CodeEs(p,sel);
   
-
   CodeEs(p,name);
   CodeEs(p,"->d[");
   CodeEd(index);
   CodeEs(p,"])){\n");
 
-  CodeEs(p,"nctempstring->a=");
-  CodeEs(p,"\"");
-  if(qual != NULL):
-    CodeEs(p,qual);
-    CodeEs(p,sel);
-  
+  CodeEs(p,"printf(\"***Array out of bounds error: \\n\");");
+  CodeEs(p,"\n");
+  CodeEs(p,"printf(\" File name: \");");
+  CodeEs(p,"printf(\"");
+  CodeEs(p,ScanGetfile());
+  CodeEs(p,"\\n\");\n");
  
+  CodeEs(p,"printf(\" Variable name: \");");
+  CodeEs(p,"printf(\"");
   CodeEs(p,name);
-  CodeEs(p,"\"");
-  CodeEs(p,";\n");
+  CodeEs(p,"\\n\");\n");
 
-  CodeEs(p,"nctempstring->d[0]=");
-  CodeEs(p,"strlen(\"");
-  if(qual != NULL):
-    CodeEs(p,qual);
-    CodeEs(p,sel);
-  
- 
-  CodeEs(p,name);
-  CodeEs(p,"\")+1;");
-  CodeEs(p,";\n");
+  CodeEs(p,"printf(\" Index value: %d \\n\",");
+  CodeEs(p,ival); CodeEs(p,");\n");
+  #CodeEs(p,"\");");CodeEs(p,"\n");
 
-  CodeEs(p, "LibeArrayex(");
-  CodeEd(line);
-  CodeEs(p, ",");
-  CodeEs(p, "nctempstring");
-  CodeEs(p, ",");
-  CodeEs(p, ival);
-  CodeEs(p, ",");
+  CodeEs(p,"printf(\" Index no: ");
   CodeEd(index);
-  CodeEs(p, ",");
-  if(qual != NULL):
-    CodeEs(p,qual);
-    CodeEs(p,sel);
-  
+  CodeEs(p,"\\n");
+  CodeEs(p,"\");");
 
-  CodeEs(p, name);
-  CodeEs(p, "->d[");
-  CodeEd(index);
-  CodeEs(p, "]");
-  CodeEs(p, ");\n");
-
-  CodeEs(p,"}\n");
-
+  CodeEs(p,"printf(\" Upper bound: %d\\n\" ,")
+  CodeEs(p,name); CodeEs(p,"->d["); CodeEd(index); CodeEs(p,"]-1);");
+  CodeEs(p,"\n");
+  CodeEs(p,"assert(0)");CodeEs(p,";\n");
+  CodeEs(p,"\n}\n");
   return(OK);
 
 
@@ -2826,6 +2807,10 @@ int CodePreamblecpu() :
   CodeEs(p, \
     "#include <stddef.h>\n");
   CodeEs(p, \
+    "#include <stdio.h>\n");
+  CodeEs(p, \
+    "#include <assert.h>\n");
+  CodeEs(p, \
     "typedef struct { float r; float i;} complex; \n");
   PtreeSetline(p,3);
   CodeEs(p, \
@@ -2982,6 +2967,8 @@ int CodePreamblecuda() :
     "#include <stdlib.h>\n");
   CodeEs(p, \
     "#include <string.h>\n");
+  CodeEs(p, \
+    "#include <assert.h>\n");
 #  CodeEs(p,"}\n");
 
   CodeEs(p,"\n");

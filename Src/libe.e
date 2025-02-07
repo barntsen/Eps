@@ -1680,19 +1680,25 @@ int LibeFtoa(float f, char [*] fmt, char [*] s) :
   #   ERR in case of error
   #   OK otherwise.
   #
-  # The first character in the format string
-  # must be either 'f','e', or 'g'.
-  # Each of the formats are explained with example:
-  # 
-  # "4.2f" prints "3.14" 
-  # "g"    prints "6.0e+5"
-  # "8.2e" prints 5.12e+16
+  # If The first character in the format string
+  # is 'g' the format is set automatic. 
   #
-  # The first number after f,g or e is the total width
+  # If the first character of the format string is not 'g' 
+  # it most consist of two numbers separated by a '.' followed 
+  # by either 'f' or 'g'.
+  #  
+  # The first number is the total width
   # of the field to be printed.
   # The number after the period is the number of fractional
   # digits. 
-  # Using the "g" format sets the fomat automatically.
+  # The last character selects either the 'f' (fixed point) format
+  # or the 'g' (exponential) format.
+  #
+  # Examples for the number 3.14:
+  #   'g'    prints 3.14e+00
+  #   '4.2f' prints 3.14
+  #   '8.2g' prints 3.14e+00
+  
   
   int nexp, mant 
   int c,p,q 

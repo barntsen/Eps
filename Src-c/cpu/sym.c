@@ -1,5 +1,7 @@
 //  Translated by epsc  version today  
 #include <stddef.h>
+#include <stdio.h>
+#include <assert.h>
 typedef struct { float r; float i;} complex; 
 typedef struct nctempfloat1 { int d[1]; float *a;} nctempfloat1; 
 typedef struct nctempint1 { int d[1]; int *a;} nctempint1; 
