@@ -13,4 +13,4 @@ for i in $*
 do
   FILES="$FILES $i" ;
 done 
-gcc -L$LIB $FILES -lecpu -ffast-math -lm
+gcc --allow-multiple-definition -L$LIB $FILES -lecpu -ffast-math -lm

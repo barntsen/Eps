@@ -1,5 +1,3 @@
-# Code is a module for c-code generation
-
 import libe   # Include library
 import sym    # Include symbol table interface 
 import ptree  # Include parse tree interface  
@@ -24,11 +22,8 @@ char [*] CodeExpr(struct tree p):
 int CodeError(char [*] s) :
   
   # CodeError prints error messages and exits.
-
   ErrError(ScanGetfile(), ScanGetline(), s);
-
   return(OK)
-
 
 
 # CodeArch is a module variable holding the
@@ -42,15 +37,11 @@ int CodeSetarch(int arch):
   CodeArch = arch;
   return(OK);
 
-
-
 int CodeGetarch():
 
   # CodeGetarch returns the architecture. 
 
   return(CodeArch);
-
-
 
 # Maximum size of arrays
 const MAXRANK = 4
@@ -68,16 +59,10 @@ int CodeSetparallel(int flag) :
   CodeParallel = flag;
   return(flag);
 
- 
-
 int CodeGetparallel() :
 
   # CodeGetparallel  gets the parallel flag.
- 
   return(CodeParallel);
-
-
- 
 
 int CodeAddress ;    # Global to hold temp value            
 
@@ -100,7 +85,6 @@ char [*] CodeItemp(int cntrl) :
   LibeItoa(CodeAddress,s1);        
   LibeStrcat(s1,s2);
   return s2;
-
  
 
 int CodeInit() :
@@ -114,7 +98,6 @@ int CodeInit() :
   return (OK);
 
 
-
 # CodeOutfd Module Variable to hold output file descriptor
 int CodeFdout;
 
@@ -126,13 +109,11 @@ int CodeSetfdout(int fd):
   return(OK);
 
 
-
 int CodeGetfdout():
 
   # Get output file descriptor
 
   return(CodeFdout);
-
 
 
 # Module variable
@@ -144,7 +125,6 @@ int CodeDebug():
  # CodeDebug tests for the debug flag.
  
   return(CodeDebugflag);
-
  
 
 int CodeEs(struct tree p, char [*] s) :
@@ -239,20 +219,15 @@ int CodeIdeclaration(struct tree p, struct symbol tp) :
   # Do not generate declarations for constants
   if(LibeStrcmp(SymGetype(tp),"rconstant")==OK) :
     return (OK);
-  
 
   if(LibeStrcmp(SymGetype(tp),"iconstant")==OK) :
     return (OK);
-  
 
   if(LibeStrcmp(SymGetype(tp),"sconstant")==OK) :
     return (OK);
-  
-
  
   if(LibeStrcmp(SymGetstruct(tp),"structdef") == OK):
     CodeEs(p, "struct ");
-  
 
   if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
     if(LibeStrcmp(SymGetarray(tp),"array") == OK):
@@ -261,31 +236,22 @@ int CodeIdeclaration(struct tree p, struct symbol tp) :
       CodeEd(SymGetrank(tp));
       CodeEs(p, " *");
       CodeEs(p, SymGetname(tp)); 
-    
-
     else:
       CodeEs(p, "struct ");
       CodeEs(p, SymGetype(tp));
       CodeEs(p, "*");
       CodeEs(p, " "); 
       CodeEs(p, SymGetname(tp)); 
-    
-
-  
-
   else if(LibeStrcmp(SymGetarray(tp),"array") == OK):
     CodeEs(p, "nctemp");
     CodeEs(p, SymGetype(tp));
     CodeEd(SymGetrank(tp));
     CodeEs(p, " *"); 
     CodeEs(p, SymGetname(tp)); 
-  
-
   else:
     CodeEs(p, SymGetype(tp));
     CodeEs(p, " "); 
     CodeEs(p, SymGetname(tp)); 
-  
 
   return(OK);
 
@@ -755,23 +721,12 @@ int CodeGdeclarations(struct tree p, struct symbol tp) :
           CodeStructdef(p,tp);
         else if(LibeStrcmp(SymGetfunc(tp), "fdef")==OK):
           CodeFdef(p); 
-        
-
         else: 
           if(LibeStrcmp(SymGetname(tp),"#self") == ERR) :
             CodeIdeclaration(p,tp);
             CodeEs(p, ";\n"); 
-          
-
-        
-
         SymSetemit(tp, ERR);
-      
-
-    
-
     tp = SymMvnext(tp);
-  
 
   return (OK);
 
@@ -788,8 +743,6 @@ int CodeDeclarations(struct tree p, struct symbol tp) :
   else:
     np = p;
   CodeGdeclarations(np,tp);   # Generate code               
-  #DEBUG
-  #CodeWdeclarations(np);      # Walk the declaration nodes  
   return (OK);
 
 
@@ -804,9 +757,6 @@ int CodeCode(struct tree p, struct symbol tp) :
   np = PtreeMvchild(p);
   if (LibeStrcmp(PtreeGetname(np),"import")) :
     CodeImport(np,tp);
-  
- 
-
   CodeDeclarations(p,tp);   
   return (OK);
 
@@ -3100,24 +3050,15 @@ int CodePreamble():
   if (CodeGetarch() == CPU):
     CodePreamblecpu();
     return(OK);
-  
-
   else if(CodeGetarch() == CUDA):
     CodePreamblecuda();
     return(OK);
-  
- 
   else if(CodeGetarch() == HIP):
     CodePreamblehip();
     return(OK);
-  
   else :
     return(ERR);
   
-
-
-  
-
 int CodePostamble():
   int fdo;
 
@@ -3128,11 +3069,9 @@ int CodePostamble():
   if(CodeGetarch() == CUDA):
     LibePuts(fdo,"}\n");
     return(OK);
-  
- 
   else if(CodeGetarch() == HIP):
     LibePuts(fdo,"}\n");
     return(OK);
-  
   else :
-    return(ERR);
+    return(ERR)
+ 

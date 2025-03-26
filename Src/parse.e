@@ -1137,5 +1137,7 @@ struct tree ParseParse() :
   if(lookahead == STOP):
     return np;                 
   else:
+    if(lookahead == IND) :
+      ParseMatch(IND)
     np = ParseExtdecl();                        
   return (np);                

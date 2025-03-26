@@ -58,22 +58,23 @@ const NOOP    = 1001      # No operation token
 # The latter is used as a simple buffer to hold 
 # intermediate strings.
 # In addition there is an integer array, ScanStack,
-# which implements a stack to hold the ind   ation level.
+# which implements a stack to hold the indentation value.
 
+# Common variables
 int  ScanIndent        # Value of indent
 int  ScanIndentsave    # Old value of indent
+int  ScanIndentinit     # Inital indent 
 char [*] ScanText      # Lexical value of token       
 char [*] ScanBuffer    # Temporary array              
 int ScanLine           # line number                  
 int ScanLinesave       # Remember line no             
 int ScanFp             # Input file descriptor      
-#int ScanInfile         # Input file descriptor        
-#char [*] ScanInfilename  # Input file name
 char [*] ScanFile      # Input file name            
 int  [*] ScanStack     # Stack for indentation
 int      ScanSp        # Stack pointer
 const LMAX  = 258      # Max no of indentations
 int ScanContline       # Continuation lines
+int ScanEnd            # Termination flag
 
 int ScanGetline() :
 
@@ -171,11 +172,12 @@ int ScanInit(char [*] infile) :
     LibeFlush(stderr) 
     return(ERR) 
   ScanFile = LibeStrsave(infile) 
-  ScanIndentsave = 0 
+  ScanIndentsave = -1 
   ScanIndent     = 0 
   ScanStack = new(int[LMAX]) 
   ScanSp = 0 
   ScanStack[0] = 0 
+  ScanEnd = ERR
   return(OK) 
      
 int ScanGetch()  :    
@@ -227,24 +229,26 @@ int ScanBlank()  :
   #   If indentation returns a negative value negative 
   #   this was a blank (indent=-1) or
   #   comment (indent = -2) line.
+  #   If an end-of-file is found the return value
+  #   is ScanIndentinit.
 
   int c 
   int indent 
-  
+
   # Count indentation
   indent=0 
   while(((c=ScanGetch()) == SPACE) || (c == TAB)) :
     indent = indent+1 
      
+  # In case of end-of-file return inital indent 
+  if(c == EOF):
+    indent = ScanIndentinit 
+    #LibePs("Indent at EOF: "); LibePi(indent); LibePs("\n")
+    return(indent) 
 
   # Read a comment line
   # Note that a trailing comment (after live code)
   # is read by ScanLex()
-
-  # Push back EOF and let ScanLex deal with EOF
-  if(c == EOF):
-    ScanUngetch() 
-    return(indent) 
 
   if(c == '#'):
     indent=-2 
@@ -398,7 +402,7 @@ int ScanLex() :
   # Returns: Token
   #
   # Lex reads the source file and generates all tokens
-  # except the ind   ation tokens IND and DIND.
+  # except the indation tokens IND and DIND.
   # Token values are define above, and the literal value of the token are
   # returned by the ScanGetext routine.
 
@@ -410,6 +414,7 @@ int ScanLex() :
 
   # Start of the lexical analysis  
          
+  # Remove any white space 
   ScanWhite() 
 
   c= ScanGetch()       # Get the first character  
@@ -686,32 +691,70 @@ int ScanGetok() :
   # 
   # Getok is handling the indentation tokens but call on Lex to
   # do most of the token processing.
+  # The indentation algorith works as follows:
+  # 
+  # 1. Starting at the beginning of a file,
+  #    if the first line is blank or a comment
+  #    line it is removed. Any consequtive blank or
+  #    comment lines are also removed.
+  #
+  # 2. The indent (no of leading spaces/tabs) of the first code line
+  #    is saved as the first element of a stack.
+  #
+  # 3. If the next line is blank or is a comment, it is removed.
+  #    Any consequtive blank or comment lines are also removed.
+  #     
+  # 4. The next code line is read and if the indent is larger
+  #    than the initial indent, the indent is saved as the
+  #    second element of the stack, and an IND token is returned. 
+  #    If the indent is less than the initial value it is an error.
+  #
+  # 5. Pts 3 and 4 is repeated until all lines have been read,
+  #    with the modification
+  #    that if the indent is less than the indent of the previous line,
+  #    the stack is popped for values until a match for the 
+  #    current indent is found. An DIND token is returned for each 
+  #    value popped of the stack.
+  #
+  # 6. When all lines have been read, the current indent is set to
+  #    the inital indent. The stack is then popped for values 
+  #    until the inital indent is found, and a DIND is returned for
+  #    each popped stack element.
+  # # # 
   # The indentation algorithm is taken from the 
   # "The Python Language Reference version 3.13.1" section 2 
   # "Lexical Analysis"
+  # 
 
   int c       # Last token read 
   int indent  # Temporary for identation
   int level   # Indentation level
 
+
   # If we are at the start of a line remove comment and blank lines.
   if(ScanLine > ScanLinesave):
     indent=-1 
-    while(indent < 0):
+    while((indent == -1) || (indent == -2)):
       indent=ScanBlank()  
+
     ScanIndent = indent 
     ScanLinesave=ScanLine 
 
   # If this is the first call of Getok
   #  initialize ScanIndentsave
+  #  and the first element of ScanStack
   if(ScanIndentsave == -1):
     ScanIndentsave=ScanIndent 
+    ScanIndentinit=ScanIndent
+    ScanStack[0]=ScanIndentinit
+    #LibePs("Initial indent: "); LibePi(ScanIndentinit); LibePs("\n")
      
-  # If indentation increased emit an IND token.
+  # If indentation increases, emit an IND token.
   # The indentation is stored on a stack.
   if(ScanIndent > ScanIndentsave) :
     ScanIndentsave=ScanIndent 
     ScanPush(ScanIndent) 
+    #LibePs("IND\n")
     return(IND) 
 
   # If indentation decreases emit an DIND
@@ -721,17 +764,20 @@ int ScanGetok() :
   else if(ScanIndent < ScanIndentsave) :
     level = ScanPop()  
     ScanIndentsave = level 
+    #LibePs("DIND\n")
     return(DIND) 
 
   # Return the next token obtained by Lex()
   else :
     c=ScanLex() 
+
+    # If the continuation character '\' is read
+    # ScanLex will return a SPACE token.
+    # The SPACE token needs to be removed
+    # from the input stream by reading the next character.
     if(c == SPACE):
       c=ScanLex() 
-       
     return(c) 
-     
-     
 
 char [*] ScanGetext() :
 
