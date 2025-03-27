@@ -30,12 +30,14 @@ int CodeError(char [*] s) :
 # architecturetype.
 int CodeArch;
 
+
 int CodeSetarch(int arch):
 
   # CodeSetarch sets the architecture. 
 
   CodeArch = arch;
   return(OK);
+
 
 int CodeGetarch():
 
@@ -153,15 +155,9 @@ int CodeEs(struct tree p, char [*] s) :
         LibePuts(fdo,"\n");
         CodeLine = PtreeGetline(p);
       
- 
-    
-
-  
-
   LibePuts(fdo,s);
   LibeFlush(fdo);
   return(OK);
-
  
 
 int CodeEd(int d) :
@@ -174,7 +170,6 @@ int CodeEd(int d) :
   fdo= CodeGetfdout();
   LibePuti(fdo, d);
   return(OK);
-
  
 
 int CodeEc(int d) :
@@ -186,7 +181,6 @@ int CodeEc(int d) :
   fdo= CodeGetfdout();
   LibePutc(fdo, d);
   return(OK);
-
  
 
 int CodeEsr(char [*] s) :
@@ -201,11 +195,9 @@ int CodeEsr(char [*] s) :
   l=LibeStrlen(s);
   for(i=1; i<l-1; i=i+1):
     LibePutc(fdo,cast(int,s[i]));
-  
 
   LibeFlush(fdo);
   return(OK);
-
  
 
 int CodeIdeclaration(struct tree p, struct symbol tp) :
@@ -256,7 +248,6 @@ int CodeIdeclaration(struct tree p, struct symbol tp) :
   return(OK);
 
 
-
 int CodeIdeclarations(struct tree p, struct symbol tp):
 
   # CodeIdeclarations  generate code for simple id declarations.
@@ -271,6 +262,7 @@ int CodeIdeclarations(struct tree p, struct symbol tp):
     tp = SymMvnext(tp);
   
   return(OK);  
+
 
 int CodeStructdefsym(struct tree p, struct symbol tp):
 
@@ -387,6 +379,7 @@ int CodeFdefcpusym(struct tree  p, struct symbol tp):
       CodeEs(p,");\n");
   
   return(OK);
+
 
 int CodeImport(struct tree p, struct symbol tp):
 
@@ -506,6 +499,7 @@ int CodeFdefcpu(struct tree p) :
 
   return(OK);
 
+
 int CodeFdeclkernel(struct tree p) :
 
   #CodeFdeclkernel generates kernel declaration for GPU
@@ -529,8 +523,6 @@ int CodeFdeclkernel(struct tree p) :
   if(LibeStrcmp(SymGetstruct(tp),"struct")==OK):
      CodeEs(p,"*");
   
-
-   
   CodeEs(p, " ");
   CodeEs(p,"kernel_");
   CodeEs(p, SymGetname(tp)); 
@@ -547,9 +539,6 @@ int CodeFdeclkernel(struct tree p) :
       
 
       noarg=noarg+1;
-    
-
-  
 
   CodeEs(p, ");\n");
 
@@ -598,7 +587,6 @@ int CodeFdefgpu(struct tree p) :
     p = PtreeMvchild(p);
   
 
-
   if(LibeStrcmp(PtreeGetname(p), "arglist") == OK):
     tp = SymGetable(tp);
     tp = SymLookup("#arglist", tp);       
@@ -621,6 +609,7 @@ int CodeFdefgpu(struct tree p) :
     CodeCompstmnt(p);
 
   return(OK);
+
 
 int CodeFdewrappergpu(struct tree p) :
 
@@ -671,10 +660,6 @@ int CodeFdewrappergpu(struct tree p) :
 
       noarg=noarg+1;
     
-
-  
-
-
   CodeEs(p, ")\n");
   CodeEs(p, "{\n");
 
@@ -694,19 +679,14 @@ int CodeFdewrappergpu(struct tree p) :
       if(SymMvnext(tp)!=NULL):
         CodeEs(p,",");
       
-
       noarg=noarg+1;
     
-
-  
-
   CodeEs(p, ");\n");
   CodeEs(p,"GpuError();\n");
   CodeEs(p, "return(1);\n");
   CodeEs(p, "}\n");
 
   return(OK);
-
 
 
 int CodeGdeclarations(struct tree p, struct symbol tp) :
@@ -731,7 +711,6 @@ int CodeGdeclarations(struct tree p, struct symbol tp) :
   return (OK);
 
 
-
 int CodeDeclarations(struct tree p, struct symbol tp) :
 
   #CodeDeclarations  generates code for declaration list.
@@ -744,7 +723,6 @@ int CodeDeclarations(struct tree p, struct symbol tp) :
     np = p;
   CodeGdeclarations(np,tp);   # Generate code               
   return (OK);
-
 
 
 int CodeCode(struct tree p, struct symbol tp) :
@@ -760,7 +738,6 @@ int CodeCode(struct tree p, struct symbol tp) :
   CodeDeclarations(p,tp);   
   return (OK);
 
-
  
 # Module variable 
 # flag for arraytest
@@ -773,8 +750,6 @@ int CodeArraycheck() :
   return (CodeArraytest);
 
 
-
-
 int CodeArraycheckon() :
 
   #CodeArraycheckon turns on array check.
@@ -782,7 +757,6 @@ int CodeArraycheckon() :
   CodeArraytest = OK;
 
   return(OK);
-
 
 
 int CodeArraycheckoff() :
@@ -794,7 +768,6 @@ int CodeArraycheckoff() :
   return(OK);
 
 
-
 int CodeDebugon() :
 
   # CodeDebugon turns on the debug flag.
@@ -803,7 +776,6 @@ int CodeDebugon() :
 
   return(OK);
 
- 
 
 char [*] CodeMktemp() :
 
@@ -1166,12 +1138,8 @@ char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
       CodeEs(p, ";\n");
       if(CodeArraycheck()):
         CodeArrayex(PtreeGetline(p), qual, sel, name, temp2, i);
-      
-
-    
 
     if(sp != NULL) sp = PtreeMvsister(sp);
-  
 
   size = LibeStrlen(name) + LibeStrlen(temp)+6; 
   rval = new(char[size]);
@@ -1199,7 +1167,6 @@ char [*] CodeQident(char [*] qual, char [*] ident) :
   LibeStrcat(ident,name); 
   return(name);
 
- 
 
 char [*] CodeQident2(char [*] qual, char [*] ident) :
 
@@ -1218,8 +1185,6 @@ char [*] CodeQident2(char [*] qual, char [*] ident) :
 
   return(name);
 
-
- 
 
 char [*] CodeIdent(struct tree p) :
 
@@ -2833,7 +2798,6 @@ int CodePreamblecpu() :
   return (OK);
 
 
-
 int CodePreamblecuda() :
 
   # CodePreamblecuda generates the cuda preamble code.
@@ -2945,7 +2909,6 @@ int CodePreamblecuda() :
   return (OK);
 
 
-
 int CodePreamblehip() :
 
   # CodePreamble generates the hip preamble.
@@ -3040,7 +3003,6 @@ int CodePreamblehip() :
     "int RunFree(void *p);\n");
 
   return (OK);
-
 
 
 int CodePreamble():
