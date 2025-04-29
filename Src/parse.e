@@ -18,14 +18,16 @@
 #      | extdecl
 #      | STOP
 #
-#   import = IMPORT ID NL
 #
-#   fdef   = DEF type ID '(' [arglist] ')' [compstmnt]
 #
 #   extdecl = 
-#        type   ':' NL IND structdeclar 
-#      | ID  [idseq] NL 
+#       import 
+#     | fdef
+#     | type   idseq (SEMICOLON | NL) | COLON IND structdeclar) 
+#     | ID ASSIGN RCONSTANT|SCONSTANT|ICONSTANT (SEMICOLON|NL)
 #
+#   import = IMPORT ID NL
+#   fdef   = DEF type ID '(' [arglist] ')' [compstmnt]
 #   type = 
 #        INT 
 #      | REAL 
@@ -35,8 +37,8 @@
 #      | STRUCT ID 
 #      | [ '['arrayarg']' ]
 #
-#   structdeclar = declarations DIND
 #   idseq        = ',' ID  [idseq] 
+#   structdeclar = declarations DIND
 #   arrayarg     = 
 #        * 
 #      | ',' arrayarg
