@@ -46,7 +46,7 @@ import err    # Error interface
 #
 struct tree :        # Basic node             
   char [*] name      # Node name              
-  char [*] def       # Definition             
+  char [*] defn      # Definition             
   char [*] type      # Basic type             
   char [*] structure # Struct  flag           
   int      line      # Line no                
@@ -67,7 +67,7 @@ struct tree :        # Basic node
   struct tree sister  # Sister node           
     
   
-int PtreeInit() :
+def int PtreeInit() :
    
   # PtreeInit initialize the tree module.
   #
@@ -80,7 +80,7 @@ int PtreeInit() :
 
     
  
-int PtreeRmnode(struct tree p) : 
+def int PtreeRmnode(struct tree p) : 
 
   # PtreeRmnode removes a node.                            
   #
@@ -96,7 +96,7 @@ int PtreeRmnode(struct tree p) :
     return (OK) 
      
   delete(p.name) 
-  delete(p.def) 
+  delete(p.defn) 
   delete(p.type) 
   delete(p.structure) 
   delete(p.tempr) 
@@ -109,7 +109,7 @@ int PtreeRmnode(struct tree p) :
   return(OK) 
      
                       
-int PtreeRmtree(struct tree p) : 
+def int PtreeRmtree(struct tree p) : 
   
   # PtreeRmtree removes a tree.                            
   #
@@ -129,25 +129,25 @@ int PtreeRmtree(struct tree p) :
 
   return(OK) 
                       
-struct tree PtreeMknode( char [*] name, char [*] def ) :  
+def struct tree PtreeMknode( char [*] name, char [*] defn ) :  
 
   # PtreeMknodes make a new parse tree node.  
   #
   # Parameters: 
   #   name : Name of node (name field)
-  #   def  : Definition of node (def field)
+  #   defn  : Definition of node (defn field)
   #
   # Returns: 
   #   parse tree node
   #
   # PtreeMknode creates a new node
-  # and sets the name and def fields.
+  # and sets the name and defn fields.
   #
 
   struct tree p  
 
   p = new(struct tree) 
-  p.def = LibeStrsave(def) 
+  p.defn = LibeStrsave(defn) 
   p.name = LibeStrsave(name) 
   p.type =  LibeStrsave("void")     
   p.structure = LibeStrsave("void")  
@@ -168,7 +168,7 @@ struct tree PtreeMknode( char [*] name, char [*] def ) :
   p.sister = NULL 
   return (p) 
  
-int PtreeAddchild(struct tree parent, struct tree child): 
+def int PtreeAddchild(struct tree parent, struct tree child): 
 
   # PtreeAddchild adds a child node to a parent node.  
   #
@@ -179,7 +179,7 @@ int PtreeAddchild(struct tree parent, struct tree child):
   # Returns: OK 
   #
   # PtreeMknode creates a new node
-  # and sets the name and def fields.
+  # and sets the name and defn fields.
   #
 
   struct tree p, prev  
@@ -196,7 +196,7 @@ int PtreeAddchild(struct tree parent, struct tree child):
   return(OK) 
     
  
-int PtreeAddsister(struct tree sister, struct tree newnode) :
+def int PtreeAddsister(struct tree sister, struct tree newnode) :
 
   # PtreeAddsister adds a sister node
   #
@@ -222,7 +222,7 @@ int PtreeAddsister(struct tree sister, struct tree newnode) :
   return(OK) 
     
  
-struct tree PtreeMvsister(struct tree p) :
+def struct tree PtreeMvsister(struct tree p) :
    
   # PtreeMvsister moves to the sister node.                            
   #
@@ -237,7 +237,7 @@ struct tree PtreeMvsister(struct tree p) :
 
     
                       
-struct tree PtreeMvchild(struct tree p):  
+def struct tree PtreeMvchild(struct tree p):  
    
   # PtreeMvchild moves to the child node.                            
   #
@@ -252,7 +252,7 @@ struct tree PtreeMvchild(struct tree p):
 
     
 
-char [*] PtreeSetfield(char [*] field, char [*] value) :    
+def char [*] PtreeSetfield(char [*] field, char [*] value) :    
 
   #PtreeSetfield sets a field.
   #
@@ -273,7 +273,7 @@ char [*] PtreeSetfield(char [*] field, char [*] value) :
 
     
                       
-int PtreeSetname(struct tree p, char [*] name) :
+def int PtreeSetname(struct tree p, char [*] name) :
 
   # PtreeSetname sets the "name" field.
   #
@@ -292,7 +292,7 @@ int PtreeSetname(struct tree p, char [*] name) :
 
     
    
-char  [*] PtreeGetname(struct tree p): 
+def char  [*] PtreeGetname(struct tree p): 
 
   # PtreeGetname gets the name of the node.
   # Parameters: 
@@ -306,25 +306,25 @@ char  [*] PtreeGetname(struct tree p):
 
     
    
-int PtreeSetdef(struct tree p, char [*] def) :
+def int PtreeSetdef(struct tree p, char [*] defn) :
    
   # PtreeSetdef sets the definition of the node.
   #
   # Parameters: 
   #   p    : tree node
-  #   def  : def field
+  #   defn  : defn field
   #
   # Returns: OK 
   #   
  
-  if((def != NULL) && (p != NULL)):
-    delete(p.def) 
-    p.def=LibeStrsave(def) 
+  if((defn != NULL) && (p != NULL)):
+    delete(p.defn) 
+    p.defn=LibeStrsave(defn) 
      
   return(OK) 
     
    
-char [*] PtreeGetdef(struct tree p) : 
+def char [*] PtreeGetdef(struct tree p) : 
 
   # PtreeGetdef gets the definition of the node.
   #
@@ -335,11 +335,11 @@ char [*] PtreeGetdef(struct tree p) :
   #  definition field
   #   
 
-  return(p.def) 
+  return(p.defn) 
 
     
    
-int PtreeSetype(struct tree p, char [*] type) :
+def int PtreeSetype(struct tree p, char [*] type) :
    
   # PtreeSetype sets the type of the node.
   #
@@ -357,7 +357,7 @@ int PtreeSetype(struct tree p, char [*] type) :
   return(OK) 
     
    
-char [*] PtreeGetype(struct tree p) :
+def char [*] PtreeGetype(struct tree p) :
    
   # PtreeGetype gets the type of the node.
   #
@@ -372,7 +372,7 @@ char [*] PtreeGetype(struct tree p) :
 
     
    
-int PtreeSetstruct(struct tree p, char [*] structure) :
+def int PtreeSetstruct(struct tree p, char [*] structure) :
 
   # PtreeSetstructure sets the structure field of the node.  
   #
@@ -391,7 +391,7 @@ int PtreeSetstruct(struct tree p, char [*] structure) :
 
     
    
-char [*] PtreeGetstruct(struct tree p) :    
+def char [*] PtreeGetstruct(struct tree p) :    
 
   #
   #PtreeGetstruct gets the structure field.
@@ -407,7 +407,7 @@ char [*] PtreeGetstruct(struct tree p) :
 
     
    
-int PtreeSetempr(struct tree p, char [*] tempr) :
+def int PtreeSetempr(struct tree p, char [*] tempr) :
 
   # PtreeSetempr sets the real temporary of the node
   #
@@ -426,7 +426,7 @@ int PtreeSetempr(struct tree p, char [*] tempr) :
 
     
    
-char  [*] PtreeGetempr(struct tree p) : 
+def char  [*] PtreeGetempr(struct tree p) : 
 
   # PtreeGetempr gets the real temporary of the node.
   #
@@ -439,7 +439,7 @@ char  [*] PtreeGetempr(struct tree p) :
   return(p.tempr) 
     
    
-int PtreeSetempi(struct tree p, char [*] tempi) :
+def int PtreeSetempi(struct tree p, char [*] tempi) :
 
   # PtreeSetempi  sets the imaginary temporary of the node
   #
@@ -457,7 +457,7 @@ int PtreeSetempi(struct tree p, char [*] tempi) :
   return(OK) 
     
    
-char  [*] PtreeGetempi(struct tree p) :  
+def char  [*] PtreeGetempi(struct tree p) :  
 
   # PtreeGetempi gets the imaginary temporary of the node
   #
@@ -471,7 +471,7 @@ char  [*] PtreeGetempi(struct tree p) :
 
     
    
-int PtreeGetline(struct tree p):    
+def int PtreeGetline(struct tree p):    
 
   # PtreeGetline gets the line no of the node.
   #
@@ -485,7 +485,7 @@ int PtreeGetline(struct tree p):
 
     
    
-int PtreeSetline(struct tree p, int line):    
+def int PtreeSetline(struct tree p, int line):    
 
   #PtreeSetline sets the line no of the node.
   #
@@ -500,7 +500,7 @@ int PtreeSetline(struct tree p, int line):
   return(OK)  
     
    
-char [*] PtreeGetfile(struct tree p) :    
+def char [*] PtreeGetfile(struct tree p) :    
 
   # PtreeGetfile gets the input file name of the node.
   #
@@ -513,7 +513,7 @@ char [*] PtreeGetfile(struct tree p) :
   return(p.file) 
     
 
-int PtreeSetfile(struct tree p, char [*] file) :   
+def int PtreeSetfile(struct tree p, char [*] file) :   
   
   # PtreeSetfile sets the input file name of the node.
   # 
@@ -531,7 +531,7 @@ int PtreeSetfile(struct tree p, char [*] file) :
 
     
    
-int PtreeSetrank(struct tree p, int rank) :   
+def int PtreeSetrank(struct tree p, int rank) :   
 
   # PtreeSetrank  sets the rank field of the node.
   #
@@ -547,7 +547,7 @@ int PtreeSetrank(struct tree p, int rank) :
 
     
    
-int PtreeGetrank(struct tree p) :    
+def int PtreeGetrank(struct tree p) :    
 
   # PtreeGetrank gets the rank field of the node.
   #
@@ -561,7 +561,7 @@ int PtreeGetrank(struct tree p) :
 
     
    
-int PtreeSetlval(struct tree p, char [*] lval) :
+def int PtreeSetlval(struct tree p, char [*] lval) :
   
   # PtreeSetlval sets the left value field
   #
@@ -580,7 +580,7 @@ int PtreeSetlval(struct tree p, char [*] lval) :
 
     
  
-char  [*] PtreeGetlval(struct tree p) :
+def char  [*] PtreeGetlval(struct tree p) :
 
   # PtreeGetlval gets the lval field of the node.
   #
@@ -594,7 +594,7 @@ char  [*] PtreeGetlval(struct tree p) :
 
     
    
-int PtreeSetarray(struct tree p, char [*] array) :   
+def int PtreeSetarray(struct tree p, char [*] array) :   
 
   # PtreeSetarray sets the array field.
   #
@@ -612,7 +612,7 @@ int PtreeSetarray(struct tree p, char [*] array) :
   return(OK) 
     
    
-char [*] PtreeGetarray(struct tree p) :   
+def char [*] PtreeGetarray(struct tree p) :   
 
   # PtreeGetarray gets the array field.
   #
@@ -626,7 +626,7 @@ char [*] PtreeGetarray(struct tree p) :
 
     
    
-int PtreeSetparallel(struct tree p, char [*] paral) :    
+def int PtreeSetparallel(struct tree p, char [*] paral) :    
 
   # PtreeSetparallel sets the parallel field.
   #
@@ -645,7 +645,7 @@ int PtreeSetparallel(struct tree p, char [*] paral) :
 
     
    
-char [*] PtreeGetparallel(struct tree p) :    
+def char [*] PtreeGetparallel(struct tree p) :    
 
   #PtreeGetparallel gets the parallel field.
   #
@@ -659,7 +659,7 @@ char [*] PtreeGetparallel(struct tree p) :
 
     
    
-int PtreeSetref(struct tree p, char [*] ref) :   
+def int PtreeSetref(struct tree p, char [*] ref) :   
 
   # PtreeSetref sets the ref field.
   #
@@ -677,7 +677,7 @@ int PtreeSetref(struct tree p, char [*] ref) :
   return(OK) 
     
    
-char [*] PtreeGetref(struct tree p) :    
+def char [*] PtreeGetref(struct tree p) :    
 
   # PtreeGetref gets the ref field.
   #
@@ -691,7 +691,7 @@ char [*] PtreeGetref(struct tree p) :
 
     
    
-int PtreeSetdescr(struct tree p, char [*] descr) :    
+def int PtreeSetdescr(struct tree p, char [*] descr) :    
 
   # PtreeSetdescr sets the descriptor field.
   #
@@ -709,7 +709,7 @@ int PtreeSetdescr(struct tree p, char [*] descr) :
   return(OK) 
     
    
-char [*] PtreeGetdescr(struct tree p) :    
+def char [*] PtreeGetdescr(struct tree p) :    
 
   # PtreeGetdescr gets the descriptor field.
   #
@@ -723,7 +723,7 @@ char [*] PtreeGetdescr(struct tree p) :
 
     
    
-int PtreeSetglobal(struct tree p, char [*] global) :    
+def int PtreeSetglobal(struct tree p, char [*] global) :    
 
   # PtreeSetglobal sets the global field.
   #
@@ -741,7 +741,7 @@ int PtreeSetglobal(struct tree p, char [*] global) :
   return(OK) 
     
    
-char [*] PtreeGetglobal(struct tree p) :   
+def char [*] PtreeGetglobal(struct tree p) :   
 
   # PtreeGetglobal  -- Get the global field. 
   #
@@ -755,7 +755,7 @@ char [*] PtreeGetglobal(struct tree p) :
 
     
    
-int PtreeSetopexpr(struct tree p, int topexpr) :    
+def int PtreeSetopexpr(struct tree p, int topexpr) :    
 
   # PtreeSetopexr  sest the topexpr field of the node.
   #
@@ -772,7 +772,7 @@ int PtreeSetopexpr(struct tree p, int topexpr) :
 
     
    
-int PtreeGetopexpr(struct tree p) :    
+def int PtreeGetopexpr(struct tree p) :    
 
   # PtreeGetopexpr  gets the simple field of the node.
   #
@@ -786,7 +786,7 @@ int PtreeGetopexpr(struct tree p) :
 
     
    
-int PtreeSetsimple(struct tree p, int simple) :    
+def int PtreeSetsimple(struct tree p, int simple) :    
 
   # PtreeSetsimple sets the simple field of the node.
   #
@@ -802,7 +802,7 @@ int PtreeSetsimple(struct tree p, int simple) :
 
     
    
-int PtreeGetsimple(struct tree p) :   
+def int PtreeGetsimple(struct tree p) :   
 
   # PtreeGetsimple gets the simple field of the node.
   #
@@ -816,7 +816,7 @@ int PtreeGetsimple(struct tree p) :
 
     
 
-int PtreeSetforw(struct tree p, char [*] forw) :
+def int PtreeSetforw(struct tree p, char [*] forw) :
 
   # PtreeSetforw sets the forward field.
 
@@ -827,7 +827,7 @@ int PtreeSetforw(struct tree p, char [*] forw) :
   return(OK) 
    
 
-char [*] PtreeGetforw(struct tree p) :
+def char [*] PtreeGetforw(struct tree p) :
 
   #PtreeGetforw  -- Get the forward field
 
@@ -836,7 +836,7 @@ char [*] PtreeGetforw(struct tree p) :
    
 
    
-int PtreePrtree(struct tree p, int level) :
+def int PtreePrtree(struct tree p, int level) :
 
   # PtreePrtree -- print the tree.
   #
@@ -868,7 +868,7 @@ int PtreePrtree(struct tree p, int level) :
       i = i + 1 
  
     LibePuts(fp, p.name); LibePuts(fp," ") 
-    LibePuts(fp, p.def) ; LibePuts(fp," ") 
+    LibePuts(fp, p.defn) ; LibePuts(fp," ") 
     LibePuts(fp, p.type); LibePuts(fp," ") 
     LibePuts(fp, p.structure); LibePuts(fp," ") 
     LibePuts(fp, p.array);     LibePuts(fp," ") 

@@ -12,13 +12,7 @@
 # Literal     : 'a'
 # Grouping    : ()
 #
-#    parse = 
-#        import 
-#      | fdef 
-#      | extdecl
-#      | STOP
-#
-#
+#   parse =  extdecl
 #
 #   extdecl = 
 #       import 
@@ -27,7 +21,7 @@
 #     | ID ASSIGN RCONSTANT|SCONSTANT|ICONSTANT (SEMICOLON|NL)
 #
 #   import = IMPORT ID NL
-#   fdef   = DEF type ID '(' [arglist] ')' [compstmnt]
+#   fdef   = DEF type ID '(' [arglist] ')' compstmnt
 #   type = 
 #        INT 
 #      | REAL 
@@ -35,7 +29,7 @@
 #      | CHAR 
 #      | CONST  
 #      | STRUCT ID 
-#      | [ '['arrayarg']' ]
+#        [ '['arrayarg']' ]
 #
 #   idseq        = ',' ID  [idseq] 
 #   structdeclar = declarations DIND
@@ -119,7 +113,7 @@ import scan     # Lexical scanner interface
 
 int lookahead;            # Look ahead token 
 
-int ParseIniparse() :
+def int ParseIniparse() :
 
   # ParseIniparse initializes the parser. 
 
@@ -127,23 +121,23 @@ int ParseIniparse() :
  return(OK);
 
 # Forward declarations
-struct tree ParseExpr() : 
+def struct tree ParseExpr() : 
   pass
 
-struct tree ParseAsgexpr(struct tree p):
+def struct tree ParseAsgexpr(struct tree p):
   pass
 
 
-struct tree ParseStmnt() : 
+def struct tree ParseStmnt() : 
   pass
 
-struct tree ParseElsestmnt() : 
+def struct tree ParseElsestmnt() : 
   pass
 
-struct tree ParseCompstmnt() : 
+def struct tree ParseCompstmnt() : 
   pass
 
-int ParseError(char [*] s) :
+def int ParseError(char [*] s) :
   
   # Prints parsing errors and exits.
   #
@@ -157,7 +151,7 @@ int ParseError(char [*] s) :
 
   return(OK);
 
-int ParseGetlookahead() :
+def int ParseGetlookahead() :
   
   # ParseGetlookahead gets the lookahead token                             
   #
@@ -166,7 +160,7 @@ int ParseGetlookahead() :
 
   return (lookahead);       # Return lookahead token     
 
-int ParseMatch(int t) :
+def int ParseMatch(int t) :
   
   # ParseMatch accepts a token.
   #
@@ -179,17 +173,15 @@ int ParseMatch(int t) :
   # Pmatch matches a token and read lookahead token
 
   if(lookahead == t):
-    lookahead = ScanGetok();
+    lookahead = ScanGetok()
   else :
     LibePs("Was expecting: "); LibePi(t); LibePs(", but got: "); 
     LibePi(lookahead); LibePs("\n");
-    ParseError("syntax error");
-    lookahead = ScanGetok();
-  return(OK);
+    ParseError("syntax error")
+    lookahead = ScanGetok()
+  return(OK)
 
- 
-
-struct tree ParseMknode(char [*] name, char [*] def) :
+def struct tree ParseMknode(char [*] name, char [*] defn) :
 
   # ParseMknode makes a new parse tree node
   #
@@ -206,12 +198,12 @@ struct tree ParseMknode(char [*] name, char [*] def) :
 
   struct tree p; 
 
-  p = PtreeMknode(name,def);
+  p = PtreeMknode(name,defn);
   PtreeSetline(p,ScanGetline());
   PtreeSetfile(p,ScanGetfile());
   return(p);
 
-struct tree ParseExprseq(struct tree p) :
+def struct tree ParseExprseq(struct tree p) :
 
   # ParseExprseq parses an expression sequence       
   #
@@ -231,7 +223,7 @@ struct tree ParseExprseq(struct tree p) :
     ParseExprseq(p);
   return p=NULL;
 
-struct tree ParseExprlist() :
+def struct tree ParseExprlist() :
 
   # ParseExprlist parses a list of expressions.
   #  The following part of the grammar is implemented:
@@ -248,7 +240,7 @@ struct tree ParseExprlist() :
     sp = NULL;
   return sp;
 
-int ParseArrayarg(struct tree p) :
+def int ParseArrayarg(struct tree p) :
 
   # ParseArrayarg parses dummy array arguments      
   # The following part of the grammar is implemented:
@@ -276,7 +268,7 @@ int ParseArrayarg(struct tree p) :
     return(OK);
   return(OK);
 
-int ParseIdseq(struct tree p) :
+def int ParseIdseq(struct tree p) :
 
   # ParseIdseq -- parse identifier sequence      
   # The following part of the grammar is implemented:
@@ -294,7 +286,7 @@ int ParseIdseq(struct tree p) :
     return(OK);
   return(OK);
 
-int ParseConstdecl(struct tree p) :
+def int ParseConstdecl(struct tree p) :
 
   # ParseConstdecl  parses constant declaration    
   # The following part of the grammar is implemented
@@ -307,7 +299,7 @@ int ParseConstdecl(struct tree p) :
    PtreeAddchild(p,np);
   return(OK);
 
-struct tree ParseIdent() :
+def struct tree ParseIdent() :
 
   # ParseIdent parses identifier
   # The following part of the grammar is implemented:
@@ -328,7 +320,7 @@ struct tree ParseIdent() :
     sp = NULL;
   return sp;
 
-struct tree ParseType() :
+def struct tree ParseType() :
 
   # This function implements the following part of the grammar:
   #   type  = [( INT | REAL | CONST | COMPLEX | CHAR  
@@ -363,7 +355,7 @@ struct tree ParseType() :
     ParseMatch(RB);
   return (np);
 
-struct tree ParsePrimexpr(struct tree p) :
+def struct tree ParsePrimexpr(struct tree p) :
 
   # ParsePrimexpr -- parse primary expressions
  
@@ -522,7 +514,7 @@ struct tree ParsePrimexpr(struct tree p) :
 
   return sp;
 
-struct tree ParseUnexpr(struct tree p) :
+def struct tree ParseUnexpr(struct tree p) :
 
   # ParseUnexpr parses unary expressions. 
   # The following part of the grammar is implemented:
@@ -541,7 +533,7 @@ struct tree ParseUnexpr(struct tree p) :
 
   return (sp); 
 
-struct tree ParseMultexprseq(struct tree p) :
+def struct tree ParseMultexprseq(struct tree p) :
 
   # Pmultexprseq parses sequence of multiplicative expressions.
   # The following part of the grammar is implemented:
@@ -560,7 +552,7 @@ struct tree ParseMultexprseq(struct tree p) :
     sp = p;
   return (sp);
  
-struct tree ParseMultexpr(struct tree p) :
+def struct tree ParseMultexpr(struct tree p) :
 
   # Pmultexpr  parses multiplicative expressions.
   # The following part of the grammar is implemented:
@@ -572,7 +564,7 @@ struct tree ParseMultexpr(struct tree p) :
   np = ParseMultexprseq(np);  
   return (np);
 
-struct tree ParseAddexprseq(struct tree p) :
+def struct tree ParseAddexprseq(struct tree p) :
 
   # PaddexprSeq parses sequence of additive expressions.
   # The following part of the grammar is implemented:
@@ -591,7 +583,7 @@ struct tree ParseAddexprseq(struct tree p) :
      sp = p;
   return (sp);
  
-struct tree ParseAddexpr(struct tree p) :
+def struct tree ParseAddexpr(struct tree p) :
 
   # ParseAddexpr parses additive expressions. 
   # The following part of the grammar is implemented:
@@ -603,7 +595,7 @@ struct tree ParseAddexpr(struct tree p) :
   np = ParseAddexprseq(np);  
   return (np);
 
-struct tree ParseRelexprseq(struct tree p) :
+def struct tree ParseRelexprseq(struct tree p) :
 
   # ParseRelexprseq parses sequence of relational expressions.
   # The part of the grammar implemented is :
@@ -623,7 +615,7 @@ struct tree ParseRelexprseq(struct tree p) :
       sp = p;
   return (sp);
 
-struct tree ParseRelexpr(struct tree p) :
+def struct tree ParseRelexpr(struct tree p) :
 
   # ParseRelexpr parses relational expressions.
   # The following part of the grammar is implemented:
@@ -635,7 +627,7 @@ struct tree ParseRelexpr(struct tree p) :
   np = ParseRelexprseq(np);  
   return (np);
 
-struct tree ParseAsgexprseq(struct tree p) :
+def struct tree ParseAsgexprseq(struct tree p) :
 
   # PraseAsgexprseq parses sequence of assignment expressions
   # The following part of the grammar is implemented:
@@ -654,7 +646,7 @@ struct tree ParseAsgexprseq(struct tree p) :
     np = p;
   return (np);
  
-struct tree ParseAsgexpr(struct tree p) :
+def struct tree ParseAsgexpr(struct tree p) :
 
   # Parameters :
   #   p: Expression tree node
@@ -672,7 +664,7 @@ struct tree ParseAsgexpr(struct tree p) :
   np = ParseAsgexprseq(np);  
   return np;
 
-struct tree ParseExpr() :
+def struct tree ParseExpr() :
 
   # ParseExpr  parses expressions      
   # The following part of the grammar is implemented
@@ -688,7 +680,7 @@ struct tree ParseExpr() :
      np = sp;
   return (np);
 
-struct tree ParseDeclaration() :
+def struct tree ParseDeclaration() :
 
   # ParseDeclaration parses a declaration
   # The following part of the grammar is implemented:
@@ -716,7 +708,7 @@ struct tree ParseDeclaration() :
     ParseError("Missing variable in type statement");
   return (np);
 
-struct tree ParseDeclarations():
+def struct tree ParseDeclarations():
 
   # ParseDeclarations parses declarations
   # The following part of the grammar is implemented:
@@ -734,7 +726,7 @@ struct tree ParseDeclarations():
     PtreeAddchild(sp,np);
   return(sp);
 
-int ParseArgseq(struct tree p) :
+def int ParseArgseq(struct tree p) :
 
   # ParseArgseq parses argument sequence       
   # The following part of the grammar is implemented:
@@ -753,7 +745,7 @@ int ParseArgseq(struct tree p) :
       ParseArgseq(p);
   return (OK);
 
-struct tree ParseArglist() :
+def struct tree ParseArglist() :
 
   # ParseArglist parses function argument list      
   # The following part of the grammar is implemented:
@@ -773,7 +765,7 @@ struct tree ParseArglist() :
     sp = NULL;
   return (sp);
  
-int ParseStructdeclar(struct tree p) :
+def int ParseStructdeclar(struct tree p) :
 
   # This function implements the following part of the grammar:
   #   structdeclar   = declarations END 
@@ -787,7 +779,7 @@ int ParseStructdeclar(struct tree p) :
   ParseMatch(DIND);
   return (OK);
 
-struct tree ParseWhilestmnt() :
+def struct tree ParseWhilestmnt() :
 
   # Parsewhilestmnt  parses while statement.      
   # The following part of the grammar is implmented:
@@ -808,7 +800,7 @@ struct tree ParseWhilestmnt() :
     sp = NULL;
   return (sp);
 
-struct tree ParseReturnstmnt() :
+def struct tree ParseReturnstmnt() :
 
   # ParseReturnstmnt  parses return statement      
   # The following part of the grammar is implemented
@@ -829,7 +821,7 @@ struct tree ParseReturnstmnt() :
     sp = NULL;
   return (sp);
 
-struct tree ParseForstmnt() :
+def struct tree ParseForstmnt() :
 
   # ParseForstmnt parses a for statement
   # The following part of the grammar is implemented:
@@ -856,7 +848,7 @@ struct tree ParseForstmnt() :
     sp = NULL;
   return (sp);
 
-struct tree ParseSlice() :
+def struct tree ParseSlice() :
 
   # ParseSlice parses a slice list
   # The following part of the grammar is implemented:
@@ -880,7 +872,7 @@ struct tree ParseSlice() :
      ParseError("Syntax error");
    return (np);
 
-struct tree ParseSliceseq(struct tree np) :
+def struct tree ParseSliceseq(struct tree np) :
 
    # ParseSliceseq  parses slice sequence.      
    # The following part of the grammar is implemented:
@@ -899,7 +891,7 @@ struct tree ParseSliceseq(struct tree np) :
      return(np);
    return(np);
 
-struct tree ParseParallelstmnt() :
+def struct tree ParseParallelstmnt() :
 
   # ParseParallelstmnt parses a prallel statement
   # The following part of the grammar is implemented:
@@ -926,7 +918,7 @@ struct tree ParseParallelstmnt() :
     return(rp=NULL);
   return(rp=NULL);
  
-struct tree ParseElsestmnt() :
+def struct tree ParseElsestmnt() :
 
   # ParseElsestmnt parses an else statement
   # The following part of the grammar is implemented:
@@ -944,7 +936,7 @@ struct tree ParseElsestmnt() :
 
   return  (np);
  
-struct tree ParseIfstmnt() :
+def struct tree ParseIfstmnt() :
 
   # ParseIfstmnt parses an if statement.
   # The following part of the grammar is implemented:
@@ -968,7 +960,7 @@ struct tree ParseIfstmnt() :
     sp = NULL;
   return (sp);
  
-struct tree ParseStmnt() :
+def struct tree ParseStmnt() :
 
   # ParseStmnt parses a statement.
   # The following part of the grammar is implemented:
@@ -1006,7 +998,7 @@ struct tree ParseStmnt() :
 #   
     return (np);
 
-struct tree ParseStmntlist() :
+def struct tree ParseStmntlist() :
 
   # ParseStmntlist parses a list of statements
   # The following part of the grammar is implemented:
@@ -1021,7 +1013,7 @@ struct tree ParseStmntlist() :
     PtreeAddsister(np, sp);
   return (np);
 
-struct tree ParseCompstmnt() :
+def struct tree ParseCompstmnt() :
 
   # ParseCompstmnt parses a compund statement
   # This function implements the production
@@ -1046,29 +1038,41 @@ struct tree ParseCompstmnt() :
     np = NULL;
   return (np);
 
-int ParseFdef(struct tree p) :
+def int ParseFdef(struct tree p) :
 
   # ParseFdef -- parse function declaration      
   # This routine parses definition and declaration of functions according
   # to the following rule:
   #   fdecl  = [arglist] ')'  [compstmnt]
 
-  struct tree np;
+  struct tree np,sp;
 
-  PtreeSetname(p,"fdef");
+  np = ParseType()
+
+  if(np != NULL) :
+    PtreeAddchild(p,np)
+  else :
+    ParseError("Missing function type declaration");
+
+  if(lookahead == ID):
+    sp=PtreeMknode("fdef", ScanGetext())
+    ParseMatch(ID)
+    PtreeAddchild(np,sp)
+
+  ParseMatch(LP)
   np = ParseArglist();
   if( np!= NULL) :
-    PtreeAddchild(p, np);
+    PtreeAddchild(sp, np);
   ParseMatch(RP);
   np = NULL;
   np = ParseCompstmnt();
   if( np!= NULL):
-    PtreeAddchild(p, np);
+    PtreeAddchild(sp, np);
   else:
     ParseError("Missing function body");
   return (OK);
 
-struct tree ParseExtdecl() :
+def struct tree ParseExtdecl() :
 
   # ParseExtdecl parses external declarations      
   # The following part of the grammar is implemented:
@@ -1087,6 +1091,11 @@ struct tree ParseExtdecl() :
         sp  = ParseMknode("extdecl","void");
         PtreeAddchild(sp,imp);
       return(sp);
+    else if(lookahead == DEF):
+      ParseMatch(DEF);
+      sp  = ParseMknode("extdecl","void");
+      ParseFdef(sp);
+      return(sp)
     else :
       ParseError("Syntax error");
     
@@ -1111,9 +1120,6 @@ struct tree ParseExtdecl() :
        ParseMatch(SEMICOLON);
      ParseMatch(NL);
 
-   else if(lookahead==LP):       # "("    
-     ParseMatch(LP);
-     ParseFdef(mp);
  
    else if(lookahead == ASSIGN): # Constant  
      ParseMatch(lookahead);
@@ -1126,7 +1132,7 @@ struct tree ParseExtdecl() :
    
   return (sp);
 
-struct tree ParseParse() :
+def struct tree ParseParse() :
 
   # Parse is the entry point for the eps parser.
   # Parsing starts with the symbol "extdecl"

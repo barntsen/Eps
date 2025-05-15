@@ -48,6 +48,7 @@ const IND    = 600        # Indent token
 const DIND    = 601       # Deindent token
 const PASS    = 701        # Pass token
 const NOOP    = 1001      # No operation token
+const DEF     = 1100      # function def token
 
 # Data structures 
 #
@@ -76,7 +77,7 @@ const LMAX  = 258      # Max no of indentations
 int ScanContline       # Continuation lines
 int ScanEnd            # Termination flag
 
-int ScanGetline() :
+def int ScanGetline() :
 
   # ScanGetline gets the physical line no.
   # 
@@ -87,7 +88,7 @@ int ScanGetline() :
   
   return(ScanLine+ScanContline) 
 
-char [*] ScanGetfile() :   
+def char [*] ScanGetfile() :   
 
   # ScanGetfile  gets input file name.  
   #
@@ -99,7 +100,7 @@ char [*] ScanGetfile() :
 
   return(ScanFile) 
 
-int ScanError(char [*] s): 
+def int ScanError(char [*] s): 
 
   # ScanError prints an error message.
   #
@@ -114,7 +115,7 @@ int ScanError(char [*] s):
 
   return(OK)
 
-int ScanPush(int l):
+def int ScanPush(int l):
 
   # ScanPush pushes one item on the stack
   #
@@ -129,7 +130,7 @@ int ScanPush(int l):
   ScanStack[ScanSp] = l 
   return(OK) 
 
-int ScanPop():
+def int ScanPop():
 
   # ScanPop pops one item from the stack
   #
@@ -144,7 +145,7 @@ int ScanPop():
   return (ScanStack[ScanSp]) 
    
  
-int ScanInit(char [*] infile) :
+def int ScanInit(char [*] infile) :
 
 # ScanInit initializes the  scanner.
 #
@@ -180,7 +181,7 @@ int ScanInit(char [*] infile) :
   ScanEnd = ERR
   return(OK) 
      
-int ScanGetch()  :    
+def int ScanGetch()  :    
 
   # ScanGetch gets a character.  
   # 
@@ -192,7 +193,7 @@ int ScanGetch()  :
 
   return(LibeGetc(ScanFp)) 
    
-int ScanIncline() :
+def int ScanIncline() :
 
  # ScanIncline  increment lineno by 1. 
  # 
@@ -206,7 +207,7 @@ int ScanIncline() :
   ScanLine = ScanLine + 1 
   return(OK) 
  
-int ScanUngetch() :     
+def int ScanUngetch() :     
 
   # ScanUngetch ungets a character.  
   # 
@@ -218,7 +219,7 @@ int ScanUngetch() :
 
   return(LibeUngetc(ScanFp)) 
 
-int ScanBlank()  :   
+def int ScanBlank()  :   
 
   # ScanBlank computes indentation and erases blank lines or comments  
   #
@@ -269,7 +270,7 @@ int ScanBlank()  :
     ScanUngetch() 
     return(indent) 
  
-int ScanWhite()  :   
+def int ScanWhite()  :   
 
   # ScanWhite -- skips white space.  
   #
@@ -286,10 +287,9 @@ int ScanWhite()  :
   ScanUngetch() 
 
   return(OK) 
-    
  
 
-int ScanComment() :
+def int ScanComment() :
 
   #  ScanComment skips comment.  
   #
@@ -319,7 +319,7 @@ int ScanComment() :
      
   return(OK) 
  
-int ScanLcomment() :
+def int ScanLcomment() :
 
   # ScanLcomment skips line comment.  
   #
@@ -340,10 +340,9 @@ int ScanLcomment() :
       incomment=ERR 
   ScanUngetch() 
   return(OK) 
-   
 
  
-int ScanFtail(int p) :     
+def int ScanFtail(int p) :     
 
   # ScanFtail  gets the tail of a floating point number.  
   # 
@@ -393,7 +392,7 @@ int ScanFtail(int p) :
 
     return (p) 
 
-int ScanLex() :
+def int ScanLex() :
 
   # ScanLex finds and returns the next token.
   #
@@ -621,6 +620,8 @@ int ScanLex() :
       rval = WHILE 
     else if(LibeStrcmp(ScanText,"return")):
       rval = RETURN 
+    else if(LibeStrcmp(ScanText,"def")):
+      rval = DEF 
     else if(LibeStrcmp(ScanText,"if")):
       rval = IF 
     else if(LibeStrcmp(ScanText,"else")):
@@ -656,7 +657,7 @@ int ScanLex() :
   ScanText[p+1] = cast(char, EOS) 
   return rval 
  
-char [*] ScanSetfile(char [*] fname) :    
+def char [*] ScanSetfile(char [*] fname) :    
 
   # ScanSetfile sets the input file name.  
   #
@@ -673,7 +674,7 @@ char [*] ScanSetfile(char [*] fname) :
   ScanFile = LibeStrsave(fname) 
   return(ScanFile) 
 
-int ScanGetok() :
+def int ScanGetok() :
 
   # ScanGetok returns next token.
   #
@@ -709,7 +710,7 @@ int ScanGetok() :
   #    second element of the stack, and an IND token is returned. 
   #    If the indent is less than the initial value it is an error.
   #
-  # 5. Pts 3 and 4 is repeated until all lines have been read,
+  # 5. Pts 3 and 4 are repeated until all lines have been read,
   #    with the modification
   #    that if the indent is less than the indent of the previous line,
   #    the stack is popped for values until a match for the 
@@ -779,7 +780,7 @@ int ScanGetok() :
       c=ScanLex() 
     return(c) 
 
-char [*] ScanGetext() :
+def char [*] ScanGetext() :
 
   # ScanGetext  gets text of token.
   #
@@ -790,7 +791,7 @@ char [*] ScanGetext() :
 
   return ScanText 
 
-int ScanSetline(int lineno) :
+def int ScanSetline(int lineno) :
 
   # Setline sets line no.
   # 
@@ -803,7 +804,7 @@ int ScanSetline(int lineno) :
   ScanLine = lineno     
   return 0 
 
-int ScanGetword(char [*] ttext) :
+def int ScanGetword(char [*] ttext) :
 
   # ScanGetword gets next word. 
   # 

@@ -1,6 +1,6 @@
 import libe
 
-char [*] ScanPath() :
+def char [*] ScanPath() :
 
   # Return the system library path
   # The path is obtained

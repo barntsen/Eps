@@ -11,7 +11,7 @@ import sem         # Semantic checking
 import code        # Code generator
 import m           # Machine dependt code
 
-int MainError(char [*] s) : 
+def int MainError(char [*] s) : 
 
   # MainError prints error messages.
   #
@@ -28,7 +28,7 @@ int MainError(char [*] s) :
 
   return(OK)
 
-int MainHelp(int arch):
+def int MainHelp(int arch):
 
   # MainHelp prints help message.
   #
@@ -86,7 +86,7 @@ int MainHelp(int arch):
   return(OK) 
     
  
-char [*] MainFout(char [*] infile, int arch):
+def char [*] MainFout(char [*] infile, int arch):
 
   # Mainfout checks the input file name
   #
@@ -134,7 +134,7 @@ char [*] MainFout(char [*] infile, int arch):
      
   return(outfile) 
     
-char [*] MainFmod(char [*] infile):
+def char [*] MainFmod(char [*] infile):
 
   # Mainmod checks the input file name
   #
@@ -165,7 +165,7 @@ char [*] MainFmod(char [*] infile):
 
 const CMDLEN=160         # Length of command line
 
-int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):
+def int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):
 
   # MainCcompcpu invokes the c-compiler to generate object code for cpu.
   #
@@ -221,7 +221,7 @@ int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int show):
   return(OK) 
     
      
-int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show):
+def int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show):
 
   # MainCcompcuda invokes the nvcc compiler to generate object 
   #code for nvidia gpus.
@@ -266,7 +266,7 @@ int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show):
   return(OK) 
     
      
-int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show):
+def int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show):
 
   # MainCcomphip invokes the hipcc compiler to generate object code for amd gpus.
 
@@ -314,7 +314,7 @@ int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show):
   return(OK) 
     
      
-int Main(struct MainArg [*] MainArgs) :
+def int Main(struct MainArg [*] MainArgs) :
 
   # Main is the main function.
 

@@ -1,5 +1,5 @@
 #
-# Run.i -- eps interface for the run time library
+# Run -- eps interface for the run time library
 # The run time library is written in C, so this is just
 # the eps interface. Most of the routines in the library
 # are unix system calls and math functions.
@@ -12,26 +12,26 @@
  
 #
 # RunCreate -- create a file
-int RunCreate(char [*] name):
+def int RunCreate(char [*] name):
   pass
  
 #
 # RunClock-- measure elapsed time
-float RunClock():
+def float RunClock():
   pass
  
 #
 # RunOpen -- open a fileend 
  
-int RunOpen(char [*] name, char [*] mode):
+def int RunOpen(char [*] name, char [*] mode):
   pass
  
 #
 # RunClose -- close a file
-int RunClose(int fd):
+def int RunClose(int fd):
   pass
  
-int RunRead(int fd, int lbuff, char [*] buffer):
+def int RunRead(int fd, int lbuff, char [*] buffer):
   pass
  
 #RunRead reads in  lbuff characters into the
@@ -39,14 +39,14 @@ int RunRead(int fd, int lbuff, char [*] buffer):
 #The return value is the number of characters actually read.
 #If an error has occured ERR will be returned.
 #
-int RunWrite(int fd, int lbuff, char [*] buffer):
+def int RunWrite(int fd, int lbuff, char [*] buffer):
   pass
 #
 #RunWrite writes lbuff from the buffer array.
 #The return value is the number of characters actually written.
 # ERR is returned whenever an error has occured.
  
-int RunSeek(int fd, int pos, int flag):
+def int RunSeek(int fd, int pos, int flag):
   pass
 #
 # RunSeek sets the file position to pos bytes
@@ -55,37 +55,37 @@ int RunSeek(int fd, int pos, int flag):
 #  ERR is returned whenever an error has occured.
 # Otherwise is the file position returned.
 #
-char [*] RunGetenv(char [*] name):
+def char [*] RunGetenv(char [*] name):
  pass
 # RunGetenv returns the value of the environment
 # variable contained in the string name.
 
 # RunGetnt gets the number of threads from the
 # environment variable NTHREADS.
-int RunGetnt():
+def int RunGetnt():
   pass
 
 # RunGetnb gets the number of threads from the
 # environment variable NTHREADS.
-int RunGetnb():
+def int RunGetnb():
   pass
  
 #
 # RunStrcmp -- compare strings
-int RunStrcmp(char [*] s, char [*] t):
+def int RunStrcmp(char [*] s, char [*] t):
   pass
  
 #
 # RunStrlen -- string length
-int RunStrlen(char [*] s):
+def int RunStrlen(char [*] s):
   pass
 
 #
 # RunExit cleans up and exits.
-int RunExit():
+def int RunExit():
   pass
  
 # RunSystem
-int RunSystem(char[*] cmd):
+def int RunSystem(char[*] cmd):
   pass
  

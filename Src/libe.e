@@ -105,7 +105,7 @@ struct MainArg :
 int      LibeErrno    # Error return number 
 char [*] LibeErrstr   # Error message      
   
-int LibeErrinit() :
+def int LibeErrinit() :
 
   # LibeErrinit initialize error routines
   #
@@ -118,11 +118,9 @@ int LibeErrinit() :
   LibeErrno = OK 
   LibeErrstr = NULL 
   return(OK) 
-    
 
- 
 
-int LibeGeterrno() :
+def int LibeGeterrno() :
 
   # LibeGeterrno returns the value of LibeErrno
   #
@@ -135,7 +133,7 @@ int LibeGeterrno() :
   return(LibeErrno) 
     
  
-int LibeClearerr() :
+def int LibeClearerr() :
 
   #   LibeClearerr clears the error number.
   #
@@ -149,7 +147,7 @@ int LibeClearerr() :
   return(OK) 
     
 
-char [*] LibeGeterrstr() :
+def char [*] LibeGeterrstr() :
 
   # LibeGeterrstr returns the value of the error string.
   # Parameters: None
@@ -161,7 +159,7 @@ char [*] LibeGeterrstr() :
   return(LibeErrstr) 
     
 
-char [*] LibeGetenv(char [*] name) :
+def char [*] LibeGetenv(char [*] name) :
 
   # LibeGetenv returns the value of the environment variable
   #
@@ -185,7 +183,7 @@ const MEPSMIN = 3
 const MEPSMAX = 4  
 const MLOG2 =  5  
 
-float LibeMach(int flag) :
+def float LibeMach(int flag) :
 
   # LibeMach gets machine dep   ent floating point properties
   # 
@@ -216,7 +214,7 @@ float LibeMach(int flag) :
     return(cast(float,ERR)) 
     
  
-float LibeFabs(float x) :
+def float LibeFabs(float x) :
   # LibeFabs gets absolute value of float 
   # 
   # Parameter: 
@@ -231,7 +229,7 @@ float LibeFabs(float x) :
   else :
     return(x) 
     
-float LibeFscale2(float x, int n) :
+def float LibeFscale2(float x, int n) :
 
   # LibeFscale2 computes the value of $x 2^n$. 
   # 
@@ -258,7 +256,7 @@ float LibeFscale2(float x, int n) :
       rval = rval*0.5 
   return(rval*x) 
     
-float LibeGetfman2(float x) :
+def float LibeGetfman2(float x) :
 
   # LibeGetfman2 gets the mantise for base 2 of a float
   #
@@ -295,7 +293,7 @@ float LibeGetfman2(float x) :
   else :
     return(absx) 
  
-int LibeGetfexp2(float x) :
+def int LibeGetfexp2(float x) :
 
   # LibeGetfexp2 gets the exponent of a float in base 2
   # 
@@ -328,7 +326,7 @@ int LibeGetfexp2(float x) :
     absx = absx*0.5 
   return(n) 
  
-float LibeFscale(float x, int n) :
+def float LibeFscale(float x, int n) :
   
   # LibeFscale returns a float given mantisa and exonent in base 10
   # 
@@ -355,7 +353,7 @@ float LibeFscale(float x, int n) :
       rval = rval*0.1 
   return(rval*x) 
  
-int LibeGetfman(float f, int maxdig) :
+def int LibeGetfman(float f, int maxdig) :
 
   # LibeGetfman returns the mantisa of a float in base 10
   # with prescribed accuracy.
@@ -407,7 +405,7 @@ int LibeGetfman(float f, int maxdig) :
   if(sign <0) n=-n 
   return(n) 
  
-float LibeGetffman(float f) :
+def float LibeGetffman(float f) :
 
   # LibeGetffman returns the mantisa of a float in base 10
   # 
@@ -449,7 +447,7 @@ float LibeGetffman(float f) :
   return(f) 
 #
  
-int LibeGetmaxdig(float f) :
+def int LibeGetmaxdig(float f) :
 
   # LibeGetmaxdig gets number of significant digits 
   # 
@@ -503,7 +501,7 @@ int LibeGetmaxdig(float f) :
       
   return(i) 
     
-int LibeGetfexp(float f) :
+def int LibeGetfexp(float f) :
 
   # LibeGetfexp gets the exponent of a float in base 10
   # 
@@ -537,7 +535,7 @@ int LibeGetfexp(float f) :
       nexp = nexp-1  
   return(nexp) 
  
-float LibeClock() :
+def float LibeClock() :
 
   # LibeClock returns the elapsed time since the program started.
   #
@@ -572,7 +570,7 @@ float LibeSincoslim  # Min value for sin/cos argument
 float LibeLnmax      # Max value for logarithm argument  
 float LibeLnmin      
 
-int LibeMod(int n, int r) :
+def int LibeMod(int n, int r) :
 
   
   # LibeMod computes the r-modulus of the integer n.
@@ -590,7 +588,7 @@ int LibeMod(int n, int r) :
   if(r==0) return (n) 
   return ( n - (n/r) * r ) 
  
-float LibeSqrt(float x) :
+def float LibeSqrt(float x) :
 
   # LibeSqrt computes an approximation to the square root
   # of a floating point number. 
@@ -630,7 +628,7 @@ float LibeSqrt(float x) :
     n = n+1 
   return(LibeFscale2(yest, n/2)) 
  
-float LibeLn(float x) :
+def float LibeLn(float x) :
 
   # LibeLn computes the natural logarithm of x    
   #
@@ -673,7 +671,7 @@ float LibeLn(float x) :
   xn = cast(float,n) 
   return((xn*c2+r)+xn*c1) 
  
-float LibeExp(float x) :
+def float LibeExp(float x) :
 
   # LibeExp computes exp(x).
   #
@@ -722,7 +720,7 @@ float LibeExp(float x) :
   rval = 0.5 +p/(q-p) 
   return (LibeFscale2(rval, n+1)) 
  
-float LibeSincos(float x, float y, float sign) :
+def float LibeSincos(float x, float y, float sign) :
 
   # LibeSinCos computes sin and cosine function
   #
@@ -770,7 +768,7 @@ float LibeSincos(float x, float y, float sign) :
   return(sign*g) 
     
  
-float LibeSin(float x) :
+def float LibeSin(float x) :
 
   # LibeSin computes sin function
   #
@@ -787,7 +785,7 @@ float LibeSin(float x) :
     return(LibeSincos(x, x, 1.0)) 
     
  
-float LibeCos(float x) :
+def float LibeCos(float x) :
 
   # LibeCos computes the cos function
   #
@@ -801,7 +799,7 @@ float LibeCos(float x) :
   return(LibeSincos(x, LibeFabs(x)+PIHALF, 1.0)) 
     
  
-float LibeTan(float x) :
+def float LibeTan(float x) :
  
   # LibeTan computes the tan function
   #
@@ -847,7 +845,7 @@ float LibeTan(float x) :
   else: 
     return(xnum/xden) 
       
-float LibeArcsin(float x) :
+def float LibeArcsin(float x) :
 
   # LibeArcsin computes the arcsin function
   #
@@ -900,7 +898,7 @@ float LibeArcsin(float x) :
 
   return(res) 
 
-float LibeArccos(float x) :
+def float LibeArccos(float x) :
 
   # LibeArccos computes the arcsin function
   #
@@ -962,7 +960,7 @@ float LibeArccos(float x) :
      res=-res 
   return(res) 
  
-float LibeAtan(float f) :
+def float LibeAtan(float f) :
 
   # LibeAtn computes the atan function
   #
@@ -1016,7 +1014,7 @@ float LibeAtan(float f) :
 
   return(res) 
  
-float LibeArctan(float x) :
+def float LibeArctan(float x) :
 
   # LibeArctan computes the arctan function
   #
@@ -1037,7 +1035,7 @@ float LibeArctan(float x) :
 
   return(rval) 
  
-float LibePow(float base, float exponent) :
+def float LibePow(float base, float exponent) :
 
   #
   # LibePow computes the power function.
@@ -1052,7 +1050,7 @@ float LibePow(float base, float exponent) :
 
   return(LibeExp(exponent*LibeLn(base))) 
  
-int LibeMathinit() :
+def int LibeMathinit() :
 
   # LibeMathinit performs initialization of math functions 
   #
@@ -1074,7 +1072,7 @@ int LibeMathinit() :
 # string handling. A string is implemented as a character
 # array terminated by an EOS character.
 
-int LibeStrlen(char [*] s) :
+def int LibeStrlen(char [*] s) :
    
   # LibeStrlen returns the length of a string
   #
@@ -1097,7 +1095,7 @@ int LibeStrlen(char [*] s) :
  
   return(i) 
     
-int LibeStrcmp(char [*] s, char [*] t) :
+def int LibeStrcmp(char [*] s, char [*] t) :
 
   # LibeStrcmp compares to strings.
   #
@@ -1120,7 +1118,7 @@ int LibeStrcmp(char [*] s, char [*] t) :
  
   return(ERR) 
  
-int LibeStrev(char [*] s) :
+def int LibeStrev(char [*] s) :
 
   # LibeStrev reverse a string. 
   #
@@ -1145,7 +1143,7 @@ int LibeStrev(char [*] s) :
       
   return(OK) 
  
-int LibeStrcpy(char [*] s, char [*] t) :
+def int LibeStrcpy(char [*] s, char [*] t) :
 
   # LibeStrcpy copies a string.
   #
@@ -1171,7 +1169,7 @@ int LibeStrcpy(char [*] s, char [*] t) :
       
   return(OK) 
     
-int LibeStrcat(char [*] s, char [*] t) :
+def int LibeStrcat(char [*] s, char [*] t) :
   
   #  LibeStrcat app   s one string to another.
   #  t string.
@@ -1199,7 +1197,7 @@ int LibeStrcat(char [*] s, char [*] t) :
 
   return(OK) 
 
-char [*] LibeStradd(char [*] t, char [*] s) :
+def char [*] LibeStradd(char [*] t, char [*] s) :
   #
   # LibeStradd add a string s to the string t and returns a new string.
   #
@@ -1228,7 +1226,7 @@ char [*] LibeStradd(char [*] t, char [*] s) :
 
   return(r) 
  
-char [*] LibeStrsave(char [*] s) :
+def char [*] LibeStrsave(char [*] s) :
 
   #
   # LibeStrsave copies the string s
@@ -1253,7 +1251,7 @@ char [*] LibeStrsave(char [*] s) :
     LibeStrcpy(s,tmp) 
   return(tmp) 
  
-int LibeIsalhpa(int c) : 
+def int LibeIsalhpa(int c) : 
 
   # LibeIsalpha checks if c is alphabetic
   # 
@@ -1274,7 +1272,7 @@ int LibeIsalhpa(int c) :
     return(ERR) 
     
  
-int LibeIsdigit(int c) :
+def int LibeIsdigit(int c) :
 
   # LibeIsdigit checks i a character is a digit
   # 
@@ -1294,7 +1292,7 @@ int LibeIsdigit(int c) :
     return(ERR) 
     
  
-int LibeIsalnum(int c) :
+def int LibeIsalnum(int c) :
 
   # LibeIsalnum checks if character is alphanumeric
   # 
@@ -1320,7 +1318,7 @@ int LibeIsalnum(int c) :
 #
 # Conversion and formatting routines.
  
-int LibeAtoi(char [*] s) :
+def int LibeAtoi(char [*] s) :
 
   # LibeAtoi converts an ascii string to integer.
   # 
@@ -1359,7 +1357,7 @@ int LibeAtoi(char [*] s) :
 
   return (sign * n) 
  
-int LibeItoa(int n, char [*] s) :
+def int LibeItoa(int n, char [*] s) :
   
   # Convert integer to ascii
   # 
@@ -1400,7 +1398,7 @@ int LibeItoa(int n, char [*] s) :
   return (OK) 
     
  
-int LibeItoh(int n, char [*] s) :
+def int LibeItoh(int n, char [*] s) :
 
   # LibeItoh converts integer n to hex in ascii
   # 
@@ -1444,7 +1442,7 @@ int LibeItoh(int n, char [*] s) :
 
   return (0) 
  
-float LibeAtof(char [*] s) :
+def float LibeAtof(char [*] s) :
 
   # 
   # Parameters:
@@ -1494,7 +1492,7 @@ float LibeAtof(char [*] s) :
  
   return(LibeFscale(cast(float,sign)*val/cast(float,power),esign*exponent)) 
     
-int LibeFtoaf(int mant, int nexp, int nfield, int nfrac, char [*] s) :
+def int LibeFtoaf(int mant, int nexp, int nfield, int nfrac, char [*] s) :
 
   # LibeFtoaf converts float to ascii with fixed point format.
   #
@@ -1581,7 +1579,7 @@ int LibeFtoaf(int mant, int nexp, int nfield, int nfrac, char [*] s) :
   return(OK) 
     
 
-int LibeFtoae(int mant, int nexp, int nfield, int nfrac, char [*] s) :
+def int LibeFtoae(int mant, int nexp, int nfield, int nfrac, char [*] s) :
 
   # LibeFtoae converts float to ascii with exponential format.
   #
@@ -1667,7 +1665,7 @@ int LibeFtoae(int mant, int nexp, int nfield, int nfrac, char [*] s) :
   delete(t) 
   return(OK) 
  
-int LibeFtoa(float f, char [*] fmt, char [*] s) :
+def int LibeFtoa(float f, char [*] fmt, char [*] s) :
 
   # LibeFtoa routine converts a floating point number into a string.
   #
@@ -1838,7 +1836,7 @@ char [*] LibeTmpstr   # String temporary
 # The LibeTmpstr array are used by various io- and
 # formatting routines for temporary storage.
 
-int LibeIoinit() :
+def int LibeIoinit() :
 
   # LibeIoinit initialize the i/o routines.
   # 
@@ -1912,7 +1910,7 @@ int LibeIoinit() :
  
   return(OK) 
 
-int LibeFlushbuff(int fp) :
+def int LibeFlushbuff(int fp) :
 
   # 
   # Parameters : 
@@ -1970,7 +1968,7 @@ int LibeFlushbuff(int fp) :
  
     
 
-int LibeFillbuff(int fp) :
+def int LibeFillbuff(int fp) :
   # LibeFillbuff reads in a chunk of data from a file.
   # 
   # Parameters : 
@@ -2025,7 +2023,7 @@ int LibeFillbuff(int fp) :
   LibeFarr[fp].cnt = LibeFarr[fp].cnt - 1 
   return cast(int, LibeFarr[fp].base[LibeFarr[fp].ptr - 1]) 
     
-int LibeFlush(int fp) :     
+def int LibeFlush(int fp) :     
 
   # The LibeFlush routine flushes remaining characters to file.
   # 
@@ -2042,7 +2040,7 @@ int LibeFlush(int fp) :
   return(LibeFlushbuff(fp)) 
     
  
-int LibeOpen(char [*] name, char [*] mode) :
+def int LibeOpen(char [*] name, char [*] mode) :
 
   # LibeOpen opens a file with name name. 
   # 
@@ -2138,7 +2136,7 @@ int LibeOpen(char [*] name, char [*] mode) :
     LibeFarr[slot].writflg =  OK 
   return (slot) 
 
-int LibeClose(int fp) :
+def int LibeClose(int fp) :
 
   # LibeClose closes file with filedescriptor fp.
   # 
@@ -2196,7 +2194,7 @@ int LibeClose(int fp) :
   return (OK) 
     
  
-int LibeGetc(int fp) :     
+def int LibeGetc(int fp) :     
 
   # LibeGetc inputs a single character from a file.
   # 
@@ -2225,7 +2223,7 @@ int LibeGetc(int fp) :
     return cast(int, LibeFarr[fp].base[LibeFarr[fp].ptr - 1]) 
       
  
-int LibeUngetc(int fp) : 
+def int LibeUngetc(int fp) : 
 
   # LibeUngetc pushes the last read character back onto the file.
   #
@@ -2289,7 +2287,7 @@ int LibeUngetc(int fp) :
  
     
  
-int LibeGetw(int fp, char [*] text) :
+def int LibeGetw(int fp, char [*] text) :
 
   #
   # Parameters : 
@@ -2335,7 +2333,7 @@ int LibeGetw(int fp, char [*] text) :
     return(OK) 
     
  
-int LibePutc(int fp, int c) :
+def int LibePutc(int fp, int c) :
 
   #
   # Parameters : 
@@ -2380,7 +2378,7 @@ int LibePutc(int fp, int c) :
  
     
  
-int LibePuts(int fp, char [*] s) :      
+def int LibePuts(int fp, char [*] s) :      
  
   # LibePuts prints a string to a file.
   #
@@ -2416,7 +2414,7 @@ int LibePuts(int fp, char [*] s) :
 
   return(OK) 
     
-int LibePuti(int fp, int ival) :      
+def int LibePuti(int fp, int ival) :      
   
   # The LibePuti routine prints an integer to file.
   # Parameters : 
@@ -2435,7 +2433,7 @@ int LibePuti(int fp, int ival) :
     
  
  
-int LibePutf(int fp, float fval, char[*] form):     
+def int LibePutf(int fp, float fval, char[*] form):     
 
   # LibePutf prints a float to a file
   #
@@ -2464,7 +2462,7 @@ int LibePutf(int fp, float fval, char[*] form):
     
  
 
-int LibePs(char [*] s):
+def int LibePs(char [*] s):
 
   # LibePs prints a string to standard output.
   #
@@ -2481,7 +2479,7 @@ int LibePs(char [*] s):
     
  
 
-int LibePi(int n):
+def int LibePi(int n):
 
   # LibePi prints an integer to standard output.
   #
@@ -2498,7 +2496,7 @@ int LibePi(int n):
     
  
 
-int LibePf(float r):
+def int LibePf(float r):
 
   # LibePf prints a float to standard output.
   #
@@ -2514,7 +2512,7 @@ int LibePf(float r):
   return(OK) 
     
  
-int LibeRead(int fp, int n, char [*] buffer) :
+def int LibeRead(int fp, int n, char [*] buffer) :
   
   # LibeRead reads unbuffered from file.
   # Parameters : 
@@ -2564,10 +2562,9 @@ int LibeRead(int fp, int n, char [*] buffer) :
       
                
   return (rval) 
-    
+
  
- 
-int LibeWrite(int fp, int n, char [*] buffer) :
+def int LibeWrite(int fp, int n, char [*] buffer) :
 
   # LibeWrite writes unbuffered to file.
   #
@@ -2621,8 +2618,7 @@ int LibeWrite(int fp, int n, char [*] buffer) :
   return (rval) 
     
  
- 
-int LibeSeek(int fp, int pos, int flag) :
+def int LibeSeek(int fp, int pos, int flag) :
 
   # LibeSeek positions the file pointer.
   # 
@@ -2646,7 +2642,7 @@ int LibeSeek(int fp, int pos, int flag) :
                
   return (rval) 
  
-int LibeIodelete() :
+def int LibeIodelete() :
 
   # LibeIodelete closes all open files and deletes all buffers.
   # 
@@ -2691,7 +2687,7 @@ int LibeIodelete() :
 int NBLOCKS 
 int NTHREADS 
 
-int LibeSetnb(int nb) :
+def int LibeSetnb(int nb) :
   
   # LibeSetnb sets the number of blocks
   #
@@ -2704,7 +2700,7 @@ int LibeSetnb(int nb) :
   NBLOCKS = nb 
   return(OK) 
     
-int LibeSetnt(int nt) :
+def int LibeSetnt(int nt) :
 
   # LibeSetnt sets the number of threads.
   #
@@ -2717,7 +2713,7 @@ int LibeSetnt(int nt) :
   NTHREADS = nt 
   return(OK) 
 
-int LibeGetnb() :
+def int LibeGetnb() :
 
   # LibeGetnb gets the number of blocks
   #
@@ -2728,7 +2724,7 @@ int LibeGetnb() :
 
   return(NBLOCKS) 
     
-int LibeGetnt():
+def int LibeGetnt():
 
   # LibeGetnt gets the number of threads
   #
@@ -2740,7 +2736,7 @@ int LibeGetnt():
   return(NTHREADS) 
 
 
-int LibeArrayex(int line, char [*] name, int ival, int index, int bound) :
+def int LibeArrayex(int line, char [*] name, int ival, int index, int bound) :
                
   # LibeArrayex handles out of array bounds errors.
   #
@@ -2770,7 +2766,7 @@ int LibeArrayex(int line, char [*] name, int ival, int index, int bound) :
   RunExit()   # Routine defined in the run module.  
   return(OK) 
  
-int LibeSystem(char [*] cmd) :
+def int LibeSystem(char [*] cmd) :
 
   # LibeSystem executes a shell command
   #
@@ -2788,7 +2784,7 @@ int LibeSystem(char [*] cmd) :
 
   return(rval) 
     
-int LibeInit() :
+def int LibeInit() :
 
   # This is the initialization routine for the library.
   # LibeIoinit and LibeMathinit are
@@ -2808,7 +2804,7 @@ int LibeInit() :
   return(rval) 
     
 
-int LibeExit() :
+def int LibeExit() :
 
   # The LibeExit function closes all open files and then exits.
   #

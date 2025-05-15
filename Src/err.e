@@ -1,7 +1,7 @@
 
 import libe
 
-int ErrError(char [*] file, int line, char [*] s):
+def int ErrError(char [*] file, int line, char [*] s):
 
   # ErrError prints parser error messages.
   #
@@ -29,7 +29,7 @@ int ErrError(char [*] file, int line, char [*] s):
   return(OK) 
    
 
-int ErrSerror(char [*] file, char [*] fname, int lineno,char [*] s1, char [*] s2) : 
+def int ErrSerror(char [*] file, char [*] fname, int lineno,char [*] s1, char [*] s2) : 
               
 
   # ErrSerror prints semantic error messages.

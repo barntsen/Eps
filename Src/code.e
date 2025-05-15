@@ -6,20 +6,20 @@ import m      # Include architecture depent parameters
 import scan   # Include Scanner 
 
 # Forward declaration needed later
-int CodeCompstmnt(struct tree p):
+def int CodeCompstmnt(struct tree p):
   pass
 
-int CodeStmnt(struct tree p) :
+def int CodeStmnt(struct tree p) :
   pass
 
-char [*] CodeBinexpr(struct tree p):
+def char [*] CodeBinexpr(struct tree p):
   pass
 
-char [*] CodeExpr(struct tree p):
+def char [*] CodeExpr(struct tree p):
   pass
 
 
-int CodeError(char [*] s) :
+def int CodeError(char [*] s) :
   
   # CodeError prints error messages and exits.
   ErrError(ScanGetfile(), ScanGetline(), s);
@@ -31,7 +31,7 @@ int CodeError(char [*] s) :
 int CodeArch;
 
 
-int CodeSetarch(int arch):
+def int CodeSetarch(int arch):
 
   # CodeSetarch sets the architecture. 
 
@@ -39,7 +39,7 @@ int CodeSetarch(int arch):
   return(OK);
 
 
-int CodeGetarch():
+def int CodeGetarch():
 
   # CodeGetarch returns the architecture. 
 
@@ -54,21 +54,21 @@ int CodeLine;
 
 int CodeParallel; 
 
-int CodeSetparallel(int flag) :
+def int CodeSetparallel(int flag) :
 
   # CodeSetparallel  sets the parallel flag.
  
   CodeParallel = flag;
   return(flag);
 
-int CodeGetparallel() :
+def int CodeGetparallel() :
 
   # CodeGetparallel  gets the parallel flag.
   return(CodeParallel);
 
 int CodeAddress ;    # Global to hold temp value            
 
-char [*] CodeItemp(int cntrl) :
+def char [*] CodeItemp(int cntrl) :
 
   # CodeItemp initializes temporary variable.
  
@@ -89,7 +89,7 @@ char [*] CodeItemp(int cntrl) :
   return s2;
  
 
-int CodeInit() :
+def int CodeInit() :
 
   # CodeIcode performs c code generator initialization.
  
@@ -103,7 +103,7 @@ int CodeInit() :
 # CodeOutfd Module Variable to hold output file descriptor
 int CodeFdout;
 
-int CodeSetfdout(int fd):
+def int CodeSetfdout(int fd):
 
   # Set output file descriptor
 
@@ -111,7 +111,7 @@ int CodeSetfdout(int fd):
   return(OK);
 
 
-int CodeGetfdout():
+def int CodeGetfdout():
 
   # Get output file descriptor
 
@@ -123,13 +123,13 @@ int CodeGetfdout():
 
 int CodeDebugflag ;    
 
-int CodeDebug():
+def int CodeDebug():
  # CodeDebug tests for the debug flag.
  
   return(CodeDebugflag);
  
 
-int CodeEs(struct tree p, char [*] s) :
+def int CodeEs(struct tree p, char [*] s) :
 
   # CodeEs emits string.
   # This is a primitive routine emitting a string  s.
@@ -160,7 +160,7 @@ int CodeEs(struct tree p, char [*] s) :
   return(OK);
  
 
-int CodeEd(int d) :
+def int CodeEd(int d) :
 
   #CodeEd emits decimal.
   #No comments, really needed, the routine emits a decimal
@@ -172,7 +172,7 @@ int CodeEd(int d) :
   return(OK);
  
 
-int CodeEc(int d) :
+def int CodeEc(int d) :
 
   #CodeEc emits a character
 
@@ -183,7 +183,7 @@ int CodeEc(int d) :
   return(OK);
  
 
-int CodeEsr(char [*] s) :
+def int CodeEsr(char [*] s) :
 
   #CodeEsr emits a string 
 
@@ -200,7 +200,7 @@ int CodeEsr(char [*] s) :
   return(OK);
  
 
-int CodeIdeclaration(struct tree p, struct symbol tp) :
+def int CodeIdeclaration(struct tree p, struct symbol tp) :
 
   # CodeIdeclaration  generate code for simple id declaration.
   #
@@ -248,7 +248,7 @@ int CodeIdeclaration(struct tree p, struct symbol tp) :
   return(OK);
 
 
-int CodeIdeclarations(struct tree p, struct symbol tp):
+def int CodeIdeclarations(struct tree p, struct symbol tp):
 
   # CodeIdeclarations  generate code for simple id declarations.
   #
@@ -264,7 +264,7 @@ int CodeIdeclarations(struct tree p, struct symbol tp):
   return(OK);  
 
 
-int CodeStructdefsym(struct tree p, struct symbol tp):
+def int CodeStructdefsym(struct tree p, struct symbol tp):
 
   # CodeStructdefsym generates code for struct definition.  
 
@@ -321,7 +321,7 @@ int CodeStructdefsym(struct tree p, struct symbol tp):
   CodeEs(p, ";\n");
   return(OK);
 
-int CodeFdefcpusym(struct tree  p, struct symbol tp):
+def int CodeFdefcpusym(struct tree  p, struct symbol tp):
 
   # CodeFdefcpusym creates code for a function proptotype
   #
@@ -381,7 +381,7 @@ int CodeFdefcpusym(struct tree  p, struct symbol tp):
   return(OK);
 
 
-int CodeImport(struct tree p, struct symbol tp):
+def int CodeImport(struct tree p, struct symbol tp):
 
   # Generate code for imported declarations
   #
@@ -417,14 +417,14 @@ int CodeImport(struct tree p, struct symbol tp):
 
   return(OK);
 
-int CodeStructdef(struct tree p, struct symbol tp): 
+def int CodeStructdef(struct tree p, struct symbol tp): 
   pass
 
-int CodeFdef(struct tree p): 
+def int CodeFdef(struct tree p): 
   pass
 
 
-int CodeFdefcpu(struct tree p) :
+def int CodeFdefcpu(struct tree p) :
 
   # CodeFdefcpu generates code for a regular cpu
 
@@ -500,7 +500,7 @@ int CodeFdefcpu(struct tree p) :
   return(OK);
 
 
-int CodeFdeclkernel(struct tree p) :
+def int CodeFdeclkernel(struct tree p) :
 
   #CodeFdeclkernel generates kernel declaration for GPU
  
@@ -546,7 +546,7 @@ int CodeFdeclkernel(struct tree p) :
 
 
 
-int CodeFdefgpu(struct tree p) :
+def int CodeFdefgpu(struct tree p) :
 
   # CodeFdefgpu generates code for gpu global functions.
 
@@ -611,7 +611,7 @@ int CodeFdefgpu(struct tree p) :
   return(OK);
 
 
-int CodeFdewrappergpu(struct tree p) :
+def int CodeFdewrappergpu(struct tree p) :
 
   # CodeFdefwrappergpu generates wrapper function for gpu.
 
@@ -689,7 +689,7 @@ int CodeFdewrappergpu(struct tree p) :
   return(OK);
 
 
-int CodeGdeclarations(struct tree p, struct symbol tp) :
+def int CodeGdeclarations(struct tree p, struct symbol tp) :
 
   # CodeGdeclarations  generates code for declaration list.  
  
@@ -711,7 +711,7 @@ int CodeGdeclarations(struct tree p, struct symbol tp) :
   return (OK);
 
 
-int CodeDeclarations(struct tree p, struct symbol tp) :
+def int CodeDeclarations(struct tree p, struct symbol tp) :
 
   #CodeDeclarations  generates code for declaration list.
  
@@ -725,7 +725,7 @@ int CodeDeclarations(struct tree p, struct symbol tp) :
   return (OK);
 
 
-int CodeCode(struct tree p, struct symbol tp) :
+def int CodeCode(struct tree p, struct symbol tp) :
 
   #CodeCode is the C code generator.
 
@@ -743,14 +743,14 @@ int CodeCode(struct tree p, struct symbol tp) :
 # flag for arraytest
 int CodeArraytest;
 
-int CodeArraycheck() :
+def int CodeArraycheck() :
 
   # CodeArraycheck -- test for array check
 
   return (CodeArraytest);
 
 
-int CodeArraycheckon() :
+def int CodeArraycheckon() :
 
   #CodeArraycheckon turns on array check.
  
@@ -759,7 +759,7 @@ int CodeArraycheckon() :
   return(OK);
 
 
-int CodeArraycheckoff() :
+def int CodeArraycheckoff() :
 
   #CodeArraycheckoff turns off array check.
  
@@ -768,7 +768,7 @@ int CodeArraycheckoff() :
   return(OK);
 
 
-int CodeDebugon() :
+def int CodeDebugon() :
 
   # CodeDebugon turns on the debug flag.
  
@@ -777,24 +777,22 @@ int CodeDebugon() :
   return(OK);
 
 
-char [*] CodeMktemp() :
+def char [*] CodeMktemp() :
 
   # CodeMktemp makes temporary variable.
  
     return CodeItemp(0);
 
- 
 
-int CodeDebugoff():
+def int CodeDebugoff():
 
   #CodeDebugoff  turns off the debug flag.
  
   CodeDebugflag = ERR;
   return(OK);
-
  
 
-char [*] CodeNewtemp(char [*] type) : 
+def char [*] CodeNewtemp(char [*] type) : 
 
  # CodeNewtemp makes temporary.                            
  
@@ -808,8 +806,7 @@ char [*] CodeNewtemp(char [*] type) :
   return(temp);
 
 
-
-struct symbol CodeNewsymbol(char [*] type, char [*] name) : 
+def struct symbol CodeNewsymbol(char [*] type, char [*] name) : 
 
   # CodeNewsymbol makes new symbol.                            
  
@@ -821,8 +818,7 @@ struct symbol CodeNewsymbol(char [*] type, char [*] name) :
   return(tp);
 
 
-
-char [*] CodeMkstring(struct tree p) :
+def char [*] CodeMkstring(struct tree p) :
 
   # CodeMkstring makes string temporaries.
  
@@ -836,9 +832,8 @@ char [*] CodeMkstring(struct tree p) :
   SymSetarray(sp,"array");
   return(tmp);
 
- 
 
-char [*] CodeSconstant(struct tree p) :
+def char [*] CodeSconstant(struct tree p) :
 
   # CodeSconstant generates code for strings.  
  
@@ -852,7 +847,6 @@ char [*] CodeSconstant(struct tree p) :
   CodeEs(p, "struct nctempchar1 *");
   CodeEs(p, tmp2);
   CodeEs(p,";\n");
-# tmp = CodeNewtemp("char");
   tmp = CodeMktemp();
   CodeEs(p, "static struct nctempchar1 ");
   CodeEs(p, tmp);
@@ -871,9 +865,7 @@ char [*] CodeSconstant(struct tree p) :
   return (tmp2);
 
 
-
-
-int CodeStructdef(struct tree p, struct symbol tp) :
+def int CodeStructdef(struct tree p, struct symbol tp) :
 
   # CodeStructdef generates code for struct definition.  
 
@@ -932,9 +924,7 @@ int CodeStructdef(struct tree p, struct symbol tp) :
   return(OK);
 
 
-
-
-int CodeFdeclaration(struct tree p, struct symbol tp) :
+def int CodeFdeclaration(struct tree p, struct symbol tp) :
 
   # CodeFdeclaration generate code for function declaration.
  
@@ -943,7 +933,6 @@ int CodeFdeclaration(struct tree p, struct symbol tp) :
   if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
     CodeEs(p, "struct ");
   
-
   if(LibeStrcmp(SymGetarray(tp),"array") == OK):
     CodeEs(p, "nctemp");
   CodeEs(p, SymGetype(tp));
@@ -951,12 +940,9 @@ int CodeFdeclaration(struct tree p, struct symbol tp) :
   if(LibeStrcmp(SymGetarray(tp),"array") == OK):
     CodeEd(SymGetrank(tp));
     CodeEs(p,"*");
-  
 
   if(LibeStrcmp(SymGetstruct(tp),"struct")==OK): 
     CodeEs(p,"*");
-  
-
 
   CodeEs(p," ");
 
@@ -970,14 +956,12 @@ int CodeFdeclaration(struct tree p, struct symbol tp) :
     CodeIdeclaration(p, tp);
     if(SymMvnext(tp) != NULL) CodeEs(p,",");
     noargs = noargs+1;
-  
 
   CodeEs(p, ");\n");
   return(OK);
 
 
-
-int CodeWdeclaration(struct tree p) :
+def int CodeWdeclaration(struct tree p) :
 
  # CodeWdeclaration walks declaration node  
  
@@ -988,29 +972,23 @@ int CodeWdeclaration(struct tree p) :
     if(LibeStrcmp(PtreeGetname(np), "fdef") == OK):
       CodeFdef(np); 
     np = PtreeMvsister(np);
-  
 
   return(OK);
-
  
 
-int CodeWdeclarations(struct tree p) :
+def int CodeWdeclarations(struct tree p) :
 
   # CodeWdeclarations walks the declaration list.
  
   while(p!= NULL):
     if((LibeStrcmp(PtreeGetname(p), "type")   == OK)||(LibeStrcmp(PtreeGetname(p), "struct") == OK)) :
        CodeWdeclaration(p); 
-
     p = PtreeMvsister(p);
-  
 
   return (OK);
 
 
-
-
-int CodeArrayex(int line, char [*] qual, char [*] sel, char [*] name, \
+def int CodeArrayex(int line, char [*] qual, char [*] sel, char [*] name, \
                 char [*] ival, int index)  :
 
   # CodeArrayex generate code for arry exception.
@@ -1063,8 +1041,7 @@ int CodeArrayex(int line, char [*] qual, char [*] sel, char [*] name, \
   return(OK);
 
 
-
-char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
+def char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
 
   # CodeArray generate code for array reference.
  
@@ -1087,17 +1064,14 @@ char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
   sp = PtreeMvchild(p);
   if(sp==NULL):
     return(PtreeGetdef(p));
-  
 
   else if(LibeStrcmp(PtreeGetname(sp),"exprlist") == ERR): 
     return(PtreeGetdef(p));
-  
 
   rank = SymGetrank(tp);
   p = PtreeMvchild(p);
   p = PtreeMvchild(p);
   sp = p;
-
 
   for(i=0; i<rank; i=i+1):
     if(i == 0):
@@ -1110,9 +1084,6 @@ char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
       CodeEs(p, ";\n"); 
       if(CodeArraycheck()):
         CodeArrayex(PtreeGetline(p), qual, sel, name, temp2, i);
-      
-
-    
 
     else:
       temp2 = CodeExpr(sp);
@@ -1122,11 +1093,9 @@ char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
       CodeEs(p,"*"); 
       if(qual != NULL):
         CodeEs(p,qual);
-      
 
       if(sel != NULL):
         CodeEs(p,sel);
-      
 
       CodeEs(p, name);
       CodeEs(p, "->d");
@@ -1148,11 +1117,11 @@ char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
   LibeStrcat("[",rval);
   LibeStrcat(temp,rval);
   LibeStrcat("]",rval);
+
   return (rval);
 
 
-
-char [*] CodeQident(char [*] qual, char [*] ident) :
+def char [*] CodeQident(char [*] qual, char [*] ident) :
 
   #CodeQident makes qualified identifier.
  
@@ -1167,11 +1136,9 @@ char [*] CodeQident(char [*] qual, char [*] ident) :
   LibeStrcat(ident,name); 
   return(name);
 
-
-char [*] CodeQident2(char [*] qual, char [*] ident) :
+def char [*] CodeQident2(char [*] qual, char [*] ident) :
 
   #CodeQident2  -- makes qualified identifierr.
-
  
   int lq, li;
   char [*] name;
@@ -1186,7 +1153,7 @@ char [*] CodeQident2(char [*] qual, char [*] ident) :
   return(name);
 
 
-char [*] CodeIdent(struct tree p) :
+def char [*] CodeIdent(struct tree p) :
 
    # CodeIdent generates code for identifier
    # Identifier consists of a qualifier and a name.
@@ -1206,13 +1173,11 @@ char [*] CodeIdent(struct tree p) :
       if(np==NULL) return(qual);
       np = PtreeMvsister(np);
       if(np==NULL) return(qual);
-    
 
     else:
       qual = PtreeGetdef(p); 
       if((np = PtreeMvchild(p))==NULL):
         return(qual);
-    
 
     if(LibeStrcmp(PtreeGetarray(np),"array")==OK):
       tp = SymGetltp(); # Save local symbol table
@@ -1226,26 +1191,20 @@ char [*] CodeIdent(struct tree p) :
       if(LibeStrcmp(PtreeGetarray(p),"array")==OK):
         name = CodeArray(np,qual, ".");
       
-
       else:
         name = CodeArray(np,qual, "->");
-      
 
       # Restore the symbol tables
       SymSetltp(tp);
       SymSetetp(up);
-    
 
     else:
       name = PtreeGetdef(np);
-    
-
 
     if(LibeStrcmp(PtreeGetarray(p),"array")==OK):
       return (CodeQident(qual, name));
     else:
       return (CodeQident2(qual, name));
-  
      
   else if(LibeStrcmp(PtreeGetarray(p),"array")==OK):
     name = NULL;
@@ -1256,8 +1215,7 @@ char [*] CodeIdent(struct tree p) :
     return PtreeGetdef(p);
 
 
-
-char [*] CodeNew(struct tree p) :
+def char [*] CodeNew(struct tree p) :
 
   # CodeNew generate code for the new operator.
 
@@ -1311,7 +1269,6 @@ char [*] CodeNew(struct tree p) :
         CodeEs(p,totdim); 
         CodeEs(p,"=");
         CodeEs(p,dim);
-      
 
       else:
         CodeEs(p,totdim);
@@ -1319,15 +1276,10 @@ char [*] CodeNew(struct tree p) :
         CodeEs(p,totdim);
         CodeEs(p,"*");
         CodeEs(p,dim);
-      
  
       CodeEs(p,";\n");
       i=i+1;
       p = PtreeMvsister(p);
-    
-
-  
-
 
   # If single structure allocate memory  
 
@@ -1343,8 +1295,6 @@ char [*] CodeNew(struct tree p) :
     CodeEs(p,"struct ");
     CodeEs(p,type);
     CodeEs(p,"));\n");
-  
-
     
   # If array of structures allocate memory  
 
@@ -1385,8 +1335,6 @@ char [*] CodeNew(struct tree p) :
       CodeEs(sp, ";\n"); 
       i=i+1;
       p = PtreeMvsister(p);
-    
-
 
     # Allocate memory  
     CodeEs(sp, pointer);
@@ -1403,8 +1351,6 @@ char [*] CodeNew(struct tree p) :
     CodeEs(sp,totdim);
     CodeEs(sp,");\n");
   
-
-
   # If array of basic types allocate memory  
 
   if((LibeStrcmp(structflag,"struct") == ERR) && (LibeStrcmp(arrayflag,"array") == OK)):
@@ -1444,8 +1390,6 @@ char [*] CodeNew(struct tree p) :
       CodeEs(p, ";\n"); 
       i=i+1;
       p = PtreeMvsister(p);
-    
-
 
     # Allocate memory  
     p=top;
@@ -1460,13 +1404,11 @@ char [*] CodeNew(struct tree p) :
     CodeEs(p,"*");
     CodeEs(p,totdim);
     CodeEs(p,");\n");
-  
 
   return(pointer);
 
 
-
-char [*] CodeDelete(struct tree p) :
+def char [*] CodeDelete(struct tree p) :
 
   #CodeDelete generate code for the delete operator.
  
@@ -1482,13 +1424,11 @@ char [*] CodeDelete(struct tree p) :
     CodeEs(p, "RunFree(");
     CodeEs(p, tmp);
     CodeEs(p, ");\n");
-  
 
   return(tmp);
 
 
-
-char [*] CodeLen(struct tree p) :
+def char [*] CodeLen(struct tree p) :
 
   # CodeLen generate code for the len operator.
  
@@ -1517,8 +1457,7 @@ char [*] CodeLen(struct tree p) :
   return(tempr);
 
 
-
-char [*] CodeCmplx(struct tree p) :
+def char [*] CodeCmplx(struct tree p) :
 
   # CodeCmplx generates code for the cmplx operator.
  
@@ -1551,8 +1490,7 @@ char [*] CodeCmplx(struct tree p) :
   return(tempr);
 
 
-
-char [*] CodeIm(struct tree p) :
+def char [*] CodeIm(struct tree p) :
 
   # CodeIm generate code for the im operator.
  
@@ -1572,9 +1510,7 @@ char [*] CodeIm(struct tree p) :
   CodeEs(p, ";\n");
   return(tempr);
 
-
-
-char [*] CodeRe(struct tree p) :
+def char [*] CodeRe(struct tree p) :
 
   # CodeRe generate code for the re operator.
  
@@ -1595,9 +1531,7 @@ char [*] CodeRe(struct tree p) :
   CodeEs(p, ";\n");
   return(tmp);
 
-
-
-char [*] CodeFcall(struct tree p) :
+def char [*] CodeFcall(struct tree p) :
 
   # CodeFcall generates code for function call.  
  
@@ -1612,9 +1546,6 @@ char [*] CodeFcall(struct tree p) :
   if(sp != NULL):
     if(LibeStrcmp(PtreeGetname(sp), "exprlist") == OK):
       sp = PtreeMvchild(sp);
-    
-
-  
 
   while(sp != NULL):
     #ntemp = CodeNewtemp(PtreeGetype(sp));
@@ -1631,10 +1562,8 @@ char [*] CodeFcall(struct tree p) :
       CodeEs(sp,"struct ");
       CodeEs(sp,PtreeGetype(sp));
       CodeEs(sp,"*");
-    
     else:
       CodeEs(sp,PtreeGetype(sp));
-    
 
     CodeEs(sp," ");
     CodeEs(sp, ntemp);
@@ -1642,8 +1571,6 @@ char [*] CodeFcall(struct tree p) :
     CodeEs(sp, temp);
     CodeEs(sp, ";\n");
     sp = PtreeMvsister(sp);  
-  
-
 
   #ntemp = CodeNewtemp(PtreeGetype(p));
   ntemp = CodeMktemp();
@@ -1652,18 +1579,12 @@ char [*] CodeFcall(struct tree p) :
     CodeEs(p,PtreeGetype(p));
     CodeEd(PtreeGetrank(p));
     CodeEs(p,"*");
-  
- 
   else if(LibeStrcmp(PtreeGetref(p),"sref") == OK):
     CodeEs(p,"struct ");
     CodeEs(p,PtreeGetype(p));
     CodeEs(p,"*");
-  
- 
   else:
     CodeEs(p,PtreeGetype(p));
-    
-
 
   # CodeEs(p,PtreeGetype(p));  
   CodeEs(p," ");
@@ -1674,21 +1595,19 @@ char [*] CodeFcall(struct tree p) :
   sp = PtreeMvchild(p);
   if(sp != NULL):
     sp = PtreeMvchild(sp);
-  
 
   while(sp != NULL):
     CodeEs(p,PtreeGetempr(sp));
     if((sp = PtreeMvsister(sp)) != NULL):
       CodeEs(p, ",");  
     noargs=noargs+1;
-  
 
   CodeEs(p, ");\n");  
+
   return(ntemp);
 
 
-
-char [*] CodeCast(struct tree p) :
+def char [*] CodeCast(struct tree p) :
 
   # CodeCast generate code for cast expression.
  
@@ -1723,7 +1642,6 @@ char [*] CodeCast(struct tree p) :
       CodeEs(p,"*)(");
       CodeEs(p,expr);
       CodeEs(p,");\n");
-    
 
     else if(LibeStrcmp(PtreeGetref(np), "aref")==OK):
       np = PtreeMvchild(np);
@@ -1774,13 +1692,11 @@ char [*] CodeCast(struct tree p) :
         CodeEs(sp, ";\n"); 
         i=i+1;
         p = PtreeMvsister(p);
-      
 
       CodeEs(sp,pointer);
       CodeEs(sp,"=&");
       CodeEs(sp,descr);
       CodeEs(sp,";\n");
-    
 
     else:
       CodeEs(p,type);
@@ -1792,15 +1708,11 @@ char [*] CodeCast(struct tree p) :
       CodeEs(p,")(");
       CodeEs(p,expr);
       CodeEs(p,");\n");
-    
-
-  
 
   return(pointer);
 
 
-
-char [*] CodePrimexpr(struct tree p) :
+def char [*] CodePrimexpr(struct tree p) :
 
    # CodePrimexpr generate code for primary expression.
  
@@ -1832,8 +1744,7 @@ char [*] CodePrimexpr(struct tree p) :
     return CodeBinexpr(p);
 
 
-
-char [*] CodeUnexpr(struct tree p) :
+def char [*] CodeUnexpr(struct tree p) :
 
   # CodeUnexpr generates code for unary expression.
  
@@ -1859,8 +1770,6 @@ char [*] CodeUnexpr(struct tree p) :
       CodeEs(p,".i");
       CodeEs(p, ";\n"); 
       return(tempr);
-    
-
     else:
       tmp = CodePrimexpr(PtreeMvchild(p)); 
       CodeEs(p, PtreeGetype(p));
@@ -1870,16 +1779,13 @@ char [*] CodeUnexpr(struct tree p) :
       CodeEs(p,tmp);
       CodeEs(p, ";\n"); 
       return(tempr);
-    
-
-  
 
   else:
     return(CodePrimexpr(p));
 
 
 
-char  [*] CodeAddexpr(struct tree p, char [*] lval, char [*] rval) :
+def char  [*] CodeAddexpr(struct tree p, char [*] lval, char [*] rval) :
 
   #CodeAddexpr generate code for add expression.
  
@@ -1929,7 +1835,6 @@ char  [*] CodeAddexpr(struct tree p, char [*] lval, char [*] rval) :
       CodeEs(p, lval); CodeEs(p, ".r"); 
       CodeEs(p, "*"); CodeEs(p, rval); CodeEs(p, ".i");
       CodeEs(p, ";\n");
-    
 
     else if(LibeStrcmp(opr, "/") == OK):
       CodeEs(p,type); CodeEs(p," ");
@@ -1964,9 +1869,6 @@ char  [*] CodeAddexpr(struct tree p, char [*] lval, char [*] rval) :
       CodeEs(p, rval); CodeEs(p, ".i"); CodeEs(p, "*"); 
       CodeEs(p, rval); CodeEs(p, ".i");
       CodeEs(p, ");\n");
-    
-
-  
 
   else:
     CodeEs(p,type); CodeEs(p," ");
@@ -1974,14 +1876,11 @@ char  [*] CodeAddexpr(struct tree p, char [*] lval, char [*] rval) :
     CodeEs(p, lval); CodeEs(p, " "); CodeEs(p, PtreeGetdef(p)); 
     CodeEs(p, " ");
     CodeEs(p, rval); CodeEs(p, ";\n");
-  
 
   return (tempr);
 
 
-
-
-char [*] CodeBinexpr(struct tree p) :
+def char [*] CodeBinexpr(struct tree p) :
 
   #CodeBinexpr generate code for binary expression.
  
@@ -2002,7 +1901,6 @@ char [*] CodeBinexpr(struct tree p) :
       (LibeStrcmp(PtreeGetdef(p),"*") == OK) || \
       (LibeStrcmp(PtreeGetdef(p),"/") == OK)):
       return (CodeAddexpr(p, lval, rval));
-    
 
     else if(LibeStrcmp(PtreeGetdef(p), "=") == OK):
       if((LibeStrcmp(PtreeGetype(p), "complex") == OK) && \
@@ -2017,7 +1915,6 @@ char [*] CodeBinexpr(struct tree p) :
         CodeEs(p, rval); CodeEs(p, ".i"); 
         CodeEs(p, ";\n");
         return(lval);
-      
 
       else if(LibeStrcmp(PtreeGetref(np),"aref")==OK):
         if((LibeStrcmp(PtreeGetname(PtreeMvsister(np)),"iconstant")) && \
@@ -2026,25 +1923,18 @@ char [*] CodeBinexpr(struct tree p) :
           CodeEs(p, "=("); CodeEs(p, rval); 
           CodeEs(p, ");\n");
           return (lval);
-        
 
         else:
           CodeEs(p, lval); 
           CodeEs(p, "="); CodeEs(p, rval); 
           CodeEs(p, ";\n");
           return(lval);
-        
-
-      
 
       else:
         CodeEs(p, lval); CodeEs(p, " "); 
         CodeEs(p, "="); CodeEs(p, rval); 
         CodeEs(p, ";\n");
         return (lval);
-      
-
-    
 
     else if((LibeStrcmp(PtreeGetdef(p), "==") == OK) || \
             (LibeStrcmp(PtreeGetdef(p), "!=") == OK)):
@@ -2067,7 +1957,6 @@ char [*] CodeBinexpr(struct tree p) :
           CodeEs(p, rval); 
           CodeEs(p, ");\n");
           return (tempr);
-        
 
         else:
           CodeEs(p, type); CodeEs(p," ");
@@ -2076,9 +1965,6 @@ char [*] CodeBinexpr(struct tree p) :
           CodeEs(p, PtreeGetdef(p)); CodeEs(p, rval); 
           CodeEs(p, ");\n");
           return (lval);
-        
-
-      
 
       else:
         CodeEs(p, type); CodeEs(p," ");
@@ -2088,9 +1974,6 @@ char [*] CodeBinexpr(struct tree p) :
         CodeEs(p, ");\n");
         return (tempr);
       
-
-    
-
     else:
       CodeEs(p, type); CodeEs(p, " ");
       CodeEs(p, tempr); CodeEs(p, " = (");
@@ -2099,17 +1982,12 @@ char [*] CodeBinexpr(struct tree p) :
       CodeEs(p, " ");
       CodeEs(p, rval); CodeEs(p, ");\n");
       return (tempr);
-    
-
-  
 
   else:
     return CodeUnexpr(p);
-        
 
 
-
-char [*] CodeExpr(struct tree p) :
+def char [*] CodeExpr(struct tree p) :
 
   # CodeExpr generates code for expressions.
  
@@ -2119,10 +1997,8 @@ char [*] CodeExpr(struct tree p) :
   rval = CodeBinexpr(sp);
   return(rval);
 
- 
 
-
-int CodeWhilestmnt(struct tree p) :
+def int CodeWhilestmnt(struct tree p) :
 
   # CodeWhilestmnt generates code for while statement.
  
@@ -2152,10 +2028,9 @@ int CodeWhilestmnt(struct tree p) :
   CodeEs(p,";");
   CodeEs(p, "}");
   return(OK);
-
  
 
-int CodeForstmnt(struct tree p) :
+def int CodeForstmnt(struct tree p) :
 
   # CodeForstmnt generates code for "for" statement.
  
@@ -2185,9 +2060,7 @@ int CodeForstmnt(struct tree p) :
 
   return(OK);
 
- 
-
-int CodeParallelfor(struct tree p , int level, int rank) :
+def int CodeParallelfor(struct tree p , int level, int rank) :
 
   # CodeParallelfor generates code for the cpu parallel for loop.
 
@@ -2200,7 +2073,6 @@ int CodeParallelfor(struct tree p , int level, int rank) :
   # End of tree
   if(p==NULL):
     return(OK);
-  
 
   p=PtreeMvsister(p);           # Next node until end of tree
   CodeParallelfor(p , level, rank);  
@@ -2214,7 +2086,6 @@ int CodeParallelfor(struct tree p , int level, int rank) :
   cond=CodeExpr(rrp);           # Get 
   if(level == rank):
     CodeEs(p, "\n #pragma omp parallel for\n");  # Emit OMP pragma
-  
 
   CodeEs(rp,"for(");            # Emit inital part of for 
   CodeEs(rp,index);             # Emit index variable
@@ -2229,20 +2100,18 @@ int CodeParallelfor(struct tree p , int level, int rank) :
     CodeEs(rp,index); CodeEs(rp,"=");    
     CodeEs(rp,index); CodeEs(rp,"+"); 
     CodeExpr(rp); 
-  
 
   else:
     CodeEs(rp,index); CodeEs(rp,"=");    
     CodeEs(rp,index); CodeEs(rp,"+"); 
     CodeEs(rp,"1");
-  
 
   CodeEs(rp,"){");
+
   return(OK);
 
 
-
-int CodeParallelstmntgpu(struct tree p) :
+def int CodeParallelstmntgpu(struct tree p) :
 
   # CodeParallelstmtgpu generates gpu code for the
   # parallelstmnt.
@@ -2348,8 +2217,6 @@ int CodeParallelstmntgpu(struct tree p) :
     CodeEs(q,"=");
     CodeEs(q,tmp);
     CodeEs(q,";\n");
-  
-
    
   p=sp;
 
@@ -2359,7 +2226,6 @@ int CodeParallelstmntgpu(struct tree p) :
     CodeEs(p,nmax); CodeEs(p,"="); CodeEs(p,n1); 
     CodeEs(p,"-"); CodeEs(p,m1); 
     CodeEs(p,";\n");
-   
 
   if(rank == 2):
     CodeEs(p, "int ");
@@ -2368,15 +2234,12 @@ int CodeParallelstmntgpu(struct tree p) :
     CodeEs(p,"*"); 
     CodeEs(p,"("); CodeEs(p,n2); CodeEs(p,"-");
     CodeEs(p,m2); CodeEs(p,");\n"); 
-   
 
   else if(rank == 3):
     p=sp;
     CodeEs(p,nmax); CodeEs(p,"="); CodeEs(p,n1); CodeEs(p,"*");                  \
                                  CodeEs(p,n2); CodeEs(p,"*"); CodeEs(p,n3);      \
                                  CodeEs(p,";\n");
-   
-
 
   # Emit for loop  
   CodeEs(p,"for("); CodeEs(p, "int "); CodeEs(p,pno); CodeEs(p,"=blockIdx.x*blockDim.x + threadIdx.x; ");
@@ -2388,7 +2251,6 @@ int CodeParallelstmntgpu(struct tree p) :
 
   if(rank == 1):
     CodeEs(p,indx1); CodeEs(p,"="); CodeEs(p,m1); CodeEs(p,"+"); CodeEs(p,"nctempno;\n");  
-  
 
   if(rank == 2):
     CodeEs(p,indx2); CodeEs(p,"="); CodeEs(p,m2); CodeEs(p,"+"); CodeEs(p,"nctempno"); CodeEs(p,"/("); 
@@ -2398,7 +2260,6 @@ int CodeParallelstmntgpu(struct tree p) :
     CodeEs(p,"%("); 
     CodeEs(p,n1); CodeEs(p,"-"); CodeEs(p,m1); CodeEs(p,")");
     CodeEs(p,";\n");
-  
 
   if(rank == 3):
     CodeEs(p,indx2); CodeEs(p,"="); CodeEs(p,m2); CodeEs(p,"+"); CodeEs(p,"nctempno"); CodeEs(p,"/("); 
@@ -2408,19 +2269,17 @@ int CodeParallelstmntgpu(struct tree p) :
     CodeEs(p,"%("); 
     CodeEs(p,n1); CodeEs(p,"-"); CodeEs(p,m1); CodeEs(p,")");
     CodeEs(p,";\n");
-  
-
 
   p=PtreeMvchild(sp);
   p=PtreeMvsister(p);
   CodeCompstmnt(p);
   CodeEs(p,"}\n");
   CodeSetparallel(ERR);
+
   return(OK);
 
- 
 
-int CodeParallelstmntcpu(struct tree p):
+def int CodeParallelstmntcpu(struct tree p):
 
   # CodeParallelstmntcpu  generates code for the cpu parallel statement
 
@@ -2441,34 +2300,28 @@ int CodeParallelstmntcpu(struct tree p):
   CodeStmnt(sp); 
   for(i=0;i<rank;i=i+1):
     CodeEs(sp,"}");
-  
 
   return(OK);
-
  
 
-int CodeParallelstmnt(struct tree p):
+def int CodeParallelstmnt(struct tree p):
 
   # CodeParallelstmnt generates code for the parallel
   # statement
 
   if(CodeGetarch() == CPU):
     CodeParallelstmntcpu(p);
-  
 
   else if(CodeGetarch() == CUDA):
     CodeParallelstmntgpu(p);
-  
 
   else if(CodeGetarch() == HIP):
     CodeParallelstmntgpu(p);
-  
 
   return(OK);
-
  
 
-int CodeIfstmnt(struct tree p) :
+def int CodeIfstmnt(struct tree p) :
 
   # CodeIfstmnt generates code for if statement.
  
@@ -2487,15 +2340,11 @@ int CodeIfstmnt(struct tree p) :
       p = PtreeMvchild(p);
       CodeEs(p, "else"); 
       CodeStmnt(p);
-    
-
-  
 
   return(OK);
-
  
 
-int CodeReturnstmnt(struct tree p) :
+def int CodeReturnstmnt(struct tree p) :
 
   # CodeReturnstmnt  generates code for return statement.
  
@@ -2507,11 +2356,11 @@ int CodeReturnstmnt(struct tree p) :
   CodeEs(np, "return "); 
   CodeEs(np, rval); 
   CodeEs(np, ";\n");
+
   return(OK);
 
- 
 
-int CodeCompstmnt(struct tree p) :
+def int CodeCompstmnt(struct tree p) :
 
   #CodeCompstmnt generates code for compound statement.  
  
@@ -2531,14 +2380,10 @@ int CodeCompstmnt(struct tree p) :
   if(p == NULL):
     CodeEs(sp, "}\n");
     return(OK);
-  
-
 
   CodeDeclarations(p,SymGetltp());
   if(LibeStrcmp(PtreeGetname(p), "declarations") == OK):
     p = PtreeMvsister(p);
-  
-
 
   #Main loop over all statements in this compound statement    
 
@@ -2549,29 +2394,23 @@ int CodeCompstmnt(struct tree p) :
    
     if(LibeStrcmp(PtreeGetname(p),"expr") == OK):
         CodeExpr(p);
-    
 
     if(LibeStrcmp(PtreeGetname(p),"while") == OK):
         CodeWhilestmnt(p);
-    
 
     if(LibeStrcmp(PtreeGetname(p),"for") == OK):
       q=PtreeMvchild(p);
       PtreeMvsister(q);
       CodeForstmnt(p);
-    
 
     if(LibeStrcmp(PtreeGetname(p),"parallel") == OK):
         CodeParallelstmnt(p);
-    
 
     if(LibeStrcmp(PtreeGetname(p),"if") == OK):
         CodeIfstmnt(p);
-    
 
     if(LibeStrcmp(PtreeGetname(p),"return") == OK):
         CodeReturnstmnt(p);
-    
 
     p = PtreeMvsister(p);
   
@@ -2579,11 +2418,10 @@ int CodeCompstmnt(struct tree p) :
   # Emit trailing right brace  
 
   CodeEs(sp, "}\n");
-  return(OK);
- 
- 
 
-int CodeStmnt(struct tree p) :
+  return(OK);
+
+def int CodeStmnt(struct tree p) :
 
   # CodeStmnt generates code for statement.  
  
@@ -2602,10 +2440,6 @@ int CodeStmnt(struct tree p) :
     CodeDeclarations(p,SymGetltp());
     if(LibeStrcmp(PtreeGetname(p), "declarations") == OK):
       p = PtreeMvsister(p);
-    
-
-  
-
 
   #Main loop over all statements in this compound statement    
 
@@ -2619,27 +2453,21 @@ int CodeStmnt(struct tree p) :
 
     if(LibeStrcmp(PtreeGetname(p),"expr") == OK):
         CodeExpr(p);
-    
 
     if(LibeStrcmp(PtreeGetname(p),"while") == OK):
         CodeWhilestmnt(p);
-    
 
     if(LibeStrcmp(PtreeGetname(p),"for") == OK):
         CodeForstmnt(p);
-    
 
     if(LibeStrcmp(PtreeGetname(p),"parallel") == OK):
         CodeParallelstmnt(p);
-    
 
     if(LibeStrcmp(PtreeGetname(p),"if") == OK):
         CodeIfstmnt(p);
-    
 
     if(LibeStrcmp(PtreeGetname(p),"return") == OK):
         CodeReturnstmnt(p);
-    
 
     p = PtreeMvsister(p);
   
@@ -2650,9 +2478,8 @@ int CodeStmnt(struct tree p) :
 
   return(OK);
 
- 
 
-int CodeNewdescr(struct tree p, char[*] pointer) :
+def int CodeNewdescr(struct tree p, char[*] pointer) :
 
   # CodeNewdescr generate code for array descriptor.
  
@@ -2665,47 +2492,36 @@ int CodeNewdescr(struct tree p, char[*] pointer) :
   return(OK);
 
 
-
 # Cpu code generation 
 # The code below performs code generation for single/multicore cpu's.
 
-int CodeFdef(struct tree p):
+def int CodeFdef(struct tree p):
 
   #CodeFdef generates code for a function.
 
   if(CodeGetarch() == CPU):
     CodeFdefcpu(p);
-  
 
   else if(CodeGetarch() == CUDA):
     if(LibeStrcmp(PtreeGetparallel(PtreeMvchild(p)),"parallel")==OK):
       CodeFdefgpu(p);
       CodeFdewrappergpu(p);
-    
 
     else:
       CodeFdefcpu(p);
-    
-
-  
 
   else if(CodeGetarch() == HIP):
     if(LibeStrcmp(PtreeGetparallel(p),"parallel")==OK):
       CodeFdefgpu(p);
       CodeFdewrappergpu(p);
-    
 
     else:
      CodeFdefcpu(p);
-    
-
-  
 
   return(OK);
 
 
-
-int CodePreamblecpu() :
+def int CodePreamblecpu() :
 
   # CodePreamblecpu() emits declarations needed for each compilation unit
   # for the cpu architecture
@@ -2798,7 +2614,7 @@ int CodePreamblecpu() :
   return (OK);
 
 
-int CodePreamblecuda() :
+def int CodePreamblecuda() :
 
   # CodePreamblecuda generates the cuda preamble code.
 
@@ -2905,11 +2721,10 @@ int CodePreamblecuda() :
   CodeEs(p, \
     "int RunGetnb();\n");
 
-
   return (OK);
 
 
-int CodePreamblehip() :
+def int CodePreamblehip() :
 
   # CodePreamble generates the hip preamble.
 
@@ -2941,7 +2756,6 @@ int CodePreamblehip() :
     CodeEs(p,  \
     "static struct nctempchar1 nctempstring = {0, NULL};\n");
     PtreeSetline(p,8);
-  
 
   CodeEs(p,\
     "typedef struct nctempfloat2 { int d[2]; float *a;} nctempfloat2; \n");
@@ -3005,7 +2819,7 @@ int CodePreamblehip() :
   return (OK);
 
 
-int CodePreamble():
+def int CodePreamble():
 
   # CodePreamble() emits declarations needed for each compilation unit
 
@@ -3021,7 +2835,7 @@ int CodePreamble():
   else :
     return(ERR);
   
-int CodePostamble():
+def int CodePostamble():
   int fdo;
 
   # CodePostmble() emits declarations needed to avoid c++ 

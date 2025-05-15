@@ -55,13 +55,13 @@ struct symbol SymLtp
 # SymStp is the string table (not used)
 struct symbol SymStp       
 
-struct symbol SymGetetp() :
+def struct symbol SymGetetp() :
 
   # SymGetetp gets the symbol table.                 
 
   return(SymEtp) 
 
-int SymIstemp(char [*] name):
+def int SymIstemp(char [*] name):
 
   # SymIstemp checks if the name starts with "nctemp"
   #
@@ -87,40 +87,40 @@ int SymIstemp(char [*] name):
   delete(t) 
   return(OK) 
 
-struct symbol SymSetetp( struct symbol etp) :
+def struct symbol SymSetetp( struct symbol etp) :
 
   # SymSetetp sets the symbol table                    
 
   SymEtp = etp 
   return(SymEtp) 
 
-struct symbol SymGetltp() :
+def struct symbol SymGetltp() :
 
   # SymGetltp gets the local symbol table.                 
  
   return(SymLtp) 
 
-struct symbol SymSetltp( struct symbol ltp) :
+def struct symbol SymSetltp( struct symbol ltp) :
 
   # SymSetltp sets the local symbol table.                 
  
   SymLtp = ltp 
   return(SymLtp) 
 
-struct symbol SymGetstp() :
+def struct symbol SymGetstp() :
 
  # SymGetstp gets the string table.                 
  
   return(SymStp) 
  
-struct symbol SymSetstp( struct symbol stp) :
+def struct symbol SymSetstp( struct symbol stp) :
 
   # SymSetstp -- sets the string table.                 
 
   SymStp = stp 
   return(SymStp) 
 
-struct symbol SymLookup(char [*] s, struct symbol tp) :
+def struct symbol SymLookup(char [*] s, struct symbol tp) :
 
   # SymLookup looks for name s                 
  
@@ -134,7 +134,7 @@ struct symbol SymLookup(char [*] s, struct symbol tp) :
      
   return(np=NULL)        # not found  
     
-struct symbol SymMkname(char [*] name, struct symbol tp) :
+def struct symbol SymMkname(char [*] name, struct symbol tp) :
 
   struct symbol np
   struct symbol lp
@@ -169,13 +169,13 @@ struct symbol SymMkname(char [*] name, struct symbol tp) :
     np = NULL 
   return(np)           # Return pointer to node  
 
-struct symbol SymGetable(struct symbol np) :
+def struct symbol SymGetable(struct symbol np) :
 
   # SymGetable gets a table.
 
   return(np.tbl) 
 
-struct symbol SymRmname(char [*] name, struct symbol tp) :
+def struct symbol SymRmname(char [*] name, struct symbol tp) :
 
   # SymRmname removes a name.     
  
@@ -208,13 +208,13 @@ struct symbol SymRmname(char [*] name, struct symbol tp) :
   delete(np.descr) 
   return(prev) 
         
-char [*] SymGetname(struct symbol np) :
+def char [*] SymGetname(struct symbol np) :
 
   # SymGetname gets a name.
 
   return(np.name) 
  
-struct symbol SymMktable() :
+def struct symbol SymMktable() :
 
   # SymMktable  makes a new symbol table.     
 
@@ -242,7 +242,7 @@ struct symbol SymMktable() :
   tp.last = tp 
   return(tp)            # Return pointer to first node  
 
-struct symbol  SymMvnext(struct symbol np) :
+def struct symbol  SymMvnext(struct symbol np) :
 
  # SymMvnext moves to next node.     
 
@@ -251,14 +251,14 @@ struct symbol  SymMvnext(struct symbol np) :
   else :
     return (np.next) 
  
-struct symbol SymSetable(struct symbol np, struct symbol tp) :
+def struct symbol SymSetable(struct symbol np, struct symbol tp) :
 
   # SymSetable sets a table.     
 
   np.tbl = tp 
   return(np) 
  
-int SymSetname(struct symbol p, char [*] name) :
+def int SymSetname(struct symbol p, char [*] name) :
 
   # SymSetname sets the node field.
 
@@ -267,7 +267,7 @@ int SymSetname(struct symbol p, char [*] name) :
     p.name = LibeStrsave(name) 
   return(OK) 
    
-int SymSetype(struct symbol p, char [*] type) :
+def int SymSetype(struct symbol p, char [*] type) :
 
   # SymSetype sets type.     
 
@@ -276,13 +276,13 @@ int SymSetype(struct symbol p, char [*] type) :
     p.type = LibeStrsave(type) 
   return(OK) 
  
-char [*] SymGetype(struct symbol np) :
+def char [*] SymGetype(struct symbol np) :
 
   # SymGetype gets type.
 
   return(np.type) 
  
-int SymSetfunc(struct symbol p, char [*] func) :
+def int SymSetfunc(struct symbol p, char [*] func) :
 
   # SymSetfunc sets the function field.     
 
@@ -291,13 +291,13 @@ int SymSetfunc(struct symbol p, char [*] func) :
     p.func = LibeStrsave(func) 
   return(OK) 
  
-char [*] SymGetfunc(struct symbol np) :
+def char [*] SymGetfunc(struct symbol np) :
 
   # SymGetfunc gets the function field.
 
   return(np.func) 
  
-int SymSetarray(struct symbol p, char [*] array) :
+def int SymSetarray(struct symbol p, char [*] array) :
 
   # SymSetarray sets the array field.     
 
@@ -306,13 +306,13 @@ int SymSetarray(struct symbol p, char [*] array) :
     p.array = LibeStrsave(array) 
   return(OK) 
  
-char [*] SymGetarray(struct symbol np) :
+def char [*] SymGetarray(struct symbol np) :
 
   # SymGetarray gets the array field.
 
   return(np.array) 
 
-int SymSetstruct(struct symbol p, char [*] structure) :
+def int SymSetstruct(struct symbol p, char [*] structure) :
 
  # SymSetstruct sets the structure field.     
 
@@ -321,13 +321,13 @@ int SymSetstruct(struct symbol p, char [*] structure) :
     p.structure = LibeStrsave(structure) 
   return(OK) 
  
-char [*] SymGetstruct(struct symbol np) :
+def char [*] SymGetstruct(struct symbol np) :
 
  # SymGetstruct gets the structure field.
 
  return(np.structure) 
  
-int SymSetident(struct symbol p, char [*] ident) :
+def int SymSetident(struct symbol p, char [*] ident) :
 
   # SymSetident sets the identifier field.     
 
@@ -336,13 +336,13 @@ int SymSetident(struct symbol p, char [*] ident) :
     p.ident = LibeStrsave(ident) 
   return(OK) 
 
-char [*] SymGetident(struct symbol np) :
+def char [*] SymGetident(struct symbol np) :
 
   # SymGetident gets the identifier field.
  
   return(np.ident) 
  
-int SymSetlval(struct symbol p, char [*] lval) :
+def int SymSetlval(struct symbol p, char [*] lval) :
 
   # SymSetlval sets the lval field.     
 
@@ -351,39 +351,39 @@ int SymSetlval(struct symbol p, char [*] lval) :
     p.lval = LibeStrsave(lval) 
   return(OK) 
  
-char [*] SymGetlval(struct symbol np) :
+def char [*] SymGetlval(struct symbol np) :
 
   #SymGetlval -- get the lval field.
 
   return(np.lval) 
 
-int SymSetrank(struct symbol np, int rank) :
+def int SymSetrank(struct symbol np, int rank) :
 
   #SymSetrank sets the rank field.     
 
   np.rank = rank 
   return(OK) 
 
-int SymGetrank(struct symbol np) :
+def int SymGetrank(struct symbol np) :
 
   # SymGetrank gets the rank field.
  
      return(np.rank) 
  
-int SymSetemit(struct symbol np, int emit) :
+def int SymSetemit(struct symbol np, int emit) :
 
   # SymSetemit sets the emit field.     
 
    np.emit = emit 
    return(OK) 
  
-int SymGetemit(struct symbol np) :
+def int SymGetemit(struct symbol np) :
 
   # SymGetrank gets the rank field.
 
   return(np.emit) 
  
-int SymSetref(struct symbol p, char  [*] ref) :
+def int SymSetref(struct symbol p, char  [*] ref) :
 
   # SymSetref sets the ref field.     
 
@@ -393,13 +393,13 @@ int SymSetref(struct symbol p, char  [*] ref) :
      
   return(OK) 
  
-char [*] SymGetref(struct symbol np) :
+def char [*] SymGetref(struct symbol np) :
 
   # SymGetref  gets the ref field.
 
   return(np.ref) 
 
-int SymSetmodule(struct symbol p, char  [*] module) :
+def int SymSetmodule(struct symbol p, char  [*] module) :
 
   # SymSetmodule sets the module field.     
 
@@ -409,13 +409,13 @@ int SymSetmodule(struct symbol p, char  [*] module) :
      
   return(OK) 
 
-char [*] SymGetmodule(struct symbol np) :
+def char [*] SymGetmodule(struct symbol np) :
 
   # SymGetmodule  gets the module field.
 
   return(np.module) 
 
-int SymSetforw(struct symbol p, char  [*] forw) :
+def int SymSetforw(struct symbol p, char  [*] forw) :
 
   # SymSetmodule sets the forw field.
 
@@ -424,13 +424,13 @@ int SymSetforw(struct symbol p, char  [*] forw) :
     p.forw = LibeStrsave(forw) 
   return(OK) 
 
-char [*] SymGetforw(struct symbol np) :
+def char [*] SymGetforw(struct symbol np) :
 
   # SymGetmodule  gets the forw field.
 
   return(np.forw) 
  
-int SymSetdescr(struct symbol p, char [*] descr) :
+def int SymSetdescr(struct symbol p, char [*] descr) :
 
   # SymSetdescr sets the descr field.     
 
@@ -439,13 +439,13 @@ int SymSetdescr(struct symbol p, char [*] descr) :
     p.descr = LibeStrsave(descr) 
   return(OK) 
  
-char [*] SymGetdescr(struct symbol np) :
+def char [*] SymGetdescr(struct symbol np) :
 
   # SymGetdescr gets the descr field.
 
   return(np.descr) 
 
-int SymSetglobal(struct symbol p, char [*] global) :
+def int SymSetglobal(struct symbol p, char [*] global) :
 
   # SymSetglobal sets the global field.     
 
@@ -454,13 +454,13 @@ int SymSetglobal(struct symbol p, char [*] global) :
     p.global = LibeStrsave(global) 
   return(OK) 
  
-char [*] SymGetglobal(struct symbol np) :
+def char [*] SymGetglobal(struct symbol np) :
 
   # SymGetgloabl gets the global field.
 
   return(np.global) 
  
-int SymRmtable(struct symbol p) :
+def int SymRmtable(struct symbol p) :
 
   # SymRmtable removes the symbol table.
 
@@ -494,7 +494,7 @@ int SymRmtable(struct symbol p) :
     p=next 
   return(OK) 
 
-struct symbol SymLook(char [*] name) :
+def struct symbol SymLook(char [*] name) :
 
   # SymLook finds identifier.
  
@@ -510,7 +510,7 @@ struct symbol SymLook(char [*] name) :
         tp = SymLookup(name, SymEtp) 
   return(tp) 
 
-int SymCpytble(struct symbol tp, struct symbol up) :
+def int SymCpytble(struct symbol tp, struct symbol up) :
 
  # SymCpytble copies table.
  
@@ -533,7 +533,7 @@ int SymCpytble(struct symbol tp, struct symbol up) :
     tp = SymMvnext(tp) 
   return(OK) 
 
-struct symbol SymAddtble(struct symbol tp, struct symbol sp) :
+def struct symbol SymAddtble(struct symbol tp, struct symbol sp) :
 
  # SymAddtble concatenates two tables 
  #
@@ -587,7 +587,7 @@ struct symbol SymAddtble(struct symbol tp, struct symbol sp) :
 
   return(start) 
 
-int SymPrsym(int fp,struct symbol p, int level) : 
+def int SymPrsym(int fp,struct symbol p, int level) : 
 
   # SymPrsym prints the symbol table.
 
@@ -629,7 +629,7 @@ int SymPrsym(int fp,struct symbol p, int level) :
     LibeFlush(fp) 
   return(OK) 
 
-int SymExport(int fp,struct symbol p, int level) :
+def int SymExport(int fp,struct symbol p, int level) :
 
   # SymExport prints the symbol table.
 
@@ -670,7 +670,7 @@ int SymExport(int fp,struct symbol p, int level) :
   LibeFlush(fp) 
   return(OK) 
 
-int Symgetline(int fp, struct symbol np, char [*] module):
+def int Symgetline(int fp, struct symbol np, char [*] module):
   
 # Symgetline reads an single line (record) from a symbol 
 # table stored in a file.
@@ -748,7 +748,7 @@ int Symgetline(int fp, struct symbol np, char [*] module):
     tmp=1 
   return(indent) 
 
-int SymReadsym(int fp, struct symbol rtbl, char [*] module) :
+def int SymReadsym(int fp, struct symbol rtbl, char [*] module) :
 
   # SymReadsym reads the symbol table from a file.
   #
