@@ -2278,7 +2278,6 @@ def int CodeParallelstmntgpu(struct tree p) :
 
   return(OK);
 
-
 def int CodeParallelstmntcpu(struct tree p):
 
   # CodeParallelstmntcpu  generates code for the cpu parallel statement

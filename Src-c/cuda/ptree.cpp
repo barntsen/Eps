@@ -204,7 +204,7 @@ int LibeExit ();
 int ErrError (nctempchar1 *file,int line,nctempchar1 *s);
 int ErrSerror (nctempchar1 *file,nctempchar1 *fname,int lineno,nctempchar1 *s1,nctempchar1 *s2);
 struct tree {nctempchar1 *name;
-nctempchar1 *def;
+nctempchar1 *defn;
 nctempchar1 *type;
 nctempchar1 *structure;
 int line;
@@ -241,8 +241,8 @@ return 1;
 }
 RunFree(p->name->a);
 RunFree(p->name);
-RunFree(p->def->a);
-RunFree(p->def);
+RunFree(p->defn->a);
+RunFree(p->defn);
 RunFree(p->type->a);
 RunFree(p->type);
 RunFree(p->structure->a);
@@ -275,14 +275,14 @@ int nctemp55=PtreeRmnode(nctemp53);
 }
 return 1;
 }
-struct tree* PtreeMknode (nctempchar1 *name,nctempchar1 *def)
+struct tree* PtreeMknode (nctempchar1 *name,nctempchar1 *defn)
 {
 struct tree* p;
 struct tree *nctemp61=(struct tree*)RunMalloc(sizeof(struct tree));
 p =nctemp61;
-nctempchar1* nctemp68= def;
+nctempchar1* nctemp68= defn;
 nctempchar1* nctemp71=LibeStrsave(nctemp68);
-p->def=nctemp71;
+p->defn=nctemp71;
 nctempchar1* nctemp77= name;
 nctempchar1* nctemp80=LibeStrsave(nctemp77);
 p->name=nctemp80;
@@ -446,25 +446,25 @@ nctempchar1 * PtreeGetname (struct tree* p)
 {
 return p->name;
 }
-int PtreeSetdef (struct tree* p,nctempchar1 *def)
+int PtreeSetdef (struct tree* p,nctempchar1 *defn)
 {
-nctempchar1 *nctemp353 =def;
+nctempchar1 *nctemp353 =defn;
 int nctemp352 =(nctemp353!=0);
 int nctemp358 = (p !=0);
 int nctemp349 = (nctemp352 && nctemp358);
 if(nctemp349)
 {
-RunFree(p->def->a);
-RunFree(p->def);
-nctempchar1* nctemp370= def;
+RunFree(p->defn->a);
+RunFree(p->defn);
+nctempchar1* nctemp370= defn;
 nctempchar1* nctemp373=LibeStrsave(nctemp370);
-p->def=nctemp373;
+p->defn=nctemp373;
 }
 return 1;
 }
 nctempchar1 * PtreeGetdef (struct tree* p)
 {
-return p->def;
+return p->defn;
 }
 int PtreeSetype (struct tree* p,nctempchar1 *type)
 {
@@ -775,7 +775,7 @@ nctemp787=&nctemp788;
 nctempchar1* nctemp785= nctemp787;
 int nctemp789=LibePuts(nctemp783,nctemp785);
 int nctemp791= fp;
-nctempchar1* nctemp793= p->def;
+nctempchar1* nctemp793= p->defn;
 int nctemp796=LibePuts(nctemp791,nctemp793);
 int nctemp798= fp;
 struct nctempchar1 *nctemp802;
