@@ -1,4 +1,4 @@
-import libe   # Include library
+import libe   # Library
 import sym    # Include symbol table interface 
 import ptree  # Include parse tree interface  
 import err    # Include interface to error routines
@@ -12,12 +12,11 @@ def int CodeCompstmnt(struct tree p):
 def int CodeStmnt(struct tree p) :
   pass
 
-def char [*] CodeBinexpr(struct tree p):
+def char [*] CodeBinexpr(struct tree p):                                      
   pass
 
 def char [*] CodeExpr(struct tree p):
   pass
-
 
 def int CodeError(char [*] s) :
   
@@ -82,7 +81,7 @@ def char [*] CodeItemp(int cntrl) :
     CodeAddress = 0;
   else:
     CodeAddress = CodeAddress + 1;
-  if(CodeAddress > 99999): 
+  if(CodeAddress > 999999): 
      CodeError("I am running out of temporaries");
   LibeItoa(CodeAddress,s1);        
   LibeStrcat(s1,s2);
@@ -727,7 +726,11 @@ def int CodeDeclarations(struct tree p, struct symbol tp) :
 
 def int CodeCode(struct tree p, struct symbol tp) :
 
-  #CodeCode is the C code generator.
+  # CodeCode is the C code generator.
+  #
+  # Parameters:
+  #   p:  Top of parse tree
+  #   tp: External symbol table
 
   struct tree np;
   
@@ -737,7 +740,6 @@ def int CodeCode(struct tree p, struct symbol tp) :
     CodeImport(np,tp);
   CodeDeclarations(p,tp);   
   return (OK);
-
  
 # Module variable 
 # flag for arraytest
@@ -988,11 +990,25 @@ def int CodeWdeclarations(struct tree p) :
   return (OK);
 
 
-def int CodeArrayex(int line, char [*] qual, char [*] sel, char [*] name, \
-                char [*] ival, int index)  :
+def int CodeArrayex(int line, char [*] qual, char [*] sel, \
+                    char [*] name, char [*] ival, int index)  :
 
-  # CodeArrayex generate code for arry exception.
- 
+  # CodeArrayex generates code for arry exception.
+  #
+  # Parameters :
+  # 
+  #   line:  Line no
+  #   qual:  Struct name
+  #   sel :  Struct member
+  #   name:  Array name 
+  #   ival:  Index value
+  #   index: rank (0,1,..)
+  #
+  # Code is generated for out-of-bounds check and dump of diagnostics
+  #
+  # The code works for both cpu and gpu, provided that printf is implemented 
+  # for gpu kernels
+
   struct tree p;
 
   p = PtreeMknode("dummy", "dummy");
@@ -1012,34 +1028,23 @@ def int CodeArrayex(int line, char [*] qual, char [*] sel, char [*] name, \
   CodeEd(index);
   CodeEs(p,"])){\n");
 
-  CodeEs(p,"printf(\"***Array out of bounds error: \\n\");");
-  CodeEs(p,"\n");
-  CodeEs(p,"printf(\" File name: \");");
-  CodeEs(p,"printf(\"");
+  CodeEs(p,"printf(\"***Out of bounds error (file,array,line,index,rank,bound:") 
   CodeEs(p,ScanGetfile());
-  CodeEs(p,"\\n\");\n");
- 
-  CodeEs(p,"printf(\" Variable name: \");");
-  CodeEs(p,"printf(\"");
-  CodeEs(p,name);
-  CodeEs(p,"\\n\");\n");
+  CodeEs(p," ")
+  CodeEs(p,name); 
+  CodeEs(p," %d %d %d %d \\n" ) 
+  CodeEs(p," \" ,")
+  CodeEd(line); 
+  CodeEs(p,",")
+  CodeEs(p,ival); 
+  CodeEs(p,",")
+  CodeEd(index); 
+  CodeEs(p,",")
+  CodeEs(p,name); CodeEs(p,"->d["); CodeEd(index); CodeEs(p,"]-1");
+  CodeEs(p,");")
 
-  CodeEs(p,"printf(\" Index value: %d \\n\",");
-  CodeEs(p,ival); CodeEs(p,");\n");
-  #CodeEs(p,"\");");CodeEs(p,"\n");
-
-  CodeEs(p,"printf(\" Index no: ");
-  CodeEd(index);
-  CodeEs(p,"\\n");
-  CodeEs(p,"\");");
-
-  CodeEs(p,"printf(\" Upper bound: %d\\n\" ,")
-  CodeEs(p,name); CodeEs(p,"->d["); CodeEd(index); CodeEs(p,"]-1);");
-  CodeEs(p,"\n");
-  CodeEs(p,"assert(0)");CodeEs(p,";\n");
   CodeEs(p,"\n}\n");
   return(OK);
-
 
 def char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
 
@@ -2110,174 +2115,6 @@ def int CodeParallelfor(struct tree p , int level, int rank) :
 
   return(OK);
 
-
-def int CodeParallelstmntgpu(struct tree p) :
-
-  # CodeParallelstmtgpu generates gpu code for the
-  # parallelstmnt.
-
-  char [*] pno,n1,n2,n3,nmax;
-  char [*] m1,m2,m3;
-  char [*] indx1, indx2;
-  struct tree ix,sp,q,ps,psliceseq;
-  int rank;
-  char[*] tmp;
-
-  CodeSetparallel(OK);
-  sp = p;                           # Save top parallel node        
-  pno="nctempno";                   # Set processor no name         
-  rank = PtreeGetrank(p);           # Get no of slices              
-  p = PtreeMvchild(p);              # Move to sliceseq              
-  psliceseq = p;                    # Save pointer to slice seq                     
-# nmax = CodeNewtemp(PtreeGetype(p));# Save temporary               
-  nmax = CodeMktemp();              # Save temporary               
-
-  # First rank   
-  p = PtreeMvchild(psliceseq);      # Move to first slice  
-  ps = p;                           # Save pointer to first slice  
-  n1 = CodeNewtemp("int");          # Get temporary    
-  m1 = CodeNewtemp("int");          # Get temporary    
-  q = PtreeMvchild(p);              # Move to 1st expr         
-  q = PtreeMvchild(q);              # Move to binary expr  
-  q = PtreeMvchild(q);              # Move to loop index   
-  ix = q;
-  q = PtreeMvsister(q);             # Move to lower limit   
-  tmp=CodeUnexpr(q);                # Create code for unary expression      
-  CodeEs(p,"int ");                 # Emit type for low limit temp       
-  CodeEs(p,m1);                     # Emit name for low limit           
-  CodeEs(p,"=");                    # Emit assignment                         
-  CodeEs(p,tmp);                    # Emit low limit                    
-  CodeEs(p,";\n");               
-  indx1 = PtreeGetdef(ix);          # Get the first loop index          
-
-  q = PtreeMvchild(ps);             # Move to 1st expr                  
-  q = PtreeMvsister(q);             # Move to 2nd expr                   
-  n1 = CodeNewtemp(PtreeGetype(ps));# Get temporary                     
-  tmp=CodeExpr(q);                  # Emit expression    for upper limit  
-  CodeEs(q,"int ");                 # Emit type for upper limit           
-  CodeEs(q,n1);                     # Emit name for upper limit           
-  CodeEs(q,"=");
-  CodeEs(q,tmp);
-  CodeEs(q,";\n");
-
-  if(rank > 1):
-    p = PtreeMvchild(psliceseq);      # Move to first slice           
-    p = PtreeMvsister(p);             # Move to second slice          
-    ps = p;                           # Save pointer to second slice  
-    n2 = CodeNewtemp("int");          # Get temporary                 
-    m2 = CodeNewtemp("int");          # Get temporary                 
-    q = PtreeMvchild(p);              # Move to 1st expr              
-    q = PtreeMvchild(q);              # Move to binary expr           
-    q = PtreeMvchild(q);              # Move to loop index            
-    ix = q;
-    q = PtreeMvsister(q);             # Move to lower limit   
-    tmp=CodeUnexpr(q);                # Create code for unary expression      
-    CodeEs(p,"int ");                 # Emit type for low limit temp       
-    CodeEs(p,m2);                     # Emit name for low limit           
-    CodeEs(p,"=");                    # Emit assignment                         
-    CodeEs(p,tmp);                    # Emit low limit                    
-    CodeEs(p,";\n");               
-    indx2 = PtreeGetdef(ix);          # Get the first loop index          
-    q = PtreeMvchild(ps);             # Move to 1st expr                  
-    q = PtreeMvsister(q);             # Move to 2nd expr                   
-    n2 = CodeNewtemp(PtreeGetype(ps));# Get temporary                     
-    tmp=CodeExpr(q);                  # Emit expression    for upper limit  
-    CodeEs(q,"int ");                 # Emit type for upper limit           
-    CodeEs(q,n2);                     # Emit name for upper limit           
-    CodeEs(q,"=");
-    CodeEs(q,tmp);
-    CodeEs(q,";\n");
-  
-
-  if(rank > 2):
-    p = PtreeMvchild(psliceseq);      # Move to first slice           
-    p = PtreeMvsister(p);             # Move to second slice          
-    p = PtreeMvsister(p);             # Move to third  slice          
-    ps = p;                           # Save pointer to third  slice  
-    n3 = CodeNewtemp("int");          # Get temporary                 
-    m3 = CodeNewtemp("int");          # Get temporary                 
-    q = PtreeMvchild(p);              # Move to 1st expr              
-    q = PtreeMvchild(q);              # Move to binary expr           
-    q = PtreeMvchild(q);              # Move to loop index            
-    ix = q;
-    q = PtreeMvsister(q);             # Move to lower limit   
-    tmp=CodeUnexpr(q);                # Create code for unary expression      
-    CodeEs(p,"int ");                 # Emit type for low limit temp       
-    CodeEs(p,m3);                     # Emit name for low limit           
-    CodeEs(p,"=");                    # Emit assignment                         
-    CodeEs(p,tmp);                    # Emit low limit                    
-    CodeEs(p,";\n");               
-    indx2 = PtreeGetdef(ix);          # Get the first loop index          
-    q = PtreeMvchild(ps);             # Move to 1st expr                  
-    q = PtreeMvsister(q);             # Move to 2nd expr                   
-    n3 = CodeNewtemp(PtreeGetype(ps));# Get temporary                     
-    tmp=CodeExpr(q);                  # Emit expression    for upper limit  
-    CodeEs(q,"int ");                 # Emit type for upper limit           
-    CodeEs(q,n3);                     # Emit name for upper limit           
-    CodeEs(q,"=");
-    CodeEs(q,tmp);
-    CodeEs(q,";\n");
-   
-  p=sp;
-
-  # Calculate upper index limit  
-  if(rank == 1):
-    CodeEs(p,"int ");
-    CodeEs(p,nmax); CodeEs(p,"="); CodeEs(p,n1); 
-    CodeEs(p,"-"); CodeEs(p,m1); 
-    CodeEs(p,";\n");
-
-  if(rank == 2):
-    CodeEs(p, "int ");
-    CodeEs(p,nmax); CodeEs(p,"="); CodeEs(p,"("); CodeEs(p,n1); CodeEs(p,"-");
-    CodeEs(p,m1); CodeEs(p,")"); 
-    CodeEs(p,"*"); 
-    CodeEs(p,"("); CodeEs(p,n2); CodeEs(p,"-");
-    CodeEs(p,m2); CodeEs(p,");\n"); 
-
-  else if(rank == 3):
-    p=sp;
-    CodeEs(p,nmax); CodeEs(p,"="); CodeEs(p,n1); CodeEs(p,"*");                  \
-                                 CodeEs(p,n2); CodeEs(p,"*"); CodeEs(p,n3);      \
-                                 CodeEs(p,";\n");
-
-  # Emit for loop  
-  CodeEs(p,"for("); CodeEs(p, "int "); CodeEs(p,pno); CodeEs(p,"=blockIdx.x*blockDim.x + threadIdx.x; ");
-  CodeEs(p,pno); CodeEs(p, "<"); CodeEs(p,nmax); CodeEs(p,";"); CodeEs(p,pno); 
-  CodeEs(p,"+=blockDim.x*gridDim.x");
-  CodeEs(p,"){\n"); 
-  
-  # Map loop indices    
-
-  if(rank == 1):
-    CodeEs(p,indx1); CodeEs(p,"="); CodeEs(p,m1); CodeEs(p,"+"); CodeEs(p,"nctempno;\n");  
-
-  if(rank == 2):
-    CodeEs(p,indx2); CodeEs(p,"="); CodeEs(p,m2); CodeEs(p,"+"); CodeEs(p,"nctempno"); CodeEs(p,"/("); 
-    CodeEs(p,n1); CodeEs(p,"-"); CodeEs(p,m1); CodeEs(p,")");
-    CodeEs(p,";\n");
-    CodeEs(p,indx1); CodeEs(p,"="); CodeEs(p,m1); CodeEs(p,"+"); CodeEs(p,"nctempno"); 
-    CodeEs(p,"%("); 
-    CodeEs(p,n1); CodeEs(p,"-"); CodeEs(p,m1); CodeEs(p,")");
-    CodeEs(p,";\n");
-
-  if(rank == 3):
-    CodeEs(p,indx2); CodeEs(p,"="); CodeEs(p,m2); CodeEs(p,"+"); CodeEs(p,"nctempno"); CodeEs(p,"/("); 
-    CodeEs(p,n1); CodeEs(p,"-"); CodeEs(p,m1); CodeEs(p,")");
-    CodeEs(p,";\n");
-    CodeEs(p,indx1); CodeEs(p,"="); CodeEs(p,m1); CodeEs(p,"+"); CodeEs(p,"nctempno"); 
-    CodeEs(p,"%("); 
-    CodeEs(p,n1); CodeEs(p,"-"); CodeEs(p,m1); CodeEs(p,")");
-    CodeEs(p,";\n");
-
-  p=PtreeMvchild(sp);
-  p=PtreeMvsister(p);
-  CodeCompstmnt(p);
-  CodeEs(p,"}\n");
-  CodeSetparallel(ERR);
-
-  return(OK);
-
 def int CodeParallelstmntcpu(struct tree p):
 
   # CodeParallelstmntcpu  generates code for the cpu parallel statement
@@ -2302,6 +2139,488 @@ def int CodeParallelstmntcpu(struct tree p):
 
   return(OK);
  
+def char [*] CodeParprocno( struct tree p) :
+
+  # CodeParprocno emits code for the name of a variable containing
+  # the CUDA processor no.
+  #
+  # Parameters:
+  #   p: Slice node
+  # 
+  #
+  # Returns :
+  #   Name of variable containing the processor no.
+  # 
+
+  CodeEs(p,"int nctempno") 
+  CodeEs(p,"=blockIdx.x*blockDim.x + threadIdx.x; ");
+
+  return ("nctempno")
+
+def char [*] CodeParidx( struct tree p) :
+
+  # CodeParidx gets the name of the index variable for 
+  # a slice
+  #
+  # Parameters : 
+  #   p: Parse tree slice node
+  #
+  # Returns :
+  #   Name of index variable for slice
+  # 
+
+  p = PtreeMvchild(p);              # Move to 1st expr         
+  p = PtreeMvchild(p);              # Move to binary expr  
+  p = PtreeMvchild(p);              # Move to loop index   
+
+  return (PtreeGetdef(p))
+
+def char [*] CodeParidxrank( struct tree p, int r) :
+
+  # CodeParidxrank gets the index variable name for rank r
+  #
+  # Parameters : 
+  #   p: First parse tree slice node of a sequence
+  #   r: rank
+  #
+  # Returns :
+  #   Name of index variable for rank r
+  # 
+
+  int i
+
+  for(i=0; i<r-1; i=i+1) :
+    p=PtreeMvsister(p)
+
+  return(CodeParidx(p))
+
+def char [*] CodeParllim( struct tree p) :
+
+  # CodeParallim emits code for and gets a variable name holding
+  # the lower limit of a slice 
+  #
+  # Parameters : 
+  #   p: Parse tree slice node
+  #
+  # Returns :
+  #   Variable name set to lower limit expression
+  # 
+
+  char [*] tmp,temp
+
+  p = PtreeMvchild(p);              # Move to expr  
+  
+  tmp=CodeExpr(p)
+  temp=CodeMktemp()
+  CodeEs(p,"int "); CodeEs(p,temp); CodeEs(p,"=")
+  CodeEs(p,tmp); CodeEs(p,";\n")
+  return(temp)
+
+def char [*] CodeParulim( struct tree p) :
+
+  # CodeParulim emits code for and gets a variable name holding 
+  # the upper limit of the slice
+  #
+  # Parameters : 
+  #   p: Parse tree slice node
+  #
+  # Returns :
+  #   Variable name set to upper limit expression
+  # 
+
+  p = PtreeMvchild(p);              # Move to lower limit expression
+  p = PtreeMvsister(p);             # Move to upper limit expression
+
+  return (CodeExpr(p))
+
+def char [*] CodeParllimrank( struct tree p, int r) :
+
+  # CodeParllimrank emits code for and gets a variable name holding the 
+  # lower limit for rank no r
+  #
+  # Parameters : 
+  #   p: First parse tree slice node in a sequence
+  #   r: Rank
+  #
+  # Returns :
+  #  Variable name set to lower limit 
+  # 
+  int i
+
+  for(i=0; i<r-1; i=i+1) : 
+    p=PtreeMvsister(p) 
+
+  return(CodeParllim(p))
+
+
+def char [*] CodeParulimrank( struct tree p, int r) :
+
+  # CodeParaulimrank emits code for and gets a variable name holding the 
+  # upper limit for rank no r
+  #
+  # Parameters : 
+  #   p: Parse tree slice node
+  #   r: Rank
+  #
+  # Returns :
+  #   Variable name set to upper limit for rank r
+  # 
+  int i
+
+  for(i=0; i<r-1; i=i+1) : 
+    p=PtreeMvsister(p) 
+
+  return(CodeParulim(p))
+
+def char [*] CodeParlen( struct tree p, char[*] llim) :
+
+  # CodeParlen emits code for and gets variable with length of array dimension
+  # 
+  # Parameters : 
+  #   p    : Parse tree slice node
+  #   llim : Name of variable holding lower limit (set on return)
+  #
+  # Returns :
+  #   Variable set to length of array dimension
+  #    
+  #
+  char [*] tmp1,tmp2,tmp3
+
+  tmp1=CodeMktemp()
+  tmp2=CodeParulim(p)
+  tmp3=CodeParllim(p)
+
+  # Emit expression: tmp1=tmp2-tmp3
+
+  CodeEs(p,"int ");CodeEs(p,tmp1); CodeEs(p,"=") 
+  CodeEs(p,tmp2);CodeEs(p,"-");CodeEs(p,tmp3); CodeEs(p,";\n") 
+
+  if(LibeStrcpy(tmp3,llim) == ERR):
+    CodeError("Internal error in CodeParlen\n") 
+
+  delete(tmp2)
+  delete(tmp3)
+  return(tmp1)
+
+def char [*] CodeParlenrank( struct tree p, int r, char [*] llim) :
+
+  # CodeParlenrank emits code for and gets variables holding the 
+  # length and lower limit for rank r
+  #
+  # Parameters : 
+  #   p: Parse tree slice node
+  #   r: Rank
+  #   llim : Variable name for the lower limit (return)
+  #
+  # Returns :
+  #   Variable name holding the length of rank r
+  #   and variable name with lower limit
+  # 
+  int i
+  char [*] tmp
+
+  for(i=0; i<r-1; i=i+1) : 
+    p=PtreeMvsister(p) 
+
+  tmp=CodeParlen(p,llim)
+  return(tmp) 
+
+# Array of strings
+struct charr :
+  char[*] s
+
+def char [*] CodeParnsize( struct tree p, struct charr  [*] m) :
+
+  # CodeParnsize emits code for and gets a variables holding the 
+  # total size of the computational grid
+  #
+  # Parameters : 
+  #   p : Parse tree slice node
+  #   m : Array with variables holding the length of each dimension
+  #
+  # Returns :
+  #   Variable name holding the total size of the computational domain
+  # 
+
+  int i,r
+  char [*] nsize 
+
+  r=len(m,0)
+  nsize=CodeMktemp()
+  CodeEs(p,"int "); CodeEs(p, nsize); CodeEs(p,"=")
+  for(i=0; i<r; i=i+1) : 
+    if(i== r-1):
+      CodeEs(p,m[i].s); CodeEs(p,";\n") 
+    else :
+      CodeEs(p,m[i].s); CodeEs(p,"*")  
+
+  return(nsize)
+
+def int CodeParallelstmntgpu(struct tree p) :
+
+  # CodeParallelstmtgpu generates gpu code for the parallelstmnt.
+  #
+  #   Parameters:
+  #     p: Parse tree node for parallel statement
+  #   
+  #    Return: None
+  #
+  #    MAPPING MULTI DIMENSIONAL ARRAYS to 1D ARRAYS
+  #
+  #     A 3D array with indices i,j,k mapps to a 1D array with the
+  #     relation
+  #
+  #     p=i+j*nx+k*nx*ny,         (1)
+  #
+  #    The organization of the array is shown in figure 1. 
+  #
+  #          ----------------------------------------
+  #    nz  /                                        /|
+  #       /                                        / |
+  #      /                                        /  |
+  #     /                                        /   |
+  #      ----------------------------------------    |
+  #     |    /                                /  |   |
+  #     |   /--------------------------------/   |   |
+  #     |   |                                |   |   |
+  #     |   |                                |   |   |
+  #     |nyl| nyu-nyl                        |   |   |
+  #     |   |                                |   |   |
+  #  ny |   |                                | / |   |
+  #     |   |                                |/  |   |
+  #     |    --------------------------------/   |  /
+  #     |              nxu-nxl                   | /
+  #     | ---------------------------------------|/
+  #
+  #                    nx
+  #     Figure 1: 3D array with dimensions nx,ny and nz. The actual loops
+  #               might have upper and lower limits different from the full
+  #               size of the array. This is handled by using a subarray. 
+  #               The lower limits
+  #               is given by nxl,nyl and nzl. The upper limits are
+  #               given by nxu,nyu and nzu. Computations are done only
+  #               for the subarrays given by the upper and lower limits. 
+  #
+  #     The inverse mapping of p to the array indices i,j,k can be 
+  #     done using equation (1)
+  #     by observing that
+  #
+  #     p/(nx*ny) = i/(nx*ny)+ j*nx/(nx*ny) + k*(nx*ny)/(nx*ny),   (2)
+  #
+  #
+  #     k = p/(nx*ny).                                             (3)
+  #
+  #     We also have
+  #
+  #     p/nx = i/nx + j*nx/nx + k*ny*nx/nx,
+  #
+  #     or
+  #
+  #     p/nx = j + k*ny,
+  #
+  #     giving
+  #
+  #     j=mod(p/nx,ny)                                            (4)
+  #
+  #
+  #     where mod is the modulo function.
+  #     We also have
+  #
+  #     p = i+ nx*(j+k*ny)
+  #
+  #     which by the sam reasoning as above gives
+  #
+  #     i = mod(p,nx).                                            (5)
+  #
+  #     Equations (3), (4) and (5) are used for the mapping of p to
+  #     indices i,j,k.
+  #
+  #     PARALLEL PROCESSING WITH GPU
+  #
+  #     The NVIDIA gpu consists of np processors, or threads, simultaneously 
+  #      executing the same program. Instead of
+  #     the conventional loop  
+  #       
+  #     for(i=0;i<N;i++){
+  #        a[i] = b[i]=c[i];
+  #      }
+  #
+  #     we would write the loop in CUDA as
+  #
+  #      if(p<N){
+  #        a[p]=b[p]=c[p];
+  #      } 
+  #
+  #     p is the processor number which is supplied 
+  #     by a CUDA built in variable.
+  #     Each of the np processors execute the same code, but with different p.
+  #     The cuda system organizes the threads into a number of blocks.
+  #     blockIdx.x is a built in variable giving the identity of the block
+  #     while blockDim.x is the number of blocks. threadIdx.x is the thread 
+  #     number within the block.
+  #     
+  #     The user has to provide the number of blocks and the number of threads 
+  #     pr. block.
+  #     A unique processor number p is constructed by
+  #
+  #     p=blockIdx.x*blockDim.x + threadIdx.x
+  #
+  #     In the above expression p would be a number between 0 and np, where
+  #     np is the number of different processors available.
+  #     Here the threadIdx.x variable gives a number between 0 and a parameter 
+  #     set at run time which is the number of threads (NTHREADS). 
+  #     In the same way the blockDim.x variable gives the NBLOCKS 
+  #     (number of blocks) set at runtime and the blockIdx.x gives which 
+  #     block the processor belongs to.
+  #     
+  #     There is also a gridDim.x variable.
+  #     
+  #
+  #     If we take into account that the number of processors, np, 
+  #     might be less than
+  #     the number of elements in the array, the CUDA loop has to be 
+  #     written as
+  #
+  #     for(p=blockIdx.x*blockDim.x + threadIdx.x; p<N; p+=blockDim.x*gridDim.x)
+  #     {
+  #        a[p]=b[p]=c[p];
+  #     }
+  #
+  #    The first iteration of the loop
+  #    performs the necessary computation for the first np indices in f. 
+  #    If np is less than
+  #    N, then p is incremented by np and the computations repeated for the 
+  #    new indices
+  #    ranging from index np to 2np-1.
+  #
+  #
+  #     Equations (2), (4) and (5) are used for the mapping of p to
+  #     indices i,j,k.
+  #
+  #     -------------------------------------------------------
+  #     |0 |1 |2| ........                             .. |N-1|
+  #     -------------------------------------------------------
+  #     Fig 2: Indexing of the one-dimensional input array f.
+  #
+  #     -------------------------------------------------------
+  #     |0 |1 |2| ........|np-1|0|1|2|...|np-1|..... |np-1|....
+  #     -------------------------------------------------------
+  #     Fig 3: The mapping of threads on to the indices of the f array.
+  #            Because the number of threads, np, is smaller than N, one thread
+  #            have to do computation for more than one index. Thread no 0
+  #            is f.ex assigned to array index 0, np, 2np, and so on.
+  #
+  #     As shown by Figure 1, the computation might have upper and lower limits
+  #     different from the full size of the array.
+  #     This implies that computation is done on a subcube with dimensions
+  #     nxu-nxl, nyu-nyl, nzu-nzl. This will slightly modify the equations
+  #     used for mapping the processor id onto the array indices. We end up with
+  #
+  #     k=nzl+p/(nxu-nxl)*(nyu-nyl),                                    (6)
+  #
+  #     j=nyl+mod(p/(nxu-nxl),nyu-nyl),                                 (7)
+  #
+  #     and
+  #
+  #     i = nxl+mod(p,nxu-nxl).                                            (8)
+  #
+  #  GENERAL INDEX EXPRESSIONS
+  #
+  #  Let n1,n2,...,nN be the dimension of the array.
+  #  Let i1,i2,...,iN be the indices of the array
+  #  Let nu1,nu2,...,nuN be the upper limits of the parallel statement
+  #  Let nl1,nl2,...,nlN be the lower limits of the parallel statement
+  #  Let m1,m2,...,mN be the defined by
+  #   
+  #  m1=nu1-nl1, m2=nu2-nl2, ..., mN=nuN-nlN
+  #  and also define m0=1
+  #  i1 = mod(p/m0,m1)
+  #  i2 = mod(p/m1,m2)
+  #  i3 = mod(p/(m1*m2),m3)
+  #  .
+  #  .
+  #  ik = mod(p/(m0*m1*m2*...*m{k-1}),mk)  
+  #  .
+  #  .
+  #  iN = p/(m0*m1*m2*...*mN)   
+  # 
+  # If we introduce the notation
+  # qk = m0*m1*m2...mk
+  # the equations above can be written as
+  #
+  #  ik = mod(p,q{k-1})  k < N
+  #  iN = p/qN
+  #  
+
+  struct tree sp,slice;
+  char [*] pno,nmax,qk,tmp
+  int rank,l 
+  struct charr [*] m,i,nl
+
+  CodeSetparallel(OK);
+  sp = p;                           # Save top parallel node        
+  rank = PtreeGetrank(p);           # Get no of slices              
+  m=new(struct charr [rank])
+  i=new(struct charr [rank])
+  nl=new(struct charr [rank])
+
+  p = PtreeMvchild(p);              # Move to sliceseq              
+  slice = PtreeMvchild(p)           # Move to first slice  
+  pno = CodeParprocno(slice)        # Emit code for processor no
+
+  # Get the indexes, lengths and lower limits
+  for (l = 0;l<rank;l=l+1): 
+    i[l].s = CodeParidxrank(slice,l+1)
+    nl[l].s = new(char[LTEXT])
+    m[l].s = CodeParlenrank(slice,l+1,nl[l].s)
+
+  nmax = CodeParnsize(p,m)          # generate code for the no of 
+                                    # processors used
+  # Emit for loop head
+  CodeEs(p,"for("); CodeEs(p,pno); 
+  CodeEs(p,"=blockIdx.x*blockDim.x + threadIdx.x; ");
+  CodeEs(p,pno); CodeEs(p, "<"); CodeEs(p,nmax); CodeEs(p,";"); 
+  CodeEs(p,pno); 
+  CodeEs(p,"+=blockDim.x*gridDim.x");
+  CodeEs(p,"){\n"); 
+ 
+ 
+ # Emit the index calculations
+  qk = LibeStrsave("1")
+  for(l=0;l<rank;l=l+1):
+    if(l == rank-1):
+      CodeEs(p,i[l].s); CodeEs(p, "=")
+      CodeEs(p,"("); CodeEs(p,pno); CodeEs(p,"/") 
+      CodeEs(p,"("); CodeEs(p,qk); CodeEs(p,")") 
+      CodeEs(p,")"); 
+      CodeEs(p,"+"); CodeEs(p,nl[l].s);
+      delete(nl[l].s)
+      CodeEs(p,";\n")
+    else :
+      CodeEs(p,i[l].s); CodeEs(p, "=")
+      CodeEs(p,"("); CodeEs(p,pno); CodeEs(p,"/") 
+      CodeEs(p,"("); CodeEs(p,qk); CodeEs(p,")") 
+      CodeEs(p,")"); CodeEs(p,"%"); CodeEs(p,m[l].s) 
+      CodeEs(p,"+"); CodeEs(p,nl[l].s);
+      delete(nl[l].s)
+      CodeEs(p,";\n")
+    
+    # Update qk
+    tmp=LibeStradd(qk,"*")
+    delete(qk)
+    qk=tmp
+    tmp=LibeStradd(qk,m[l].s)
+    delete(qk)
+    qk=tmp
+
+  p=PtreeMvchild(sp);
+  p=PtreeMvsister(p);
+  CodeCompstmnt(p);
+  CodeEs(p,"}\n");
+  CodeSetparallel(ERR);
+
+  return(OK)
+     
 
 def int CodeParallelstmnt(struct tree p):
 

@@ -46,9 +46,10 @@ const CONST   = 431       # The const   keyword
 const IMPORT = 433        # The import keyword     
 const IND    = 600        # Indent token
 const DIND    = 601       # Deindent token
-const PASS    = 701        # Pass token
+const PASS    = 701       # Pass token
 const NOOP    = 1001      # No operation token
 const DEF     = 1100      # function def token
+const LTEXT   = 4096      # Max line length  
 
 # Data structures 
 #
@@ -161,7 +162,6 @@ def int ScanInit(char [*] infile) :
 # Before I start, the two arrays ScanText and ScanBuffer must
 # be created.
 
-  const LTEXT = 4096  
   ScanContline=0 
   ScanText = new(char [LTEXT]) 
   ScanBuffer = new(char [LTEXT]) 
@@ -279,8 +279,8 @@ def int ScanWhite()  :
   # Returns:
   #   OK
 
-  int d
   int c 
+  int d
 
   while(((c=ScanGetch()) == SPACE) || (c == TAB)):
     d = 0  

@@ -13,4 +13,4 @@ for i in $*
 do
   FILES="$FILES $i" ;
 done 
-gcc --allow-multiple-definition -L$LIB $FILES -lecpu -ffast-math -lm
+gcc -z muldefs -L$LIB $FILES -lecpu -ffast-math -lm

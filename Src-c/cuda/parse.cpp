@@ -313,6 +313,7 @@ int ErrSerror (nctempchar1 *file,nctempchar1 *fname,int lineno,nctempchar1 *s1,n
 ;
 ;
 ;
+;
 int ScanIndent;
 int ScanIndentsave;
 int ScanIndentinit;

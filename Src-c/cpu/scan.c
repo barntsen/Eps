@@ -405,8 +405,8 @@ return indent;
 }
 int ScanWhite ()
 {
-int d;
 int c;
+int d;
 int nctemp304=ScanGetch();
 c =nctemp304;
 int nctemp297 = (c ==32);
