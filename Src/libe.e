@@ -185,7 +185,7 @@ const MLOG2 =  5
 
 def float LibeMach(int flag) :
 
-  # LibeMach gets machine dep   ent floating point properties
+  # LibeMach gets machine depent floating point properties
   # 
   #
   # Parameters:
@@ -452,7 +452,7 @@ def int LibeGetmaxdig(float f) :
   # LibeGetmaxdig gets number of significant digits 
   # 
   # Parameter: 
-  #   x      : float number
+  #   f      : float number
   #
   # Returns:
   #  Number of significant digits. 
@@ -571,7 +571,6 @@ float LibeLnmax      # Max value for logarithm argument
 float LibeLnmin      
 
 def int LibeMod(int n, int r) :
-
   
   # LibeMod computes the r-modulus of the integer n.
   # 
@@ -628,6 +627,7 @@ def float LibeSqrt(float x) :
     n = n+1 
   return(LibeFscale2(yest, n/2)) 
  
+
 def float LibeLn(float x) :
 
   # LibeLn computes the natural logarithm of x    
@@ -1171,7 +1171,7 @@ def int LibeStrcpy(char [*] s, char [*] t) :
     
 def int LibeStrcat(char [*] s, char [*] t) :
   
-  #  LibeStrcat app   s one string to another.
+  #  LibeStrcat appends one string to another.
   #  t string.
   #
   # Parameters:
@@ -1274,7 +1274,7 @@ def int LibeIsalhpa(int c) :
  
 def int LibeIsdigit(int c) :
 
-  # LibeIsdigit checks i a character is a digit
+  # LibeIsdigit checks if a character is a digit
   # 
   # Parameters:
   #   c    : character to check.
@@ -1965,8 +1965,6 @@ def int LibeFlushbuff(int fp) :
     LibeFarr[fp].ptr = 0 
     return (OK) 
       
- 
-    
 
 def int LibeFillbuff(int fp) :
   # LibeFillbuff reads in a chunk of data from a file.
@@ -2263,7 +2261,7 @@ def int LibeUngetc(int fp) :
   # time LibeGetc attempts to read a character. In this way
   # is the last read character always present in the buffer.
 
-  # Are we at the     of a file ?  
+  # Are we at the  EOF of a file ?  
   if(LibeFarr[fp].eoflg == OK): 
     return (EOF) 
 
@@ -2283,10 +2281,8 @@ def int LibeUngetc(int fp) :
     LibeErrstr = "Pushback error" 
     LibeErrno = PUSHERR 
     return (EOF) 
-      
  
-    
- 
+
 def int LibeGetw(int fp, char [*] text) :
 
   #
@@ -2367,16 +2363,11 @@ def int LibePutc(int fp, int c) :
     LibeFarr[fp].ptr = LibeFarr[fp].ptr + 1 
     LibeFarr[fp].cnt = LibeFarr[fp].cnt + 1 
     return (rval) 
-      
- 
   else:
      LibeFarr[fp].base[LibeFarr[fp].ptr] = cast(char, c) 
      LibeFarr[fp].cnt = LibeFarr[fp].cnt + 1 
      LibeFarr[fp].ptr = LibeFarr[fp].ptr + 1 
      return (OK) 
-      
- 
-    
  
 def int LibePuts(int fp, char [*] s) :      
  

@@ -1,6 +1,6 @@
 #  Eps - mini-language for portable gpu acceleration
 
-This project is an experiment to find out if a mini language 
+This project is an experiment to find out if a tiny language 
 can be made in order to write (limited) code for
 scientific calculations which can run on normal cpu's or
 execute with gpu acceleration

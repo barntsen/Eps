@@ -47,6 +47,8 @@ const IMPORT = 433        # The import keyword
 const IND    = 600        # Indent token
 const DIND    = 601       # Deindent token
 const PASS    = 701       # Pass token
+const IN      = 702       # In token
+const RANGE   = 703       # Range token
 const NOOP    = 1001      # No operation token
 const DEF     = 1100      # function def token
 const LTEXT   = 4096      # Max line length  
@@ -648,6 +650,10 @@ def int ScanLex() :
       rval = PARALLEL 
     else if(LibeStrcmp(ScanText,"pass")):
       rval = PASS 
+    else if(LibeStrcmp(ScanText,"in")):
+      rval = IN 
+    else if(LibeStrcmp(ScanText,"range")):
+      rval = RANGE 
     else:
       rval = ID 
   else: 
