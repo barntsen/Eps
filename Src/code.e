@@ -2298,8 +2298,6 @@ def char [*] CodeParlen( struct tree p, char[*] llim) :
   if(LibeStrcpy(tmp3,llim) == ERR):
     CodeError("Internal error in CodeParlen\n") 
 
-  delete(tmp2)
-  delete(tmp3)
   return(tmp1)
 
 def char [*] CodeParlenrank( struct tree p, int r, char [*] llim) :
@@ -2566,6 +2564,8 @@ def int CodeParallelstmntgpu(struct tree p) :
 
   p = PtreeMvchild(p);              # Move to sliceseq              
   slice = PtreeMvchild(p)           # Move to first slice  
+
+  CodeEs(p,"{\n")                     # Emit code for start of block
   pno = CodeParprocno(slice)        # Emit code for processor no
 
   # Get the indexes, lengths and lower limits
@@ -2616,6 +2616,7 @@ def int CodeParallelstmntgpu(struct tree p) :
   p=PtreeMvchild(sp);
   p=PtreeMvsister(p);
   CodeCompstmnt(p);
+  CodeEs(p,"}\n")                     # Emit code for end of block
   CodeEs(p,"}\n");
   CodeSetparallel(ERR);
 

@@ -23,7 +23,7 @@ def int MainError(char [*] s) :
   if((ScanGetfile() != NULL) && (ScanGetline() != NULL)):
     ErrError(ScanGetfile(),ScanGetline(), s)  
   else :
-    LibePuts(stderr,"File extension have to be .e\n") 
+    LibePuts(stderr,s) 
     LibeExit() 
 
   return(OK)
@@ -89,6 +89,7 @@ def int MainHelp(int arch):
 def char [*] MainFout(char [*] infile, int arch):
 
   # Mainfout checks the input file name
+  # and creates output file name
   #
   # Parameters:
   # 
@@ -107,11 +108,9 @@ def char [*] MainFout(char [*] infile, int arch):
   l=len(infile,0) 
   if(l < 3):
     MainError(" Illegal file name") 
-      
  
   if(infile[l-2] != cast(char,'e')):
     MainError("File extension have to be .e") 
-      
  
   if(arch == CPU):
     outfile=new(char [l]) 
@@ -136,7 +135,7 @@ def char [*] MainFout(char [*] infile, int arch):
     
 def char [*] MainFmod(char [*] infile):
 
-  # Mainmod checks the input file name
+  # MainFmod creates the output module file name
   #
   # Parameters: 
   #   infile : Input file name
@@ -148,11 +147,9 @@ def char [*] MainFmod(char [*] infile):
   char [*] outfile  # Output file name (holding module file)
   int l             # Temp varibale to hold string length of 
                     # input file name
-
   l=len(infile,0) 
   if(l < 3):
     MainError(" Illegal file name") 
-      
  
   if(infile[l-2] != cast(char,'e')):
     MainError("File extension have to be .e") 
@@ -337,7 +334,8 @@ def int Main(struct MainArg [*] MainArgs) :
   char [*] infile   # Input file name
   char [*] outfile  # Output file name
 
-  int i,l,loop      # Loop variables 
+  int options       # Count of options
+  int i,l             # Loop variables 
 
   LibeInit()         # Initialize io package 
 
@@ -346,6 +344,7 @@ def int Main(struct MainArg [*] MainArgs) :
   btree  = atree = table = etable = emit = ERR 
   parse  = semantic = ERR 
   obj = OK 
+  options=0
 
   # Initialize the parse tree 
   PtreeInit()  
@@ -362,101 +361,80 @@ def int Main(struct MainArg [*] MainArgs) :
 
   l = len(MainArgs,0) 
   if(l<=1):
-    MainError("Missing input file name") 
-      
- 
+    MainError("Missing input file name\n") 
 
-  i=1 
-  loop=OK 
-  while(loop==OK):
+  # Main loop over command line arguments
+  for(i=1; i<len(MainArgs,0);i=i+1):
+
     if(LibeStrcmp(MainArgs[i].arg, "-h") == OK):  
       MainHelp(ARCH) 
       LibeExit() 
-        
 
     if(LibeStrcmp(MainArgs[i].arg, "-t") == OK):  
 
       # Print parse tree  
       btree = OK; parse = OK 
-        
 
     # Print annotated parse tree 
     if(LibeStrcmp(MainArgs[i].arg, "-a") == OK):  
       atree = OK; semantic = OK; parse = OK 
-        
 
     # Print local symbol table 
 
     if(LibeStrcmp(MainArgs[i].arg, "-s") == OK ):  
       table = OK; parse = OK; semantic = OK 
-        
 
     # Print external symbol table 
     if(LibeStrcmp(MainArgs[i].arg, "-r") == OK ):  
       etable = OK; parse = OK; semantic = OK 
-        
 
     # Emit code         
     if(LibeStrcmp(MainArgs[i].arg, "-e") == OK):  
       emit = OK; parse = OK; semantic = OK 
-        
 
     # Syntactic analysis only
     if(LibeStrcmp(MainArgs[i].arg, "-p") == OK):  
       parse = OK 
-        
 
     # Syntactic and semantic analysis only
     if(LibeStrcmp(MainArgs[i].arg, "-q") == OK):      
       semantic = OK; parse = OK 
-        
 
     # Turn on array check  
     if(LibeStrcmp(MainArgs[i].arg, "-C") == OK):      
       CodeArraycheckon() 
-        
 
     # Turn on debug flag  
     if(LibeStrcmp(MainArgs[i].arg, "-g") == OK):      
       debug=OK 
       CodeDebugon() 
-        
 
     if(LibeStrcmp(MainArgs[i].arg, "-d") == OK):      
       show=OK 
-        
 
     # Set flag for optimization
     if(LibeStrcmp(MainArgs[i].arg, "-O") == OK):      
        optimize=OK 
-        
 
     # Set flag for openmp
     if(LibeStrcmp(MainArgs[i].arg, "-f") == OK):      
        openmp=OK 
-        
  
     if(LibeStrcmp(MainArgs[i].arg, "-c") == OK):      
        obj=ERR 
-        
- 
-    if(i+1<l):
-      if((MainArgs[i].arg[0] ==cast(char,'-')) == OK):
-        loop=OK 
-        i=i+1 
-      else :
-        loop=ERR 
-    else :
-      loop=ERR 
 
+    # Count number of options
+    if((MainArgs[i].arg[0] ==cast(char,'-')) == OK):
+      options=options+1
+    
   # Set the default case
   if((parse == ERR) && (semantic == ERR) && (emit == ERR)):
     parse=semantic=emit=OK 
 
-  if(i>=len(MainArgs,0)):
-    MainError("Missing input file name") 
+  if((options+1) >= len(MainArgs,0)):
+    MainError("Missing input file name\n") 
   else: 
-    infile=MainArgs[i].arg 
+    infile=MainArgs[len(MainArgs,0)-1].arg 
 
   # Set the output file for holding c-code
   if(emit == OK):

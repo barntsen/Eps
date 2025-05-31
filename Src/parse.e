@@ -1119,8 +1119,6 @@ def struct tree ParseExtdecl() :
      if(lookahead == SEMICOLON):
        ParseMatch(SEMICOLON);
      ParseMatch(NL);
-
- 
    else if(lookahead == ASSIGN): # Constant  
      ParseMatch(lookahead);
      ParseConstdecl(mp);
@@ -1129,7 +1127,9 @@ def struct tree ParseExtdecl() :
      if(lookahead == SEMICOLON):
        ParseMatch(SEMICOLON);
      ParseMatch(NL);
-   
+  else : 
+   ParseError("Syntax error")
+
   return (sp);
 
 def struct tree ParseParse() :

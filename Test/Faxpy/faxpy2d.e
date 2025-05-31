@@ -1,6 +1,6 @@
 # Faxpy is a simple matrix addition test 
 
-int faxpy2d(float [*,*] a, float [*,*] x, float [*,*] y, float b):
+def int faxpy2d(float [*,*] a, float [*,*] x, float [*,*] y, float b):
  int i,j
  int nx,ny 
   

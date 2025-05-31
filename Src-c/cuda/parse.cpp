@@ -227,6 +227,7 @@ struct nctemptree2 {int d[2]; struct tree *a; } ;
 struct nctemptree3 {int d[3]; struct tree *a; } ;
 struct nctemptree4 {int d[4]; struct tree *a; } ;
 int PtreeInit ();
+int PtreePrtree (struct tree* p,int level);
 int PtreeRmnode (struct tree* p);
 int PtreeRmtree (struct tree* p);
 struct tree* PtreeMknode (nctempchar1 *name,nctempchar1 *defn);
@@ -271,7 +272,6 @@ int PtreeSetsimple (struct tree* p,int simple);
 int PtreeGetsimple (struct tree* p);
 int PtreeSetforw (struct tree* p,nctempchar1 *forw);
 nctempchar1 * PtreeGetforw (struct tree* p);
-int PtreePrtree (struct tree* p,int level);
 int ErrError (nctempchar1 *file,int line,nctempchar1 *s);
 int ErrSerror (nctempchar1 *file,nctempchar1 *fname,int lineno,nctempchar1 *s1,nctempchar1 *s2);
 ;
@@ -2483,26 +2483,33 @@ int nctemp2887=ParseMatch(nctemp2885);
 }
 }
 }
+else{
+struct nctempchar1 *nctemp2891;
+static struct nctempchar1 nctemp2892 = {{ 13}, (char*)"Syntax error\0"};
+nctemp2891=&nctemp2892;
+nctempchar1* nctemp2889= nctemp2891;
+int nctemp2893=ParseError(nctemp2889);
+}
 return sp;
 }
 struct tree* ParseParse ()
 {
 struct tree* np;
 np =0;
-int nctemp2893 = (lookahead ==19);
-if(nctemp2893)
+int nctemp2899 = (lookahead ==19);
+if(nctemp2899)
 {
 return np;
 }
 else{
-int nctemp2898 = (lookahead ==600);
-if(nctemp2898)
+int nctemp2904 = (lookahead ==600);
+if(nctemp2904)
 {
-int nctemp2903= 600;
-int nctemp2905=ParseMatch(nctemp2903);
+int nctemp2909= 600;
+int nctemp2911=ParseMatch(nctemp2909);
 }
-struct tree* nctemp2910=ParseExtdecl();
-np =nctemp2910;
+struct tree* nctemp2916=ParseExtdecl();
+np =nctemp2916;
 }
 return np;
 }

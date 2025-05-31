@@ -1449,15 +1449,15 @@ def int SemExtdecl(struct tree p) :
   struct tree sp, np;
 
   if(LibeStrcmp(PtreeGetname(p), "extdecl")):         
+    # DEBUG
     np = PtreeMvchild(p);
     PtreeSetglobal(np,"global");
 
    # Check import  declaration  
+
     if(LibeStrcmp(PtreeGetname(np), "import")==OK):
       SemImport(np, SymGetetp());
       return(OK); 
-   
- 
 
    # Check structure declaration  
     while(np!= NULL):

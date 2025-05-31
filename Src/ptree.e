@@ -79,6 +79,75 @@ def int PtreeInit() :
   return(OK) 
 
     
+def int PtreePrtree(struct tree p, int level) :
+
+  # PtreePrtree -- print the tree.
+  #
+  # Parameters: 
+  #   p         : tree node
+  #   level     : tree level
+  #
+  # Returns   : OK 
+  #   
+  # PtreePrtree recursively prints the
+  # tree starting at p.
+  # Level controls at what level the printing starts.
+  # If level is set to zero, the tree is
+  # printed as if p was the root node.
+  # If level is set to one, all nodes
+  # at one level below the root node is printed.
+  # For level > 1 the corresponding levels of the
+  # tree are printed.
+ 
+  int i 
+  int fp 
+       
+  fp = stdout 
+
+  if (p != NULL):
+    i = 0 
+    while( i < level):
+      LibePuts(fp, " ") 
+      i = i + 1 
+ 
+    LibePuts(fp, p.name); LibePuts(fp," ") 
+    LibePuts(fp, p.defn) ; LibePuts(fp," ") 
+    LibePuts(fp, p.type); LibePuts(fp," ") 
+    LibePuts(fp, p.structure); LibePuts(fp," ") 
+    LibePuts(fp, p.array);     LibePuts(fp," ") 
+    LibePuts(fp, p.paral);     LibePuts(fp," ") 
+    LibePuts(fp, p.global);    LibePuts(fp," ") 
+    LibePuti(fp, p.rank);      LibePuts(fp," ") 
+    LibePuts(fp, p.forw);      LibePuts(fp," ") 
+    if(p.simple==OK):
+      LibePuts(fp, "simple");    LibePuts(fp," ") 
+    else if(p.simple==EMPTY):
+      LibePuts(fp, "empty");     LibePuts(fp," ") 
+    else:
+      LibePuts(fp, "nonsimple"); LibePuts(fp," ") 
+    if(p.topexpr==OK):
+      LibePuts(fp, "topexpr");   LibePuts(fp," ") 
+    else if(p.topexpr==ERR):
+      LibePuts(fp, "void");      LibePuts(fp," ") 
+    else:
+      LibePuts(fp, "nonsimple"); LibePuts(fp," ") 
+ 
+    LibePuti(fp, p.line);  LibePuts(fp," ") 
+    LibePuts(fp, p.tempr); LibePuts(fp," ") 
+    LibePuts(fp, p.tempi); LibePuts(fp," ") 
+    LibePuts(fp, p.lval);  LibePuts(fp," ") 
+    LibePuts(fp, p.ref);   LibePuts(fp," ") 
+    LibePuts(fp, p.descr); LibePuts(fp," ") 
+    LibePuts(fp, "\n") 
+
+    level = level + 1 
+    PtreePrtree(p.child, level) 
+    level = level - 1 
+    PtreePrtree(p.sister,level) 
+      
+  LibeFlush(fp) 
+  return(OK) 
+ 
  
 def int PtreeRmnode(struct tree p) : 
 
@@ -774,7 +843,7 @@ def int PtreeSetopexpr(struct tree p, int topexpr) :
    
 def int PtreeGetopexpr(struct tree p) :    
 
-  # PtreeGetopexpr  gets the simple field of the node.
+  # PtreeGetopexpr  gets the topexpr field of the node.
   #
   # Parameters: 
   #   p    : tree node
@@ -833,75 +902,3 @@ def char [*] PtreeGetforw(struct tree p) :
 
 
   return(p.forw) 
-   
-
-   
-def int PtreePrtree(struct tree p, int level) :
-
-  # PtreePrtree -- print the tree.
-  #
-  # Parameters: 
-  #   p         : tree node
-  #   level     : tree level
-  #
-  # Returns   : OK 
-  #   
-  # PtreePrtree recursively prints the
-  # tree starting at p.
-  # Level controls at what level the printing starts.
-  # If level is set to zero, the tree is
-  # printed as if p was the root node.
-  # If level is set to one, all nodes
-  # at one level below the root node is printed.
-  # For level > 1 the corresponding levels of the
-  # tree are printed.
- 
-  int i 
-  int fp 
-       
-  fp = stdout 
-
-  if (p != NULL):
-    i = 0 
-    while( i < level):
-      LibePuts(fp, " ") 
-      i = i + 1 
- 
-    LibePuts(fp, p.name); LibePuts(fp," ") 
-    LibePuts(fp, p.defn) ; LibePuts(fp," ") 
-    LibePuts(fp, p.type); LibePuts(fp," ") 
-    LibePuts(fp, p.structure); LibePuts(fp," ") 
-    LibePuts(fp, p.array);     LibePuts(fp," ") 
-    LibePuts(fp, p.paral);     LibePuts(fp," ") 
-    LibePuts(fp, p.global);    LibePuts(fp," ") 
-    LibePuti(fp, p.rank);      LibePuts(fp," ") 
-    LibePuts(fp, p.forw);      LibePuts(fp," ") 
-    if(p.simple==OK):
-      LibePuts(fp, "simple");    LibePuts(fp," ") 
-    else if(p.simple==EMPTY):
-      LibePuts(fp, "empty");     LibePuts(fp," ") 
-    else:
-      LibePuts(fp, "nonsimple"); LibePuts(fp," ") 
-    if(p.topexpr==OK):
-      LibePuts(fp, "topexpr");   LibePuts(fp," ") 
-    else if(p.topexpr==ERR):
-      LibePuts(fp, "void");      LibePuts(fp," ") 
-    else:
-      LibePuts(fp, "nonsimple"); LibePuts(fp," ") 
- 
-    LibePuti(fp, p.line);  LibePuts(fp," ") 
-    LibePuts(fp, p.tempr); LibePuts(fp," ") 
-    LibePuts(fp, p.tempi); LibePuts(fp," ") 
-    LibePuts(fp, p.lval);  LibePuts(fp," ") 
-    LibePuts(fp, p.ref);   LibePuts(fp," ") 
-    LibePuts(fp, p.descr); LibePuts(fp," ") 
-    LibePuts(fp, "\n") 
-
-    level = level + 1 
-    PtreePrtree(p.child, level) 
-    level = level - 1 
-    PtreePrtree(p.sister,level) 
-      
-  LibeFlush(fp) 
-  return(OK) 
- 
