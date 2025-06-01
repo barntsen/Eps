@@ -1363,6 +1363,28 @@ if(nctemp1839)
 rval =701;
 }
 else{
+nctempchar1* nctemp1845= ScanText;
+struct nctempchar1 *nctemp1850;
+static struct nctempchar1 nctemp1851 = {{ 3}, (char*)"in\0"};
+nctemp1850=&nctemp1851;
+nctempchar1* nctemp1848= nctemp1850;
+int nctemp1852=LibeStrcmp(nctemp1845,nctemp1848);
+if(nctemp1852)
+{
+rval =702;
+}
+else{
+nctempchar1* nctemp1858= ScanText;
+struct nctempchar1 *nctemp1863;
+static struct nctempchar1 nctemp1864 = {{ 6}, (char*)"range\0"};
+nctemp1863=&nctemp1864;
+nctempchar1* nctemp1861= nctemp1863;
+int nctemp1865=LibeStrcmp(nctemp1858,nctemp1861);
+if(nctemp1865)
+{
+rval =703;
+}
+else{
 rval =1;
 }
 }
@@ -1389,12 +1411,14 @@ rval =1;
 }
 }
 }
+}
+}
 else{
-struct nctempchar1 *nctemp1851;
-static struct nctempchar1 nctemp1852 = {{ 14}, (char*)"Invalid token\0"};
-nctemp1851=&nctemp1852;
-nctempchar1* nctemp1849= nctemp1851;
-int nctemp1853=ScanError(nctemp1849);
+struct nctempchar1 *nctemp1877;
+static struct nctempchar1 nctemp1878 = {{ 14}, (char*)"Invalid token\0"};
+nctemp1877=&nctemp1878;
+nctempchar1* nctemp1875= nctemp1877;
+int nctemp1879=ScanError(nctemp1875);
 return 0;
 }
 }
@@ -1422,24 +1446,24 @@ return 0;
 }
 }
 }
-int nctemp1863 = p + 1;
-int nctemp1858=nctemp1863;
-char nctemp1865=(char)(0);
-ScanText->a[nctemp1858] =nctemp1865;
+int nctemp1889 = p + 1;
+int nctemp1884=nctemp1889;
+char nctemp1891=(char)(0);
+ScanText->a[nctemp1884] =nctemp1891;
 return rval;
 }
 nctempchar1 * ScanSetfile (nctempchar1 *fname)
 {
-nctempchar1 *nctemp1870 =ScanFile;
-int nctemp1869 =(nctemp1870!=0);
-if(nctemp1869)
+nctempchar1 *nctemp1896 =ScanFile;
+int nctemp1895 =(nctemp1896!=0);
+if(nctemp1895)
 {
 RunFree(ScanFile->a);
 RunFree(ScanFile);
 }
-nctempchar1* nctemp1882= fname;
-nctempchar1* nctemp1885=LibeStrsave(nctemp1882);
-ScanFile=nctemp1885;
+nctempchar1* nctemp1908= fname;
+nctempchar1* nctemp1911=LibeStrsave(nctemp1908);
+ScanFile=nctemp1911;
 return ScanFile;
 }
 int ScanGetok ()
@@ -1447,64 +1471,64 @@ int ScanGetok ()
 int c;
 int indent;
 int level;
-int nctemp1888 = (ScanLine > ScanLinesave);
-if(nctemp1888)
+int nctemp1914 = (ScanLine > ScanLinesave);
+if(nctemp1914)
 {
-int nctemp1895= -1;
-indent =nctemp1895;
-int nctemp1902= -1;
-int nctemp1899 = (indent ==nctemp1902);
-int nctemp1907= -2;
-int nctemp1904 = (indent ==nctemp1907);
-int nctemp1896 = (nctemp1899 || nctemp1904);
-int nctemp1908=nctemp1896;
-while(nctemp1908)
+int nctemp1921= -1;
+indent =nctemp1921;
+int nctemp1928= -1;
+int nctemp1925 = (indent ==nctemp1928);
+int nctemp1933= -2;
+int nctemp1930 = (indent ==nctemp1933);
+int nctemp1922 = (nctemp1925 || nctemp1930);
+int nctemp1934=nctemp1922;
+while(nctemp1934)
 {{
-int nctemp1913=ScanBlank();
-indent =nctemp1913;
+int nctemp1939=ScanBlank();
+indent =nctemp1939;
 }
-int nctemp1920= -1;
-int nctemp1917 = (indent ==nctemp1920);
-int nctemp1925= -2;
-int nctemp1922 = (indent ==nctemp1925);
-int nctemp1914 = (nctemp1917 || nctemp1922);
-nctemp1908=nctemp1914;}ScanIndent =indent;
+int nctemp1946= -1;
+int nctemp1943 = (indent ==nctemp1946);
+int nctemp1951= -2;
+int nctemp1948 = (indent ==nctemp1951);
+int nctemp1940 = (nctemp1943 || nctemp1948);
+nctemp1934=nctemp1940;}ScanIndent =indent;
 ScanLinesave =ScanLine;
 }
-int nctemp1937= -1;
-int nctemp1934 = (ScanIndentsave ==nctemp1937);
-if(nctemp1934)
+int nctemp1963= -1;
+int nctemp1960 = (ScanIndentsave ==nctemp1963);
+if(nctemp1960)
 {
 ScanIndentsave =ScanIndent;
 ScanIndentinit =ScanIndent;
-int nctemp1949=0;
-ScanStack->a[nctemp1949] =ScanIndentinit;
+int nctemp1975=0;
+ScanStack->a[nctemp1975] =ScanIndentinit;
 }
-int nctemp1952 = (ScanIndent > ScanIndentsave);
-if(nctemp1952)
+int nctemp1978 = (ScanIndent > ScanIndentsave);
+if(nctemp1978)
 {
 ScanIndentsave =ScanIndent;
-int nctemp1961= ScanIndent;
-int nctemp1963=ScanPush(nctemp1961);
+int nctemp1987= ScanIndent;
+int nctemp1989=ScanPush(nctemp1987);
 return 600;
 }
 else{
-int nctemp1965 = (ScanIndent < ScanIndentsave);
-if(nctemp1965)
+int nctemp1991 = (ScanIndent < ScanIndentsave);
+if(nctemp1991)
 {
-int nctemp1973=ScanPop();
-level =nctemp1973;
+int nctemp1999=ScanPop();
+level =nctemp1999;
 ScanIndentsave =level;
 return 601;
 }
 else{
-int nctemp1983=ScanLex();
-c =nctemp1983;
-int nctemp1984 = (c ==32);
-if(nctemp1984)
+int nctemp2009=ScanLex();
+c =nctemp2009;
+int nctemp2010 = (c ==32);
+if(nctemp2010)
 {
-int nctemp1992=ScanLex();
-c =nctemp1992;
+int nctemp2018=ScanLex();
+c =nctemp2018;
 }
 return c;
 }
@@ -1516,16 +1540,16 @@ return ScanText;
 }
 int ScanSetline (int lineno)
 {
-int nctemp1999= -1;
-ScanLinesave =nctemp1999;
+int nctemp2025= -1;
+ScanLinesave =nctemp2025;
 ScanLine =lineno;
 return 0;
 }
 int ScanGetword (nctempchar1 *ttext)
 {
-int nctemp2006= ScanFp;
-nctempchar1* nctemp2008= ttext;
-int nctemp2011=LibeGetw(nctemp2006,nctemp2008);
-return nctemp2011;
+int nctemp2032= ScanFp;
+nctempchar1* nctemp2034= ttext;
+int nctemp2037=LibeGetw(nctemp2032,nctemp2034);
+return nctemp2037;
 }
 }

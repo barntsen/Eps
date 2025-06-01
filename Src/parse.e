@@ -821,32 +821,137 @@ def struct tree ParseReturnstmnt() :
     sp = NULL;
   return (sp);
 
+def struct tree ParseForstmntc (struct tree np) :
+
+  # ParseForstmnt parses a for statement
+  # The following part of the grammar is implemented:
+  # forstmnt       = '(' expr ';' expr ';' expr')' stmnt 
+
+  struct tree sp, rp;
+  ParseMatch(LP);
+  if((sp = ParseExpr()) != NULL):
+    PtreeAddchild(np, sp);
+    ParseMatch(SEMICOLON);
+    if((rp = ParseExpr()) != NULL):
+       PtreeAddsister(sp, rp);
+    ParseMatch(SEMICOLON);
+    if((rp = ParseExpr()) != NULL):
+      PtreeAddsister(sp, rp);
+    ParseMatch(RP);
+    sp = ParseStmnt();
+    PtreeAddchild(np, sp);
+    sp = np;
+  else:
+    sp = NULL;
+  return (sp);
+
+def struct tree ParseForstmntpy(struct tree np) :
+
+  # ParseForstmntpy parses a python style for statement
+  #
+  # Parameters : 
+  #   np : Child node of for statment
+  #
+  # Returns:
+  # 
+  # The np node on return contains a parse tree for a for loop.
+  #
+  # The following part of the grammar is implemented:
+  #   forstmntpy = ID IN RANGE '(' expr ',' expr ')'  compstmnt      
+  #
+  # The strategy for implementing the Python style for loop
+  # is to create a parse tree identical to the for c-style loop.
+  # This avoids extra code for semantic check and code generation.
+
+  struct tree sp  # Root of subtree for the for loop
+  struct tree ap, bp, cp, dp, ep, fp, gp, hp, ip, jp, mp, qp, rp, tp;
+  char [*] id     # Name of loop variable
+
+  sp=NULL
+  if(lookahead == ID) : 
+    sp=PtreeMknode("expr","void")
+
+    # Add the parse tree for the first expression
+    # (initialization of loop variable ) except the lower limit 
+    # which is added below
+    # 
+    PtreeAddchild(np,sp)
+    rp=PtreeMknode("binexpr","=")
+    PtreeAddchild(sp,rp)
+    id = LibeStrsave(ScanGetext())
+    tp=PtreeMknode("identifier",ScanGetext())
+    PtreeAddchild(rp,tp)
+
+    # Parse the loop variable, IN token, Range token
+    # and left parantheis. 
+    ParseMatch(ID)
+    ParseMatch(IN)
+    ParseMatch(RANGE)
+    ParseMatch(LP)
+
+    # Get lower range limit
+    # and add to the first expression above
+    qp=ParseExpr()
+    qp=PtreeMvchild(qp)
+    PtreeAddsister(tp,qp)
+    
+    # Get the upper range limit
+    ParseMatch(COMMA)
+    mp=ParseExpr()
+    mp=PtreeMvchild(mp)
+
+    # Create the second expression  (end condition)
+    ap=PtreeMknode("expr","void")
+    PtreeAddsister(sp,ap)
+    bp=PtreeMknode("binexpr","<")
+    PtreeAddchild(ap,bp)
+    cp = PtreeMknode("identifier",id)
+    PtreeAddchild(bp,cp)
+    PtreeAddsister(cp,mp)
+
+    # Create the third expression (increment of loop variable)
+    dp=PtreeMknode("expr","void")
+    PtreeAddsister(sp,dp)
+    ep=PtreeMknode("binexpr","=")
+    PtreeAddchild(dp,ep)
+    fp = PtreeMknode("identifier",id)
+    PtreeAddchild(ep,fp)
+
+    gp=PtreeMknode("binexpr","+")
+    PtreeAddsister(fp,gp)
+    
+    hp= PtreeMknode("identifier",id)
+    PtreeAddchild(gp,hp)
+    ip= PtreeMknode("iconstant","1")
+    PtreeAddsister(hp,ip)
+
+    ParseMatch(RP)
+   
+    jp=ParseCompstmnt()
+    PtreeAddsister(sp,jp)
+
+  return (np);
+
+
 def struct tree ParseForstmnt() :
 
   # ParseForstmnt parses a for statement
   # The following part of the grammar is implemented:
-  #    forstmnt       = FOR '(' expr ';' expr ';' expr')' stmnt 
+  #    forstmnt       = FOR 
 
   struct tree np, sp, rp;
   if(lookahead == FOR):
-      np = ParseMknode("for", "void");
-      ParseMatch(FOR);
-      ParseMatch(LP);
-      if((sp = ParseExpr()) != NULL):
-         PtreeAddchild(np, sp);
-      ParseMatch(SEMICOLON);
-      if((rp = ParseExpr()) != NULL):
-         PtreeAddsister(sp, rp);
-      ParseMatch(SEMICOLON);
-      if((rp = ParseExpr()) != NULL):
-        PtreeAddsister(sp, rp);
-      ParseMatch(RP);
-      sp = ParseStmnt();
-      PtreeAddchild(np, sp);
-      sp = np;
-  else:
-    sp = NULL;
+    np = ParseMknode("for", "void");
+    ParseMatch(FOR);
+    if(lookahead == '(') :
+      sp = ParseForstmntc(np)
+    else :
+      sp = ParseForstmntpy(np)
+  else :
+    sp=NULL
+  
   return (sp);
+
 
 def struct tree ParseSlice() :
 

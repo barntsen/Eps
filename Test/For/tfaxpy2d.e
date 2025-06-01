@@ -22,8 +22,8 @@ def int Main(struct MainArg [*] MainArgs):
   y = new(float[nx,ny])
   a = new(float[nx,ny])
 
-  for(i=0; i<nx; i=i+1):
-    for(j=0; j<ny; j=j+1):
+  for i in range (0,nx):
+    for j in range (0,ny):
       x[i,j] = 1.0
       y[i,j] = 1.0
 
@@ -31,7 +31,7 @@ def int Main(struct MainArg [*] MainArgs):
   niter = 1000
 
   t0 = LibeClock()
-  for(i=0; i<niter; i=i+1):
+  for i in range(0,niter) :
     b=1.0
     faxpy2d(a,x,y,b)
   t=LibeClock()-t0

@@ -14,12 +14,12 @@ program tfaxpy2d
   real    :: t
 
   !This crashes
-  !nx = 8000
-  !ny = 8000
+  nx = 8000
+  ny = 8000
 
   !This runs ok
-  nx = 6000
-  ny = 6000
+  !nx = 6000
+  !ny = 6000
 
   allocate(x(nx,ny),stat=err)
   allocate(y(nx,ny),stat=err)
