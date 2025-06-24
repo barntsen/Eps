@@ -1,11 +1,10 @@
 #!/bin/sh
-export NBLOCKS=31250
-export NTHREADS=128
+export NBLOCKS=2048
+export NTHREADS=256
 
-echo "Cuda version:"
-#nsys nvprof ./tfaxpy2de > time-eps.txt
-time ./tfaxpy2de  
+#nsys nvprof ./tfaxpy2de stats > time-eps.txt
+./tfaxpy2de >loge.txt  
 
-echo "Fortran version:"
+
 #nsys nvprof ./tfaxpy2df > time-nvf.txt
-time ./tfaxpy2df
+./tfaxpy2df >logf.txt

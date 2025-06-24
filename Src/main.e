@@ -221,7 +221,7 @@ def int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int sho
 def int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show):
 
   # MainCcompcuda invokes the nvcc compiler to generate object 
-  #code for nvidia gpus.
+  # code for nvidia gpus.
 
   char [*] tmp          # String temporary 
   char [*] cmd          # Command line for compiling
