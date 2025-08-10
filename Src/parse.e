@@ -1,4 +1,4 @@
-# Parse is the module containing all parser routines.
+# Parse containings parser routines.
 #
 # Eps grammar
 # The complete grammar of the epsilon language is given below using the
@@ -1180,8 +1180,14 @@ def int ParseFdef(struct tree p) :
 def struct tree ParseExtdecl() :
 
   # ParseExtdecl parses external declarations      
+  #
   # The following part of the grammar is implemented:
-  #    extdecl    = type [( ':' structdeclar | ID ( [idseq] ";" | '(' fdecl ] ))]
+  #
+  #   extdecl = 
+  #       import 
+  #     | fdef
+  #     | type   idseq (SEMICOLON | NL) | COLON IND structdeclar) 
+  #     | ID ASSIGN RCONSTANT|SCONSTANT|ICONSTANT (SEMICOLON|NL)
 
   struct tree mp, np, sp, imp;
 

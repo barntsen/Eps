@@ -186,7 +186,10 @@ def int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int sho
     cmd=LibeStradd(cmd," -g ") 
 
   if(optimize == OK):
+    cmd=LibeStradd(cmd," -O3 ") 
+  else :
     cmd=LibeStradd(cmd," -O2 ") 
+    
 
   if(openmp == OK):
     cmd=LibeStradd(cmd," -fopenmp ") 
@@ -235,6 +238,8 @@ def int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int sh
     cmd=LibeStradd(cmd, " -g ") 
 
   if(optimize == OK):
+    cmd=LibeStradd(cmd, " -O3 ") 
+  else : 
     cmd=LibeStradd(cmd, " -O2 ") 
 
   if(openmp == OK):

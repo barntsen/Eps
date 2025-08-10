@@ -1,12 +1,12 @@
 ## The eps compilers makefile
 
 # Comment out for the ecc (cuda version) compiler
-# ARCH=cuda
-# C=nvcc -x cu -Xcompiler "-z muldefs"
-# EXEC=ecc
-# EL=nvcc -L. -Xcompiler "-z muldefs" 
-# EXEL=elc
-# EXT=cpp
+ ARCH=cuda
+ C=nvcc -x cu -Xcompiler "-z muldefs"
+ EXEC=ecc
+ EL=nvcc -L. -Xcompiler "-z muldefs" 
+ EXEL=elc
+ EXT=cpp
 
 # Comment out for the ech (hip version) compiler
 #  ARCH=hip
@@ -17,19 +17,19 @@
 #  EXT=cpp
 
 # Comment out for the ec (cpu version) compiler
-   ARCH=cpu
-   C=gcc
-   EXEC=ec
-   EL=gcc 
-   EXEL=el
-   EXT=c
+#   ARCH=cpu
+#   C=gcc
+#   EXEC=ec
+#   EL=gcc 
+#   EXEL=el
+#   EXT=c
 
 # Definitions
     EC=./$(EXEC)
     BIN=../Bin
     LIB=../Lib
     INC=../Inc
-    ECFLAGS= -g  
+    ECFLAGS= 
     LDFLAGS=
 
 %.o : %.m
@@ -73,7 +73,7 @@ lib$(ARCH).a:  libe.m run$(ARCH).o
 	       ar rcs libe$(ARCH).a libe.o run$(ARCH).o 
 
 libe.m:        libe.e run.m
-	       $(EC)  $(ECFLAGS) libe.e   
+	       $(EC)  $(ECFLAGS) -O libe.e   
 
 run.m:         run.e	
 	       $(EC)  $(ECFLAGS) run.e   

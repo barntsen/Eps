@@ -754,7 +754,6 @@ def int ScanGetok() :
     ScanIndentsave=ScanIndent 
     ScanIndentinit=ScanIndent
     ScanStack[0]=ScanIndentinit
-    #LibePs("Initial indent: "); LibePi(ScanIndentinit); LibePs("\n")
      
   # If indentation increases, emit an IND token.
   # The indentation is stored on a stack.

@@ -3,15 +3,15 @@
 # Generate c-code for boostrapping of the compiler
 
 #Uncomment for cpu
-#EC=ec
+#EC=./ec
 #ARCH=cpu
 
 #Uncomment for cuda 
-EC=ecc
+EC=./ecc
 ARCH=cuda
 
 #Uncomment for hip
-#EC=ech
+#EC=./ech
 #ARCH=hip
 
 #Copy machine depenent file

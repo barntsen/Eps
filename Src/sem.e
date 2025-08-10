@@ -29,8 +29,19 @@ def struct tree SemPrimexpr(struct tree p):
 
 
 def int SemSerror(struct tree p, char [*] s1, char [*] s2) :
-  
-  # SemSError prints semantic errors
+
+  #  SemSError prints semantic errors
+  #
+  #  Parameters :
+  #
+  #    p        : Parse Tree node
+  #    s1       : String 1 
+  #    s2       : String 2 
+  #
+  #  Returns    :
+  #  
+  #  The error strings s1 and s2 is printed together with file and
+  #  line no info.
 
   ErrSerror(PtreeGetfile(p), PtreeGetdef(p), PtreeGetline(p), s1,s2);
   return(OK);

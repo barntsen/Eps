@@ -1010,10 +1010,17 @@ def int CodeArrayex(int line, char [*] qual, char [*] sel, \
   # for gpu kernels
 
   struct tree p;
+  char [*] tmp,qname
 
   p = PtreeMknode("dummy", "dummy");
   PtreeSetline(p,line);
 
+  if(qual != NULL) :
+    tmp   = LibeStradd(qual,"->") 
+    qname = LibeStradd(tmp,name)
+    delete(tmp)
+
+  # Generate code for out-of-bounds check
   CodeEs(p,"if((0>");
   CodeEs(p,ival);
   CodeEs(p,")||(");
@@ -1028,10 +1035,11 @@ def int CodeArrayex(int line, char [*] qual, char [*] sel, \
   CodeEd(index);
   CodeEs(p,"])){\n");
 
+  # Generate Code for error message
   CodeEs(p,"printf(\"***Out of bounds error (file,array,line,index,rank,bound:") 
   CodeEs(p,ScanGetfile());
   CodeEs(p," ")
-  CodeEs(p,name); 
+  CodeEs(p,qname); 
   CodeEs(p," %d %d %d %d \\n" ) 
   CodeEs(p," \" ,")
   CodeEd(line); 
@@ -1040,10 +1048,11 @@ def int CodeArrayex(int line, char [*] qual, char [*] sel, \
   CodeEs(p,",")
   CodeEd(index); 
   CodeEs(p,",")
-  CodeEs(p,name); CodeEs(p,"->d["); CodeEd(index); CodeEs(p,"]-1");
+  CodeEs(p,qname); CodeEs(p,"->d["); CodeEd(index); CodeEs(p,"]-1");
   CodeEs(p,");")
 
   CodeEs(p,"\n}\n");
+  delete(qname)
   return(OK);
 
 def char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
