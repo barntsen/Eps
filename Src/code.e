@@ -1126,6 +1126,8 @@ def char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
 
   size = LibeStrlen(name) + LibeStrlen(temp)+6; 
   rval = new(char[size]);
+
+
   LibeStrcpy(name, rval);
   LibeStrcat("->a",rval);
   LibeStrcat("[",rval);
