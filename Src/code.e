@@ -56,18 +56,18 @@ def int CodeGetbreak() :
   
   return(CodeBreak)
 
+def int CodeBreakoff() :
+
   #
-  #CodeBreakon sets the code break flag to on
+  #CodeBreakoff sets the code break flag to off
   #
   # Returns:
   #   returns OK  
 
-  CodeBreak = OK
+  CodeBreak = ERR
   
   return(OK)
-  CodeBreak = OK
-  
-  return(OK)
+
 # CodeArch is a module variable holding the
 # architecturetype.
 int CodeArch;

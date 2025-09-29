@@ -526,6 +526,7 @@ int CodeError (nctempchar1 *s);
 int CodeBreak;
 int CodeBreakon ();
 int CodeGetbreak ();
+int CodeBreakoff ();
 int CodeArch;
 int CodeSetarch (int arch);
 int CodeGetarch ();
