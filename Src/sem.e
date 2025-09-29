@@ -27,6 +27,32 @@ def struct tree SemUnexpr(struct tree p):
 def struct tree SemPrimexpr(struct tree p): 
   pass
 
+int SemSimple
+
+def int SemSetsimple(int simple) :
+
+  # SemSetsimple sets the SemSimple flag
+  #
+  # Parameters: 
+  #   simple : Flag takes value OK or ERR
+  # 
+  # Returns: None
+  #
+
+  SemSimple = simple
+  return(OK)
+
+def int SemGetsimple() :
+  
+  # SemGetsimple returns the SemSimple flag
+  #
+  # Parameters: None
+  # 
+  # Returns:
+  #   Returns the SemSimple flag
+  #
+  return(SemSimple)
+  
 
 def int SemSerror(struct tree p, char [*] s1, char [*] s2) :
 
@@ -150,7 +176,6 @@ def int SemDeclaration(struct tree p, struct symbol tp) :
       PtreeSetrank(np,rank);
  
     np = PtreeMvsister(np);
-
   return (OK);
 
 
@@ -161,7 +186,6 @@ def int SemDeclarations(struct tree p, struct symbol tp) :
   while(p != NULL) :
     SemDeclaration(p,tp);
     p = PtreeMvsister(p);
- 
   return (OK);
 
  
@@ -982,7 +1006,6 @@ def struct tree SemBinexpr(struct tree p) :
   else:
     return (SemUnexpr(p));
 
- 
 
 def struct tree SemExpr(struct tree p) :
 
@@ -993,10 +1016,14 @@ def struct tree SemExpr(struct tree p) :
   sp = PtreeMvchild(p);
   sp = SemBinexpr(sp);
   SemCopytype(sp, p);
+
+  if(PtreeGetopexpr(p)==OK):
+    if(SemGetsimple() == ERR) :
+      PtreeSetsimple(p,ERR)
+      SemSetsimple(OK)
+    else :
+      PtreeSetsimple(p,OK)
   return p;
-
- 
-
 
 def struct tree SemUnexpr(struct tree p) :
 
@@ -1010,105 +1037,75 @@ def struct tree SemUnexpr(struct tree p) :
     p = SemPrimexpr(p);
     SemCopytype(p, np);
     return (np);
-  
- 
- 
   else:
     return SemPrimexpr(p);
+ 
 
- 
- 
 def struct tree SemPrimexpr(struct tree p) :
 
    # SemPrimexpr checks primary expression.
- 
+   # 
+   # Parameters :
+   #   p : Parse tree "compstmnt" node
+   # 
+   # Returns:
+   #  The routine returns a modfied parse tree 
+   #  decorated with types.  
+   #
      
   if(LibeStrcmp(PtreeGetname(p),"identifier")):
     SemId(p);
     return(p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "fcall")):
+    SemSetsimple(ERR)
     SemFcall(p);
     return (p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "cast")):
+    SemSetsimple(ERR)
     SemCast(p);
     return (p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "new")):
+    SemSetsimple(ERR)
     SemNew(p);
     return (p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "delete")):
+    SemSetsimple(ERR)
     SemDelete(p);
     return (p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "cmplx")):
+    SemSetsimple(ERR)
     SemCmplx(p);
     return (p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "re")):
+    SemSetsimple(ERR)
     SemRe(p);
     return (p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "len")):
+    SemSetsimple(ERR)
     SemLen(p);
     return (p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "im")):
+    SemSetsimple(ERR)
     SemIm(p);
     return (p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "sizeof")):
+    SemSetsimple(ERR)
     SemSizeof(p);
     return (p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "iconstant")):
     PtreeSetype(p, "int");
     return (p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "rconstant")):
     PtreeSetype(p, "float");
     return (p);
-  
- 
- 
   else if(LibeStrcmp(PtreeGetname(p), "sconstant")):
+    SemSetsimple(ERR)
     PtreeSetype(p, "char");
     PtreeSetref(p, "aref");
     PtreeSetrank(p,1);
     return (p);
-  
- 
- 
   else :
     return SemBinexpr(p);
-  
-
-
- 
 
 def int SemCopyparallel(struct tree p, struct tree np) :
 
@@ -1118,7 +1115,6 @@ def int SemCopyparallel(struct tree p, struct tree np) :
   return(OK);
 
  
-  
 def int SemArgtypes(struct tree p, struct symbol tp) :
  
   # SemArgtypes checks if argument types of parse tree matches symbol table.
@@ -1146,11 +1142,7 @@ def int SemArgtypes(struct tree p, struct symbol tp) :
                 "Function arguments does not match forward declaration" \
                 ,PtreeGetdef(p));
       return(ERR);
-    
- 
     return(OK);  # No arguments to check  
-  
- 
   
   # Argument list exists, start processing of the argument list  
 
@@ -1162,28 +1154,19 @@ def int SemArgtypes(struct tree p, struct symbol tp) :
   tp = SymLookup("#arglist",tp);
   if(tp == NULL) :
     SemSerror(p,"Function Arguments does not match forward declaration",name);
-  
-
   else :
     # Move to the argument sub table
     tp = SymGetable(tp); 
-    
-
 
     # Move to first entry
   tp = SymMvnext(tp); 
 
-    # Check all arguments
-
+  # Check all arguments
   while(p != NULL):
     SemArgtype(p,tp);
     p = PtreeMvsister(p);
     tp = SymMvnext(tp); 
-     
-
- 
   return(OK);
-
 
  
 def int SemFdef2(struct tree p, struct symbol tp) :
@@ -1221,12 +1204,8 @@ def int SemFdef2(struct tree p, struct symbol tp) :
   # Find the function body node and save in sp
   if(LibeStrcmp(PtreeGetname(np),"arglist") == OK) :
     sp = PtreeMvsister(np);   
-  
-
   else :
     sp = np;
-  
-
 
   #Process the argument list
   if(LibeStrcmp(PtreeGetname(np),"arglist") == OK) :
@@ -1257,9 +1236,6 @@ def int SemFdef2(struct tree p, struct symbol tp) :
     #Copy the list of arguments from the local table
     #SymCpytble(ftp,argsub);
 
-  
-
-
   # Check that the argument list type matches
   # the forward declaration
   SemArgtypes(p,tp);
@@ -1271,8 +1247,6 @@ def int SemFdef2(struct tree p, struct symbol tp) :
   SemCompstmnt(sp); 
   SemCopyparallel(p,sp);
   return (OK);
-
-
  
 
 def int Semisnobody(struct tree p) :
@@ -1305,7 +1279,6 @@ def int Semisnobody(struct tree p) :
       return(OK);
     else:
       return(ERR);
-
   return(ERR);
 
 def int SemFdef(struct tree p, struct symbol tp) :
@@ -1337,13 +1310,9 @@ def int SemFdef(struct tree p, struct symbol tp) :
     np = PtreeMvsister(np);
     while((sp = PtreeMvsister(sp))!= NULL):
       rank = rank+1;
-  
- 
   else:
     rank = 0;
     np = PtreeMvchild(p); 
-  
- 
  
   PtreeSetrank(p,rank);
   SemCopytype(p,np);
@@ -1358,25 +1327,16 @@ def int SemFdef(struct tree p, struct symbol tp) :
   if(Semisnobody(p) == OK) :
     PtreeSetforw(p,"forw");
     nobody = OK;
-  
-
 
   # Enter the function name into the external symbol table
   if((fname = SymMkname(PtreeGetdef(p), tp)) == NULL):
     qp = SymLookup(PtreeGetdef(p),tp);
     if(LibeStrcmp(SymGetforw(qp),"forw") != OK):
       SemSerror(np,"Function already defined", PtreeGetdef(p));
-    
-
     else :
       # Handle function forward declarations 
       SemFdef2(p,qp);
       return(OK); 
-    
-
-  
- 
-  
   SymSetype(fname, PtreeGetype(p));
   SymSetstruct(fname, PtreeGetstruct(p));
   SymSetarray(fname, PtreeGetarray(p));
@@ -1385,8 +1345,6 @@ def int SemFdef(struct tree p, struct symbol tp) :
 
   if(nobody == OK) :
     SymSetforw(fname, "forw");
-  
-
 
   # Move to the arglist or function body
   np = PtreeMvchild(p);     
@@ -1402,12 +1360,8 @@ def int SemFdef(struct tree p, struct symbol tp) :
   # Find the function body node and save in sp
   if(LibeStrcmp(PtreeGetname(np),"arglist") == OK) :
     sp = PtreeMvsister(np);   
-  
-
   else :
     sp = np;
-  
-
 
   #Process the argument list
   if(LibeStrcmp(PtreeGetname(np),"arglist") == OK) :
@@ -1437,17 +1391,11 @@ def int SemFdef(struct tree p, struct symbol tp) :
     SymSetable(arg,argsub);
     #Copy the list of arguments from the local table
     SymCpytble(ftp,argsub);
-
-  
-
  
   # Do semantic check of the function body
   SemCompstmnt(sp); 
   SemCopyparallel(p,sp);
- 
   return (OK);
-
-
  
 
 def int SemExtdecl(struct tree p) :
@@ -1475,32 +1423,19 @@ def int SemExtdecl(struct tree p) :
       sp = PtreeMvchild(np);
       if(LibeStrcmp(PtreeGetarray(np),"array")):
         sp = PtreeMvsister(sp);
-      
- 
 
       if(LibeStrcmp(PtreeGetname(sp), "structdec")):   
         SemStructdecl(np, SymGetetp()); 
-      
- 
 
    # Check function declaration  
       else if(LibeStrcmp(PtreeGetname(sp), "fdef")):
         SemFdef(np, SymGetetp());
-      
- 
 
    # Check variable and array declaration  
       else:
         SemDeclaration(np, SymGetetp());
       np = PtreeMvsister(np);
-    
- 
- 
-  
- 
- 
   return (OK);
-
  
 
 def int SemSem(struct tree p, struct symbol tp) :
@@ -1509,9 +1444,15 @@ def int SemSem(struct tree p, struct symbol tp) :
   # The entry point of the semantic checking is this routine.
  
   struct symbol ltp;
+
   SymSetetp(tp);          
   ltp= NULL; 
-  SymSetltp(ltp);
+  SymSetltp(ltp)
+
+  # Default classification is to break
+  # up statements/expressions
+  SemSetsimple(ERR)
+
   SemExtdecl(p);  # Check syntax tree pointed to by p        
   return (OK);
 
@@ -1734,63 +1675,35 @@ def int SemCompstmnt(struct tree p) :
   q = p; # Save top node  
   p = PtreeMvchild(p);    
   if(p==NULL):   # If empty compund stament, accept it
- 
     return(OK);
-  
- 
  
   if(LibeStrcmp(PtreeGetname(p), "declarations")):
     SemDeclarations(PtreeMvchild(p), SymGetltp());
     p = PtreeMvsister(p);
-  
- 
  
   while(p != NULL):
     if(LibeStrcmp(PtreeGetname(p), "expr")):
-      SemExpr(p);
       PtreeSetopexpr(p,OK);
-    
- 
- 
+      SemSetsimple(OK)
+      SemExpr(p);
     if(LibeStrcmp(PtreeGetname(p), "while")):
       SemWhilestmnt(p);
-    
- 
- 
     if(LibeStrcmp(PtreeGetname(p), "for")):
       SemForstmnt(p);
-    
- 
- 
     if(LibeStrcmp(PtreeGetname(p), "parallel")):
       SemParallelstmnt(p);
       PtreeSetparallel(p,"parallel");
-    
- 
- 
     if(LibeStrcmp(PtreeGetname(p), "if")):
       SemIfstmnt(p);
-    
- 
- 
     if(LibeStrcmp(PtreeGetname(p), "return")):
       SemReturnstmnt(p);
-    
- 
- 
     if(LibeStrcmp(PtreeGetparallel(p),"parallel")):
       parflag=OK;
-    
  
     p = PtreeMvsister(p);
   
- 
-
   if(parflag == OK):
     PtreeSetparallel(q,"parallel"); 
-  
- 
- 
   return(OK);
 
  

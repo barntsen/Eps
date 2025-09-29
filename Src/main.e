@@ -68,6 +68,7 @@ def int MainHelp(int arch):
   LibePuts(stderr,"   -p : Perform only syntax check, no code generated \n") 
   LibePuts(stderr,"   -q : Perform syntax and semantic check, no code generated \n") 
   LibePuts(stderr,"   -C : Array index check \n") 
+  LibePuts(stderr,"   -i : Break up expressions \n") 
   if(arch == CPU):
     LibePuts(stderr,"   -c : Produce c-code but do not generate object code\n") 
       
@@ -409,6 +410,10 @@ def int Main(struct MainArg [*] MainArgs) :
     if(LibeStrcmp(MainArgs[i].arg, "-C") == OK):      
       CodeArraycheckon() 
 
+    # Turn on array expression breakup
+    if(LibeStrcmp(MainArgs[i].arg, "-i") == OK):      
+      CodeBreakon() 
+
     # Turn on debug flag  
     if(LibeStrcmp(MainArgs[i].arg, "-g") == OK):      
       debug=OK 
@@ -475,7 +480,6 @@ def int Main(struct MainArg [*] MainArgs) :
     if(semantic == OK):
       if(p != NULL):
         SemSem(p, SymGetetp())  # Semantic analysis
-          
       if(atree == OK):
         PtreePrtree(p,0)        # Print annotated parse tree 
       if(table == OK):           # Print local symbol table  

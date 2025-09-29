@@ -116,7 +116,7 @@ def int LibeErrinit() :
   #
 
   LibeErrno = OK 
-  LibeErrstr = NULL 
+  LibeErrstr = NULL
   return(OK) 
 
 

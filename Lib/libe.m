@@ -349,9 +349,9 @@
    #first void void void 0 1 void void void void void void void void 
    fp int void void 0 1 void identifier lval void void void void void 
  LibeGetc int fdef void 0 0 void void void void void void void 
-  #first void void void 0 1 void void void void void void void void 
+  #first void void void 477463347 1 void void void void void void void void 
   #arglist void void void 0 1 void void void void void void void void 
-   #first void void void 0 1 void void void void void void void void 
+   #first void void void 429138576 1 void void void void void void void void 
    fp int void void 0 1 void identifier lval void void void void void 
  LibeUngetc int fdef void 0 0 void void void void void void void 
   #first void void void 0 1 void void void void void void void void 

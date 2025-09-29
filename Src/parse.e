@@ -939,7 +939,7 @@ def struct tree ParseForstmnt() :
   # The following part of the grammar is implemented:
   #    forstmnt       = FOR 
 
-  struct tree np, sp, rp;
+  struct tree np, sp;
   if(lookahead == FOR):
     np = ParseMknode("for", "void");
     ParseMatch(FOR);
@@ -1160,7 +1160,7 @@ def int ParseFdef(struct tree p) :
     ParseError("Missing function type declaration");
 
   if(lookahead == ID):
-    sp=PtreeMknode("fdef", ScanGetext())
+    sp=ParseMknode("fdef", ScanGetext())
     ParseMatch(ID)
     PtreeAddchild(np,sp)
 

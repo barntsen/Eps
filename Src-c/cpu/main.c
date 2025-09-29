@@ -1420,7 +1420,7 @@ int nctemp1272=PtreeInit();
 int nctemp1274=CodeInit();
 int nctemp1276=CodeArraycheckoff();
 int nctemp1278=CodeDebugoff();
-int nctemp1280= 2;
+int nctemp1280= 1;
 int nctemp1282=CodeSetarch(nctemp1280);
 int nctemp1287=MainArgs->d[0];l =nctemp1287;
 int nctemp1291 = (l <= 1);
@@ -1446,7 +1446,7 @@ int nctemp1325=LibeStrcmp(nctemp1316,nctemp1321);
 int nctemp1313 = (nctemp1325 ==1);
 if(nctemp1313)
 {
-int nctemp1328= 2;
+int nctemp1328= 1;
 int nctemp1330=MainHelp(nctemp1328);
 int nctemp1332=LibeExit();
 }
@@ -1663,7 +1663,7 @@ int nctemp1715 = (emit ==1);
 if(nctemp1715)
 {
 nctempchar1* nctemp1724= infile;
-int nctemp1727= 2;
+int nctemp1727= 1;
 nctempchar1* nctemp1729=MainFout(nctemp1724,nctemp1727);
 outfile=nctemp1729;
 nctempchar1* nctemp1734= outfile;
@@ -1812,7 +1812,7 @@ int nctemp1934 = (obj ==1);
 int nctemp1926 = (nctemp1929 && nctemp1934);
 if(nctemp1926)
 {
-int nctemp1938 = (2 ==1);
+int nctemp1938 = (1 ==1);
 if(nctemp1938)
 {
 nctempchar1* nctemp1943= outfile;
@@ -1823,7 +1823,7 @@ int nctemp1952= show;
 int nctemp1954=MainCcompcpu(nctemp1943,nctemp1946,nctemp1948,nctemp1950,nctemp1952);
 }
 else{
-int nctemp1955 = (2 ==2);
+int nctemp1955 = (1 ==2);
 if(nctemp1955)
 {
 nctempchar1* nctemp1960= outfile;
@@ -1834,7 +1834,7 @@ int nctemp1969= show;
 int nctemp1971=MainCcompcuda(nctemp1960,nctemp1963,nctemp1965,nctemp1967,nctemp1969);
 }
 else{
-int nctemp1972 = (2 ==3);
+int nctemp1972 = (1 ==3);
 if(nctemp1972)
 {
 nctempchar1* nctemp1977= outfile;

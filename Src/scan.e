@@ -281,8 +281,7 @@ def int ScanWhite()  :
   # Returns:
   #   OK
 
-  int c 
-  int d
+  int c,d 
 
   while(((c=ScanGetch()) == SPACE) || (c == TAB)):
     d = 0  

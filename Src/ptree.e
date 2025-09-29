@@ -475,7 +475,6 @@ def char [*] PtreeGetstruct(struct tree p) :
   return(p.structure) 
 
     
-   
 def int PtreeSetempr(struct tree p, char [*] tempr) :
 
   # PtreeSetempr sets the real temporary of the node

@@ -1,4 +1,4 @@
-# The Sym imodule manages the symbol table.
+# The Sym module manages the symbol table.
 #
 #
 #    Table 1                Table 2
@@ -631,15 +631,12 @@ def int SymPrsym(int fp,struct symbol p, int level) :
 
 def int SymExport(int fp,struct symbol p, int level) :
 
-  # SymExport prints the symbol table.
+  # SymExport exports the symbol table.
 
   struct symbol tq 
        
   if(p == NULL):
     return(ERR) 
-
-  # Remove temporaries from the exported table
-  #SymRmtemp(p) 
 
   # Make a dummy table to print the "first" entry
   tq = SymMktable() 
@@ -675,9 +672,8 @@ def int Symgetline(int fp, struct symbol np, char [*] module):
 # Symgetline reads an single line (record) from a symbol 
 # table stored in a file.
 
-  int indent 
+  int indent,tmp 
   int ch 
-  int tmp
   char [*] field 
 
   field = new(char [NTBL]) 
