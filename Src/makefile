@@ -17,12 +17,12 @@
 #  EXT=cpp
 
 # Comment out for the ec (cpu version) compiler
-#   ARCH=cpu
-#   C=gcc
-#   EXEC=ec
-#   EL=gcc 
-#   EXEL=el
-#   EXT=c
+#  ARCH=cpu
+#  C=gcc
+#  EXEC=ec
+#  EL=gcc 
+#  EXEL=el
+#  EXT=c
 
 # Definitions
     EC=./$(EXEC)

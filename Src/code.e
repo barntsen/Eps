@@ -1616,7 +1616,6 @@ def char [*] CodeFcall(struct tree p) :
       CodeEs(sp,PtreeGetype(sp));
       CodeEd(PtreeGetrank(sp));
       CodeEs(sp,"*");
- 
     else if(LibeStrcmp(PtreeGetref(sp),"sref") == OK):
       CodeEs(sp,"struct ");
       CodeEs(sp,PtreeGetype(sp));
@@ -2062,7 +2061,7 @@ def int CodeDimprod(struct tree p,char [*] name,int n):
 
   return(OK)
 
-def int CodeSarray(struct tree p) :
+def int CodeSarray(struct tree p, char [*] qname) :
 
   # CodeSarray emits code for array reference
   #
@@ -2082,14 +2081,12 @@ def int CodeSarray(struct tree p) :
   # where N is the rank (dimension) of the array, i0,i1,...,i(N-1)
   # are the indices and n0,n1...,n(N-1) are the size of each dimension.
   
-  char [*] name
   struct symbol tp      
   struct tree sp, q
-  #char [*] temp
+  char [*] name
   int rank,i
 
   name = PtreeGetdef(p);
-  #temp = CodeMktemp();
   tp=SymLook(name);
   if(tp==0) :
     CodeError(name);
@@ -2112,6 +2109,10 @@ def int CodeSarray(struct tree p) :
   q=p;
   # We are now at the expression for the first index
   # Rank is the number of dimensions 
+  if(qname != NULL):
+    qname = LibeStradd(qname,name)
+  else:
+    qname = LibeStrsave(name)
 
   # Main loop over the number of dimensions
   for(i=0; i < rank; i=i+1):
@@ -2122,11 +2123,12 @@ def int CodeSarray(struct tree p) :
       q=PtreeMvsister(q);
       CodeEs(p,"+");
       # Emit expression for product of dimensions
-      CodeDimprod(p,name,i+1)
+      CodeDimprod(p,qname,i+1)
       #Emit code for the index expression
       CodeSexpr(q);
 
   CodeEs(p, "]") 
+  delete(qname)
   return(OK);
 
 def int CodeIdstruct(struct tree p) :
@@ -2141,33 +2143,43 @@ def int CodeIdstruct(struct tree p) :
 
   struct symbol tp, up, uup
   struct tree np,sp
+  char [*] qname
 
+  # Structure id consists of a qualifier and the selector
+  # First generate code for the qualifier
+  qname=NULL
   if(LibeStrcmp(PtreeGetarray(p),"array")==OK):
-    CodeSarray(p);
+    CodeSarray(p,qname);
     np = PtreeMvchild(p);
     if(np==NULL): 
       return(OK);
     sp = PtreeMvsister(np);
     if(sp==NULL): 
       return(OK);
-    np = sp;
+    CodeEs(p,".")
+    qname = LibeStradd(PtreeGetdef(p),".")
+  else:
+    CodeEs(p, PtreeGetdef(p));
+    qname = LibeStradd(PtreeGetdef(p),"->")
+    sp=PtreeMvchild(p)
+    if(sp == NULL):
+      return(OK)
+    CodeEs(p, "->");
+ 
+  # Next generate code for the selector
+   
+  if(LibeStrcmp(PtreeGetarray(sp),"array")==OK):
     tp = SymLtp;
     up = SymEtp;
     uup = SymLook(PtreeGetdef(p));
     uup = SymLook(SymGetype(uup));
     SymLtp = SymGetable(uup);
-    CodeEs(np, ".");
-    CodeSarray(np);
+    CodeSarray(sp,qname);
+    delete(qname)
     SymLtp = tp;
     SymEtp = up;
-    #CodeEs(p, ".");
-    #CodeEs(p, PtreeGetdef(np));
   else:
-    CodeEs(p, PtreeGetdef(p));
-    if((np = PtreeMvchild(p))!=NULL):
-      CodeEs(p, "->");
-      CodeEs(p, PtreeGetdef(np));
-    return(OK)
+    CodeEs(p, PtreeGetdef(sp));
   return (OK)
 
 def int CodeSident(struct tree p):
@@ -2180,11 +2192,13 @@ def int CodeSident(struct tree p):
    # Returns:
    #   returns OK
    #
+   char [*] qname
      
+   qname=NULL
    if(LibeStrcmp(PtreeGetstruct(p),"struct")==OK):
      CodeIdstruct(p)
    else if(LibeStrcmp(PtreeGetarray(p),"array")==OK):
-     CodeSarray(p);
+     CodeSarray(p,qname);
      return(OK);
    else:
      CodeEs(p, PtreeGetdef(p));
@@ -2351,6 +2365,31 @@ def char [*] CodeExpr(struct tree p) :
   sp = PtreeMvchild(p);
   rval = CodeBinexpr(sp);
   return(rval);
+
+
+def int CodeSforstmnt(struct tree p):
+
+  #
+  # Parameters :
+  #   p : forstmnt node
+  #
+  # Returns :
+  #  Returns OK
+  #
+
+  p = PtreeMvchild(p);
+  CodeEs(p,"for(");
+  CodeSexpr(p);
+  CodeEs(p,";");
+  p = PtreeMvsister(p);
+  CodeSexpr(p);
+  CodeEs(p,";");
+  p = PtreeMvsister(p);
+  CodeSexpr(p);
+  CodeEs(p,")");
+  p = PtreeMvsister(p);
+  CodeStmnt(p);
+  return(OK);
 
 
 def int CodeWhilestmnt(struct tree p) :
@@ -3034,7 +3073,7 @@ def int CodeCompstmnt(struct tree p) :
 
   #CodeCompstmnt generates code for compound statement.  
  
-  struct tree sp,q;
+  struct tree sp,q,r;
   
   sp = p;
 
@@ -3076,9 +3115,20 @@ def int CodeCompstmnt(struct tree p) :
         CodeWhilestmnt(p);
 
     if(LibeStrcmp(PtreeGetname(p),"for") == OK):
+      #q=PtreeMvchild(p);
+      #PtreeMvsister(q);
+      #CodeForstmnt(p);
+
       q=PtreeMvchild(p);
-      PtreeMvsister(q);
-      CodeForstmnt(p);
+      r=PtreeMvsister(q);
+      if(PtreeGetsimple(q) && PtreeGetsimple(r) && \
+        PtreeGetsimple(PtreeMvsister(r))):
+        CodeSforstmnt(p);
+      else:
+        PtreeSetsimple(q,ERR);
+        PtreeSetsimple(r,ERR);
+        PtreeSetsimple(PtreeMvsister(r),ERR);
+        CodeForstmnt(p);
 
     if(LibeStrcmp(PtreeGetname(p),"parallel") == OK):
         CodeParallelstmnt(p);
@@ -3102,7 +3152,7 @@ def int CodeStmnt(struct tree p) :
 
   # CodeStmnt generates code for statement.  
  
-  struct tree sp;
+  struct tree sp,q,r;
 
   sp = p;
 
@@ -3129,12 +3179,28 @@ def int CodeStmnt(struct tree p) :
       CodeCompstmnt(p);
 
     if(LibeStrcmp(PtreeGetname(p),"expr") == OK):
+      if(CodeGetbreak() == OK):
         CodeExpr(p);
+      else :
+        if(PtreeGetsimple(p)== OK):
+          CodeSexpr(p);
+          CodeEs(p,";\n")
+        else :
+          CodeExpr(p);
 
     if(LibeStrcmp(PtreeGetname(p),"while") == OK):
         CodeWhilestmnt(p);
 
     if(LibeStrcmp(PtreeGetname(p),"for") == OK):
+      q=PtreeMvchild(p);
+      r=PtreeMvsister(q);
+      if(PtreeGetsimple(q) && PtreeGetsimple(r) && \
+        PtreeGetsimple(PtreeMvsister(r))):
+        CodeSforstmnt(p);
+      else:
+        PtreeSetsimple(q,ERR);
+        PtreeSetsimple(r,ERR);
+        PtreeSetsimple(PtreeMvsister(r),ERR);
         CodeForstmnt(p);
 
     if(LibeStrcmp(PtreeGetname(p),"parallel") == OK):

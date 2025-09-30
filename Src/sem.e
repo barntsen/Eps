@@ -232,16 +232,16 @@ def int SemArgtype(struct tree p, struct symbol tp) :
 
   # First process the type
   if(LibeStrcmp(SymGetype(tp),PtreeGetype(p))== ERR):
-    SemSerror(p,"Argument1 type does not match forward declaration",name);
+    SemSerror(p,"Argument type does not match forward declaration",name);
  
   if(LibeStrcmp(SymGetref(tp),PtreeGetref(p))==ERR):
-    SemSerror(p,"Argument2 type does not match forward declaration",name);
+    SemSerror(p,"Argument type does not match forward declaration",name);
 
   if(LibeStrcmp(SymGetarray(tp),PtreeGetarray(p))==ERR):
-    SemSerror(p,"Argument3 type does not match forward declaration",name);
+    SemSerror(p,"Argument type does not match forward declaration",name);
 
   if((SymGetrank(tp)!= PtreeGetrank(p))):
-    SemSerror(p,"Argument4 type does not match forward declaration", name);
+    SemSerror(p,"Argument type does not match forward declaration", name);
   
   return(OK);
 
@@ -1472,8 +1472,6 @@ def int SemWhilestmnt(struct tree p) :
   SemStmnt(p);
   SemCopyparallel(q,p);
   return(OK);
-
- 
  
 def int SemForstmnt(struct tree p) :
 
@@ -1484,20 +1482,21 @@ def int SemForstmnt(struct tree p) :
   q=p;  #Save top node
 
   p = PtreeMvchild(p);    
-  SemExpr(p);
   PtreeSetopexpr(p,OK);
+  SemSetsimple(OK)
+  SemExpr(p);
   p = PtreeMvsister(p);
-  SemExpr(p);
   PtreeSetopexpr(p,OK);
+  SemSetsimple(OK)
+  SemExpr(p);
   p = PtreeMvsister(p);
-  SemExpr(p);
   PtreeSetopexpr(p,OK);
+  SemSetsimple(OK)
+  SemExpr(p);
   p = PtreeMvsister(p);
   SemStmnt(p);
   SemCopyparallel(q,p);
   return(OK);
-
- 
  
 def int SemParallelstmnt(struct tree p) :
 
@@ -1554,14 +1553,7 @@ def int SemIfstmnt(struct tree p) :
     if(LibeStrcmp(PtreeGetname(p), "else")):
       p = PtreeMvchild(p);
       SemStmnt(p);
-    
- 
- 
-  
- 
- 
   return(OK);
-
  
  
 def int SemReturnstmnt(struct tree p) :
@@ -1584,17 +1576,10 @@ def int SemReturnstmnt(struct tree p) :
     PtreeSetrank(p, SymGetrank(up));
     if(SemComparetype(p, sp) == ERR):
       SemSerror(p,"Return type is incorrect ", " ");
-    
- 
- 
-  
- 
  
   return(OK);
 
 
- 
- 
 def int SemStmnt(struct tree p) :
 
   # SemStmnt checks statement.  
@@ -1608,60 +1593,39 @@ def int SemStmnt(struct tree p) :
   if(LibeStrcmp(PtreeGetname(p), "declarations")):
     SemDeclarations(p, SymGetltp());
     p = PtreeMvsister(p);
-  
- 
  
   while(p != NULL):
     if(LibeStrcmp(PtreeGetname(p), "expr")):
+      PtreeSetopexpr(p,OK);
+      SemSetsimple(OK)
       SemExpr(p);
       PtreeSetopexpr(p,OK);
-    
- 
  
     if(LibeStrcmp(PtreeGetname(p), "compstmnt")):
       SemCompstmnt(p);
-    
- 
  
     if(LibeStrcmp(PtreeGetname(p), "while")):
       SemWhilestmnt(p);
-    
- 
  
     if(LibeStrcmp(PtreeGetname(p), "for")):
       SemForstmnt(p);
-    
- 
  
     if(LibeStrcmp(PtreeGetname(p), "parallel")):
       parflag=OK;
-    
- 
  
     if(LibeStrcmp(PtreeGetname(p), "if")):
       SemIfstmnt(p);
-    
- 
- 
 
     if(LibeStrcmp(PtreeGetname(p), "return")):
       SemReturnstmnt(p);
-    
- 
 
     p = PtreeMvsister(p);
   
- 
-
   if(parflag == OK):
     PtreeSetparallel(q,"parallel");
-  
- 
  
   return(OK);
 
-
- 
   
 def int SemCompstmnt(struct tree p) :
 
