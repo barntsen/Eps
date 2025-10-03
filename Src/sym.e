@@ -49,18 +49,77 @@ const NTBL=400
 # SymEtp is the external Symbol Table
 struct symbol SymEtp        
 
+def int SymSetetp(struct symbol tp) :
+
+  # SymSetetp sets the external symbol table
+  #
+  # Parameters:
+  #   tp : External symbol table
+  #
+  # Returns:
+  #   Returns OK
+  #
+
+  SymEtp = tp
+  return OK
+  
+def struct symbol SymGetetp() :
+
+  # SymGetetp returns the external symbol table
+  #
+  # Parameters:
+  #   none
+  #
+  # Returns:
+  #   Returns the external symbol table
+
+  return SymEtp
+  
+
 # SymLtp is the local symbol table
 struct symbol SymLtp        
 
+def int SymSetltp(struct symbol tp) :
+
+  # SymSetltp sets the local symbol table
+  #
+  # Parameters:
+  #   tp : Local symbol table
+  #
+  # Returns:
+  #   Returns OK
+  #
+
+  SymLtp = tp
+  return OK
+  
+def struct symbol SymGetltp() :
+
+  # SymGetltp returns the local symbol table
+  #
+  # Parameters:
+  #   none
+  #
+  # Returns:
+  #   Returns the local symbol table
+
+  return SymLtp
+  
 # SymStp is the string table (not used)
 struct symbol SymStp       
 
-def struct symbol SymGetetp() :
+def struct symbol SymGetstp() :
 
-  # SymGetetp gets the symbol table.                 
+ # SymGetstp gets the string table.                 
+ 
+  return(SymStp) 
+ 
+def struct symbol SymSetstp( struct symbol stp) :
 
-  return(SymEtp) 
+  # SymSetstp -- sets the string table.                 
 
+  SymStp = stp 
+  return(SymStp) 
 def int SymIstemp(char [*] name):
 
   # SymIstemp checks if the name starts with "nctemp"
@@ -87,38 +146,6 @@ def int SymIstemp(char [*] name):
   delete(t) 
   return(OK) 
 
-def struct symbol SymSetetp( struct symbol etp) :
-
-  # SymSetetp sets the symbol table                    
-
-  SymEtp = etp 
-  return(SymEtp) 
-
-def struct symbol SymGetltp() :
-
-  # SymGetltp gets the local symbol table.                 
- 
-  return(SymLtp) 
-
-def struct symbol SymSetltp( struct symbol ltp) :
-
-  # SymSetltp sets the local symbol table.                 
- 
-  SymLtp = ltp 
-  return(SymLtp) 
-
-def struct symbol SymGetstp() :
-
- # SymGetstp gets the string table.                 
- 
-  return(SymStp) 
- 
-def struct symbol SymSetstp( struct symbol stp) :
-
-  # SymSetstp -- sets the string table.                 
-
-  SymStp = stp 
-  return(SymStp) 
 
 def struct symbol SymLookup(char [*] s, struct symbol tp) :
 
@@ -530,6 +557,7 @@ def int SymCpytble(struct symbol tp, struct symbol up) :
     SymSetdescr(wp,SymGetdescr(tp)) 
     SymSetemit(wp,SymGetemit(tp)) 
     SymSetmodule(wp,SymGetmodule(tp)) 
+    SymSetglobal(wp,SymGetglobal(tp)) 
     tp = SymMvnext(tp) 
   return(OK) 
 

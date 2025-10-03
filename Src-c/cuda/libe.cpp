@@ -68,8 +68,8 @@ typedef struct nctempMainArg1 {int d[1]; struct MainArg *a; } nctempMainArg1;
 struct nctempMainArg2 {int d[2]; struct MainArg *a; } ;
 struct nctempMainArg3 {int d[3]; struct MainArg *a; } ;
 struct nctempMainArg4 {int d[4]; struct MainArg *a; } ;
-int LibeErrno;
-nctempchar1 *LibeErrstr;
+static int LibeErrno;
+static nctempchar1 *LibeErrstr;
 int LibeErrinit ()
 {
 LibeErrno = 1;
@@ -527,10 +527,10 @@ float LibeClock ()
 float nctemp507=RunClock();
 return nctemp507;
 }
-float LibeSincosmax;
-float LibeSincoslim;
-float LibeLnmax;
-float LibeLnmin;
+static float LibeSincosmax;
+static float LibeSincoslim;
+static float LibeLnmax;
+static float LibeLnmin;
 int LibeMod (int n,int r)
 {
 int nctemp508 = (r ==0);
@@ -2263,8 +2263,8 @@ typedef struct nctempLibeFdescr1 {int d[1]; struct LibeFdescr *a; } nctempLibeFd
 struct nctempLibeFdescr2 {int d[2]; struct LibeFdescr *a; } ;
 struct nctempLibeFdescr3 {int d[3]; struct LibeFdescr *a; } ;
 struct nctempLibeFdescr4 {int d[4]; struct LibeFdescr *a; } ;
-struct nctempLibeFdescr1 *LibeFarr;
-nctempchar1 *LibeTmpstr;
+static struct nctempLibeFdescr1 *LibeFarr;
+static nctempchar1 *LibeTmpstr;
 int LibeIoinit ()
 {
 int i;
@@ -3118,8 +3118,8 @@ RunFree(LibeFarr->a);
 RunFree(LibeFarr);
 return stat;
 }
-int NBLOCKS;
-int NTHREADS;
+static int NBLOCKS;
+static int NTHREADS;
 int LibeSetnb (int nb)
 {
 NBLOCKS = nb;

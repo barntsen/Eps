@@ -1958,8 +1958,6 @@ def int LibeFlushbuff(int fp) :
     LibeFarr[fp].cnt = 0 
     LibeFarr[fp].ptr = 0 
     return (ERR) 
-      
- 
   else:              
     LibeFarr[fp].cnt = 0 
     LibeFarr[fp].ptr = 0 

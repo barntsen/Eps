@@ -265,24 +265,32 @@ def int CodeIdeclaration(struct tree p, struct symbol tp) :
 
   if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
     if(LibeStrcmp(SymGetarray(tp),"array") == OK):
+      if(LibeStrcmp(SymGetglobal(tp),"global") == OK):
+        CodeEs(p,"static ") 
       CodeEs(p, "struct nctemp");
       CodeEs(p, SymGetype(tp));
       CodeEd(SymGetrank(tp));
       CodeEs(p, " *");
       CodeEs(p, SymGetname(tp)); 
     else:
+      if(LibeStrcmp(SymGetglobal(tp),"global") == OK):
+        CodeEs(p,"static ") 
       CodeEs(p, "struct ");
       CodeEs(p, SymGetype(tp));
       CodeEs(p, "*");
       CodeEs(p, " "); 
       CodeEs(p, SymGetname(tp)); 
   else if(LibeStrcmp(SymGetarray(tp),"array") == OK):
+    if(LibeStrcmp(SymGetglobal(tp),"global") == OK):
+      CodeEs(p,"static ") 
     CodeEs(p, "nctemp");
     CodeEs(p, SymGetype(tp));
     CodeEd(SymGetrank(tp));
     CodeEs(p, " *"); 
     CodeEs(p, SymGetname(tp)); 
   else:
+    if(LibeStrcmp(SymGetglobal(tp),"global") == OK):
+      CodeEs(p,"static ") 
     CodeEs(p, SymGetype(tp));
     CodeEs(p, " "); 
     CodeEs(p, SymGetname(tp)); 
@@ -1118,6 +1126,9 @@ def char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
   
   tp=SymLook(name);
   if(tp==0):
+    #DEBUG
+    LibePuts(stderr,"At CodeArray")
+    #DEBUG
     CodeError(name);
   sp = PtreeMvchild(p);
   if(sp==NULL):
@@ -2169,15 +2180,15 @@ def int CodeIdstruct(struct tree p) :
   # Next generate code for the selector
    
   if(LibeStrcmp(PtreeGetarray(sp),"array")==OK):
-    tp = SymLtp;
-    up = SymEtp;
+    tp = SymGetltp();
+    up = SymGetetp();
     uup = SymLook(PtreeGetdef(p));
     uup = SymLook(SymGetype(uup));
-    SymLtp = SymGetable(uup);
+    SymSetltp(SymGetable(uup));
     CodeSarray(sp,qname);
     delete(qname)
-    SymLtp = tp;
-    SymEtp = up;
+    SymSetltp(tp);
+    SymSetetp(up);
   else:
     CodeEs(p, PtreeGetdef(sp));
   return (OK)
@@ -2218,7 +2229,7 @@ def int CodeSfcall(struct tree p):
   struct symbol tp;
   struct tree sp;
 
-  tp = SymLookup(PtreeGetdef(p), SymEtp);
+  tp = SymLookup(PtreeGetdef(p), SymGetetp());
   sp = PtreeMvchild(p);    
   if(sp != NULL):
     if(LibeStrcmp(PtreeGetname(sp), "exprlist") == OK):
