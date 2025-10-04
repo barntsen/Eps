@@ -1,7 +1,4 @@
-//  Translated by epsc  version today  
-#include <stddef.h>
-#include <stdio.h>
-#include <assert.h>
+//  Translated by epsc  version December 2021  
 typedef struct { float r; float i;} complex; 
 typedef struct nctempfloat1 { int d[1]; float *a;} nctempfloat1; 
 typedef struct nctempint1 { int d[1]; int *a;} nctempint1; 
@@ -19,10 +16,19 @@ typedef struct nctempfloat4 { int d[4]; float *a;} nctempfloat4;
 typedef struct nctempint4 { int d[4]; int *a;} nctempint4; 
 typedef struct nctempchar4 { int d[4]; char *a;} nctempchar4; 
 typedef struct nctempcomplex4 { int d[4]; complex *a;} nctempcomplex4; 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-void *RunMalloc(int n); 
-int RunFree(void *n); 
+#include <assert.h>
+
+void *GpuNew(int n);
+void *GpuDelete(void *f);
+void *GpuError();
+void *RunMalloc(int n);
+int RunFree(void * );
+int RunSync();
+int RunGetnt();
+int RunGetnb();
 struct MainArg {nctempchar1 *arg;
 };
 typedef struct nctempMainArg1 {int d[1]; struct MainArg *a; } nctempMainArg1;
@@ -119,125 +125,40 @@ int LibeArrayex (int line,nctempchar1 *name,int ival,int index,int bound);
 int LibeSystem (nctempchar1 *cmd);
 int LibeInit ();
 int LibeExit ();
-int ErrError (nctempchar1 *file,int line,nctempchar1 *s)
+nctempchar1 * ScanPath ()
 {
-int nctemp2= 4;
-struct nctempchar1 *nctemp6;
-static struct nctempchar1 nctemp7 = {{ 7}, (char*)"file: \0"};
-nctemp6=&nctemp7;
-nctempchar1* nctemp4= nctemp6;
-int nctemp8=LibePuts(nctemp2,nctemp4);
-int nctemp10= 4;
-nctempchar1* nctemp12= file;
-int nctemp15=LibePuts(nctemp10,nctemp12);
-int nctemp17= 4;
-struct nctempchar1 *nctemp21;
-static struct nctempchar1 nctemp22 = {{ 10}, (char*)" -- line \0"};
-nctemp21=&nctemp22;
-nctempchar1* nctemp19= nctemp21;
-int nctemp23=LibePuts(nctemp17,nctemp19);
-int nctemp25= 4;
-int nctemp27= line;
-int nctemp29=LibePuti(nctemp25,nctemp27);
-int nctemp31= 4;
-struct nctempchar1 *nctemp35;
-static struct nctempchar1 nctemp36 = {{ 4}, (char*)" : \0"};
-nctemp35=&nctemp36;
-nctempchar1* nctemp33= nctemp35;
-int nctemp37=LibePuts(nctemp31,nctemp33);
-int nctemp39= 4;
-nctempchar1* nctemp43= s;
-nctempchar1* nctemp46=LibeStrsave(nctemp43);
-nctempchar1* nctemp41= nctemp46;
-int nctemp47=LibePuts(nctemp39,nctemp41);
-int nctemp49= 4;
-struct nctempchar1 *nctemp53;
-static struct nctempchar1 nctemp54 = {{ 3}, (char*)"\n\0"};
-nctemp53=&nctemp54;
-nctempchar1* nctemp51= nctemp53;
-int nctemp55=LibePuts(nctemp49,nctemp51);
-int nctemp57= 4;
-int nctemp59=LibeFlush(nctemp57);
-int nctemp61=LibeExit();
-return 1;
-}
-int ErrSerror (nctempchar1 *file,nctempchar1 *fname,int lineno,nctempchar1 *s1,nctempchar1 *s2)
-{
-int nctemp64= 4;
-struct nctempchar1 *nctemp68;
-static struct nctempchar1 nctemp69 = {{ 7}, (char*)"file: \0"};
-nctemp68=&nctemp69;
-nctempchar1* nctemp66= nctemp68;
-int nctemp70=LibePuts(nctemp64,nctemp66);
-int nctemp72= 4;
-nctempchar1* nctemp74= file;
-int nctemp77=LibePuts(nctemp72,nctemp74);
-int nctemp79= 4;
-struct nctempchar1 *nctemp83;
-static struct nctempchar1 nctemp84 = {{ 2}, (char*)" \0"};
-nctemp83=&nctemp84;
-nctempchar1* nctemp81= nctemp83;
-int nctemp85=LibePuts(nctemp79,nctemp81);
-int nctemp87= 4;
-struct nctempchar1 *nctemp91;
-static struct nctempchar1 nctemp92 = {{ 12}, (char*)" function: \0"};
-nctemp91=&nctemp92;
-nctempchar1* nctemp89= nctemp91;
-int nctemp93=LibePuts(nctemp87,nctemp89);
-int nctemp95= 4;
-nctempchar1* nctemp97= fname;
-int nctemp100=LibePuts(nctemp95,nctemp97);
-int nctemp102= 4;
-struct nctempchar1 *nctemp106;
-static struct nctempchar1 nctemp107 = {{ 2}, (char*)" \0"};
-nctemp106=&nctemp107;
-nctempchar1* nctemp104= nctemp106;
-int nctemp108=LibePuts(nctemp102,nctemp104);
-int nctemp110= 4;
-struct nctempchar1 *nctemp114;
-static struct nctempchar1 nctemp115 = {{ 7}, (char*)" line \0"};
-nctemp114=&nctemp115;
-nctempchar1* nctemp112= nctemp114;
-int nctemp116=LibePuts(nctemp110,nctemp112);
-int nctemp118= 4;
-int nctemp120= lineno;
-int nctemp122=LibePuti(nctemp118,nctemp120);
-int nctemp124= 4;
-struct nctempchar1 *nctemp128;
-static struct nctempchar1 nctemp129 = {{ 3}, (char*)": \0"};
-nctemp128=&nctemp129;
-nctempchar1* nctemp126= nctemp128;
-int nctemp130=LibePuts(nctemp124,nctemp126);
-nctempchar1 *nctemp132 =s1;
-int nctemp131 =(nctemp132!=0);
-if(nctemp131)
-{
-int nctemp137= 4;
-nctempchar1* nctemp139= s1;
-int nctemp142=LibePuts(nctemp137,nctemp139);
-int nctemp144= 4;
-struct nctempchar1 *nctemp148;
-static struct nctempchar1 nctemp149 = {{ 3}, (char*)": \0"};
-nctemp148=&nctemp149;
-nctempchar1* nctemp146= nctemp148;
-int nctemp150=LibePuts(nctemp144,nctemp146);
-}
-nctempchar1 *nctemp152 =s2;
-int nctemp151 =(nctemp152!=0);
-if(nctemp151)
-{
-int nctemp157= 4;
-nctempchar1* nctemp159= s2;
-int nctemp162=LibePuts(nctemp157,nctemp159);
-int nctemp164= 4;
-struct nctempchar1 *nctemp168;
-static struct nctempchar1 nctemp169 = {{ 3}, (char*)"\n\0"};
-nctemp168=&nctemp169;
-nctempchar1* nctemp166= nctemp168;
-int nctemp170=LibePuts(nctemp164,nctemp166);
-}
-int nctemp172= 4;
-int nctemp174=LibeFlush(nctemp172);
-int nctemp176=LibeExit();
-return 1;
+nctempchar1 *env;
+nctempchar1 *tmp;
+nctempchar1 *path;
+int l1;
+int l2;
+struct nctempchar1 *nctemp8;
+static struct nctempchar1 nctemp9 = {{ 4}, (char*)"EPS\0"};
+nctemp8=&nctemp9;
+nctempchar1* nctemp6= nctemp8;
+nctempchar1* nctemp10=LibeGetenv(nctemp6);
+env=nctemp10;
+struct nctempchar1 *nctemp16;
+static struct nctempchar1 nctemp17 = {{ 6}, (char*)"/Lib/\0"};
+nctemp16=&nctemp17;
+tmp=nctemp16;
+int nctemp22=env->d[0];l1 =nctemp22;
+int nctemp30=tmp->d[0];l2 =nctemp30;
+int nctemp48 = l1 + l2;
+int nctemp50 = nctemp48 + 100;
+int nctemp40=nctemp50;
+nctempchar1 *nctemp39;
+nctemp39=(nctempchar1*)RunMalloc(sizeof(nctempchar1));
+int nctemp58 = l1 + l2;
+int nctemp60 = nctemp58 + 100;
+nctemp39->d[0]=nctemp60;
+nctemp39->a=(char *)RunMalloc(sizeof(char)*nctemp40);
+path=nctemp39;
+nctempchar1* nctemp62= env;
+nctempchar1* nctemp65= path;
+int nctemp68=LibeStrcpy(nctemp62,nctemp65);
+nctempchar1* nctemp70= tmp;
+nctempchar1* nctemp73= path;
+int nctemp76=LibeStrcat(nctemp70,nctemp73);
+return path;
 }

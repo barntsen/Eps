@@ -69,7 +69,7 @@ int  ScanIndent        # Value of indent
 int  ScanIndentsave    # Old value of indent
 int  ScanIndentinit     # Inital indent 
 char [*] ScanText      # Lexical value of token       
-char [*] ScanBuffer    # Temporary array              
+#char [*] ScanBuffer    # Temporary array              
 int ScanLine           # line number                  
 int ScanLinesave       # Remember line no             
 int ScanFp             # Input file descriptor      
@@ -78,7 +78,7 @@ int  [*] ScanStack     # Stack for indentation
 int      ScanSp        # Stack pointer
 const LMAX  = 258      # Max no of indentations
 int ScanContline       # Continuation lines
-int ScanEnd            # Termination flag
+#int ScanEnd            # Termination flag
 
 def int ScanGetline() :
 
@@ -166,7 +166,7 @@ def int ScanInit(char [*] infile) :
 
   ScanContline=0 
   ScanText = new(char [LTEXT]) 
-  ScanBuffer = new(char [LTEXT]) 
+  #ScanBuffer = new(char [LTEXT]) 
   ScanFp = LibeOpen(infile, "r") 
   if(ScanFp == ERR):
     LibePuts(stderr, "Can not open input file: ") 
@@ -180,7 +180,7 @@ def int ScanInit(char [*] infile) :
   ScanStack = new(int[LMAX]) 
   ScanSp = 0 
   ScanStack[0] = 0 
-  ScanEnd = ERR
+  #ScanEnd = ERR
   return(OK) 
      
 def int ScanGetch()  :    
@@ -285,6 +285,7 @@ def int ScanWhite()  :
 
   while(((c=ScanGetch()) == SPACE) || (c == TAB)):
     d = 0  
+    d = d+0
   ScanUngetch() 
 
   return(OK) 

@@ -7,4 +7,4 @@ export NTHREADS=256
 
 
 #nsys nvprof ./tfaxpy2df > time-nvf.txt
-./tfaxpy2df >logf.txt
+#./tfaxpy2df >logf.txt

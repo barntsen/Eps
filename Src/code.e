@@ -459,10 +459,6 @@ def int CodeImport(struct tree p, struct symbol tp):
           CodeStructdefsym(p,tp);
       else if(LibeStrcmp(SymGetfunc(tp), "fdef")==OK):
           CodeFdefcpusym(p,tp);
-      else :
-        CodeIdeclaration(p,tp);
-        CodeEs(p,";\n");
-
     tp = SymMvnext(tp);
 
   return(OK);
@@ -2361,7 +2357,6 @@ def int CodeSexpr(struct tree p):
   #
 
   struct tree sp;
-  char [*] rval;
   sp = PtreeMvchild(p);
   CodeSbinexpr(sp);
   return(OK);
@@ -3380,7 +3375,7 @@ def int CodePreamblecuda() :
   PtreeSetline(p,3);
 
 # Start of extern "C"
-  CodeEs(p, "extern \"C\" {\n"); 
+# CodeEs(p, "extern \"C\" {\n"); 
 
   CodeEs(p, \
     "typedef struct { float r; float i;} complex; \n");
@@ -3548,7 +3543,7 @@ def int CodePreamblehip() :
     "typedef struct nctempcomplex4 { int d[4]; complex *a;} nctempcomplex4; \n");
   CodeEs(p, \
     "#include <stdio.h>\n");
-  CodeEs(p, "extern \"C\" {\n"); 
+#  CodeEs(p, "extern \"C\" {\n"); 
   CodeEs(p, \
     "#include <stdlib.h>\n");
   CodeEs(p,\
@@ -3588,18 +3583,9 @@ def int CodePreamble():
     return(ERR);
   
 def int CodePostamble():
-  int fdo;
 
   # CodePostmble() emits declarations needed to avoid c++ 
   # name mangling.
 
-  fdo = CodeGetfdout();
-  if(CodeGetarch() == CUDA):
-    LibePuts(fdo,"}\n");
-    return(OK);
-  else if(CodeGetarch() == HIP):
-    LibePuts(fdo,"}\n");
-    return(OK);
-  else :
-    return(ERR)
+  return(OK)
  

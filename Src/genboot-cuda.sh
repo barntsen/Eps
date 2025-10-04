@@ -38,17 +38,17 @@ $EC -c m.e
 
 
 #Copy c-code to bootstrap directory
-cp main.cpp $dest
-cp parse.cpp $dest
-cp scan.cpp   $dest
-cp scanpath.cpp   $dest
-cp sem.cpp   $dest
-cp sym.cpp   $dest
-cp ptree.cpp $dest
-cp libe.cpp  $dest
-cp err.cpp   $dest
-cp code.cpp  $dest
+cp main.c $dest
+cp parse.c $dest
+cp scan.c   $dest
+cp scanpath.c   $dest
+cp sem.c   $dest
+cp sym.c   $dest
+cp ptree.c $dest
+cp libe.c  $dest
+cp err.c   $dest
+cp code.c  $dest
 c=c
-cp run$ARCH$c.cpp $dest
-cp run$ARCH.cpp $dest/run$ARCH.cu
+cp run$ARCH$c.c $dest
+cp run$ARCH.c $dest/run$ARCH.cu
 

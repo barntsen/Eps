@@ -113,25 +113,29 @@ def char [*] MainFout(char [*] infile, int arch):
   if(infile[l-2] != cast(char,'e')):
     MainError("File extension have to be .e") 
  
-  if(arch == CPU):
-    outfile=new(char [l]) 
-    LibeStrcpy(infile,outfile) 
-    outfile[l-2] = cast(char,'c') 
-  else if(arch == CUDA):
-    outfile=new(char [l+2]) 
-    LibeStrcpy(infile,outfile) 
-    outfile[l-2] = cast(char,'c') 
-    outfile[l-1] = cast(char,'p') 
-    outfile[l-0] = cast(char,'p') 
-  else if(arch == HIP):
-    outfile=new(char [l+2]) 
-    LibeStrcpy(infile,outfile) 
-    outfile[l-2] = cast(char,'c') 
-    outfile[l-1] = cast(char,'p') 
-    outfile[l-0] = cast(char,'p') 
-  else:
-    MainError("Unknow architecture") 
-     
+  outfile=new(char [l]) 
+  LibeStrcpy(infile,outfile) 
+  outfile[l-2] = cast(char,'c') 
+
+# if(arch == CPU):
+#   outfile=new(char [l]) 
+#   LibeStrcpy(infile,outfile) 
+#   outfile[l-2] = cast(char,'c') 
+# else if(arch == CUDA):
+#   outfile=new(char [l+2]) 
+#   LibeStrcpy(infile,outfile) 
+#   outfile[l-2] = cast(char,'c') 
+#   outfile[l-1] = cast(char,'p') 
+#   outfile[l-0] = cast(char,'p') 
+# else if(arch == HIP):
+#   outfile=new(char [l+2]) 
+#   LibeStrcpy(infile,outfile) 
+#   outfile[l-2] = cast(char,'c') 
+#   outfile[l-1] = cast(char,'p') 
+#   outfile[l-0] = cast(char,'p') 
+# else:
+#   MainError("Unknow architecture") 
+#    
   return(outfile) 
     
 def char [*] MainFmod(char [*] infile):

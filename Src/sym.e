@@ -700,9 +700,10 @@ def int Symgetline(int fp, struct symbol np, char [*] module):
 # Symgetline reads an single line (record) from a symbol 
 # table stored in a file.
 
-  int indent,tmp 
+  int indent 
   int ch 
   char [*] field 
+  int tmp
 
   field = new(char [NTBL]) 
 
@@ -769,7 +770,8 @@ def int Symgetline(int fp, struct symbol np, char [*] module):
     
   #Read the rest of the line including the new line character.
   while((ch=LibeGetc(fp)) != NL): 
-    tmp=1 
+    tmp=0
+    tmp=0+tmp 
   return(indent) 
 
 def int SymReadsym(int fp, struct symbol rtbl, char [*] module) :

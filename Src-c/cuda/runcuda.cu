@@ -1,13 +1,11 @@
 // run contains runtime functions for the ecc compiler
 
-//Note that this file is a c++ file, but
+//Note that this file is a c file, but
 //stored in a file with extension .e to prevent
 //accidental removal
-//The run time library is written in C++
+//The run time library is written in c
 //Most of the routines in the library
 //are wrappers to unix system calls and the cuda api.
-
-extern "C" {
 
 #include<unistd.h>
 #include<sys/types.h>
@@ -22,7 +20,6 @@ extern "C" {
 #define ERR  0
 #define EOF (-1)
 
-
 #define PERMS 0666
 #define MAXRANK 1
 
@@ -30,9 +27,6 @@ typedef struct nctempchar1 { int d[MAXRANK]; char *a;} nctempchar1;
 struct MainArg {nctempchar1 *arg;};
 struct nctempMainArg1 {int d[MAXRANK]; struct MainArg *a; };
 int Main (struct nctempMainArg1 *MainArgs);
-
-// End of extern "C"
-}
 
 // main is the startup code always called by the eps Main function.
 int main(int argc, char ** argv)
@@ -58,8 +52,6 @@ int main(int argc, char ** argv)
   return(rval);
 }
   
-extern "C" {
-
 // GpuNew allocates memory on cpu host and gpu device
 void * GpuNew(int n){
   void *f;
@@ -294,6 +286,4 @@ int RunSystem (nctempchar1 *cmd)
   int rval;
   rval = system(cmd->a);
   return(rval);
-}
-// End of extern "C"
 }
