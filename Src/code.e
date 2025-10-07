@@ -1122,9 +1122,6 @@ def char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
   
   tp=SymLook(name);
   if(tp==0):
-    #DEBUG
-    LibePuts(stderr,"At CodeArray")
-    #DEBUG
     CodeError(name);
   sp = PtreeMvchild(p);
   if(sp==NULL):
@@ -1149,7 +1146,6 @@ def char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
       CodeEs(p, ";\n"); 
       if(CodeArraycheck()):
         CodeArrayex(PtreeGetline(p), qual, sel, name, temp2, i);
-
     else:
       temp2 = CodeExpr(sp);
       CodeEs(p,temp); 
@@ -2132,7 +2128,9 @@ def int CodeSarray(struct tree p, char [*] qname) :
       # Emit expression for product of dimensions
       CodeDimprod(p,qname,i+1)
       #Emit code for the index expression
-      CodeSexpr(q);
+      CodeEs(p,"(")
+      CodeSexpr(q)
+      CodeEs(p,")")
 
   CodeEs(p, "]") 
   delete(qname)
@@ -3374,8 +3372,8 @@ def int CodePreamblecuda() :
   PtreeSetline(p,2);
   PtreeSetline(p,3);
 
-# Start of extern "C"
-# CodeEs(p, "extern \"C\" {\n"); 
+  #Start of extern "C"
+  CodeEs(p, "extern \"C\" {\n"); 
 
   CodeEs(p, \
     "typedef struct { float r; float i;} complex; \n");
@@ -3586,6 +3584,16 @@ def int CodePostamble():
 
   # CodePostmble() emits declarations needed to avoid c++ 
   # name mangling.
+
+  struct tree p;
+
+  p = PtreeMknode("dummy", "dummy");
+
+  if(CodeGetarch() == CUDA) : 
+    CodeEs(p,"};")
+
+  if(CodeGetarch() == HIP) : 
+    CodeEs(p,"};")
 
   return(OK)
  

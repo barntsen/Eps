@@ -41,22 +41,9 @@ def int MainHelp(int arch):
 
   LibePuts(stderr,"Command\n") 
   LibePuts(stderr,"\n") 
-  if(arch == CPU):
-    LibePuts(stderr,"  ec [-t -a -s -r -e -p -q -C -c -g -d -O -f] file.e \n") 
-    LibePuts(stderr,"\n") 
-    LibePuts(stderr,"  The ec command (without options) compiles an eps file\n") 
-  else if(arch == CUDA):
-    LibePuts(stderr,"  ecc [-t -a -s -r -e -p -q -C -c -g -d -O -f] file.e \n") 
-    LibePuts(stderr,"\n") 
-    LibePuts(stderr,"  The ecc command (without options) compiles an eps file\n") 
-  else if(arch == HIP):
-    LibePuts(stderr,"  ech [-t -a -s -r -e -p -q -C -c -g -d -O -f] file.e \n") 
-    LibePuts(stderr,"\n") 
-    LibePuts(stderr,"  The ech command (without options) compiles an eps file\n") 
-      
-  else:
-    MainError("Unknown architecture") 
- 
+  LibePuts(stderr,"  ec [-t -a -s -r -e -p -q -C -c -g -d -O -f -x -y] file.e \n") 
+  LibePuts(stderr,"\n") 
+  LibePuts(stderr,"  The ec command (without options) compiles an eps file\n") 
   LibePuts(stderr,"  with extension .e into an object file with extension .o\n") 
   LibePuts(stderr,"\n") 
   LibePuts(stderr,"  Options: \n") 
@@ -69,20 +56,13 @@ def int MainHelp(int arch):
   LibePuts(stderr,"   -q : Perform syntax and semantic check, no code generated \n") 
   LibePuts(stderr,"   -C : Array index check \n") 
   LibePuts(stderr,"   -i : Break up expressions \n") 
-  if(arch == CPU):
-    LibePuts(stderr,"   -c : Produce c-code but do not generate object code\n") 
-      
-  else if(arch == CUDA):
-    LibePuts(stderr,"   -c : Produce c++/cuda-code but do not generate object code\n") 
-  else if(arch == HIP):
-    LibePuts(stderr,"   -c : Produce c++/hip-code but do not generate object code\n") 
-  else :
-    MainError("Unknown architecture") 
- 
+  LibePuts(stderr,"   -c : Produce c/c++ code but do not generate object code\n") 
   LibePuts(stderr,"   -g : Generate debug info \n") 
   LibePuts(stderr,"   -d : Show the host compiler command line  \n") 
   LibePuts(stderr,"   -O : Optimize code\n") 
   LibePuts(stderr,"   -f : Generate code for openmp \n") 
+  LibePuts(stderr,"   -x arch : where arch is either cpu (default) or cuda\n") 
+  LibePuts(stderr,"   -y dev  : where dev is either none, native or device name such as sm_86\n") 
   LibeFlush(stderr) 
   return(OK) 
     
@@ -108,34 +88,24 @@ def char [*] MainFout(char [*] infile, int arch):
 
   l=len(infile,0) 
   if(l < 3):
-    MainError(" Illegal file name") 
+    MainError(" Illegal file name\n") 
  
   if(infile[l-2] != cast(char,'e')):
-    MainError("File extension have to be .e") 
- 
-  outfile=new(char [l]) 
-  LibeStrcpy(infile,outfile) 
-  outfile[l-2] = cast(char,'c') 
+    MainError("File extension have to be .e\n") 
 
-# if(arch == CPU):
-#   outfile=new(char [l]) 
-#   LibeStrcpy(infile,outfile) 
-#   outfile[l-2] = cast(char,'c') 
-# else if(arch == CUDA):
-#   outfile=new(char [l+2]) 
-#   LibeStrcpy(infile,outfile) 
-#   outfile[l-2] = cast(char,'c') 
-#   outfile[l-1] = cast(char,'p') 
-#   outfile[l-0] = cast(char,'p') 
-# else if(arch == HIP):
-#   outfile=new(char [l+2]) 
-#   LibeStrcpy(infile,outfile) 
-#   outfile[l-2] = cast(char,'c') 
-#   outfile[l-1] = cast(char,'p') 
-#   outfile[l-0] = cast(char,'p') 
-# else:
-#   MainError("Unknow architecture") 
-#    
+  if(arch == CPU):
+    outfile=new(char [l]) 
+    LibeStrcpy(infile,outfile) 
+    outfile[l-2] = cast(char,'c') 
+  else if(arch == CUDA):
+    outfile=new(char [l+2]) 
+    LibeStrcpy(infile,outfile) 
+    outfile[l-2] = cast(char,'c') 
+    outfile[l-1] = cast(char,'p') 
+    outfile[l-0] = cast(char,'p') 
+  else:
+   MainError("Unknow architecture\n") 
+     
   return(outfile) 
     
 def char [*] MainFmod(char [*] infile):
@@ -154,10 +124,10 @@ def char [*] MainFmod(char [*] infile):
                     # input file name
   l=len(infile,0) 
   if(l < 3):
-    MainError(" Illegal file name") 
+    MainError(" Illegal file name\n") 
  
   if(infile[l-2] != cast(char,'e')):
-    MainError("File extension have to be .e") 
+    MainError("File extension have to be .e\n") 
       
   outfile=new(char [l]) 
   LibeStrcpy(infile,outfile) 
@@ -226,7 +196,7 @@ def int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int sho
   return(OK) 
     
      
-def int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show):
+def int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int show, char[*] dev):
 
   # MainCcompcuda invokes the nvcc compiler to generate object 
   # code for nvidia gpus.
@@ -236,7 +206,13 @@ def int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int sh
   int l                 # Temp varibale to hold string length of 
                         # input file name
   l=len(file,0) 
-  cmd= "nvcc -arch=sm_80 -use_fast_math --compiler-options -O2 "
+  cmd= "nvcc  -use_fast_math --compiler-options -O2 "
+
+  if(LibeStrcmp(dev,"none") !=OK):
+    cmd= LibeStradd(cmd," -arch ") 
+    cmd= LibeStradd(cmd,dev) 
+    cmd= LibeStradd(cmd," ") 
+
   cmd = LibeStradd(cmd," --compiler-options -ffast-math  -c -x cu ") 
 
   if(debug == OK):
@@ -271,7 +247,6 @@ def int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int sh
   LibeSystem(cmd) 
   delete(cmd) 
   return(OK) 
-    
      
 def int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int show):
 
@@ -343,12 +318,14 @@ def int Main(struct MainArg [*] MainArgs) :
   struct tree p     # Parse tree node
   char [*] infile   # Input file name
   char [*] outfile  # Output file name
+  char [*] dev      # GPU device/architecture name
 
   int options       # Count of options
   int i,l             # Loop variables 
 
   LibeInit()         # Initialize io package 
 
+  dev=LibeStrsave("none")
   # Turn off all flags
   show=debug=optimize=openmp=ERR 
   btree  = atree = table = etable = emit = ERR 
@@ -364,7 +341,7 @@ def int Main(struct MainArg [*] MainArgs) :
   CodeInit()     
   CodeArraycheckoff() 
   CodeDebugoff() 
-  CodeSetarch(ARCH) 
+  CodeSetarch(CPU) 
 
    
   # Command line option processing : 
@@ -377,7 +354,7 @@ def int Main(struct MainArg [*] MainArgs) :
   for(i=1; i<len(MainArgs,0);i=i+1):
 
     if(LibeStrcmp(MainArgs[i].arg, "-h") == OK):  
-      MainHelp(ARCH) 
+      MainHelp(CodeGetarch()) 
       LibeExit() 
 
     if(LibeStrcmp(MainArgs[i].arg, "-t") == OK):  
@@ -413,6 +390,7 @@ def int Main(struct MainArg [*] MainArgs) :
     # Turn on array check  
     if(LibeStrcmp(MainArgs[i].arg, "-C") == OK):      
       CodeArraycheckon() 
+      CodeBreakon()
 
     # Turn on array expression breakup
     if(LibeStrcmp(MainArgs[i].arg, "-i") == OK):      
@@ -437,6 +415,21 @@ def int Main(struct MainArg [*] MainArgs) :
     if(LibeStrcmp(MainArgs[i].arg, "-c") == OK):      
        obj=ERR 
 
+    if(LibeStrcmp(MainArgs[i].arg, "-x") == OK):      
+      if(len(MainArgs,0) > i):
+        if(LibeStrcmp(MainArgs[i+1].arg,"cpu")==OK): 
+          CodeSetarch(CPU)
+        else if(LibeStrcmp(MainArgs[i+1].arg,"cuda")==OK): 
+          CodeSetarch(CUDA)
+        else :
+          MainError("Illegal option value\n")
+      else :
+          CodeSetarch(CPU)
+
+    if(LibeStrcmp(MainArgs[i].arg, "-y") == OK):      
+      if(len(MainArgs,0) > i):
+        dev = LibeStrsave(MainArgs[i+1].arg)
+
     # Count number of options
     if((MainArgs[i].arg[0] ==cast(char,'-')) == OK):
       options=options+1
@@ -452,7 +445,7 @@ def int Main(struct MainArg [*] MainArgs) :
 
   # Set the output file for holding c-code
   if(emit == OK):
-    outfile=MainFout(infile,ARCH) 
+    outfile=MainFout(infile,CodeGetarch()) 
     # Open output file for c-code
     fd = LibeOpen(outfile,"w") 
     CodeSetfdout(fd) 
@@ -502,7 +495,7 @@ def int Main(struct MainArg [*] MainArgs) :
          PtreePrtree(p, 0)       # Print parse tree 
 
   if(ParseGetlookahead() != STOP):
-     MainError("Parsing ended before reaching EOF") 
+     MainError("Parsing ended before reaching EOF\n") 
 
   # Print external symbol table
   if(etable == OK):
@@ -516,17 +509,17 @@ def int Main(struct MainArg [*] MainArgs) :
   # Compile the c-code
 
   if ((emit == OK) && (obj == OK)):
-    if(ARCH == CPU):
+    if(CodeGetarch() == CPU):
       MainCcompcpu(outfile,debug,optimize,openmp,show) 
         
-    else if(ARCH==CUDA):
-      MainCcompcuda(outfile,debug,optimize,openmp,show) 
+    else if(CodeGetarch()==CUDA):
+      MainCcompcuda(outfile,debug,optimize,openmp,show,dev) 
       
-    else if(ARCH==HIP):
+    else if(CodeGetarch()==HIP):
       MainCcomphip(outfile,debug,optimize,openmp,show) 
       
     else :
-      MainError("Unknown architecture") 
+      MainError("Unknown architecture\n") 
         
   if(emit == OK):
     delete(outfile)     

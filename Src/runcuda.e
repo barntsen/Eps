@@ -7,6 +7,7 @@
 //Most of the routines in the library
 //are wrappers to unix system calls and the cuda api.
 
+
 #include<unistd.h>
 #include<sys/types.h>
 #include<sys/stat.h>
@@ -22,12 +23,14 @@
 
 #define PERMS 0666
 #define MAXRANK 1
-
+//Begin Extern
+extern "C" {
 typedef struct nctempchar1 { int d[MAXRANK]; char *a;} nctempchar1; 
 struct MainArg {nctempchar1 *arg;};
 struct nctempMainArg1 {int d[MAXRANK]; struct MainArg *a; };
 int Main (struct nctempMainArg1 *MainArgs);
-
+}
+// End Extern
 // main is the startup code always called by the eps Main function.
 int main(int argc, char ** argv)
 {
@@ -52,6 +55,9 @@ int main(int argc, char ** argv)
   return(rval);
 }
   
+// Begin extern "C"
+extern "C" {
+
 // GpuNew allocates memory on cpu host and gpu device
 void * GpuNew(int n){
   void *f;
@@ -287,3 +293,4 @@ int RunSystem (nctempchar1 *cmd)
   rval = system(cmd->a);
   return(rval);
 }
+} // End extern "C"
