@@ -11,18 +11,14 @@ import scanpath
 def int SemCompstmnt(struct tree p) : 
   pass
 
-
 def int SemStmnt(struct tree p)     : 
   pass
-
 
 def struct tree SemExpr(struct tree p): 
   pass
 
-
 def struct tree SemUnexpr(struct tree p): 
   pass
-
 
 def struct tree SemPrimexpr(struct tree p): 
   pass
@@ -476,8 +472,6 @@ def int SemFcall(struct tree p) :
       return(ERR);
  
   return(OK);
-
- 
 
 def struct tree SemExprlist(struct tree p) :
 
