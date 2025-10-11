@@ -963,9 +963,6 @@ def struct tree SemBinexpr(struct tree p) :
     if(SemComparetype(leftp, rightp) == ERR):
       SemSerror(p,"Type error", " ");
       return (p);
-    
- 
- 
     else:
       if((LibeStrcmp(PtreeGetdef(np), "="))):
         SemAsgexpr(np); 

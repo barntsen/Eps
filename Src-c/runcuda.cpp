@@ -1,6 +1,6 @@
 // run contains runtime functions for the ecc compiler
 
-//Note that this file is a c file, but
+//Note that this file is a c++ file, but
 //stored in a file with extension .e to prevent
 //accidental removal
 //The run time library is written in c

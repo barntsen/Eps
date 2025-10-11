@@ -1521,6 +1521,9 @@ def int LibeFtoaf(int mant, int nexp, int nfield, int nfrac, char [*] s) :
   if(len(s,0) < nfield+1):
     return(ERR) 
 
+  if(nfrac > MAXFDIG):
+    nfrac=MAXFDIG
+
   l = nexp+1+1+nfrac 
   if(sign < 0) l=l+1 
 
