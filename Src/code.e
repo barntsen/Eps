@@ -1291,9 +1291,7 @@ def char [*] CodeNew(struct tree p) :
   int i;
 
   # Create temporaries to hold return value (pointer) and total dimension  
-  #pointer = CodeNewtemp(PtreeGetype(p));
   pointer = CodeMktemp();
-  #totdim = CodeNewtemp(PtreeGetype(p));
   totdim = CodeMktemp();
 
   # Get structure and array type flags  
