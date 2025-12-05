@@ -1117,7 +1117,6 @@ def char [*] CodeArray(struct tree p, char [*] qual, char [*] sel) :
   int i;
 
   name = PtreeGetdef(p);
-  #temp = CodeNewtemp(PtreeGetype(p));
   temp = CodeMktemp();
   
   tp=SymLook(name);
@@ -1498,7 +1497,6 @@ def char [*] CodeLen(struct tree p) :
   char [*] index;
   
   char[*] tempr;
-  #tempr = CodeNewtemp(PtreeGetype(p));
   tempr = CodeMktemp();
   np = PtreeMvchild(p);
   temp = CodeExpr(np);

@@ -32,7 +32,7 @@ def int SemSetsimple(int simple) :
   # Parameters: 
   #   simple : Flag takes value OK or ERR
   # 
-  # Returns: None
+  # Returns: OK
   #
 
   SemSimple = simple
@@ -60,7 +60,7 @@ def int SemSerror(struct tree p, char [*] s1, char [*] s2) :
   #    s1       : String 1 
   #    s2       : String 2 
   #
-  #  Returns    :
+  #  Returns    : OK
   #  
   #  The error strings s1 and s2 is printed together with file and
   #  line no info.
@@ -104,6 +104,10 @@ def int SemImport(struct tree p, struct symbol etp) :
 def int SemDeclaration(struct tree p, struct symbol tp) :
 
   # SemDeclaration checks single declaration.  
+  #
+  # Parameters: 
+  #   p  : Declaration node
+  #   tp : Symbol table
  
   struct tree np,sp; 
   struct symbol up;
@@ -816,8 +820,6 @@ def int SemSizeof(struct tree p) :
  
   if(LibeStrcmp(PtreeGetname(p),"sizeof")):
     PtreeSetype(p, "int");
-  
- 
  
   return(OK);
 
@@ -839,23 +841,13 @@ def int SemComparetype(struct tree p, struct tree np) :
         rval = OK;
       else:
         rval = ERR;
-    
- 
- 
     else:
       rval = ERR;
-  
- 
  
   else if(LibeStrcmp(PtreeGetref(p),"aref") == OK):
     if(PtreeGetrank(p) != PtreeGetrank(np)):
       rval = ERR;
-  
- 
- 
   return (rval);
-
- 
   
 def struct tree SemAsgexpr(struct tree p) :
   
@@ -866,16 +858,10 @@ def struct tree SemAsgexpr(struct tree p) :
   np = PtreeMvchild(p);
   if(LibeStrcmp(PtreeGetlval(np), "lval") == ERR):
      SemSerror(np,"Not a left value", PtreeGetdef(np));
-                
-  
- 
- 
   else:
     PtreeSetlval(p, "lval");
   SemCopytype(np, p);
   return(p);
-
- 
 
 def struct tree SemRelexpr(struct tree p) :
 
@@ -891,32 +877,16 @@ def struct tree SemRelexpr(struct tree p) :
       if((LibeStrcmp(PtreeGetref(np),"aref"))|| \
          (LibeStrcmp(PtreeGetref(np),"sref"))):
         SemSerror(p,"Illegal operation", " ");
-      
- 
-  
       else if((LibeStrcmp(PtreeGetref(rp),"aref"))|| \
         (LibeStrcmp(PtreeGetref(np),"sref"))):
          SemSerror(p,"Illegal operation", " ");
-      
- 
- 
-    
- 
-  
     else if((LibeStrcmp(PtreeGetype(np), "complex"))): 
       SemSerror(p,"Illegal operation", " ");
-    
- 
- 
-  
- 
- 
+
   PtreeSetype(p, "int");
   PtreeSetlval(p, "void");
   PtreeSetstruct(p, "void");
   return(p);
-
- 
  
 def struct tree SemAddexpr(struct tree p) :
 
@@ -928,25 +898,12 @@ def struct tree SemAddexpr(struct tree p) :
   rp = PtreeMvsister(np);
   if((LibeStrcmp(PtreeGetref(np),"sref"))):
     SemSerror(np,"Illegal operation", " ");
-  
- 
-  
   else if((LibeStrcmp(PtreeGetref(rp),"sref"))):
      SemSerror(np,"Illegal operation", " ");
-  
- 
- 
   else: 
     SemCopytype(np, p);
     PtreeSetlval(p, "void");
-  
- 
- 
   return(p);
-
- 
-
- 
   
 def struct tree SemBinexpr(struct tree p) :
 
@@ -966,7 +923,6 @@ def struct tree SemBinexpr(struct tree p) :
     else:
       if((LibeStrcmp(PtreeGetdef(np), "="))):
         SemAsgexpr(np); 
-        
       else if((LibeStrcmp(PtreeGetdef(np), "!=")) || \
               (LibeStrcmp(PtreeGetdef(np), "==")) || \
               (LibeStrcmp(PtreeGetdef(np), "||")) || \
@@ -976,24 +932,12 @@ def struct tree SemBinexpr(struct tree p) :
               (LibeStrcmp(PtreeGetdef(np), ">"))  || \
               (LibeStrcmp(PtreeGetdef(np), "&&"))):
               SemRelexpr(np);               
-      
- 
- 
       else if((LibeStrcmp(PtreeGetdef(np), "+")) || \
              (LibeStrcmp(PtreeGetdef(np), "-")) ||  \
              (LibeStrcmp(PtreeGetdef(np), "*")) ||  \
              (LibeStrcmp(PtreeGetdef(np), "/"))):
               SemAddexpr(np);
-      
- 
- 
       return (np);
-    
- 
- 
-  
- 
- 
   else:
     return (SemUnexpr(p));
 
@@ -1445,9 +1389,8 @@ def int SemSem(struct tree p, struct symbol tp) :
 
   SemExtdecl(p);  # Check syntax tree pointed to by p        
   return (OK);
+ 
 
- 
- 
 def int SemWhilestmnt(struct tree p) :
 
   # Whilestmnt checks while statement.  
@@ -1508,23 +1451,15 @@ def int SemParallelstmnt(struct tree p) :
     if((rp=PtreeMvsister(rp)) != NULL):
       SemExpr(rp);
       PtreeSetopexpr(rp,OK);
-    
- 
- 
     if(PtreeMvsister(sp) != NULL):
       rp = PtreeMvsister(sp);
     sp = PtreeMvsister(sp);
     rank=rank+1;
-  
- 
- 
   PtreeSetrank(p,rank);
   sp = PtreeMvchild(p);
   sp = PtreeMvsister(sp);
   SemStmnt(sp);
   return(OK);
-
- 
  
 def int SemIfstmnt(struct tree p) :
 
@@ -1544,7 +1479,6 @@ def int SemIfstmnt(struct tree p) :
       p = PtreeMvchild(p);
       SemStmnt(p);
   return(OK);
- 
  
 def int SemReturnstmnt(struct tree p) :
 
@@ -1616,7 +1550,6 @@ def int SemStmnt(struct tree p) :
  
   return(OK);
 
-  
 def int SemCompstmnt(struct tree p) :
 
   # SemCompstmnt checks compound statemenets.
@@ -1659,8 +1592,3 @@ def int SemCompstmnt(struct tree p) :
   if(parflag == OK):
     PtreeSetparallel(q,"parallel"); 
   return(OK);
-
- 
- 
-
-
