@@ -1,4 +1,5 @@
-//  Translated by epsc  version today  
+//  Translated by epsc  version: Sun Dec  7 16:23:36 2025
+
 #include <stddef.h>
 #include <stdio.h>
 #include <assert.h>
@@ -119,6 +120,7 @@ int LibeArrayex (int line,nctempchar1 *name,int ival,int index,int bound);
 int LibeSystem (nctempchar1 *cmd);
 int LibeInit ();
 int LibeExit ();
+nctempchar1 * LibeDate ();
 int ErrError (nctempchar1 *file,int line,nctempchar1 *s);
 int ErrSerror (nctempchar1 *file,nctempchar1 *fname,int lineno,nctempchar1 *s1,nctempchar1 *s2);
 struct tree {nctempchar1 *name;

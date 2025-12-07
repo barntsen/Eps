@@ -3272,7 +3272,8 @@ def int CodePreamblecpu() :
   p = PtreeMknode("dummy", "dummy");
 
   PtreeSetline(p,1);
-  CodeEs(p, "//  Translated by epsc  version today  \n");
+  CodeEs(p, "//  Translated by epsc  version: ");
+  CodeEs(p, LibeDate()); CodeEs(p,"\n")
   PtreeSetline(p,2);
   PtreeSetline(p,3);
   PtreeSetline(p,4);

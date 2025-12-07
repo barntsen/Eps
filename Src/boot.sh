@@ -6,7 +6,7 @@ cp runcpu.e runcpu.c
 cp runcuda.e runcuda.cpp 
 
 #Destination for bootstrap code
-dest=../Src-c/$ARCH
+dest=../Src-c
 opt="-c -x cpu "
 #Generate c-code
 ec $opt main.e
@@ -34,3 +34,5 @@ cp code.c  $dest
 cp runcpu.c $dest
 cp runcuda.cpp $dest
 
+date > version.txt
+cp version.txt $dest
