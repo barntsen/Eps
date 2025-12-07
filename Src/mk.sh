@@ -1,5 +1,7 @@
 #/bin/sh
 
+# Compiles the compiler. The new compiler is named ec1.
+
 ./clean.sh
 
 cp runcpu.e runcpu.c

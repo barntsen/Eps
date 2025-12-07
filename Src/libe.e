@@ -1,7 +1,7 @@
 # Libe is the compiler support library.
 
-import m       # Machine dep   ent constants.
-import run     # Runtime library.
+import m       # Machine dependent constants.
+import run     # Runtime library interface.
 
 # General constants
 #
@@ -1521,9 +1521,6 @@ def int LibeFtoaf(int mant, int nexp, int nfield, int nfrac, char [*] s) :
   if(len(s,0) < nfield+1):
     return(ERR) 
 
-  if(nfrac > MAXFDIG):
-    nfrac=MAXFDIG
-
   l = nexp+1+1+nfrac 
   if(sign < 0) l=l+1 
 
@@ -2808,4 +2805,15 @@ def int LibeExit() :
 
   RunExit() 
   return(OK) 
+    
+def char [*] LibeDate() :
+
+  # The LibeDate function returns the date. 
+  #
+  # Parameters: None
+  #
+  # Returns : String with date of the type "Saturday December 6 2025"
+  #
+
+  return(RunDate()) 
     
