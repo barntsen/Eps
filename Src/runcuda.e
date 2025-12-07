@@ -330,7 +330,7 @@ nctempchar1 *RunDate()
   if (!c_time_string) {
     return NULL;
   }
-  date->d[0]=1;
+  date->d[0]=strlen(c_time_string)+1;
   date->a=c_time_string;
   
   // Return eps array reference
