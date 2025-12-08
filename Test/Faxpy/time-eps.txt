@@ -1,41 +1,0 @@
-256
-256
- 2.14843760e-02
-Collecting data...
-Generating '/tmp/nsys-report-05a7.qdstrm'
-[1/7] [0%                          ] report8.nsys-rep[1/7] [0%                          ] report8.nsys-rep[1/7] [============57%             ] report8.nsys-rep[1/7] [================69%         ] report8.nsys-rep[1/7] [===================81%      ] report8.nsys-rep[1/7] [========================100%] report8.nsys-rep[1/7] [========================100%] report8.nsys-rep
-[2/7] [0%                          ] report8.sqlite[2/7] [1%                          ] report8.sqlite[2/7] [2%                          ] report8.sqlite[2/7] [3%                          ] report8.sqlite[2/7] [4%                          ] report8.sqlite[2/7] [5%                          ] report8.sqlite[2/7] [6%                          ] report8.sqlite[2/7] [7%                          ] report8.sqlite[2/7] [8%                          ] report8.sqlite[2/7] [9%                          ] report8.sqlite[2/7] [10%                         ] report8.sqlite[2/7] [11%                         ] report8.sqlite[2/7] [12%                         ] report8.sqlite[2/7] [13%                         ] report8.sqlite[2/7] [14%                         ] report8.sqlite[2/7] [=15%                        ] report8.sqlite[2/7] [=16%                        ] report8.sqlite[2/7] [=17%                        ] report8.sqlite[2/7] [==18%                       ] report8.sqlite[2/7] [==19%                       ] report8.sqlite[2/7] [==20%                       ] report8.sqlite[2/7] [==21%                       ] report8.sqlite[2/7] [===22%                      ] report8.sqlite[2/7] [===23%                      ] report8.sqlite[2/7] [===24%                      ] report8.sqlite[2/7] [====25%                     ] report8.sqlite[2/7] [====26%                     ] report8.sqlite[2/7] [====27%                     ] report8.sqlite[2/7] [====28%                     ] report8.sqlite[2/7] [=====29%                    ] report8.sqlite[2/7] [=====30%                    ] report8.sqlite[2/7] [=====31%                    ] report8.sqlite[2/7] [=====32%                    ] report8.sqlite[2/7] [======33%                   ] report8.sqlite[2/7] [======34%                   ] report8.sqlite[2/7] [======35%                   ] report8.sqlite[2/7] [=======36%                  ] report8.sqlite[2/7] [=======37%                  ] report8.sqlite[2/7] [=======38%                  ] report8.sqlite[2/7] [=======39%                  ] report8.sqlite[2/7] [========40%                 ] report8.sqlite[2/7] [========41%                 ] report8.sqlite[2/7] [========42%                 ] report8.sqlite[2/7] [=========43%                ] report8.sqlite[2/7] [=========44%                ] report8.sqlite[2/7] [=========45%                ] report8.sqlite[2/7] [=========46%                ] report8.sqlite[2/7] [==========47%               ] report8.sqlite[2/7] [==========48%               ] report8.sqlite[2/7] [==========49%               ] report8.sqlite[2/7] [===========50%              ] report8.sqlite[2/7] [===========51%              ] report8.sqlite[2/7] [===========52%              ] report8.sqlite[2/7] [===========53%              ] report8.sqlite[2/7] [============54%             ] report8.sqlite[2/7] [============55%             ] report8.sqlite[2/7] [============56%             ] report8.sqlite[2/7] [============57%             ] report8.sqlite[2/7] [=============58%            ] report8.sqlite[2/7] [=============59%            ] report8.sqlite[2/7] [=============60%            ] report8.sqlite[2/7] [==============61%           ] report8.sqlite[2/7] [==============62%           ] report8.sqlite[2/7] [==============63%           ] report8.sqlite[2/7] [==============64%           ] report8.sqlite[2/7] [===============65%          ] report8.sqlite[2/7] [===============66%          ] report8.sqlite[2/7] [===============67%          ] report8.sqlite[2/7] [================68%         ] report8.sqlite[2/7] [================69%         ] report8.sqlite[2/7] [================70%         ] report8.sqlite[2/7] [================71%         ] report8.sqlite[2/7] [=================72%        ] report8.sqlite[2/7] [=================73%        ] report8.sqlite[2/7] [=================74%        ] report8.sqlite[2/7] [==================75%       ] report8.sqlite[2/7] [==================76%       ] report8.sqlite[2/7] [==================77%       ] report8.sqlite[2/7] [==================78%       ] report8.sqlite[2/7] [===================79%      ] report8.sqlite[2/7] [===================80%      ] report8.sqlite[2/7] [===================81%      ] report8.sqlite[2/7] [===================82%      ] report8.sqlite[2/7] [====================83%     ] report8.sqlite[2/7] [====================84%     ] report8.sqlite[2/7] [====================85%     ] report8.sqlite[2/7] [=====================86%    ] report8.sqlite[2/7] [=====================87%    ] report8.sqlite[2/7] [=====================88%    ] report8.sqlite[2/7] [=====================89%    ] report8.sqlite[2/7] [======================90%   ] report8.sqlite[2/7] [======================91%   ] report8.sqlite[2/7] [======================92%   ] report8.sqlite[2/7] [=======================93%  ] report8.sqlite[2/7] [=======================94%  ] report8.sqlite[2/7] [=======================95%  ] report8.sqlite[2/7] [=======================96%  ] report8.sqlite[2/7] [========================97% ] report8.sqlite[2/7] [========================98% ] report8.sqlite[2/7] [========================99% ] report8.sqlite[2/7] [========================100%] report8.sqlite[2/7] [========================100%] report8.sqlite
-[3/7] Executing 'nvtx_sum' stats report
-[4/7] Executing 'cuda_api_sum' stats report
-
- Time (%)  Total Time (ns)  Num Calls   Avg (ns)    Med (ns)  Min (ns)   Max (ns)   StdDev (ns)            Name         
- --------  ---------------  ---------  -----------  --------  --------  ----------  ------------  ----------------------
-     84.3       89,524,188         14  6,394,584.9   6,883.0     2,546  89,392,342  23,888,399.2  cudaMallocManaged     
-     11.8       12,531,279      1,008     12,431.8   8,496.5       652     541,877      40,659.1  cudaDeviceSynchronize 
-      3.8        4,050,785      1,000      4,050.8   3,760.0     2,816     112,325       3,724.2  cudaLaunchKernel      
-      0.1           69,774          8      8,721.8   6,731.0     5,904      21,304       5,191.3  cudaFree              
-      0.0              856          1        856.0     856.0       856         856           0.0  cuModuleGetLoadingMode
-
-[5/7] Executing 'cuda_gpu_kern_sum' stats report
-
- Time (%)  Total Time (ns)  Instances  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)       Name     
- --------  ---------------  ---------  --------  --------  --------  --------  -----------  --------------
-    100.0       10,148,783      1,000  10,148.8   6,208.0     5,984   540,292     40,307.0  kernel_faxpy2d
-
-[6/7] Executing 'cuda_gpu_mem_time_sum' stats report
-
- Time (%)  Total Time (ns)  Count  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)               Operation              
- --------  ---------------  -----  --------  --------  --------  --------  -----------  ------------------------------------
-     69.6          119,021     43   2,767.9   1,728.0     1,599     8,767      1,954.1  [CUDA memcpy Unified Host-to-Device]
-     30.4           52,088     31   1,680.3     992.0       960     5,344      1,535.4  [CUDA memcpy Unified Device-to-Host]
-
-[7/7] Executing 'cuda_gpu_mem_size_sum' stats report
-
- Total (MB)  Count  Avg (MB)  Med (MB)  Min (MB)  Max (MB)  StdDev (MB)               Operation              
- ----------  -----  --------  --------  --------  --------  -----------  ------------------------------------
-      0.786     43     0.018     0.004     0.004     0.094        0.025  [CUDA memcpy Unified Host-to-Device]
-      0.397     31     0.013     0.004     0.004     0.061        0.020  [CUDA memcpy Unified Device-to-Host]
-
-Generated:
-    /home/barn/Dropbox/Src/Eps/Test/Faxpy/report8.nsys-rep
-    /home/barn/Dropbox/Src/Eps/Test/Faxpy/report8.sqlite
