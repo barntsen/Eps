@@ -670,22 +670,17 @@ def int CodeFdewrappergpu(struct tree p) :
   
   if(LibeStrcmp(SymGetstruct(tp),"struct") == OK):
     CodeEs(p, "struct ");
-  
 
   if(LibeStrcmp(SymGetarray(tp),"array") == OK):
     CodeEs(p, "nctemp");
-  
-
 
   CodeEs(p, SymGetype(tp));
 
   if(LibeStrcmp(SymGetarray(tp),"array") == OK):
     CodeEd(SymGetrank(tp));
-  
 
   if(LibeStrcmp(SymGetstruct(tp),"struct")==OK):
      CodeEs(p,"*");
-  
 
   top = p;
   toptp=tp;
