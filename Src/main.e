@@ -320,8 +320,8 @@ def int Main(struct MainArg [*] MainArgs) :
   #char [*] outfile  # Output file name
   #char [*] dev      # GPU device/architecture name
 
-  int options       # Count of options
-  int i,l             # Loop variables 
+  #int options       # Count of options
+  #int i,l             # Loop variables 
 
   LibeInit()         # Initialize io package 
 
