@@ -47,22 +47,22 @@ def int MainHelp(int arch):
   LibePuts(stderr,"  with extension .e into an object file with extension .o\n") 
   LibePuts(stderr,"\n") 
   LibePuts(stderr,"  Options: \n") 
-  LibePuts(stderr,"   -t : Print parse tree \n") 
-  LibePuts(stderr,"   -a : Print annotated parse tree \n") 
-  LibePuts(stderr,"   -s : Print local symbol table   \n") 
-  LibePuts(stderr,"   -r : Print external symbol table   \n") 
-  LibePuts(stderr,"   -e : Emit code \n") 
-  LibePuts(stderr,"   -p : Perform only syntax check, no code generated \n") 
-  LibePuts(stderr,"   -q : Perform syntax and semantic check, no code generated \n") 
-  LibePuts(stderr,"   -C : Array index check \n") 
-  LibePuts(stderr,"   -i : Break up expressions \n") 
-  LibePuts(stderr,"   -c : Produce c/c++ code but do not generate object code\n") 
-  LibePuts(stderr,"   -g : Generate debug info \n") 
-  LibePuts(stderr,"   -d : Show the host compiler command line  \n") 
-  LibePuts(stderr,"   -O : Optimize code\n") 
-  LibePuts(stderr,"   -f : Generate code for openmp \n") 
-  LibePuts(stderr,"   -x arch : where arch is either cpu (default) or cuda\n") 
-  LibePuts(stderr,"   -y dev  : where dev is either none, native or device name such as sm_86\n") 
+  LibePuts(stderr," -t : Print parse tree \n") 
+  LibePuts(stderr," -a : Print annotated parse tree \n") 
+  LibePuts(stderr," -s : Print local symbol table   \n") 
+  LibePuts(stderr," -r : Print external symbol table   \n") 
+  LibePuts(stderr," -e : Emit code \n") 
+  LibePuts(stderr," -p : Perform only syntax check, no code generated \n") 
+  LibePuts(stderr," -q : Perform syntax and semantic check, no code generated \n") 
+  LibePuts(stderr," -C : Array index check \n") 
+  LibePuts(stderr," -i : Break up expressions \n") 
+  LibePuts(stderr," -c : Produce c/c++ code but do not generate object code\n") 
+  LibePuts(stderr," -g : Generate debug info \n") 
+  LibePuts(stderr," -d : Show the host compiler command line  \n") 
+  LibePuts(stderr," -O : Optimize code\n") 
+  LibePuts(stderr," -f : Generate code for openmp \n") 
+  LibePuts(stderr," -x arch : where arch is either cpu (default) or cuda\n") 
+  LibePuts(stderr," -y dev  : where dev is either none, native or device name such as sm_86\n") 
   LibeFlush(stderr) 
   return(OK) 
     
@@ -121,7 +121,7 @@ def char [*] MainFmod(char [*] infile):
 
   char [*] outfile  # Output file name (holding module file)
   int l             # Temp varibale to hold string length of 
-                    # input file name
+                     # input file name
   l=len(infile,0) 
   if(l < 3):
     MainError(" Illegal file name\n") 
@@ -201,9 +201,9 @@ def int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int sh
   # MainCcompcuda invokes the nvcc compiler to generate object 
   # code for nvidia gpus.
 
-  char [*] tmp          # String temporary 
-  char [*] cmd          # Command line for compiling
-  int l                 # Temp varibale to hold string length of 
+  #char [*] tmp          # String temporary 
+  #char [*] cmd          # Command line for compiling
+  #int l                 # Temp varibale to hold string length of 
                         # input file name
   l=len(file,0) 
   cmd= "nvcc  -use_fast_math --compiler-options -O2 "
@@ -252,9 +252,9 @@ def int MainCcomphip(char [*] file, int debug, int optimize, int openmp, int sho
 
   # MainCcomphip invokes the hipcc compiler to generate object code for amd gpus.
 
-  char [*] tmp      # String temporary 
-  char [*] cmd      # Command line for compiling
-  int l             # Temp varibale to hold string length of 
+  #char [*] tmp      # String temporary 
+  #char [*] cmd      # Command line for compiling
+  #int l             # Temp varibale to hold string length of 
                     # input file name
   l=len(file,0) 
   tmp= "hipcc -c " 
@@ -300,25 +300,25 @@ def int Main(struct MainArg [*] MainArgs) :
 
   # Main is the main function.
 
-  int btree         # Flag for emitting parse tre. 
-  int atree         # Flag for emitting annotated parse tree
-  int table         # Flag for emitting local symbol tables
-  int etable        # Flag for emitting external symbol table
-  int parse         # Flag to perform parsing
-  int semantic      # Flag to perform semantic check
-  int emit          # Flag for emitting c-code
-  int optimize      # Flag to optimize cod3
-  int openmp        # Flag for openmp
-  int debug         # Flag for debug
-  int show          # Flag for displaying compiler command line
-  int obj           # Flag for producing object code
+  #int btree         # Flag for emitting parse tre. 
+  #int atree         # Flag for emitting annotated parse tree
+  #int table         # Flag for emitting local symbol tables
+  #int etable        # Flag for emitting external symbol table
+  #int parse         # Flag to perform parsing
+  #int semantic      # Flag to perform semantic check
+  #int emit          # Flag for emitting c-code
+  #int optimize      # Flag to optimize cod3
+  #int openmp        # Flag for openmp
+  #int debug         # Flag for debug
+  #int show          # Flag for displaying compiler command line
+  #int obj           # Flag for producing object code
 
  
-  int fd            # Input file descriptor
-  struct tree p     # Parse tree node
-  char [*] infile   # Input file name
-  char [*] outfile  # Output file name
-  char [*] dev      # GPU device/architecture name
+  #int fd            # Input file descriptor
+  #struct tree p     # Parse tree node
+  #char [*] infile   # Input file name
+  #char [*] outfile  # Output file name
+  #char [*] dev      # GPU device/architecture name
 
   int options       # Count of options
   int i,l             # Loop variables 
@@ -449,7 +449,6 @@ def int Main(struct MainArg [*] MainArgs) :
     # Open output file for c-code
     fd = LibeOpen(outfile,"w") 
     CodeSetfdout(fd) 
-      
   
   # Initialize the scanner 
   if(ScanInit(infile) == ERR):        

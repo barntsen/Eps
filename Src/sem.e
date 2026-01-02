@@ -1101,6 +1101,7 @@ def struct tree SemPrimexpr(struct tree p) :
     SemSetsimple(ERR)
     PtreeSetype(p, "char");
     PtreeSetref(p, "aref");
+    PtreeSetarray(p, "array");
     PtreeSetrank(p,1);
     return (p);
   else :
