@@ -13,11 +13,10 @@
 # Grouping    : ()
 #
 #   parse =  extdecl
-#
 #   extdecl = 
 #       import 
 #     | fdef
-#     | type   idseq (SEMICOLON | NL) | COLON IND structdeclar) 
+#     | type   idseq (SEMICOLON | NL) | (COLON IND structdeclar) 
 #     | ID ASSIGN RCONSTANT|SCONSTANT|ICONSTANT (SEMICOLON|NL)
 #
 #   import = IMPORT ID NL
@@ -33,10 +32,7 @@
 #
 #   idseq        = ',' ID  [idseq] 
 #   structdeclar = declarations DIND
-#   arrayarg     = 
-#        * 
-#      | ',' arrayarg
-#
+#   arrayarg     = *  | ',' arrayarg
 #   arglist      = type [ID] [argseq] 
 #   argseq       = ',' [ID]  argseq  
 #   declarations = declaration [';'] NL [declarations]
