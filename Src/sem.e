@@ -100,6 +100,37 @@ def int SemImport(struct tree p, struct symbol etp) :
   etp=SymAddtble(etp,stp);
   return(OK);
 
+def int SemAutodeclar(struct tree identifier, struct symbol local, \
+                      struct symbol global):
+  
+  # SemAutodeclar enters info in the local symboltable for 
+  # automatic declaration of an identifier
+  #
+  # Parameters:
+  #   identifier : Parse tree identifier node
+  #   local      : Local symbol table
+  #
+  # Returns:
+  #   OK in case of success, ERR in all other cases.
+  #
+    struct symbol entry
+
+    # Do nothing if this identifier is already declared, either local or global
+    if((entry = SymLook(PtreeGetdef(identifier))) != NULL):
+      return(OK)
+
+    # Create the entry for the identifier in the local symbol table
+    entry = SymMkname(PtreeGetdef(identifier), local)
+    
+    # Set all symbol table fields
+    SymSetident(entry, "identifier")
+    SymSetype(entry,   PtreeGetype(identifier))  
+    SymSetlval(entry, "lval")
+    SymSetarray(entry, PtreeGetarray(identifier))
+    SymSetstruct(entry, PtreeGetstruct(identifier))
+    SymSetref(entry,   PtreeGetref(identifier))
+    SymSetrank(entry,  PtreeGetrank(identifier))
+    return(OK)
 
 def int SemDeclaration(struct tree p, struct symbol tp) :
 
@@ -351,37 +382,38 @@ def int SemId(struct tree p) :
   struct tree np;
 
   if((tp = SymLook(PtreeGetdef(p))) == NULL):
-    SemSerror(p,"Undeclared identifier", PtreeGetdef(p));
- 
+    SemSerror(p,"Undeclared identifier", PtreeGetdef(p))
+
   if(LibeStrcmp(SymGetype(tp),"iconstant")==OK):
-    PtreeSetname(p,SymGetype(tp));
-    PtreeSetdef(p,SymGetdescr(tp));
-    PtreeSetype(p,"int");
-    return(OK);
+    PtreeSetname(p,SymGetype(tp))
+    PtreeSetdef(p,SymGetdescr(tp))
+    PtreeSetype(p,"int")
+    return(OK)
  
   else if(LibeStrcmp(SymGetype(tp),"rconstant")==OK):
-    PtreeSetname(p,SymGetype(tp));
-    PtreeSetdef(p,SymGetdescr(tp));
-    PtreeSetype(p,"float");
-    return(OK);
+    PtreeSetname(p,SymGetype(tp))
+    PtreeSetdef(p,SymGetdescr(tp))
+    PtreeSetype(p,"float")
+    return(OK)
  
   else if(LibeStrcmp(SymGetype(tp),"sconstant")==OK):
-    PtreeSetname(p,SymGetype(tp));
-    PtreeSetdef(p,SymGetdescr(tp));
-    PtreeSetype(p,"char");
-    PtreeSetarray(p,"array");
-    PtreeSetref(p,"aref");
-    PtreeSetrank(p,1);
-    return(OK);
+    PtreeSetname(p,SymGetype(tp))
+    PtreeSetdef(p,SymGetdescr(tp))
+    PtreeSetype(p,"char")
+    PtreeSetarray(p,"array")
+    PtreeSetref(p,"aref")
+    PtreeSetrank(p,1)
+    return(OK)
  
   if(LibeStrcmp(SymGetstruct(tp), "structdef")):
-    SemSerror(p,"Struct names can not be used as a variable",PtreeGetdef(p)); 
- 
-  PtreeSetype(p, SymGetype(tp));
-  PtreeSetarray(p, SymGetarray(tp));
-  PtreeSetrank(p, SymGetrank(tp));
-  PtreeSetstruct(p, SymGetstruct(tp));
-  PtreeSetlval(p, SymGetlval(tp));
+    SemSerror(p,"Struct names can not be used as a variable",PtreeGetdef(p)) 
+
+  
+  PtreeSetype(p, SymGetype(tp))
+  PtreeSetarray(p, SymGetarray(tp))
+  PtreeSetrank(p, SymGetrank(tp))
+  PtreeSetstruct(p, SymGetstruct(tp))
+  PtreeSetlval(p, SymGetlval(tp))
 
   np = PtreeMvchild(p);
   if(np != NULL):
@@ -909,14 +941,29 @@ def struct tree SemBinexpr(struct tree p) :
 
   # SemBinexpr checks binary expression
  
-  struct tree leftp, rightp, np;
+  struct tree leftp, rightp, np, right;
 
   np = p;
   if(LibeStrcmp(PtreeGetname(p), "binexpr")):
+    # Typecheck the right-hand-side
     p = PtreeMvchild(p);    
-    leftp = SemUnexpr(p);
     p = PtreeMvsister(p);    
+    right=p
     rightp = SemUnexpr(p);
+
+    # Attempt automatic declaration of identifier
+    p = PtreeMvchild(np);    
+
+    # Attempt to autotype if operator equals "="
+    if(LibeStrcmp(PtreeGetdef(np),"=") == OK) :
+      if(LibeStrcmp(PtreeGetname(p),"identifier") == OK):
+        # Only attempt autotyping if the identifier is 
+        # a basic type or a reference (i.e. no child node)
+        if(PtreeMvchild(p) == NULL):
+          SemCopytype(right,p)
+          SemAutodeclar(p,SymGetltp(), SymGetetp())
+       
+    leftp = SemUnexpr(p);
     if(SemComparetype(leftp, rightp) == ERR):
       SemSerror(p,"Type error", " ");
       return (p);

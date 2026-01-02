@@ -10,21 +10,24 @@
 #   |   |        |    |     | |        |   |
 #   |   ----------    |     | ----------   |
 #   |       |         |     ----------------
-#   |       |         |
-#   |       |         |     Table 3
-#   |       v         |     ----------------
-#   |   ----------    |     |
-#   |   |        |    |     |
-#   |   |  node  |    |     |
-#   |   |        |    |     |
-#   |   ----------    |     |
-#   -------------------     ----------------
+#   |       |         |            
+#   |       |         |            
+#   |       |         |             
+#   |       v         |     
+#   |   ----------    |     
+#   |   |        |    |     
+#   |   |  node  |    |     
+#   |   |        |    |     
+#   |   ----------    |     
+#   -------------------     
+#                           
+#
 
 import libe
 
 # Symbol table data structures
 
-struct symbol : # basic table entry  
+struct symbol : 
       char [*] name                # Name                         
       char [*] type                # Basic type                   
       char [*] func                # Flag for function            
@@ -39,15 +42,21 @@ struct symbol : # basic table entry
       char [*] module              # Module name
       char [*] forw                # forw field
       int  emit                    # The emit flag                
-      struct symbol tbl             # next table                   
-      struct symbol next            # next entry in chain          
-      struct symbol last            # last entry in chain          
+      struct symbol tbl            # next table                   
+      struct symbol next           # next entry in chain          
+      struct symbol last           # last entry in chain          
     
   
 const NTBL=400 
 
 # SymEtp is the external Symbol Table
 struct symbol SymEtp        
+
+# SymLtp is the local symbol table
+struct symbol SymLtp        
+
+# SymStp is the string table (not used at thye moment)
+struct symbol SymStp       
 
 def int SymSetetp(struct symbol tp) :
 
@@ -74,10 +83,6 @@ def struct symbol SymGetetp() :
   #   Returns the external symbol table
 
   return SymEtp
-  
-
-# SymLtp is the local symbol table
-struct symbol SymLtp        
 
 def int SymSetltp(struct symbol tp) :
 
@@ -105,9 +110,6 @@ def struct symbol SymGetltp() :
 
   return SymLtp
   
-# SymStp is the string table (not used)
-struct symbol SymStp       
-
 def struct symbol SymGetstp() :
 
  # SymGetstp gets the string table.                 
@@ -120,6 +122,49 @@ def struct symbol SymSetstp( struct symbol stp) :
 
   SymStp = stp 
   return(SymStp) 
+
+def int SymPrsym(int fp,struct symbol p, int level) : 
+
+  # SymPrsym prints the symbol table.
+
+  int i 
+  struct symbol tp 
+       
+  if(p == NULL):
+    return(ERR) 
+     
+  while(p != NULL):
+    i = 0 
+    while(i <= level):
+      LibePuts(fp, " ") 
+      i = i + 1 
+
+    LibePuts(fp, p.name);  LibePuts(fp, " ")     
+    LibePuts(fp, p.type);  LibePuts(fp, " ")     
+    LibePuts(fp, p.func);  LibePuts(fp, " ")     
+    LibePuts(fp, p.array); LibePuts(fp, " ")     
+    LibePuti(fp, p.rank);  LibePuts(fp, " ")     
+    LibePuti(fp, p.emit);  LibePuts(fp, " ")     
+    LibePuts(fp, p.structure); LibePuts(fp, " ")     
+    LibePuts(fp, p.ident);     LibePuts(fp, " ")     
+    LibePuts(fp, p.lval);      LibePuts(fp, " ")     
+    LibePuts(fp, p.ref);       LibePuts(fp, " ")     
+    LibePuts(fp, p.descr);     LibePuts(fp, " ")     
+    LibePuts(fp, p.global);    LibePuts(fp, " ")     
+    LibePuts(fp, p.module);    LibePuts(fp, " ")     
+    LibePuts(fp, p.forw);      LibePuts(fp, " ")     
+    LibePuts(fp,"\n") 
+    LibeFlush(fp) 
+ 
+    if(p.tbl != NULL):
+      tp = p.tbl 
+      level = level + 1 
+      SymPrsym(fp,tp, level) 
+      level = level - 1 
+    p = p.next 
+    LibeFlush(fp) 
+  return(OK) 
+
 def int SymIstemp(char [*] name):
 
   # SymIstemp checks if the name starts with "nctemp"
@@ -161,12 +206,28 @@ def struct symbol SymLookup(char [*] s, struct symbol tp) :
      
   return(np=NULL)        # not found  
     
+
+def struct symbol SymGetable(struct symbol np) :
+
+  # SymGetable gets a table.
+
+  return(np.tbl) 
+
 def struct symbol SymMkname(char [*] name, struct symbol tp) :
+
+# SymMkname makes a new name in a symbol table
 
   struct symbol np
   struct symbol lp
 
-  if((np = SymLookup(name, tp)) == NULL) :  # not found  
+  # Check first to see if the name is a function parameter
+  if((np=SymLookup("#arglist", tp)) != NULL) :
+    np=SymGetable(np) 
+    if((np=SymLookup(name, np))!= NULL) :
+      return(np=NULL)
+
+  # Next check local variables
+  if((np = SymLookup(name, tp)) == NULL) :  
     np = new(struct symbol) 
     if (np == NULL):
       return(np) 
@@ -196,11 +257,6 @@ def struct symbol SymMkname(char [*] name, struct symbol tp) :
     np = NULL 
   return(np)           # Return pointer to node  
 
-def struct symbol SymGetable(struct symbol np) :
-
-  # SymGetable gets a table.
-
-  return(np.tbl) 
 
 def struct symbol SymRmname(char [*] name, struct symbol tp) :
 
@@ -524,17 +580,27 @@ def int SymRmtable(struct symbol p) :
 def struct symbol SymLook(char [*] name) :
 
   # SymLook finds identifier.
- 
+  #
+  # Parameters:
+  #   name:   Identifier name
+  #
+  # Returns: Table entry for name.
+  #  SymLook will first search the external symbol table, 
+  #  followed by a search in the local symbol table.
+  #  The search in the local table includes searching
+  #  the argument list.
+
   struct symbol tp, ap 
 
-  if((tp = SymLookup(name, SymEtp)) == NULL):
-    if((tp = SymLookup(name, SymLtp)) == NULL):
-      tp = SymLookup("#arglist", SymLtp) 
+  if((tp = SymLookup(name, SymGetetp())) == NULL):
+    if((tp = SymLookup(name, SymGetltp())) == NULL):
+      tp = SymLookup("#arglist", SymGetltp())
       if(tp==0) return(tp) 
       ap = SymGetable(tp) 
       if(ap==0) return(ap) 
       if((tp = SymLookup(name,ap)) == NULL): 
-        tp = SymLookup(name, SymEtp) 
+        tp = SymLookup(name, SymGetetp())
+
   return(tp) 
 
 def int SymCpytble(struct symbol tp, struct symbol up) :
@@ -615,47 +681,6 @@ def struct symbol SymAddtble(struct symbol tp, struct symbol sp) :
 
   return(start) 
 
-def int SymPrsym(int fp,struct symbol p, int level) : 
-
-  # SymPrsym prints the symbol table.
-
-  int i 
-  struct symbol tp 
-       
-  if(p == NULL):
-    return(ERR) 
-     
-  while(p != NULL):
-    i = 0 
-    while(i <= level):
-      LibePuts(fp, " ") 
-      i = i + 1 
-
-    LibePuts(fp, p.name);  LibePuts(fp, " ")     
-    LibePuts(fp, p.type);  LibePuts(fp, " ")     
-    LibePuts(fp, p.func);  LibePuts(fp, " ")     
-    LibePuts(fp, p.array); LibePuts(fp, " ")     
-    LibePuti(fp, p.rank);  LibePuts(fp, " ")     
-    LibePuti(fp, p.emit);  LibePuts(fp, " ")     
-    LibePuts(fp, p.structure); LibePuts(fp, " ")     
-    LibePuts(fp, p.ident);     LibePuts(fp, " ")     
-    LibePuts(fp, p.lval);      LibePuts(fp, " ")     
-    LibePuts(fp, p.ref);       LibePuts(fp, " ")     
-    LibePuts(fp, p.descr);     LibePuts(fp, " ")     
-    LibePuts(fp, p.global);    LibePuts(fp, " ")     
-    LibePuts(fp, p.module);    LibePuts(fp, " ")     
-    LibePuts(fp, p.forw);      LibePuts(fp, " ")     
-    LibePuts(fp,"\n") 
-    LibeFlush(fp) 
- 
-    if(p.tbl != NULL):
-      tp = p.tbl 
-      level = level + 1 
-      SymPrsym(fp,tp, level) 
-      level = level - 1 
-    p = p.next 
-    LibeFlush(fp) 
-  return(OK) 
 
 def int SymExport(int fp,struct symbol p, int level) :
 

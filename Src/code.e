@@ -696,13 +696,9 @@ def int CodeFdewrappergpu(struct tree p) :
       CodeIdeclaration(p, tp);
       if(SymMvnext(tp)!=NULL):
         CodeEs(p,",");
-      
-
       noarg=noarg+1;
-    
   CodeEs(p, ")\n");
   CodeEs(p, "{\n");
-
   p=top;
   tp=toptp;
   CodeEs(p, "  kernel_"); 
@@ -718,9 +714,7 @@ def int CodeFdewrappergpu(struct tree p) :
       CodeEs(p,SymGetname(tp));
       if(SymMvnext(tp)!=NULL):
         CodeEs(p,",");
-      
       noarg=noarg+1;
-    
   CodeEs(p, ");\n");
   CodeEs(p,"GpuError();\n");
   CodeEs(p, "return(1);\n");
