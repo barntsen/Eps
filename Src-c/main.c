@@ -1,4 +1,4 @@
-//  Translated by epsc  version: Sun Dec  7 16:23:36 2025
+//  Translated by epsc  version: Fri Jan  2 12:13:59 2026
 
 #include <stddef.h>
 #include <stdio.h>
@@ -286,10 +286,11 @@ int SymSetltp (struct symbol* tp);
 struct symbol* SymGetltp ();
 struct symbol* SymGetstp ();
 struct symbol* SymSetstp (struct symbol* stp);
+int SymPrsym (int fp,struct symbol* p,int level);
 int SymIstemp (nctempchar1 *name);
 struct symbol* SymLookup (nctempchar1 *s,struct symbol* tp);
-struct symbol* SymMkname (nctempchar1 *name,struct symbol* tp);
 struct symbol* SymGetable (struct symbol* np);
+struct symbol* SymMkname (nctempchar1 *name,struct symbol* tp);
 struct symbol* SymRmname (nctempchar1 *name,struct symbol* tp);
 nctempchar1 * SymGetname (struct symbol* np);
 struct symbol* SymMktable ();
@@ -326,7 +327,6 @@ int SymRmtable (struct symbol* p);
 struct symbol* SymLook (nctempchar1 *name);
 int SymCpytble (struct symbol* tp,struct symbol* up);
 struct symbol* SymAddtble (struct symbol* tp,struct symbol* sp);
-int SymPrsym (int fp,struct symbol* p,int level);
 int SymExport (int fp,struct symbol* p,int level);
 int Symgetline (int fp,struct symbol* np,nctempchar1 *module);
 int SymReadsym (int fp,struct symbol* rtbl,nctempchar1 *module);
@@ -339,6 +339,7 @@ int SemSetsimple (int simple);
 int SemGetsimple ();
 int SemSerror (struct tree* p,nctempchar1 *s1,nctempchar1 *s2);
 int SemImport (struct tree* p,struct symbol* etp);
+int SemAutodeclar (struct tree* identifier,struct symbol* local,struct symbol* global);
 int SemDeclaration (struct tree* p,struct symbol* tp);
 int SemDeclarations (struct tree* p,struct symbol* tp);
 int SemStructdecl (struct tree* p,struct symbol* tp);
@@ -349,6 +350,7 @@ int SemId (struct tree* p);
 int SemFcall (struct tree* p);
 struct tree* SemExprlist (struct tree* p);
 int SemCopytype (struct tree* p,struct tree* np);
+int SemCopytype2 (struct tree* p,struct tree* np);
 int SemCast (struct tree* p);
 int SemNew (struct tree* p);
 int SemDelete (struct tree* p);

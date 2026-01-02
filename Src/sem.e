@@ -534,6 +534,24 @@ def int SemCopytype(struct tree p, struct tree np) :
   PtreeSetrank(np, PtreeGetrank(p));
   return(OK);
  
+def int SemCopytype2(struct tree p, struct tree np) :
+
+  # SemCopytype2 copy the basic type field.
+  # If the aref or sref fields are set, all
+  # type fields are copied
+ 
+  PtreeSetype(np, PtreeGetype(p));
+
+  if(  (LibeStrcmp(PtreeGetref(p),"sref")==OK) \
+    || (LibeStrcmp(PtreeGetref(p),"aref")==OK) ) :
+
+    PtreeSetstruct(np, PtreeGetstruct(p));
+    PtreeSetarray(np, PtreeGetarray(p));
+    PtreeSetref(np, PtreeGetref(p));
+    PtreeSetlval(np, PtreeGetlval(p));
+    PtreeSetrank(np, PtreeGetrank(p));
+
+  return(OK);
 
 def int SemCast(struct tree p) :
 
@@ -960,9 +978,8 @@ def struct tree SemBinexpr(struct tree p) :
         # Only attempt autotyping if the identifier is 
         # a basic type or a reference (i.e. no child node)
         if(PtreeMvchild(p) == NULL):
-          SemCopytype(right,p)
+          SemCopytype2(right,p)
           SemAutodeclar(p,SymGetltp(), SymGetetp())
-       
     leftp = SemUnexpr(p);
     if(SemComparetype(leftp, rightp) == ERR):
       SemSerror(p,"Type error", " ");
