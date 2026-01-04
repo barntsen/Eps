@@ -20,8 +20,15 @@
 #   |   |        |    |     
 #   |   ----------    |     
 #   -------------------     
-#                           
+#                            
+#   Fig 1
 #
+# The symbol table is a linked list of nodes with entries
+# as shown in the declaration below.
+# Each node has an entry (tbl) which points to a sub table.
+# See Figure 1.
+# This makes it possible to create a hierarchical table to
+# accomodate single variables, functions and structures.
 
 import libe
 
@@ -32,11 +39,11 @@ struct symbol :
       char [*] type                # Basic type                   
       char [*] func                # Flag for function            
       char [*] array               # Flag for array               
-      int  rank                    # Rank of array                
+      int      rank                # Rank of array                
       char [*] structure           # Flag for structure           
       char [*] ident               # Flag for identifier          
       char [*] lval                # Flag for left value          
-      char [*] descr               # Descr field                  
+      char [*] descr               # Descr field (not used at the moment)
       char [*] global              # Global field  
       char [*] ref                 # Flag for  reference          
       char [*] module              # Module name
@@ -47,6 +54,9 @@ struct symbol :
       struct symbol last           # last entry in chain          
     
   
+# Max length of text fields in a table.
+# Only used for reading a symbol table from file,
+# not realy a limitation. 
 const NTBL=400 
 
 # SymEtp is the external Symbol Table
@@ -55,7 +65,7 @@ struct symbol SymEtp
 # SymLtp is the local symbol table
 struct symbol SymLtp        
 
-# SymStp is the string table (not used at thye moment)
+# SymStp is the string table (not used at the moment)
 struct symbol SymStp       
 
 def int SymSetetp(struct symbol tp) :
@@ -112,13 +122,25 @@ def struct symbol SymGetltp() :
   
 def struct symbol SymGetstp() :
 
- # SymGetstp gets the string table.                 
+  # SymGetstp gets the string table.                 
+  #
+  # Parameters:
+  #   none
+  #
+  # Returns:
+  #   Returns the string table 
  
   return(SymStp) 
  
 def struct symbol SymSetstp( struct symbol stp) :
 
   # SymSetstp -- sets the string table.                 
+  #
+  # Parameters:
+  #   stp : String table
+  #
+  # Returns:
+  #   Returns the string table 
 
   SymStp = stp 
   return(SymStp) 
@@ -126,10 +148,16 @@ def struct symbol SymSetstp( struct symbol stp) :
 def int SymPrsym(int fp,struct symbol p, int level) : 
 
   # SymPrsym prints the symbol table.
+  #
+  # Parameters:
+  #   fp    : File descriptor
+  #   p     : Symol table
+  #   level : No of indents used for
+  #           the first entry
+  #
+  # Returns : OK
+  #
 
-  int i 
-  struct symbol tp 
-       
   if(p == NULL):
     return(ERR) 
      
@@ -169,15 +197,11 @@ def int SymIstemp(char [*] name):
 
   # SymIstemp checks if the name starts with "nctemp"
   #
-  # Arguments :
-  #  name : Variable name
+  # Parameters:
+  #   name : Variable name
   #
-  # Return OK if the name starts with "nctemp"
-  #        ERR if not
-
-  char [*] t 
-  int lnc 
-  int i 
+  # Returns: OK if the name starts with "nctemp"
+  #          ERR if not
 
   lnc=len("nctemp",0)-1 
   if(len(name,0) < lnc):
@@ -194,10 +218,17 @@ def int SymIstemp(char [*] name):
 
 def struct symbol SymLookup(char [*] s, struct symbol tp) :
 
-  # SymLookup looks for name s                 
+  # SymLookup looks for name s in a table                
+  #
+  # Parameters:
+  #   s :  The name of a node
+  #  tp :  Table
+  #
+  # Returns: Table entry for s, 
+  #          if not found returns NULL. 
+  #
+
  
-  struct symbol np 
-      
   np = tp 
   while(np != NULL): 
     if (LibeStrcmp(s, np.name) == OK) :
@@ -205,17 +236,30 @@ def struct symbol SymLookup(char [*] s, struct symbol tp) :
     np = np.next 
      
   return(np=NULL)        # not found  
-    
 
 def struct symbol SymGetable(struct symbol np) :
 
-  # SymGetable gets a table.
+  # SymGetable gets the subtable from a node
+  #
+  # Parameters:
+  #   s    :  Table node
+  #
+  # Returns: Subtable
+  #          If not found, returns NULL. 
+  #
 
   return(np.tbl) 
 
 def struct symbol SymMkname(char [*] name, struct symbol tp) :
 
-# SymMkname makes a new name in a symbol table
+  # SymMkname makes a new name in a symbol table
+  #
+  # Parameters:
+  #   name    :  Name to install
+  #
+  # Returns   : Entry to new node 
+  #             If the entry exists, returns NULL>
+  #
 
   struct symbol np
   struct symbol lp
@@ -293,7 +337,7 @@ def struct symbol SymRmname(char [*] name, struct symbol tp) :
         
 def char [*] SymGetname(struct symbol np) :
 
-  # SymGetname gets a name.
+  # SymGetname gets the name field.
 
   return(np.name) 
  
@@ -352,7 +396,7 @@ def int SymSetname(struct symbol p, char [*] name) :
    
 def int SymSetype(struct symbol p, char [*] type) :
 
-  # SymSetype sets type.     
+  # SymSetype sets the type field.     
 
   if((type != NULL) && (p != NULL)):
     delete(p.type) 
@@ -361,7 +405,7 @@ def int SymSetype(struct symbol p, char [*] type) :
  
 def char [*] SymGetype(struct symbol np) :
 
-  # SymGetype gets type.
+  # SymGetype gets the type field.
 
   return(np.type) 
  
