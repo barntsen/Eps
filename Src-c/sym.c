@@ -1,4 +1,4 @@
-//  Translated by epsc  version: Fri Jan  2 16:12:14 2026
+//  Translated by epsc  version: Mon Jan  5 13:40:11 2026
 
 #include <stddef.h>
 #include <stdio.h>
@@ -354,8 +354,8 @@ nctemp16=nctemp270;}return 1;
 }
 int SymIstemp (nctempchar1 *name)
 {
-nctempchar1 *t;
 int lnc;
+nctempchar1 *t;
 int i;
 struct nctempchar1 *nctemp284;
 static struct nctempchar1 nctemp285 = {{ 7}, (char*)"nctemp\0"};

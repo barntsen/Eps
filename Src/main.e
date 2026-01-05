@@ -63,8 +63,36 @@ def int MainHelp(int arch):
   LibePuts(stderr," -f : Generate code for openmp \n") 
   LibePuts(stderr," -x arch : where arch is either cpu (default) or cuda\n") 
   LibePuts(stderr," -y dev  : where dev is either none, native or device name such as sm_86\n") 
+  LibePuts(stderr," -z : Generate python wrapper functions\n") 
   LibeFlush(stderr) 
   return(OK) 
+    
+def char [*] MainPythonout(char [*] infile):
+
+  # MainPythonout creates the python output file name
+  #
+  # Parameters:
+  # 
+  # infile : Input file name
+  #
+  # Returns: Returns python output file name
+  #
+
+  char [*] outfile  # Output file name (holding python code)
+
+  l=len(infile,0) 
+  if(l < 3):
+    MainError(" Illegal file name\n") 
+ 
+  if(infile[l-2] != cast(char,'e')):
+    MainError("File extension have to be .e\n") 
+
+  outfile=new(char [l+1]) 
+  LibeStrcpy(infile,outfile) 
+  outfile[l-2] = cast(char,'p') 
+  outfile[l-1] = cast(char,'y') 
+     
+  return(outfile) 
     
  
 def char [*] MainFout(char [*] infile, int arch):
@@ -155,7 +183,7 @@ def int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int sho
   char [*] tmp          # String temporary 
   char [*] cmd          # Command line for compiling
                         # input file name
-  cmd = "gcc -c -ffast-math " 
+  cmd = "gcc -c -ffast-math -fPIC" 
 
   if(debug == OK):
     cmd=LibeStradd(cmd," -g ") 
@@ -332,6 +360,7 @@ def int Main(struct MainArg [*] MainArgs) :
   parse  = semantic = ERR 
   obj = OK 
   options=0
+  python=ERR
 
   # Initialize the parse tree 
   PtreeInit()  
@@ -430,6 +459,9 @@ def int Main(struct MainArg [*] MainArgs) :
       if(len(MainArgs,0) > i):
         dev = LibeStrsave(MainArgs[i+1].arg)
 
+    if(LibeStrcmp(MainArgs[i].arg, "-z") == OK):      
+      python=OK
+
     # Count number of options
     if((MainArgs[i].arg[0] ==cast(char,'-')) == OK):
       options=options+1
@@ -449,6 +481,18 @@ def int Main(struct MainArg [*] MainArgs) :
     # Open output file for c-code
     fd = LibeOpen(outfile,"w") 
     CodeSetfdout(fd) 
+  
+  # Set the output file for holding python wrappers
+  if(emit == OK):
+    outfilepy=MainPythonout(infile) 
+
+  if(python==OK):
+    # Open output file for python code 
+    fd = LibeOpen(outfilepy,"w") 
+    LibePuts(fd,"import pyeps\n")
+    LibePuts(fd,"from ctypes import *\n")
+    CodeSetpython(OK)
+    CodeSetfdpython(fd) 
   
   # Initialize the scanner 
   if(ScanInit(infile) == ERR):        

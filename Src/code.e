@@ -5,6 +5,17 @@ import err    # Include interface to error routines
 import m      # Include architecture depent parameters
 import scan   # Include Scanner 
 
+#
+# Module variables
+#
+
+# CodeFdpython is the filedescriptor for the python
+# wrapper output
+int CodeFdpython
+
+# CodePython is a flag for python wrapper outpu
+int CodePython
+
 # Forward declaration needed later
 def int CodeCompstmnt(struct tree p):
   pass
@@ -29,6 +40,53 @@ def int CodeError(char [*] s) :
   # CodeError prints error messages and exits.
   ErrError(ScanGetfile(), ScanGetline(), s);
   return(OK)
+
+def int CodeSetpython(int flag) :
+
+  # CodeSetPython sets the python output flag
+  #
+  # Parameters:
+  #   fd : flag = OK  python output is turned on
+  #             = ERR python output is turned off
+  #
+  # Returns: OK
+
+  CodePython=flag
+  return(OK)
+
+def int CodeGetpython() :
+
+  # CodeGetPython returns the python output flag
+  # 
+  # Returns: Python flag = OK  for python output on
+  #                      = ERR for python output off
+  return(CodePython)
+
+
+def int CodeSetfdpython(int fd) :
+
+  # CodeSetfdpython sets the python output file
+  # descriptor
+  #
+  # Parameters:
+  #   fd : File descriptor for python output file
+  # 
+  # Returns: OK
+
+  CodeFdpython=fd
+  return(OK)
+
+def int CodeGetfdpython() :
+
+  # CodeGetfdpython returns the python output file
+  # descriptor
+  #
+  # Parameters:
+  #   fd : File descriptor for python output file
+  # 
+  # Returns: Python file descriptor
+
+  return(CodeFdpython)
 
 # CodeBreak is a module flag for breaking up expressions
 int CodeBreak
@@ -198,6 +256,22 @@ def int CodeEs(struct tree p, char [*] s) :
         CodeLine = PtreeGetline(p);
       
   LibePuts(fdo,s);
+  LibeFlush(fdo);
+  return(OK);
+ 
+def int CodeEind(struct tree p) :
+
+  # CodeEind emits indent.
+  #
+  # Parameters:
+  #   p : Parse tree node (for line no)
+ 
+  int fdo;
+  char[*] f;
+
+  fdo= CodeGetfdout();
+
+  LibePuts(fdo," ");
   LibeFlush(fdo);
   return(OK);
  
@@ -721,7 +795,6 @@ def int CodeFdewrappergpu(struct tree p) :
   CodeEs(p, "}\n");
 
   return(OK);
-
 
 def int CodeGdeclarations(struct tree p, struct symbol tp) :
 
@@ -3224,29 +3297,163 @@ def int CodeNewdescr(struct tree p, char[*] pointer) :
   return(OK);
 
 
-# Cpu code generation 
-# The code below performs code generation for single/multicore cpu's.
+def int CodeFdefwrapperpy(struct tree p) :
+
+  # CodeFdefwrapperpy generates wrapper function in python.
+  #
+  # Parameters: 
+  #   p: Parse tree fdef node        
+  # 
+  # Returns: OK
+  #
+  #   A python function wrapper is created and written 
+  #   to a file with descriptor fdpython
+  #   Basic eps types (int, float and char) 
+  #   correspond to the same python types.
+  #   Arrays corresponds to an equivalent numpy array.
+  #   Structures (or arrays of structures) correspond to 
+  #   a general python object reference.
+  #   Note that numpy arrays are copied into an eps array
+  #   when an eps function is called, and copied back on return.
+  #   
+
+  fdcout=CodeGetfdout()
+  CodeSetfdout(CodeGetfdpython())
+
+  # Emit python function definition
+  CodeEs(p, "def ");
+  p=PtreeMvchild(p)
+  fname=PtreeGetdef(p)
+  rtype=PtreeGetype(p)
+  rarray=PtreeGetarray(p) 
+  rstruct=PtreeGetstruct(p)
+  farray=PtreeGetarray(p)
+  CodeEs(p, fname); 
+  CodeEs(p, "(pylib,");
+
+  #Get the global symbol table
+  tp = SymGetetp()
+  #Find the function in the global symbol table
+  tp = SymLookup(PtreeGetdef(p),tp)
+  #Get the subtable
+  tp = SymGetable(tp)
+
+  # Emit Python arglist
+  tp = SymLookup("#arglist", tp);
+  tp = SymGetable(tp);
+  # Save the table
+  tbl=tp
+
+  # Loop through the table and emit all symbols for the python arglist
+  tp=tbl
+  while((tp=SymMvnext(tp))!=NULL):
+    CodeEs(p,SymGetname(tp))
+    if(SymMvnext(tp)!=NULL):
+      CodeEs(p,",");
+  CodeEs(p,")"); CodeEs(p,":"); CodeEs(p,"\n")
+
+  # Loop through the table and emit all symbols and set argument types
+  tp=tbl
+  CodeEind(p)
+  CodeEs(p,"pylib."); CodeEs(p,fname); CodeEs(p,".argtypes =[")
+  while((tp=SymMvnext(tp))!=NULL):
+    if(LibeStrcmp(SymGetarray(tp),"array")== OK):
+      CodeEs(p,"c_void_p"); 
+    else if(LibeStrcmp(SymGetstruct(tp),"struct")== OK):
+      CodeEs(p,"c_void_p"); 
+    else :
+      CodeEs(p,"c_"); CodeEs(p, SymGetype(tp)); 
+    if(SymMvnext(tp)!=NULL):
+      CodeEs(p,",");
+  CodeEs(p,"]"); CodeEs(p,"\n")
+
+  #Set return type
+  CodeEind(p); CodeEs(p,"pylib."); CodeEs(p,fname);
+  CodeEs(p,".restype=")
+  if(LibeStrcmp(farray,"array") == ERR):
+    CodeEs(p,rtype); CodeEs(p,"\n")
+  else: 
+    CodeEs(p,"c_void_p")
+
+  # Loop through the table and
+  # convert all numpy arrays to eps
+  tp=tbl
+  while((tp=SymMvnext(tp))!=NULL):
+    if((LibeStrcmp(SymGetarray(tp),"array")== OK) &&  \
+       (LibeStrcmp(SymGetstruct(tp),"struct") == ERR)):
+      name=SymGetname(tp)
+      CodeEind(p)
+      CodeEs(p, name); CodeEs(p,"_eps="); CodeEs(p,"pyeps.");CodeEs(p,"Store2df(pylib,")
+      CodeEs(p,name); CodeEs(p, ")"); CodeEs(p,"\n") 
+
+  # Loop through the table and create the eps function call
+  tp=tbl
+  CodeEind(p)
+  CodeEs(p,"r_val=pylib."); CodeEs(p,fname); CodeEs(p,"(") 
+  while((tp=SymMvnext(tp))!=NULL):
+    if((LibeStrcmp(SymGetarray(tp),"array")== OK) &&  \
+      (LibeStrcmp(SymGetstruct(tp),"struct") == ERR)):
+      name=SymGetname(tp)
+      CodeEs(p, name); CodeEs(p,"_eps"); 
+    else:
+      CodeEs(p,SymGetname(tp)); 
+    if(SymMvnext(tp)!=NULL):
+      CodeEs(p,",");
+  CodeEs(p,")"); CodeEs(p,"\n")
+
+  # Loop through the table and
+  # convert all eps array back to numpy
+  tp=tbl
+  while((tp=SymMvnext(tp))!=NULL):
+    if((LibeStrcmp(SymGetarray(tp),"array")== OK) &&  \
+       (LibeStrcmp(SymGetstruct(tp),"struct") == ERR)):
+      name=SymGetname(tp)
+      CodeEind(p)
+      CodeEs(p,"pyeps.");CodeEs(p,"Get2df(pylib,")
+      CodeEs(p,name); CodeEs(p, "_eps,"); CodeEs(p,name);CodeEs(p,")\n") 
+      
+  if(LibeStrcmp(rarray,"array")==OK) :
+    CodeEind(p)
+    CodeEs(p,"rval = "); CodeEs(p,"pylib.Getf2d(rval,r_val)\n")
+  else :
+    CodeEind(p)
+    CodeEs(p,"rval = r_val\n");
+
+
+  CodeEind(p); CodeEs(p,"return rval\n")
+
+  CodeSetfdout(fdcout)
 
 def int CodeFdef(struct tree p):
 
   #CodeFdef generates code for a function.
 
   if(CodeGetarch() == CPU):
-    CodeFdefcpu(p);
+    CodeFdefcpu(p) 
+    if(CodeGetpython() == OK):
+      CodeFdefwrapperpy(p) 
 
   else if(CodeGetarch() == CUDA):
     if(LibeStrcmp(PtreeGetparallel(PtreeMvchild(p)),"parallel")==OK):
       CodeFdefgpu(p);
       CodeFdewrappergpu(p);
+      if(CodeGetpython() == OK):
+        CodeFdefwrapperpy(p) 
     else:
       CodeFdefcpu(p);
+      if(CodeGetpython() == OK):
+        CodeFdefwrapperpy(p) 
 
   else if(CodeGetarch() == HIP):
     if(LibeStrcmp(PtreeGetparallel(p),"parallel")==OK):
       CodeFdefgpu(p);
       CodeFdewrappergpu(p);
+      if(CodeGetpython() == OK):
+        CodeFdefwrapperpy(p) 
     else:
-     CodeFdefcpu(p);
+     CodeFdefcpu(p)
+     if(CodeGetpython() == OK):
+       CodeFdefwrapperpy(p) 
 
   return(OK);
 
