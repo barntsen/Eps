@@ -3338,7 +3338,7 @@ def int CodeFdefwrapperpy(struct tree p) :
   #Get the subtable
   tp = SymGetable(tp)
 
-  # Emit Python arglist
+  # Get the function arglist
   tp = SymLookup("#arglist", tp);
   tp = SymGetable(tp);
   # Save the table
