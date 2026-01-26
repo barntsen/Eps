@@ -491,6 +491,7 @@ def int Main(struct MainArg [*] MainArgs) :
     fd = LibeOpen(outfilepy,"w") 
     LibePuts(fd,"import pyeps\n")
     LibePuts(fd,"from ctypes import *\n")
+    LibePuts(fd,"import numpy as np\n")
     CodeSetpython(OK)
     CodeSetfdpython(fd) 
   

@@ -3296,13 +3296,41 @@ def int CodeNewdescr(struct tree p, char[*] pointer) :
   CodeEs(p, "));\n");
   return(OK);
 
+def int CodePyreturn(struct tree functionode, struct symbol tbl):
+
+  # 
+  # Parameters:
+  #   
+  # functionode : Parse tree function node 
+  # tbl         : Symbol table for function at functionode
+  #
+  # Returns     : OK if successful, ERR in all other cases. 
+  #   Python code is generated for the return value of an eps  
+  #   function.
+
+  # Only attempt to map arrays of basic types
+  if((LibeStrcmp(PtreeGetstruct(functionode),"struct") == ERR)  \
+   &&(LibeStrcmp(PtreeGetarray(functionode),"array") == OK)):   
+     CodeEind(functionode)
+     CodeEs(functionode,"nx =pyeps.Dims2df(pylib,r_val,0)\n")
+     CodeEind(functionode)
+     CodeEs(functionode,"ny =pyeps.Dims2df(pylib,r_val,1)\n")
+     CodeEind(functionode)
+     CodeEs(functionode,"rval = pyeps.Fzeros((nx,ny))\n")
+     CodeEind(functionode)
+     CodeEs(functionode,"pyeps.Get2df(pylib,r_val,rval)\n")
+  else : 
+    CodeEind(functionode)
+    CodeEs(functionode,"rval=r_val\n")
+
+  return(OK)
 
 def int CodeFdefwrapperpy(struct tree p) :
 
   # CodeFdefwrapperpy generates wrapper function in python.
   #
   # Parameters: 
-  #   p: Parse tree fdef node        
+  #   p: Parse tree type node        
   # 
   # Returns: OK
   #
@@ -3320,9 +3348,15 @@ def int CodeFdefwrapperpy(struct tree p) :
   fdcout=CodeGetfdout()
   CodeSetfdout(CodeGetfdpython())
 
+  # Skip type node
+  p=PtreeMvchild(p)
+
+  # Skip arrayargs node if return value is an array
+  if(LibeStrcmp(PtreeGetname(p),"arrayargs")==OK):
+    p=PtreeMvsister(p)
+
   # Emit python function definition
   CodeEs(p, "def ");
-  p=PtreeMvchild(p)
   fname=PtreeGetdef(p)
   rtype=PtreeGetype(p)
   rarray=PtreeGetarray(p) 
@@ -3330,6 +3364,7 @@ def int CodeFdefwrapperpy(struct tree p) :
   farray=PtreeGetarray(p)
   CodeEs(p, fname); 
   CodeEs(p, "(pylib,");
+  functionode = p
 
   #Get the global symbol table
   tp = SymGetetp()
@@ -3373,7 +3408,7 @@ def int CodeFdefwrapperpy(struct tree p) :
   if(LibeStrcmp(farray,"array") == ERR):
     CodeEs(p,rtype); CodeEs(p,"\n")
   else: 
-    CodeEs(p,"c_void_p")
+    CodeEs(p,"c_void_p\n")
 
   # Loop through the table and
   # convert all numpy arrays to eps
@@ -3383,7 +3418,8 @@ def int CodeFdefwrapperpy(struct tree p) :
        (LibeStrcmp(SymGetstruct(tp),"struct") == ERR)):
       name=SymGetname(tp)
       CodeEind(p)
-      CodeEs(p, name); CodeEs(p,"_eps="); CodeEs(p,"pyeps.");CodeEs(p,"Store2df(pylib,")
+      CodeEs(p, name); CodeEs(p,"_eps="); CodeEs(p,"pyeps.");
+      CodeEs(p,"Store2df(pylib,")
       CodeEs(p,name); CodeEs(p, ")"); CodeEs(p,"\n") 
 
   # Loop through the table and create the eps function call
@@ -3412,12 +3448,15 @@ def int CodeFdefwrapperpy(struct tree p) :
       CodeEs(p,"pyeps.");CodeEs(p,"Get2df(pylib,")
       CodeEs(p,name); CodeEs(p, "_eps,"); CodeEs(p,name);CodeEs(p,")\n") 
       
-  if(LibeStrcmp(rarray,"array")==OK) :
-    CodeEind(p)
-    CodeEs(p,"rval = "); CodeEs(p,"pylib.Getf2d(rval,r_val)\n")
-  else :
-    CodeEind(p)
-    CodeEs(p,"rval = r_val\n");
+# if(LibeStrcmp(rarray,"array")==OK) :
+#   CodeEind(p)
+#   CodeEs(p,"rval = "); CodeEs(p,"pylib.Getf2d(rval,r_val)\n")
+# else :
+#   CodeEind(p)
+#   CodeEs(p,"rval = r_val\n");
+
+# Handle the return value
+  CodePyreturn(functionode,tbl)
 
 
   CodeEind(p); CodeEs(p,"return rval\n")
@@ -3456,7 +3495,6 @@ def int CodeFdef(struct tree p):
        CodeFdefwrapperpy(p) 
 
   return(OK);
-
 
 def int CodePreamblecpu() :
 

@@ -193,4 +193,22 @@ def int PyepsCopy2df(float [*,*] arr, float [*,*] out):
   
   return(1);
 
+def int PyepsDims2df(float [*,*] arr, int dimension):
 
+  # PepsCopy2df makes a copy of a 2D float array
+  #
+  # Parameter:
+  #  arr:       Input array
+  #  dimension: Dimension (0,1,..)
+  #
+  # Returns: 
+  # length of dimension
+  # If dimension is less than zero or greater than 1
+  # the return value is -1
+  #
+     
+
+  if((dimension <0) || (dimension > 1)):
+    return (-1)
+  else :
+    return(len(arr,dimension))

@@ -1,7 +1,8 @@
 #!/bin/sh
 
 cp ec          ../Bin
-cp el          ../Bin/el
+cp el          ../Bin
+cp elc          ../Bin
 cp libecpu.o   ../Lib
 cp runcpu.o    ../Lib
 cp libecuda.o  ../Lib

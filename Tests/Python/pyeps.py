@@ -6,6 +6,9 @@
           Store1di allocates memory and copies 1D integer array into memory
           Store1ds allocates memory and copies 1D char array into memory
           Get2df   Copies 2d array and deletes allocated memory
+          Dims2df  Returns dimensions of eps array 
+          Fzeros   Creates numpy 32 bit float array
+          Fzeros   Creates numpy 32 bit int    array
  
 '''
 
@@ -50,8 +53,8 @@ class epsarrayi(Structure) :
 class epsarrays(Structure) :
  _fields_ = [("d", ARRAY(c_int,1)),("a",c_char_p)] 
 
-def izeros(dims) :
-  ''' izeors crates integer 32 bit array
+def Izeros(dims) :
+  ''' Izeors crates integer 32 bit array
 
       Parameters :
         dims   :  List of dimensions
@@ -63,8 +66,8 @@ def izeros(dims) :
 
   return(np.zeros(dims,dtype=np.int32,order='F'))
 
-def fzeros(dims) :
-  ''' fzeros crates float  32 bit array
+def Fzeros(dims) :
+  ''' Fzeros creates float  32 bit array
 
       Parameters :
         dims   :  List of dimensions
@@ -345,5 +348,26 @@ def Get1ds(pyeps,arr):
 
   return(out)
 
+def Dims2df(pyeps,arr,dimension):
+  ''' Dimsdf get the length of a 2D array dimension
+  
+      Parameters:
+        pyeps         : Shared library containg c-functions
+        arr           : 2D numpy array
+        dimension     : An array dimension (0,1,2..)
+        
+      Return :
+        On success return 1.
+          
+  '''
+
+  # Set the argument types 
+  pyeps.PyepsDims2df.argtypes=[c_void_p,c_int]
+  pyeps.PyepsDims2df.restype=c_int
+
+  # Make the call
+  rval=pyeps.PyepsDims2df(arr,dimension)
+
+  return(rval)
 
 

@@ -1,4 +1,4 @@
-//  Translated by epsc  version: Wed Jan  7 20:36:49 2026
+//  Translated by epsc  version: Mon Jan 26 22:07:04 2026
 
 #include <stddef.h>
 #include <stdio.h>
@@ -481,6 +481,7 @@ int CodeParallelstmnt (struct tree* p);
 int CodeIfstmnt (struct tree* p);
 int CodeReturnstmnt (struct tree* p);
 int CodeNewdescr (struct tree* p,nctempchar1 *pointer);
+int CodePyreturn (struct tree* functionode,struct symbol* tbl);
 int CodeFdefwrapperpy (struct tree* p);
 int CodePreamblecpu ();
 int CodePreamblecuda ();
@@ -1647,216 +1648,222 @@ static struct nctempchar1 nctemp1765 = {{ 23}, (char*)"from ctypes import *\n\0"
 nctemp1764=&nctemp1765;
 nctempchar1* nctemp1762= nctemp1764;
 int nctemp1766=LibePuts(nctemp1760,nctemp1762);
-int nctemp1768= 1;
-int nctemp1770=CodeSetpython(nctemp1768);
-int nctemp1772= fd;
-int nctemp1774=CodeSetfdpython(nctemp1772);
+int nctemp1768= fd;
+struct nctempchar1 *nctemp1772;
+static struct nctempchar1 nctemp1773 = {{ 21}, (char*)"import numpy as np\n\0"};
+nctemp1772=&nctemp1773;
+nctempchar1* nctemp1770= nctemp1772;
+int nctemp1774=LibePuts(nctemp1768,nctemp1770);
+int nctemp1776= 1;
+int nctemp1778=CodeSetpython(nctemp1776);
+int nctemp1780= fd;
+int nctemp1782=CodeSetfdpython(nctemp1780);
 }
-nctempchar1* nctemp1778= infile;
-int nctemp1781=ScanInit(nctemp1778);
-int nctemp1775 = (nctemp1781 ==0);
-if(nctemp1775)
+nctempchar1* nctemp1786= infile;
+int nctemp1789=ScanInit(nctemp1786);
+int nctemp1783 = (nctemp1789 ==0);
+if(nctemp1783)
 {
-int nctemp1784=LibeExit();
+int nctemp1792=LibeExit();
 }
-int nctemp1786= 1;
-int nctemp1788=ScanSetline(nctemp1786);
-int nctemp1790=ParseIniparse();
-int nctemp1791 = (emit ==1);
-if(nctemp1791)
+int nctemp1794= 1;
+int nctemp1796=ScanSetline(nctemp1794);
+int nctemp1798=ParseIniparse();
+int nctemp1799 = (emit ==1);
+if(nctemp1799)
 {
-int nctemp1796=CodePreamble();
+int nctemp1804=CodePreamble();
 }
-struct symbol* nctemp1800=SymMktable();
-struct symbol* nctemp1798= nctemp1800;
-int nctemp1801=SymSetetp(nctemp1798);
-int nctemp1802 = (parse ==1);
-if(nctemp1802)
+struct symbol* nctemp1808=SymMktable();
+struct symbol* nctemp1806= nctemp1808;
+int nctemp1809=SymSetetp(nctemp1806);
+int nctemp1810 = (parse ==1);
+if(nctemp1810)
 {
-struct tree* nctemp1810=ParseParse();
-p =nctemp1810;
+struct tree* nctemp1818=ParseParse();
+p =nctemp1818;
 }
-int nctemp1811 = (btree ==1);
-if(nctemp1811)
+int nctemp1819 = (btree ==1);
+if(nctemp1819)
 {
-struct tree* nctemp1816= p;
-int nctemp1818= 0;
-int nctemp1820=PtreePrtree(nctemp1816,nctemp1818);
+struct tree* nctemp1824= p;
+int nctemp1826= 0;
+int nctemp1828=PtreePrtree(nctemp1824,nctemp1826);
 }
-int nctemp1821 = (p !=0);
-int nctemp1825=nctemp1821;
-while(nctemp1825)
+int nctemp1829 = (p !=0);
+int nctemp1833=nctemp1829;
+while(nctemp1833)
 {{
-int nctemp1826 = (semantic ==1);
-if(nctemp1826)
+int nctemp1834 = (semantic ==1);
+if(nctemp1834)
 {
-int nctemp1830 = (p !=0);
-if(nctemp1830)
+int nctemp1838 = (p !=0);
+if(nctemp1838)
 {
-struct tree* nctemp1835= p;
-struct symbol* nctemp1839=SymGetetp();
-struct symbol* nctemp1837= nctemp1839;
-int nctemp1840=SemSem(nctemp1835,nctemp1837);
+struct tree* nctemp1843= p;
+struct symbol* nctemp1847=SymGetetp();
+struct symbol* nctemp1845= nctemp1847;
+int nctemp1848=SemSem(nctemp1843,nctemp1845);
 }
-int nctemp1841 = (atree ==1);
-if(nctemp1841)
+int nctemp1849 = (atree ==1);
+if(nctemp1849)
 {
-struct tree* nctemp1846= p;
-int nctemp1848= 0;
-int nctemp1850=PtreePrtree(nctemp1846,nctemp1848);
+struct tree* nctemp1854= p;
+int nctemp1856= 0;
+int nctemp1858=PtreePrtree(nctemp1854,nctemp1856);
 }
-int nctemp1851 = (table ==1);
-if(nctemp1851)
+int nctemp1859 = (table ==1);
+if(nctemp1859)
 {
-struct symbol* nctemp1858=SymGetltp();
-int nctemp1855 = (nctemp1858 !=0);
-if(nctemp1855)
+struct symbol* nctemp1866=SymGetltp();
+int nctemp1863 = (nctemp1866 !=0);
+if(nctemp1863)
 {
-int nctemp1861= 3;
-struct symbol* nctemp1865=SymGetltp();
-struct symbol* nctemp1863= nctemp1865;
-int nctemp1866= 0;
-int nctemp1868=SymPrsym(nctemp1861,nctemp1863,nctemp1866);
-}
-}
-}
-int nctemp1869 = (emit ==1);
-if(nctemp1869)
-{
-int nctemp1873 = (p !=0);
-if(nctemp1873)
-{
-struct tree* nctemp1878= p;
-struct symbol* nctemp1882=SymGetetp();
-struct symbol* nctemp1880= nctemp1882;
-int nctemp1883=CodeCode(nctemp1878,nctemp1880);
-}
-}
-struct tree* nctemp1885= p;
-int nctemp1887=PtreeRmtree(nctemp1885);
-struct symbol* nctemp1891=SymGetltp();
-struct symbol* nctemp1889= nctemp1891;
-int nctemp1892=SymRmtable(nctemp1889);
-int nctemp1893 = (parse ==1);
-if(nctemp1893)
-{
-struct tree* nctemp1901=ParseParse();
-p =nctemp1901;
-int nctemp1902 = (btree ==1);
-if(nctemp1902)
-{
-struct tree* nctemp1907= p;
-int nctemp1909= 0;
-int nctemp1911=PtreePrtree(nctemp1907,nctemp1909);
+int nctemp1869= 3;
+struct symbol* nctemp1873=SymGetltp();
+struct symbol* nctemp1871= nctemp1873;
+int nctemp1874= 0;
+int nctemp1876=SymPrsym(nctemp1869,nctemp1871,nctemp1874);
 }
 }
 }
-int nctemp1912 = (p !=0);
-nctemp1825=nctemp1912;}int nctemp1919=ParseGetlookahead();
-int nctemp1916 = (nctemp1919 !=19);
-if(nctemp1916)
+int nctemp1877 = (emit ==1);
+if(nctemp1877)
 {
-struct nctempchar1 *nctemp1924;
-static struct nctempchar1 nctemp1925 = {{ 36}, (char*)"Parsing ended before reaching EOF\n\0"};
-nctemp1924=&nctemp1925;
-nctempchar1* nctemp1922= nctemp1924;
-int nctemp1926=MainError(nctemp1922);
+int nctemp1881 = (p !=0);
+if(nctemp1881)
+{
+struct tree* nctemp1886= p;
+struct symbol* nctemp1890=SymGetetp();
+struct symbol* nctemp1888= nctemp1890;
+int nctemp1891=CodeCode(nctemp1886,nctemp1888);
 }
-int nctemp1927 = (etable ==1);
-if(nctemp1927)
+}
+struct tree* nctemp1893= p;
+int nctemp1895=PtreeRmtree(nctemp1893);
+struct symbol* nctemp1899=SymGetltp();
+struct symbol* nctemp1897= nctemp1899;
+int nctemp1900=SymRmtable(nctemp1897);
+int nctemp1901 = (parse ==1);
+if(nctemp1901)
 {
-int nctemp1932= 4;
-int nctemp1934=LibeFlush(nctemp1932);
-struct symbol* nctemp1938=SymGetetp();
-int nctemp1935 = (nctemp1938 !=0);
+struct tree* nctemp1909=ParseParse();
+p =nctemp1909;
+int nctemp1910 = (btree ==1);
+if(nctemp1910)
+{
+struct tree* nctemp1915= p;
+int nctemp1917= 0;
+int nctemp1919=PtreePrtree(nctemp1915,nctemp1917);
+}
+}
+}
+int nctemp1920 = (p !=0);
+nctemp1833=nctemp1920;}int nctemp1927=ParseGetlookahead();
+int nctemp1924 = (nctemp1927 !=19);
+if(nctemp1924)
+{
+struct nctempchar1 *nctemp1932;
+static struct nctempchar1 nctemp1933 = {{ 36}, (char*)"Parsing ended before reaching EOF\n\0"};
+nctemp1932=&nctemp1933;
+nctempchar1* nctemp1930= nctemp1932;
+int nctemp1934=MainError(nctemp1930);
+}
+int nctemp1935 = (etable ==1);
 if(nctemp1935)
 {
-int nctemp1941= 3;
-struct symbol* nctemp1945=SymGetetp();
-struct symbol* nctemp1943= nctemp1945;
-int nctemp1946= 0;
-int nctemp1948=SymPrsym(nctemp1941,nctemp1943,nctemp1946);
+int nctemp1940= 4;
+int nctemp1942=LibeFlush(nctemp1940);
+struct symbol* nctemp1946=SymGetetp();
+int nctemp1943 = (nctemp1946 !=0);
+if(nctemp1943)
+{
+int nctemp1949= 3;
+struct symbol* nctemp1953=SymGetetp();
+struct symbol* nctemp1951= nctemp1953;
+int nctemp1954= 0;
+int nctemp1956=SymPrsym(nctemp1949,nctemp1951,nctemp1954);
 }
 }
-int nctemp1949 = (emit ==1);
-if(nctemp1949)
+int nctemp1957 = (emit ==1);
+if(nctemp1957)
 {
-int nctemp1954=CodePostamble();
+int nctemp1962=CodePostamble();
 }
-int nctemp1958 = (emit ==1);
-int nctemp1963 = (obj ==1);
-int nctemp1955 = (nctemp1958 && nctemp1963);
-if(nctemp1955)
+int nctemp1966 = (emit ==1);
+int nctemp1971 = (obj ==1);
+int nctemp1963 = (nctemp1966 && nctemp1971);
+if(nctemp1963)
 {
-int nctemp1970=CodeGetarch();
-int nctemp1967 = (nctemp1970 ==1);
-if(nctemp1967)
+int nctemp1978=CodeGetarch();
+int nctemp1975 = (nctemp1978 ==1);
+if(nctemp1975)
 {
-nctempchar1* nctemp1973= outfile;
-int nctemp1976= debug;
-int nctemp1978= optimize;
-int nctemp1980= openmp;
-int nctemp1982= show;
-int nctemp1984=MainCcompcpu(nctemp1973,nctemp1976,nctemp1978,nctemp1980,nctemp1982);
+nctempchar1* nctemp1981= outfile;
+int nctemp1984= debug;
+int nctemp1986= optimize;
+int nctemp1988= openmp;
+int nctemp1990= show;
+int nctemp1992=MainCcompcpu(nctemp1981,nctemp1984,nctemp1986,nctemp1988,nctemp1990);
 }
 else{
-int nctemp1988=CodeGetarch();
-int nctemp1985 = (nctemp1988 ==2);
-if(nctemp1985)
+int nctemp1996=CodeGetarch();
+int nctemp1993 = (nctemp1996 ==2);
+if(nctemp1993)
 {
-nctempchar1* nctemp1991= outfile;
-int nctemp1994= debug;
-int nctemp1996= optimize;
-int nctemp1998= openmp;
-int nctemp2000= show;
-nctempchar1* nctemp2002= dev;
-int nctemp2005=MainCcompcuda(nctemp1991,nctemp1994,nctemp1996,nctemp1998,nctemp2000,nctemp2002);
+nctempchar1* nctemp1999= outfile;
+int nctemp2002= debug;
+int nctemp2004= optimize;
+int nctemp2006= openmp;
+int nctemp2008= show;
+nctempchar1* nctemp2010= dev;
+int nctemp2013=MainCcompcuda(nctemp1999,nctemp2002,nctemp2004,nctemp2006,nctemp2008,nctemp2010);
 }
 else{
-int nctemp2009=CodeGetarch();
-int nctemp2006 = (nctemp2009 ==3);
-if(nctemp2006)
+int nctemp2017=CodeGetarch();
+int nctemp2014 = (nctemp2017 ==3);
+if(nctemp2014)
 {
-nctempchar1* nctemp2012= outfile;
-int nctemp2015= debug;
-int nctemp2017= optimize;
-int nctemp2019= openmp;
-int nctemp2021= show;
-int nctemp2023=MainCcomphip(nctemp2012,nctemp2015,nctemp2017,nctemp2019,nctemp2021);
+nctempchar1* nctemp2020= outfile;
+int nctemp2023= debug;
+int nctemp2025= optimize;
+int nctemp2027= openmp;
+int nctemp2029= show;
+int nctemp2031=MainCcomphip(nctemp2020,nctemp2023,nctemp2025,nctemp2027,nctemp2029);
 }
 else{
-struct nctempchar1 *nctemp2027;
-static struct nctempchar1 nctemp2028 = {{ 23}, (char*)"Unknown architecture\n\0"};
-nctemp2027=&nctemp2028;
-nctempchar1* nctemp2025= nctemp2027;
-int nctemp2029=MainError(nctemp2025);
+struct nctempchar1 *nctemp2035;
+static struct nctempchar1 nctemp2036 = {{ 23}, (char*)"Unknown architecture\n\0"};
+nctemp2035=&nctemp2036;
+nctempchar1* nctemp2033= nctemp2035;
+int nctemp2037=MainError(nctemp2033);
 }
 }
 }
 }
-int nctemp2030 = (emit ==1);
-if(nctemp2030)
+int nctemp2038 = (emit ==1);
+if(nctemp2038)
 {
 RunFree(outfile->a);
 RunFree(outfile);
-int nctemp2038= fd;
-int nctemp2040=LibeClose(nctemp2038);
+int nctemp2046= fd;
+int nctemp2048=LibeClose(nctemp2046);
 }
-nctempchar1* nctemp2047= infile;
-nctempchar1* nctemp2050=MainFmod(nctemp2047);
-nctempchar1* nctemp2045= nctemp2050;
-struct nctempchar1 *nctemp2053;
-static struct nctempchar1 nctemp2054 = {{ 2}, (char*)"w\0"};
-nctemp2053=&nctemp2054;
-nctempchar1* nctemp2051= nctemp2053;
-int nctemp2055=LibeOpen(nctemp2045,nctemp2051);
-fd =nctemp2055;
-int nctemp2057= fd;
-struct symbol* nctemp2061=SymGetetp();
-struct symbol* nctemp2059= nctemp2061;
-int nctemp2062= 0;
-int nctemp2064=SymExport(nctemp2057,nctemp2059,nctemp2062);
-int nctemp2066= 3;
-int nctemp2068=LibeFlush(nctemp2066);
+nctempchar1* nctemp2055= infile;
+nctempchar1* nctemp2058=MainFmod(nctemp2055);
+nctempchar1* nctemp2053= nctemp2058;
+struct nctempchar1 *nctemp2061;
+static struct nctempchar1 nctemp2062 = {{ 2}, (char*)"w\0"};
+nctemp2061=&nctemp2062;
+nctempchar1* nctemp2059= nctemp2061;
+int nctemp2063=LibeOpen(nctemp2053,nctemp2059);
+fd =nctemp2063;
+int nctemp2065= fd;
+struct symbol* nctemp2069=SymGetetp();
+struct symbol* nctemp2067= nctemp2069;
+int nctemp2070= 0;
+int nctemp2072=SymExport(nctemp2065,nctemp2067,nctemp2070);
+int nctemp2074= 3;
+int nctemp2076=LibeFlush(nctemp2074);
 return 1;
 }

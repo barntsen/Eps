@@ -1,5 +1,6 @@
 import pyeps
 from ctypes import *
+import numpy as np
 def faxpy2d(pylib,a,x,y,b):
  pylib.faxpy2d.argtypes =[c_void_p,c_void_p,c_void_p,c_float]
  pylib.faxpy2d.restype=int
@@ -10,5 +11,5 @@ def faxpy2d(pylib,a,x,y,b):
  pyeps.Get2df(pylib,a_eps,a)
  pyeps.Get2df(pylib,x_eps,x)
  pyeps.Get2df(pylib,y_eps,y)
-rval=r_val
+ rval=r_val
  return rval
