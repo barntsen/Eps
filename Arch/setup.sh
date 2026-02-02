@@ -4,4 +4,5 @@
 #Path to eps source tree
 export EPS=$HOME/Dropbox/Src/Eps
 export PATH=$EPS/Bin:$PATH
+export PYTHONPATH=$PYTHONPATH:/home/barn/Dropbox/Src/Eps/Lib
 

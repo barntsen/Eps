@@ -1,3 +1,4 @@
+
 import libe   # Library
 import sym    # Include symbol table interface 
 import ptree  # Include parse tree interface  
@@ -3296,7 +3297,130 @@ def int CodeNewdescr(struct tree p, char[*] pointer) :
   CodeEs(p, "));\n");
   return(OK);
 
-def int CodePyreturn(struct tree functionode, struct symbol tbl):
+def char [*] CodeDims(char [*] type, int rank):
+
+  # CodeDims uses rank and type to create
+  # name of the corresponding Dims function
+  #
+  # Parameters : 
+  #   type     : type of array
+  #   rank     : rank of array
+  #
+  # Returns :
+  #   Name of function to store array
+  #
+
+  if(LibeStrcmp(type,"float") == OK) :
+    extension="df"
+  else if(LibeStrcmp(type,"int") == OK) :
+    extension="di"
+  else if(LibeStrcmp(type,"char") == OK) :
+    if(rank > 1):
+      CodeError("Multidimensional char arrays are not supported for python")
+    else :
+      extension="dc"
+  else:
+    CodeError("Type not supported for Python")
+
+  str=LibeStrsave(" ")
+  LibeItoa(rank,str)
+  tmp = LibeStradd("Dims",str)
+  funcname = LibeStradd(tmp,extension)
+  delete(tmp)
+
+  return (funcname)
+
+def char [*] CodeStorefunc(char [*] type, int rank):
+
+  # CodeStorefunc uses rank and type to create
+  # name of the corresponding Store function
+  # used to store a numpy array
+  #
+  # Parameters : 
+  #   type     : type of array
+  #   rank     : rank of array
+  #
+  # Returns :
+  #   Name of function to store array
+  #
+
+  if(LibeStrcmp(type,"float") == OK) :
+    extension="df"
+  else if(LibeStrcmp(type,"int") == OK) :
+    extension="di"
+  else if(LibeStrcmp(type,"char") == OK) :
+    if(rank > 1):
+      CodeError("Multidimensional char arrays are not supported for python")
+    else :
+      extension="dc"
+  else:
+    CodeError("Type not supported for Python")
+
+  str=LibeStrsave(" ")
+  LibeItoa(rank,str)
+  tmp = LibeStradd("Store",str)
+  funcname = LibeStradd(tmp,extension)
+  delete(tmp)
+
+  return (funcname)
+
+def int CodeCrerval(struct tree p,int rank, char [*] type):
+
+  # CodeCrerval creates a python array for the return vale
+  #
+  # Params : 
+  #   rank : The rank of the returnarray
+  # 
+  # Returns:
+  #  Emit code for creating the return array
+  #
+
+  CodeEind(p)
+  if(LibeStrcmp(type,"int")) :
+    CodeEs(p,"rval=pyeps.Izeros(pyeps.Dims"); CodeEd(rank); CodeEs(p,"di(r_val))\n")
+    return(OK)
+  else if(LibeStrcmp(type,"float")) :
+    CodeEs(p,"rval=pyeps.Fzeros(pyeps.Dims"); CodeEd(rank); CodeEs(p,"df(r_val))\n")
+    return(OK)
+  else :
+    return(OK) 
+    
+
+def char [*] CodeGetfunc(char [*] type, int rank):
+
+  # CodeGetfunc uses rank and type to create
+  # name of the corresponding Get function
+  # used to get a numpy array
+  #
+  # Parameters : 
+  #   type     : type of array
+  #   rank     : rank of array
+  #
+  # Returns :
+  #   Name of function to store array
+  #
+
+  if(LibeStrcmp(type,"float") == OK) :
+    extension="df"
+  else if(LibeStrcmp(type,"int") == OK) :
+    extension="di"
+  else if(LibeStrcmp(type,"char") == OK) :
+    if(rank > 1):
+      CodeError("Multidimensional char arrays are not supported for python")
+    else :
+      extension="dc"
+  else:
+    CodeError("Type not supported for Python")
+
+  str=LibeStrsave(" ")
+  LibeItoa(rank,str)
+  tmp = LibeStradd("Get",str)
+  funcname = LibeStradd(tmp,extension)
+  delete(tmp)
+
+  return (funcname)
+
+def int CodePyreturn(struct tree functionode):
 
   # 
   # Parameters:
@@ -3311,19 +3435,48 @@ def int CodePyreturn(struct tree functionode, struct symbol tbl):
   # Only attempt to map arrays of basic types
   if((LibeStrcmp(PtreeGetstruct(functionode),"struct") == ERR)  \
    &&(LibeStrcmp(PtreeGetarray(functionode),"array") == OK)):   
+     rank=PtreeGetrank(functionode)
+     type=PtreeGetype(functionode)
+     CodeCrerval(functionode,rank,type)
      CodeEind(functionode)
-     CodeEs(functionode,"nx =pyeps.Dims2df(pylib,r_val,0)\n")
-     CodeEind(functionode)
-     CodeEs(functionode,"ny =pyeps.Dims2df(pylib,r_val,1)\n")
-     CodeEind(functionode)
-     CodeEs(functionode,"rval = pyeps.Fzeros((nx,ny))\n")
-     CodeEind(functionode)
-     CodeEs(functionode,"pyeps.Get2df(pylib,r_val,rval)\n")
+     if(LibeStrcmp(type,"char")==OK):
+       CodeEs(functionode,"rval=pyeps.")
+       CodeEs(functionode,CodeGetfunc(type,rank))
+       CodeEs(functionode,"(pylib,r_val)\n")
+     else:
+       CodeEs(functionode,"pyeps.")
+       CodeEs(functionode,CodeGetfunc(type,rank))
+       CodeEs(functionode,"(pylib,r_val,rval)\n")
   else : 
     CodeEind(functionode)
     CodeEs(functionode,"rval=r_val\n")
 
   return(OK)
+
+def int CodePyreturntype(struct tree functionode) :
+
+  # CodePyreturntype sets the return type
+  #
+  # Parameters:
+  #   functionode : Parse tree node for function
+  #
+  # Returns :  
+  #   Python code is generated to set the ctypes return type attributes 
+  #
+
+  fname=PtreeGetdef(functionode)
+  farray=PtreeGetarray(functionode)
+  rtype =PtreeGetype(functionode)
+  fstruct=PtreeGetstruct(functionode)
+  CodeEind(functionode); CodeEs(functionode,"pylib."); CodeEs(functionode,fname);
+  CodeEs(functionode,".restype=")
+  if((LibeStrcmp(farray,"array") == ERR)&&(LibeStrcmp(fstruct,"struct")==ERR)):
+    CodeEs(functionode,rtype); CodeEs(functionode,"\n")
+  else: 
+    CodeEs(functionode,"c_void_p\n")
+  
+  return(OK)
+
 
 def int CodeFdefwrapperpy(struct tree p) :
 
@@ -3356,15 +3509,33 @@ def int CodeFdefwrapperpy(struct tree p) :
     p=PtreeMvsister(p)
 
   # Emit python function definition
-  CodeEs(p, "def ");
-  fname=PtreeGetdef(p)
-  rtype=PtreeGetype(p)
-  rarray=PtreeGetarray(p) 
-  rstruct=PtreeGetstruct(p)
-  farray=PtreeGetarray(p)
-  CodeEs(p, fname); 
-  CodeEs(p, "(pylib,");
   functionode = p
+  fname=PtreeGetdef(p)
+  CodeEs(p, "def ");
+  CodeEs(p,fname)
+  rtype=PtreeGetype(p)
+  farray=PtreeGetarray(p)
+  fstruct=PtreeGetstruct(p)
+  arglist = PtreeMvchild(functionode)
+
+  # Check if the function have no arguments
+  if(LibeStrcmp(PtreeGetname(arglist),"arglist")==ERR):
+    noarg=OK
+  else :
+    noarg=ERR
+
+  if(noarg == OK):
+    CodeEs(p, "(pylib) :\n");
+    CodePyreturntype(functionode) 
+    CodeEind(p)
+    CodeEs(p,"r_val=pylib."); CodeEs(p,fname); CodeEs(p,"()\n")
+    CodePyreturn(functionode)
+    CodeEind(p)
+    CodeEs(p,"return rval\n")
+    CodeSetfdout(fdcout)
+    return(OK)
+  else :
+    CodeEs(p, "(pylib,");
 
   #Get the global symbol table
   tp = SymGetetp()
@@ -3372,11 +3543,11 @@ def int CodeFdefwrapperpy(struct tree p) :
   tp = SymLookup(PtreeGetdef(p),tp)
   #Get the subtable
   tp = SymGetable(tp)
-
+  functable=tp
   # Get the function arglist
   tp = SymLookup("#arglist", tp);
   tp = SymGetable(tp);
-  # Save the table
+  # Save the function arglist table
   tbl=tp
 
   # Loop through the table and emit all symbols for the python arglist
@@ -3402,13 +3573,7 @@ def int CodeFdefwrapperpy(struct tree p) :
       CodeEs(p,",");
   CodeEs(p,"]"); CodeEs(p,"\n")
 
-  #Set return type
-  CodeEind(p); CodeEs(p,"pylib."); CodeEs(p,fname);
-  CodeEs(p,".restype=")
-  if(LibeStrcmp(farray,"array") == ERR):
-    CodeEs(p,rtype); CodeEs(p,"\n")
-  else: 
-    CodeEs(p,"c_void_p\n")
+  CodePyreturntype(functionode)
 
   # Loop through the table and
   # convert all numpy arrays to eps
@@ -3417,9 +3582,12 @@ def int CodeFdefwrapperpy(struct tree p) :
     if((LibeStrcmp(SymGetarray(tp),"array")== OK) &&  \
        (LibeStrcmp(SymGetstruct(tp),"struct") == ERR)):
       name=SymGetname(tp)
+      type = SymGetype(tp)
+      rank = SymGetrank(tp)
+      storefunc=CodeStorefunc(type,rank)
       CodeEind(p)
       CodeEs(p, name); CodeEs(p,"_eps="); CodeEs(p,"pyeps.");
-      CodeEs(p,"Store2df(pylib,")
+      CodeEs(p,storefunc);CodeEs(p,"(pylib,")
       CodeEs(p,name); CodeEs(p, ")"); CodeEs(p,"\n") 
 
   # Loop through the table and create the eps function call
@@ -3438,29 +3606,22 @@ def int CodeFdefwrapperpy(struct tree p) :
   CodeEs(p,")"); CodeEs(p,"\n")
 
   # Loop through the table and
-  # convert all eps array back to numpy
+  # convert all eps arrays back to numpy
   tp=tbl
   while((tp=SymMvnext(tp))!=NULL):
     if((LibeStrcmp(SymGetarray(tp),"array")== OK) &&  \
        (LibeStrcmp(SymGetstruct(tp),"struct") == ERR)):
       name=SymGetname(tp)
+      type = SymGetype(tp)
+      rank = SymGetrank(tp)
+      getfunc=CodeGetfunc(type,rank)
       CodeEind(p)
-      CodeEs(p,"pyeps.");CodeEs(p,"Get2df(pylib,")
-      CodeEs(p,name); CodeEs(p, "_eps,"); CodeEs(p,name);CodeEs(p,")\n") 
+      CodeEs(p,"pyeps."); 
+      CodeEs(p,getfunc);CodeEs(p,"(pylib,")
+      CodeEs(p,name);CodeEs(p,"_eps,");CodeEs(p,name); CodeEs(p,")\n") 
       
-# if(LibeStrcmp(rarray,"array")==OK) :
-#   CodeEind(p)
-#   CodeEs(p,"rval = "); CodeEs(p,"pylib.Getf2d(rval,r_val)\n")
-# else :
-#   CodeEind(p)
-#   CodeEs(p,"rval = r_val\n");
-
-# Handle the return value
-  CodePyreturn(functionode,tbl)
-
-
+  CodePyreturn(functionode)
   CodeEind(p); CodeEs(p,"return rval\n")
-
   CodeSetfdout(fdcout)
 
 def int CodeFdef(struct tree p):

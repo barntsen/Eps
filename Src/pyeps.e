@@ -98,6 +98,56 @@ def int PyepsCopy1di(int [*] arr, int [*] out):
   
   return(1);
      
+def int [*,*] PyepsCre2di(int Nx, int Ny):
+
+  # PepsCre2di creates int 2D array
+  #
+  # Parameter:
+  #  int Nx      : No of ints in array 1st dim
+  #  int Ny      : No of ints in array 2nd dim
+  #
+  # Returns:
+  #  float [*,*] arr     : int array
+  #
+
+  return(new(int [Nx,Ny]));
+
+
+def int PyepsDel2di(int [*,*] arr):
+
+  # PepsDel2df deletes 2D int array
+  #
+  # Parameter:
+  #  float [*,*] arr      : int  array
+  #
+  # Returns: integer equal to 1
+  #  
+   delete(arr);
+   return(1);
+
+
+def int PyepsCopy2di(int [*,*] arr, int [*,*] out):
+
+  # PepsCopy2df makes a copy of a 2D int array
+  #
+  # Parameter:
+  #  arr: Input array
+  #  out: Output array 
+  #
+  # Returns: 
+  # integer equal to 1 on success
+     
+  int nx,ny;
+  int i,j;
+
+  nx=len(out,0);
+  ny=len(out,1);
+  for(j=0; j< ny; j=j+1):
+    for(i=0; i< nx; i=i+1):
+      out[i,j] = arr[i,j];
+  
+  return(1);
+
 def float [*] PyepsCre1df(int Nx):
 
   # PepsCre1di creates float 1D array
@@ -193,22 +243,3 @@ def int PyepsCopy2df(float [*,*] arr, float [*,*] out):
   
   return(1);
 
-def int PyepsDims2df(float [*,*] arr, int dimension):
-
-  # PepsCopy2df makes a copy of a 2D float array
-  #
-  # Parameter:
-  #  arr:       Input array
-  #  dimension: Dimension (0,1,..)
-  #
-  # Returns: 
-  # length of dimension
-  # If dimension is less than zero or greater than 1
-  # the return value is -1
-  #
-     
-
-  if((dimension <0) || (dimension > 1)):
-    return (-1)
-  else :
-    return(len(arr,dimension))

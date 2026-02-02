@@ -9,4 +9,5 @@ cp libecuda.o  ../Lib
 cp runcuda.o   ../Lib
 cp pyeps.o     ../Lib
 cp version.txt ../Lib
+cp pyeps.py    ../Lib
 ./boot.sh

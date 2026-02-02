@@ -20,7 +20,7 @@ opt="-x cpu -g"
 ./ec $opt scan.e
 ./ec $opt parse.e
 ./ec $opt sem.e
-./ec $opt code.e
+./ec -C $opt code.e
 ./ec $opt main.e
 ./ec $opt pyeps.e
 

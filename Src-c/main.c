@@ -1,4 +1,4 @@
-//  Translated by epsc  version: Mon Jan 26 22:07:04 2026
+//  Translated by epsc  version: Mon Feb  2 14:03:07 2026
 
 #include <stddef.h>
 #include <stdio.h>
@@ -481,7 +481,12 @@ int CodeParallelstmnt (struct tree* p);
 int CodeIfstmnt (struct tree* p);
 int CodeReturnstmnt (struct tree* p);
 int CodeNewdescr (struct tree* p,nctempchar1 *pointer);
-int CodePyreturn (struct tree* functionode,struct symbol* tbl);
+nctempchar1 * CodeDims (nctempchar1 *type,int rank);
+nctempchar1 * CodeStorefunc (nctempchar1 *type,int rank);
+int CodeCrerval (struct tree* p,int rank,nctempchar1 *type);
+nctempchar1 * CodeGetfunc (nctempchar1 *type,int rank);
+int CodePyreturn (struct tree* functionode);
+int CodePyreturntype (struct tree* functionode);
 int CodeFdefwrapperpy (struct tree* p);
 int CodePreamblecpu ();
 int CodePreamblecuda ();
