@@ -689,24 +689,10 @@ def int SemDelete(struct tree p) :
     if(LibeStrcmp(PtreeGetref(np),"aref") == ERR):
       if(LibeStrcmp(PtreeGetref(np),"sref") == ERR):
         SemSerror(p,"not a array or structure", PtreeGetdef(p));               
-                  
-      
- 
- 
-    
- 
- 
     else:
       PtreeSetype(p, PtreeGetype(np));
       PtreeSetref(p, PtreeGetref(np));
-    
- 
- 
-  
- 
- 
   return(OK);
-
  
  
 def int SemCmplx(struct tree p) :
@@ -723,39 +709,24 @@ def int SemCmplx(struct tree p) :
       SemSerror(p,"Argument to cmplx is not a float", PtreeGetdef(p));
                 
       return(ERR);
-    
- 
  
     if(LibeStrcmp(PtreeGetref(np), "aref") || \
        LibeStrcmp(PtreeGetref(np), "sref")):
       SemSerror(p,"Argument to cmplx is not a scalar",PtreeGetdef(p)); 
-      
       return(ERR);
-    
- 
  
     np = PtreeMvsister(np);
     SemExpr(np);
     if(LibeStrcmp(PtreeGetype(np), "float") == ERR):
       SemSerror(p,"Argument to cmplx is not a float", PtreeGetdef(p));
-                
-    
- 
- 
+
     if(LibeStrcmp(PtreeGetref(np), "aref") || \
        LibeStrcmp(PtreeGetref(np), "sref")):
       SemSerror(p,"Argument to cmplx is not a scalar", PtreeGetdef(p));
                 
       return(ERR);
-    
- 
- 
     PtreeSetype(p,"complex");
-  
- 
- 
   return(OK);
-
  
 
 def int SemRe(struct tree p) :
@@ -769,25 +740,16 @@ def int SemRe(struct tree p) :
     SemExpr(np);
     if(LibeStrcmp(PtreeGetype(np), "complex") == ERR):
       SemSerror(p,"Argument to re is not a of type complex", PtreeGetdef(p));
-      
       return(ERR);
-    
- 
  
     if(LibeStrcmp(PtreeGetref(np), "aref") || \
        LibeStrcmp(PtreeGetref(np), "sref")):
       SemSerror(p,"Argument to re is not a scalar", PtreeGetdef(p));
-      
       return(ERR);
-    
- 
  
     PtreeSetype(p,"float");
-  
- 
  
   return(OK);
-
  
 
 def int SemLen(struct tree p) :
@@ -802,34 +764,18 @@ def int SemLen(struct tree p) :
     SemExpr(np);
     if(LibeStrcmp(PtreeGetref(np),"aref") == ERR):
       SemSerror(p,"not an array", PtreeGetdef(p));
-    
- 
- 
     np = PtreeMvsister(np);
     SemExpr(np);
+
     if(LibeStrcmp(PtreeGetref(np),"aref")):
       SemSerror(p, "not a scalar", PtreeGetdef(p));
-    
- 
- 
     if(LibeStrcmp(PtreeGetype(np),"int") == ERR):
       SemSerror(p,"not an integer expression", PtreeGetdef(p));
-      
-    
- 
- 
     if((np=PtreeMvsister(np)) != NULL):
       SemSerror(p, "too many arguments", PtreeGetdef(p));
-    
- 
- 
-  
- 
  
   return(OK);
 
-
- 
  
 def int SemIm(struct tree p) :
 
@@ -842,28 +788,18 @@ def int SemIm(struct tree p) :
     SemExpr(np);
     if(LibeStrcmp(PtreeGetype(np), "complex") == ERR):
       SemSerror(p,"Argument to re is not of type complex",PtreeGetdef(p)); 
-      
       return(ERR);
-    
- 
  
     if(LibeStrcmp(PtreeGetref(np), "aref")|| \
        LibeStrcmp(PtreeGetref(np), "sref")):
-       
       SemSerror(p,"Argument to re is not a scalar", PtreeGetdef(p));
-                
       return(ERR);
-    
- 
  
     PtreeSetype(p,"float");
-  
- 
  
   return(OK);
+ 
 
- 
- 
 def int SemSizeof(struct tree p) :
 
   # SemSizeof checks sizeof operator.
@@ -872,9 +808,6 @@ def int SemSizeof(struct tree p) :
     PtreeSetype(p, "int");
  
   return(OK);
-
- 
-
 
 def int SemComparetype(struct tree p, struct tree np) :
 
@@ -1567,7 +1500,6 @@ def int SemReturnstmnt(struct tree p) :
       SemSerror(p,"Return type is incorrect ", " ");
  
   return(OK);
-
 
 def int SemStmnt(struct tree p) :
 
