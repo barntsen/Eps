@@ -191,8 +191,8 @@ def Store2di(pyeps,arr):
   '''
 
   # Set the argument and return type of the memory allocator
-  pyeps.PyepsCre2df.argtypes=[c_int,c_int]
-  pyeps.PyepsCre2df.restype=c_void_p
+  pyeps.PyepsCre2di.argtypes=[c_int,c_int]
+  pyeps.PyepsCre2di.restype=c_void_p
   nx = arr.shape[0]
   ny = arr.shape[1]
 
@@ -205,14 +205,14 @@ def Store2di(pyeps,arr):
   epsarr.a = arr.ctypes.data_as(POINTER(c_int32))
   epsarr.d[0]=nx
   epsarr.d[1]=ny
-  epsarrp = pointer(epsarr)
+  epsarrp =pointer(epsarr)
 
   # Set the argument types of Copy2di
   pyeps.PyepsCopy2di.argtypes=[POINTER(epsarray2di),c_void_p]
   pyeps.PyepsCopy2di.restype=c_int
 
   # Copy the numpy array into the eps array
-  pyeps.PyepsCopy2di(epsarr,out)
+  pyeps.PyepsCopy2di(epsarrp,out)
   
   return(out)
 
@@ -233,7 +233,7 @@ def Get2di(pyeps,arr,out):
 
   dim=Dims2di(arr)
   epsarr = epsarray2di()
-  epsarr.a = out.ctypes.data_as(POINTER(c_int32))
+  epsarr.a = out.ctypes.data_as(POINTER(c_int))
   epsarr.d[0]=dim[0]
   epsarr.d[1]=dim[1]
   epsarrp = pointer(epsarr)

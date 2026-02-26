@@ -1,4 +1,4 @@
-//  Translated by epsc  version: Mon Feb  2 14:03:07 2026
+//  Translated by epsc  version: Thu Feb 26 12:39:30 2026
 
 #include <stddef.h>
 #include <stdio.h>
@@ -957,7 +957,7 @@ nctempchar1 *cmd;
 nctempchar1 *tmp;
 int nctemp723=file->d[0];l =nctemp723;
 struct nctempchar1 *nctemp732;
-static struct nctempchar1 nctemp733 = {{ 45}, (char*)"nvcc  -use_fast_math --compiler-options -O2 \0"};
+static struct nctempchar1 nctemp733 = {{ 69}, (char*)"nvcc  -use_fast_math --compiler-options -O2 --compiler-options -fPIC\0"};
 nctemp732=&nctemp733;
 cmd=nctemp732;
 nctempchar1* nctemp737= dev;

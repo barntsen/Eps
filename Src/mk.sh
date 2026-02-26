@@ -20,7 +20,7 @@ opt="-x cpu -g"
 ./ec $opt scan.e
 ./ec $opt parse.e
 ./ec $opt sem.e
-./ec -C $opt code.e
+./ec $opt code.e
 ./ec $opt main.e
 ./ec $opt pyeps.e
 
@@ -28,7 +28,9 @@ gcc -L. -o ec1 main.o code.o scanpath.o scan.o sem.o parse.o sym.o ptree.o err.o
 
 mv libe.o libecpu.o
 ec -x cuda libe.e
+cp pyeps.e pyepscuda.e
+ec -x cuda pyepscuda.e
 mv libe.o libecuda.o
 cp runcuda.e runcuda.cpp
-nvcc -c -x cu runcuda.cpp
+nvcc --compiler-options -fPIC -c -x cu runcuda.cpp
 

@@ -7,11 +7,14 @@ def int int1d( int [*] a):
   return (OK)
 
 def int [*] int1da( int [*] a): 
+  LibeInit()
   for i in range(0,len(a,0)):
     a[i]=a[i]+1
   return (a)
 
 def int int2d( int [*,*] a): 
+  LibeInit()
+  LibePs("Enter int2d"); 
   for i in range(0,len(a,0)):
     for j in range(0,len(a,1)):
       a[i,j]=a[i,j]+1

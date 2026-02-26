@@ -234,7 +234,7 @@ def int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int sh
   #int l                 # Temp varibale to hold string length of 
                         # input file name
   l=len(file,0) 
-  cmd= "nvcc  -use_fast_math --compiler-options -O2 "
+  cmd= "nvcc  -use_fast_math --compiler-options -O2 --compiler-options -fPIC"
 
   if(LibeStrcmp(dev,"none") !=OK):
     cmd= LibeStradd(cmd," -arch ") 
