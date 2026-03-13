@@ -19,7 +19,7 @@ else :
 pylib=pyeps.setup(libpath)
 
 t0=time.perf_counter()
-n=2000000
+n=2097152
 niter=10000
 x=pyeps.Fzeros(n)
 y=pyeps.Fzeros(n)
@@ -33,6 +33,11 @@ y.fill(1.0)
 
 t2=time.perf_counter()
 saxpy.runsaxpy(pylib,a,x,y,z,niter)
+#for i in range(0,niter):
+#  saxpy.saxpy(pylib,a,x,y,z)
+
+#print(z[0],z[n-1])
+
 t3=time.perf_counter()
 print("time for saxpy ",t3-t2, "(", arch, ")")
 

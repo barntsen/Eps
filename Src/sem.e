@@ -23,6 +23,62 @@ def struct tree SemUnexpr(struct tree p):
 def struct tree SemPrimexpr(struct tree p): 
   pass
 
+# Flag for parallel function
+int SemParallel
+
+def int SemGetparallel() :
+
+  #
+  # Arguments: None
+  #
+  # Returns
+  #   Returns the Parallel flag
+  #   OK for flag set, ERR for flag not set.
+
+  return(SemParallel)
+
+def int SemSetparallel(int flag) :
+
+  #
+  # Arguments: 
+  #   flag   : = OK  for parallel flag set
+  #            = ERR for no parallel flag set
+  #
+  # Returns :
+  #   Returns OK
+  #
+  
+  SemParallel = flag
+  return(OK)
+
+# Flag for return statement 
+int SemReturn
+
+def int SemGetreturn() :
+
+  #
+  # Arguments: None
+  #
+  # Returns
+  #   Returns the Return flag
+  #   OK for flag set, ERR for flag not set.
+
+  return(SemReturn)
+
+def int SemSetreturn(int flag) :
+
+  #
+  # Arguments: 
+  #   flag   : = OK  for return flag set
+  #            = ERR for no return flag set
+  #
+  # Returns :
+  #   Returns OK
+  #
+  
+  SemReturn = flag
+  return(OK)
+
 int SemSimple
 
 def int SemSetsimple(int simple) :

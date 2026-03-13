@@ -1,14 +1,22 @@
 ''' pyeps is a python function library for storing numpy arrays in memory 
 
     Functions: 
-          Store2df allocates memory and copies 2D numpy array into memory 
-          Store1df allocates memory and copies 1D numpy array into memory
-          Store1di allocates memory and copies 1D integer array into memory
-          Store1ds allocates memory and copies 1D char array into memory
-          Get2df   Copies 2d array and deletes allocated memory
-          Dims2df  Returns dimensions of eps array 
+          setup    Loads shared library
           Fzeros   Creates numpy 32 bit float array
           Fzeros   Creates numpy 32 bit int    array
+          Store1di allocates memory and copies 1D int numpy array into memory
+          Store2di allocates memory and copies 2D int numpyarray into memory
+          Store1df allocates memory and copies 1D float numpy array into memory
+          Store2df allocates memory and copies 2D float numpy array into memory 
+          Store1ds allocates memory and copies 1D char array into memory
+          Get1di   Copies 2d array and deletes allocated memory 1D int
+          Get2di   Copies 2d array and deletes allocated memory 2D int
+          Get1df   Copies 2d array and deletes allocated memory 1D float
+          Get2df   Copies 2d array and deletes allocated memory 2D float
+          Dims1di  Returns dimensions of eps array int 1D
+          Dims2di  Returns dimensions of eps array int 2D
+          Dims1df  Returns dimensions of eps array float 1D 
+          Dims2df  Returns dimensions of eps array float 2D
  
 '''
 
@@ -134,7 +142,7 @@ def Store1di(pyeps,arr):
   return(out)
 
 def Get1di(pyeps,arr,out):
-  ''' Get1di copies a 1D eps array into a numpy array
+  ''' Get1di copies a 1D eps int array into a numpy int array
   
       Parameters:
         pyeps   : Shared library containg c-functions
@@ -161,6 +169,13 @@ def Get1di(pyeps,arr,out):
   # Copy eps array into numpy array
   pyeps.PyepsCopy1di(arr,epsarrp)
 
+  # Set the argument types of Del1di
+  pyeps.PyepsDel1di.argtypes=[c_void_p]
+  pyeps.PyepsDel1di.restype=c_int
+
+  # Delete the eps array
+  pyeps.PyepsDel1di(arr)
+
   return(True)
 
 def Dims1di(arr):
@@ -179,14 +194,14 @@ def Dims1di(arr):
   return(nx)
 
 def Store2di(pyeps,arr):
-  ''' Store2df allocates memory and copies 2D numpy arr into memory
+  ''' Store2di allocates memory and copies 2D numpy int array into memory
   
       Parameters:
         pyeps   : Shared library containg c-functions
-        arr     : 2D numpy array
+        arr     : 2D numpy int array
         
       Return :
-        2D eps array
+        2D eps int array
           
   '''
 
@@ -217,14 +232,14 @@ def Store2di(pyeps,arr):
   return(out)
 
 def Get2di(pyeps,arr,out):
-  ''' Get2di copies a 2D eps array into a numpy array
+  ''' Get2di copies a 2D int eps array into a int numpy array
   
       Parameters:
         pyeps   : Shared library containg c-functions
-        arr     : 2D eps array
+        arr     : 2D eps int array
         
       Return :
-        numpy array
+        numpy 2D int array
           
   '''
 
@@ -245,6 +260,13 @@ def Get2di(pyeps,arr,out):
   # Copy eps array into numpy array
   pyeps.PyepsCopy2di(arr,epsarrp)
 
+  # Set the argument types of Del2di
+  pyeps.PyepsDel2di.argtypes=[c_void_p]
+  pyeps.PyepsDel2di.restype=c_int
+
+  # Delete the eps array
+  pyeps.PyepsDel2di(arr)
+
   return(True)
 
 def Dims2di(arr):
@@ -264,11 +286,11 @@ def Dims2di(arr):
   return (n1,n2)
 
 def Store1df(pyeps,arr):
-  ''' Store1df allocates memory and copies 1D numpy arr into memory
+  ''' Store1df allocates memory and copies 1D numpy float arr into memory
   
       Parameters:
         pyeps   : Shared library containg c-functions
-        arr     : 1D numpy array
+        arr     : 1D numpy float array
   '''
 
   # Set the argument and return type of the memory allocator
@@ -296,7 +318,7 @@ def Store1df(pyeps,arr):
   return(out)
 
 def Get1df(pyeps,arr,out):
-  ''' Get1df copies a 1D eps array into a numpy array
+  ''' Get1df copies a 1D eps float array into a numpy float array
   
       Parameters:
         pyeps   : Shared library containg c-functions
@@ -324,6 +346,12 @@ def Get1df(pyeps,arr,out):
   # Copy eps array into numpy array
   pyeps.PyepsCopy1df(arr,epsarrp)
 
+  # Set the argument types of Del1df
+  pyeps.PyepsDel1df.argtypes=[c_void_p]
+  pyeps.PyepsDel1df.restype=c_int
+
+  # Delete the eps array
+  pyeps.PyepsDel1df(arr)
   return(True)
 
 def Dims1df(arr):
@@ -342,14 +370,14 @@ def Dims1df(arr):
   return(nx)
 
 def Store2df(pyeps,arr):
-  ''' Store2df allocates memory and copies 2D numpy arr into memory
+  ''' Store2df allocates memory and copies 2D numpy float arr into memory
   
       Parameters:
         pyeps   : Shared library containg c-functions
-        arr     : 2D numpy array
+        arr     : 2D numpy float array
         
       Return :
-        2D eps array
+        2D eps float array
           
   '''
 
@@ -379,7 +407,7 @@ def Store2df(pyeps,arr):
   return(out)
 
 def Get2df(pyeps,arr,out):
-  ''' Get2df copies a 2D eps array into a numpy array
+  ''' Get2df copies a 2D eps float array into a numpy float array
   
       Parameters:
         pyeps   : Shared library containg c-functions
@@ -387,7 +415,7 @@ def Get2df(pyeps,arr,out):
         out     : Output numpy array
         
       Return :
-        returns numpy array
+        returns 2D numpy float array
           
   '''
 
@@ -408,6 +436,12 @@ def Get2df(pyeps,arr,out):
   # Copy eps array into numpy array
   pyeps.PyepsCopy2df(arr,epsarrp)
 
+  # Set the argument types of Del1df
+  pyeps.PyepsDel2df.argtypes=[c_void_p]
+  pyeps.PyepsDel2df.restype=c_int
+
+  # Delete the eps array
+  pyeps.PyepsDel2df(arr)
   return(out)
 
 def Dims2df(arr):

@@ -36,3 +36,25 @@ def int runsaxpy(float a, float [*] x, float [*] y, float [*] z, int niter) :
       saxpy(a,x,y,z)
 
     return(1)
+
+def int runsaxpy2d(float a, float [*,*] x, float [*,*] y, \
+                   float [*,*] z, int niter) :
+  
+  # Runsaxpy2d is a wrapper for calling saxpy2d
+  #
+  # Parameters:
+  #   a : scalar
+  #   x : float input matrix
+  #   y : float input matrix
+  #   y : float output matrix
+  #   niter : Number of iterations of saxpy
+  #
+  # Returns:
+  #   Output is in the z array
+  #
+
+    for i in range(0,niter) :
+      saxpy2d(a,x,y,z)
+
+    return(1)
+

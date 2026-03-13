@@ -107,7 +107,7 @@ def int [*,*] PyepsCre2di(int Nx, int Ny):
   #  int Ny      : No of ints in array 2nd dim
   #
   # Returns:
-  #  float [*,*] arr     : int array
+  #  int [*,*] arr     : int array
   #
 
   return(new(int [Nx,Ny]));

@@ -1,4 +1,4 @@
-//  Translated by epsc  version: Thu Feb 26 12:39:30 2026
+//  Translated by epsc  version: Thu Mar 12 14:00:08 2026
 
 #include <stddef.h>
 #include <stdio.h>
@@ -335,6 +335,10 @@ int SemStmnt (struct tree* p);
 struct tree* SemExpr (struct tree* p);
 struct tree* SemUnexpr (struct tree* p);
 struct tree* SemPrimexpr (struct tree* p);
+int SemGetparallel ();
+int SemSetparallel (int flag);
+int SemGetreturn ();
+int SemSetreturn (int flag);
 int SemSetsimple (int simple);
 int SemGetsimple ();
 int SemSerror (struct tree* p,nctempchar1 *s1,nctempchar1 *s2);
