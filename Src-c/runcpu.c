@@ -180,7 +180,6 @@ int RunRead(int fd, int lbuff, nctempchar1 *buffer)
   return(rval);
 }
 
-
 // RunWrite writes lbuff from the buffer array
 // into a file with file descriptor {\tt fd}.
 // {\tt bufferdesc} is an integer array containg the length

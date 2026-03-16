@@ -19,7 +19,11 @@ for arg in sys.argv[1:] :
   args = args+arg
 
 if(pyflag == True) :
-  cmdline ="nvcc "+args+"$EPS/Lib/libecuda.o $EPS/Lib/runcuda.o $EPS/Lib/pyepscuda.o -L/usr/local/cuda-11.8/lib64/ -l cuda" 
+  arg1=" $EPS/Lib/pyepsccuda.o "
+  arg2=" $EPS/Lib/pyepscuda.o "
+  arg3=" $EPS/Lib/libecuda.o "
+  arg4=" $EPS/Lib/runcuda.o " 
+  cmdline ="nvcc "+args+arg1+arg2+arg3+arg4
 else :
   cmdline ="nvcc "+args+"$EPS/Lib/libecuda.o $EPS/Lib/runcuda.o " 
 

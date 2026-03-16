@@ -489,9 +489,10 @@ def int Main(struct MainArg [*] MainArgs) :
   if(python==OK):
     # Open output file for python code 
     fd = LibeOpen(outfilepy,"w") 
-    LibePuts(fd,"import pyeps\n")
     LibePuts(fd,"from ctypes import *\n")
     LibePuts(fd,"import numpy as np\n")
+    LibePuts(fd,"import pyeps\n")
+    LibePuts(fd,"import config\n")
     CodeSetpython(OK)
     CodeSetfdpython(fd) 
   

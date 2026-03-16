@@ -1,4 +1,5 @@
 import pyeps
+import config
 import time
 import sys
 import saxpy
@@ -16,14 +17,14 @@ else :
   exit()
 
 # Get correct shared library
-pylib=pyeps.setup(libpath)
+pyeps.setup(libpath)
 
 t0=time.perf_counter()
 n=2097152
-niter=10000
-x=pyeps.Fzeros(n)
-y=pyeps.Fzeros(n)
-z=pyeps.Fzeros(n)
+niter=1000
+x=pyeps.Fzeros((n,))
+y=pyeps.Fzeros((n,))
+z=pyeps.Fzeros((n,))
 
 t1=time.perf_counter()
 
@@ -32,9 +33,9 @@ x.fill(1.0)
 y.fill(1.0)
 
 t2=time.perf_counter()
-saxpy.runsaxpy(pylib,a,x,y,z,niter)
+saxpy.runsaxpy(a,x,y,z,niter)
 #for i in range(0,niter):
-#  saxpy.saxpy(pylib,a,x,y,z)
+#  saxpy.saxpy(a,x,y,z)
 
 #print(z[0],z[n-1])
 

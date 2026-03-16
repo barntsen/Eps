@@ -1,28 +1,55 @@
-''' pyeps is a python function library for storing numpy arrays in memory 
+''' pylib is a python function library for converting between numpy and eps arrays
 
     Functions: 
           setup    Loads shared library
-          Fzeros   Creates numpy 32 bit float array
-          Fzeros   Creates numpy 32 bit int    array
-          Store1di allocates memory and copies 1D int numpy array into memory
-          Store2di allocates memory and copies 2D int numpyarray into memory
-          Store1df allocates memory and copies 1D float numpy array into memory
-          Store2df allocates memory and copies 2D float numpy array into memory 
-          Store1ds allocates memory and copies 1D char array into memory
-          Get1di   Copies 2d array and deletes allocated memory 1D int
-          Get2di   Copies 2d array and deletes allocated memory 2D int
-          Get1df   Copies 2d array and deletes allocated memory 1D float
-          Get2df   Copies 2d array and deletes allocated memory 2D float
+          Izeros1di : Creates numpy 1D 32 bit integer array
+          Izeros2di : Creates numpy 2D 32 bit integer array
+          Fzeros1df : Creates numpy 32 bit float array
+          Fzeros2df : Creates numpy 32 bit float array
+          Fzeros    : Creates numpy 32 bit float array
+          Izeros    : Creates numpy 32 bit int array
+          Bytes     : Creates byte array 
+          eps1di    : Convert 1D int numpy array to eps array
+          num1di    : Convert 1D int eps   array to numpy array
+          eps2di    : Convert 2D int numpy array to eps array
+          num2di    : Convert 2D int eps   array to numpy array
+          eps1df    : Convert 1D float numpy array to eps array
+          num1df    : Convert 1D float eps array to numpy array
+          eps2df    : Convert 2D float numpy array to eps array
+          num2df    : Convert 2D float eps array to numpy array
           Dims1di  Returns dimensions of eps array int 1D
           Dims2di  Returns dimensions of eps array int 2D
           Dims1df  Returns dimensions of eps array float 1D 
           Dims2df  Returns dimensions of eps array float 2D
- 
+
+          The main features of the functions listed above are:
+
+            1. Data is not copied, only pointers.
+            2. The library works on both cpu and gpu using cpu memory and unified memeory.
+          
+          The only requirement is that numpy arrays must be created with
+          the Izeros and Fzeros functions. A numpy array created with f.ex np.zeros will not work.
+          The main reason for this is the distinction between cpu and gpu memory.
+          Data which is used by the gpu must be allocated using unified memory,
+          which is done by Izeros and Fzeros. 
+          It would be entirely possible to use normal numpy arrays created with f.ex. np.zeros,
+          but then a full copy would have to be made of all functions argument to/from the gpu.
+          The overhead for this is very large, hence I use the approach with dedicated
+          Izeros and Fzeros functions for creating numpy arrays.
+          Numpy arrays created in this way may be used as normal numpy arrays,
+          the only limitation is that some numpy operations creates non contiguos arrays. 
+          Trying to call an eps function will thein fail. The remedy is to make a
+          new copy of the array, f.ex. using np.copy.
+          Finally, the functions can be used to run both on single core cpu, multi core cpu
+          and gpu.
+
+          Nvidia has made a similar library (pyCuda) which uses the same approach,
+          but is designed to interface with C.
 '''
 
 import numpy as np
 from ctypes import *
-
+import config
 
 def setup(libpath) :
   
@@ -36,6 +63,8 @@ def setup(libpath) :
    
      Returns:
        reference to the shared library
+       The global variable config.pylib is set to the
+       address of the shared library.
   '''
 
   cdll.LoadLibrary(libpath)
@@ -44,6 +73,7 @@ def setup(libpath) :
   #Initialize I/O
   pylib.LibeInit()
 
+  config.pylib=pylib
   return pylib
 
 
@@ -69,33 +99,179 @@ class epsarray2df(Structure) :
 class epsarrays(Structure) :
  _fields_ = [("d", ARRAY(c_int,1)),("a",c_char_p)] 
 
+
+def Izeros1di(pylib,dims) :
+  ''' Izeros1di creates 1d int  32 bit numpy array
+
+      Parameters :
+        pylib  :  Pointer to shared lib
+        dims   :  List of dimensions
+
+      Returns:
+        int  32 bit 1d array with dimensions dims.
+
+        The data pointer is obtained from allocation
+        in cpu or unified memory. 
+  '''
+
+  # Set the argument and return type of the memory allocator
+  pylib.PyepsCre1di.argtypes=[c_int]
+  pylib.PyepsCre1di.restype=c_void_p
+  nx = dims[0]
+
+  # Allocate memory for the eps array
+  epsarr = pylib.PyepsCre1di(nx)
+  dimension=(nx,)
+
+  # Get the data  of a 1d int eps array
+  data=Data1di(epsarr)
+
+  # Cast to numpy int pointer type
+  data  = cast(data, POINTER(c_int))
+
+  # Create the numpy array using the ctypes constructor
+  out = np.ctypeslib.as_array(data,shape=dimension)
+  return(out)
+
+def Izeros2di(pylib,dims) :
+  ''' Izeros2di creates 2d int  32 bit numpy array
+
+      Parameters :
+        pylib  : Pointer to shared lib
+        dims   : List of dimensions
+
+      Returns:
+        int  32 bit 2d array with dimensions dims.
+
+  '''
+
+  # Set the argument and return type of the memory allocator
+  pylib.PyepsCre2di.argtypes=[c_int,c_int]
+  pylib.PyepsCre2di.restype=c_void_p
+  nx = dims[0]
+  ny = dims[1]
+
+  # Allocate memory for the eps array
+  epsarr = pylib.PyepsCre2di(nx,ny)
+  dimension=(nx,ny)
+
+  # Get the data  of a 2d int eps array
+  pylib.Data2di.argtypes=[c_void_p]
+  pylib.Data2di.restype=c_void_p
+  data=pylib.Data2di(epsarr)
+
+  # Cast to numpy int pointer type
+  data  = cast(data, POINTER(c_int))
+
+  # Create the numpy array using the ctypes constructor
+  out = np.ctypeslib.as_array(data,shape=dimension)
+  return(out)
+
+def Fzeros1df(pylib,dims) :
+
+  ''' Fzeros1df creates 1d float  32 bit numpy array
+
+      Parameters :
+        pylib  :  Pointer to shared lib
+        dims   :  List of dimensions
+
+      Returns:
+        float 32 bit 1d float array with dimensions dims.
+
+  '''
+
+
+  # Set the argument and return type of the memory allocator
+  config.pylib.PyepsCre1df.argtypes=[c_int]
+  config.pylib.PyepsCre1df.restype=c_void_p
+  nx = dims[0]
+
+  # Allocate memory for the eps array
+  epsarr = config.pylib.PyepsCre1df(nx)
+  dimension=(nx,)
+
+  # Get the data pointer from epsarr
+  narr = cast(epsarr,POINTER(epsarray1df))
+  data = (narr.contents).a
+
+  # Create the numpy array using the ctypes constructor
+  out = np.ctypeslib.as_array(data,shape=dimension)
+  return(out)
+
+def Fzeros2df(pylib,dims) :
+
+  ''' Fzeros2df creates 2d float  32 bit array
+
+      Parameters :
+        py;ib  :  Pointer to shared lib
+        dims   :  List of dimensions
+
+      Returns:
+        float 32 bit 2d float array with dimensions dims.
+
+  '''
+
+  # Set the argument and return type of the memory allocator
+  pylib.PyepsCre2df.argtypes=[c_int]
+  pylib.PyepsCre2df.restype=c_void_p
+  nx = dims[0]
+  ny = dims[1]
+
+  # Allocate memory for the eps array
+  epsarr = pylib.PyepsCre2df(nx,ny)
+  dimension=(nx,ny)
+
+  # Get the data pointer from epsarr
+  narr = cast(epsarr,POINTER(epsarray2df))
+  data = (narr.contents).a
+
+  # Create the numpy array using the ctypes constructor
+  out = np.ctypeslib.as_array(data,shape=dimension)
+  return(out)
+
 def Izeros(dims) :
-  ''' Izeors crates integer 32 bit array
+
+  ''' Izeros creates int arrays
 
       Parameters :
         dims   :  List of dimensions
 
       Returns:
-        integer 32 bit array with dimensions dims.
+        float 32 bit int array with dimensions dims.
 
   '''
 
-  return(np.zeros(dims,dtype=np.int32,order='F'))
-
+  if(len(dims) == 1):
+    return Izeros1di(config.pylib,dims)
+  elif(len(dims)==2):
+    return Izeros2di(config.pylib,dims)
+  else:
+    printf("Incorrect dimensions")
+    Exit()
+  
 def Fzeros(dims) :
-  ''' Fzeros creates float  32 bit array
+
+  ''' Fzeros creates float arrays
 
       Parameters :
         dims   :  List of dimensions
 
       Returns:
-        float 32 bit array with dimensions dims.
+        float 32 bit float array with dimensions dims.
 
   '''
 
-  return(np.zeros(dims,dtype=np.float32,order='F'))
+  if(len(dims) == 1):
+    return Fzeros1df(config.pylib,dims)
+  elif(len(dims)==2):
+    return Fzeros2df(config.pylib,dims)
+  else:
+    printf("Incorrect dimensions")
+    Exit()
+  
 
 def Bytes(dims) :
+
   ''' Bytes creates a byte array
 
       Parameters :
@@ -108,375 +284,194 @@ def Bytes(dims) :
 
   return(bytearray([0]*dims))
   
-
-def Store1di(pyeps,arr):
-  ''' Store1di allocates memory and copies 1D integer arr into memory
+def eps1di(arr):
+  '''eps1di converts a 1d numpy int array to an eps array
   
       Parameters:
-        pyeps   : Shared library containg c-functions
-        arr     : 1D integer array
+        arr     : 1D numpy int array
   '''
-  
-  # Set the argument and return type of the memory allocator
-  pyeps.PyepsCre1di.argtypes=[c_int]
-  pyeps.PyepsCre1di.restype=c_void_p
-  nx = arr.shape[0]
 
-  # Allocate memory for the eps array
-  out = pyeps.PyepsCre1di(nx) 
-  
-  # Fill in the eps array descriptor with
-  # dimensions and data
-  epsarr = epsarray1di()
-  epsarr.a = arr.ctypes.data_as(POINTER(c_int32))
-  epsarr.d[0]=nx
-  epsarrp = pointer(epsarr)
+  if(arr.flags['CONTIGUOUS'] == False) :
+    print("The numpy array is not contiguos. Use numpy.copy")
+    exit()
 
-  # Set the argument types of Copy1di
-  pyeps.PyepsCopy1di.argtypes=[POINTER(epsarray1di),c_void_p]
-  pyeps.PyepsCopy1di.restype=c_int
+  # Set arguments and return type of Descr1di:
+  config.pylib.Desc1di.argtypes=[c_int,c_void_p]
+  config.pylib.Desc1di.restype=c_void_p
+  nx=arr.shape[0]
 
-  # Copy the numpy array into the eps array
-  pyeps.PyepsCopy1di(epsarr,out)
+  # Get the data from the numpy array
+  data = arr.ctypes.data_as(c_void_p)
+
+  # Create an eps array
+  epsp=config.pylib.Desc1di(nx,data)
+  return(epsp)
+
+def num1di(arr):
+  '''eps1di converts a 1d int epsarray to a numpy array
   
+      Parameters:
+        arr     : 1D eps int array
+  '''
+
+  # Get the dimension of a 1d int eps array
+  dimension=Dims1di(arr)
+
+  # Get the data  of a 1d int eps array
+  data=Data1di(arr)
+  # Get a pointer to that memory
+  data  = cast(data, POINTER(c_int))
+
+  # Create the numpy array using the np constructor
+  out = np.ctypeslib.as_array(data,shape=dimension)
   return(out)
 
-def Get1di(pyeps,arr,out):
-  ''' Get1di copies a 1D eps int array into a numpy int array
+def eps2di(arr):
+
+  '''eps2di converts a 2d numpy int array to an eps array
   
       Parameters:
-        pyeps   : Shared library containg c-functions
-        arr     : input 1D eps array
-        out     : output numpy array
-        
-      Return :
-        returns numpy array
-          
-  '''
-
-  # Fill in the eps array descriptor with
-  # dimensions and data
-  nx = Dims1di(arr)
-  epsarr = epsarray1di()
-  epsarr.a = out.ctypes.data_as(POINTER(c_int32))
-  epsarr.d[0]=nx
-  epsarrp = pointer(epsarr)
-
-  # Set the argument types of Copy1di
-  pyeps.PyepsCopy1di.argtypes=[c_void_p,POINTER(epsarray1di)]
-  pyeps.PyepsCopy1di.restype=c_int
-
-  # Copy eps array into numpy array
-  pyeps.PyepsCopy1di(arr,epsarrp)
-
-  # Set the argument types of Del1di
-  pyeps.PyepsDel1di.argtypes=[c_void_p]
-  pyeps.PyepsDel1di.restype=c_int
-
-  # Delete the eps array
-  pyeps.PyepsDel1di(arr)
-
-  return(True)
-
-def Dims1di(arr):
-  ''' Dims1di get the length of a 1d int eps array
-  
-      Parameters:
-        arr           : 1D eps array
-        
-      Return :
-        returns the length
-          
-  '''
-
-  narr = cast(arr,POINTER(epsarray1di))
-  nx = (narr.contents).d[0]
-  return(nx)
-
-def Store2di(pyeps,arr):
-  ''' Store2di allocates memory and copies 2D numpy int array into memory
-  
-      Parameters:
-        pyeps   : Shared library containg c-functions
         arr     : 2D numpy int array
-        
-      Return :
-        2D eps int array
-          
   '''
 
-  # Set the argument and return type of the memory allocator
-  pyeps.PyepsCre2di.argtypes=[c_int,c_int]
-  pyeps.PyepsCre2di.restype=c_void_p
-  nx = arr.shape[0]
-  ny = arr.shape[1]
+  if(arr.flags['CONTIGUOUS'] == False) :
+    print("The numpy array is not contiguos. Use numpy.copy")
+    exit()
 
-  # Allocate memory for the eps array
-  out = pyeps.PyepsCre2di(nx,ny) 
-
-  # Fill in the eps array descriptor with
-  # dimensions and data
-  epsarr = epsarray2di()
-  epsarr.a = arr.ctypes.data_as(POINTER(c_int32))
-  epsarr.d[0]=nx
-  epsarr.d[1]=ny
-  epsarrp =pointer(epsarr)
-
-  # Set the argument types of Copy2di
-  pyeps.PyepsCopy2di.argtypes=[POINTER(epsarray2di),c_void_p]
-  pyeps.PyepsCopy2di.restype=c_int
-
-  # Copy the numpy array into the eps array
-  pyeps.PyepsCopy2di(epsarrp,out)
+  # Set arguments and return type of Desc2di:
+  config.pylib.Desc2di.argtypes=[c_int,c_int,c_void_p]
+  config.pylib.Desc2di.restype=c_void_p
+  nx=arr.shape[0]
+  ny=arr.shape[1]
   
+  # Get the data from the numpy array
+  data = arr.ctypes.data_as(c_void_p)
+
+  # Create an eps array
+  epsp=config.pylib.Desc2di(nx,ny,data)
+  return(epsp)
+
+
+def num2di(arr):
+
+  '''eps converts a 2d int epsarray to a numpy array
+  
+      Parameters:
+        arr     : 2D eps int array
+  '''
+
+  # Get the dimension of a 2d int eps array
+  dimension=Dims2di(arr)
+
+  # Get the data  of a 2d int eps array
+  data=Data2di(arr)
+  # Get a pointer to that memory
+  data  = cast(data, POINTER(c_int))
+
+  # Create the numpy array using the np constructor
+  out = np.ctypeslib.as_array(data,shape=dimension)
   return(out)
 
-def Get2di(pyeps,arr,out):
-  ''' Get2di copies a 2D int eps array into a int numpy array
+def eps1df(arr):
+
+  '''eps converts a 1d numpy float array to an eps array
   
       Parameters:
-        pyeps   : Shared library containg c-functions
-        arr     : 2D eps int array
-        
-      Return :
-        numpy 2D int array
-          
-  '''
-
-  # Fill in the eps array descriptor with
-  # dimensions and data
-
-  dim=Dims2di(arr)
-  epsarr = epsarray2di()
-  epsarr.a = out.ctypes.data_as(POINTER(c_int))
-  epsarr.d[0]=dim[0]
-  epsarr.d[1]=dim[1]
-  epsarrp = pointer(epsarr)
-
-  # Set the argument types of Copy2di
-  pyeps.PyepsCopy2di.argtypes=[c_void_p,POINTER(epsarray2di)]
-  pyeps.PyepsCopy2di.restype=c_int
-
-  # Copy eps array into numpy array
-  pyeps.PyepsCopy2di(arr,epsarrp)
-
-  # Set the argument types of Del2di
-  pyeps.PyepsDel2di.argtypes=[c_void_p]
-  pyeps.PyepsDel2di.restype=c_int
-
-  # Delete the eps array
-  pyeps.PyepsDel2di(arr)
-
-  return(True)
-
-def Dims2di(arr):
-  ''' Dims2di get the length of a 2d int array
-  
-      Parameters:
-        arr           : 2D eps array
-        
-      Return :
-        returns a tuple with first and second dimension
-          
-  '''
-
-  narr = cast(arr,POINTER(epsarray2di))
-  n1 = (narr.contents).d[0]
-  n2 = (narr.contents).d[1]
-  return (n1,n2)
-
-def Store1df(pyeps,arr):
-  ''' Store1df allocates memory and copies 1D numpy float arr into memory
-  
-      Parameters:
-        pyeps   : Shared library containg c-functions
         arr     : 1D numpy float array
   '''
 
-  # Set the argument and return type of the memory allocator
-  pyeps.PyepsCre1df.argtypes=[c_int]
-  pyeps.PyepsCre1df.restype=c_void_p
-  nx = arr.shape[0]
+  # Set arguments and return type of Descr1di:
+  config.pylib.Desc1df.argtypes=[c_int,c_void_p]
+  config.pylib.Desc1df.restype=c_void_p
+  nx=arr.shape[0]
 
-  # Allocate memory for the eps array
-  out = pyeps.PyepsCre1df(nx) 
+  # Get the data from the numpy array
+  data = arr.ctypes.data_as(c_void_p)
+
+  # Create an eps array
+  epsp=config.pylib.Desc1df(nx,data)
+  return(epsp)
+
+def num1df(arr):
+
+  '''eps converts a 1d eps float array to a numpy array
   
-  # Fill in the eps array descriptor with
-  # dimensions and data
-  epsarr = epsarray1df()
-  epsarr.a = arr.ctypes.data_as(POINTER(c_float))
-  epsarr.d[0]=nx
-  epsarrp = pointer(epsarr)
+      Parameters:
+        arr     : 1D eps int array
+  '''
 
-  # Set the argument types of Copy1df
-  pyeps.PyepsCopy1df.argtypes=[POINTER(epsarray1df),c_void_p]
-  pyeps.PyepsCopy1df.restype=c_int
+  # Get the dimension of a 1d float eps array
+  dimension=Dims1df(arr)
 
-  # Copy the numpy array into the eps array
-  pyeps.PyepsCopy1df(epsarr,out)
-  
+  # Get the data  of a 1d int eps array
+  data=Data1df(arr)
+
+  # Get a pointer to that memory
+  data  = cast(data, POINTER(c_float))
+
+  # Create the numpy array using the np constructor
+  out = np.ctypeslib.as_array(data,shape=dimension)
   return(out)
 
-def Get1df(pyeps,arr,out):
-  ''' Get1df copies a 1D eps float array into a numpy float array
+def eps2df(arr):
+
+  '''eps converts a 2d numpy float array to an eps array
   
       Parameters:
-        pyeps   : Shared library containg c-functions
-        arr     : 1D eps array
-        out     : Output numpy array
-        
-      Return :
-        numpy array
-          
-  '''
-
-  # Fill in the eps array descriptor with
-  # dimensions and data
-
-  nx = Dims1df(arr)
-  epsarr = epsarray1df()
-  epsarr.a = out.ctypes.data_as(POINTER(c_float))
-  epsarr.d[0]=nx
-  epsarrp = pointer(epsarr)
-
-  # Set the argument types of Copy1df
-  pyeps.PyepsCopy1df.argtypes=[c_void_p,POINTER(epsarray1df)]
-  pyeps.PyepsCopy1df.restype=c_int
-
-  # Copy eps array into numpy array
-  pyeps.PyepsCopy1df(arr,epsarrp)
-
-  # Set the argument types of Del1df
-  pyeps.PyepsDel1df.argtypes=[c_void_p]
-  pyeps.PyepsDel1df.restype=c_int
-
-  # Delete the eps array
-  pyeps.PyepsDel1df(arr)
-  return(True)
-
-def Dims1df(arr):
-  ''' Dims1df get the length of a 1d float array
-  
-      Parameters:
-        arr           : 1D eps array
-        
-      Return :
-        returns the length
-          
-  '''
-
-  narr = cast(arr,POINTER(epsarray1df))
-  nx = (narr.contents).d[0]
-  return(nx)
-
-def Store2df(pyeps,arr):
-  ''' Store2df allocates memory and copies 2D numpy float arr into memory
-  
-      Parameters:
-        pyeps   : Shared library containg c-functions
         arr     : 2D numpy float array
-        
-      Return :
-        2D eps float array
-          
   '''
 
-  # Set the argument and return type of the memory allocator
-  pyeps.PyepsCre2df.argtypes=[c_int,c_int]
-  pyeps.PyepsCre2df.restype=c_void_p
-  nx = arr.shape[0]
-  ny = arr.shape[1]
+  # Set arguments and return type of Descr2df:
+  config.pylib.Desc2df.argtypes=[c_int,c_int,c_void_p]
+  config.pylib.Desc2df.restype=c_void_p
+  nx=arr.shape[0]
+  ny=arr.shape[1]
 
-  # Allocate memory for the eps array
-  out = pyeps.PyepsCre2df(nx,ny) 
-  # Fill in the eps array descriptor with
-  # dimensions and data
-  epsarr = epsarray2df()
-  epsarr.a = arr.ctypes.data_as(POINTER(c_float))
-  epsarr.d[0]=nx
-  epsarr.d[1]=ny
-  epsarrp = pointer(epsarr)
+  # Get the data from the numpy array
+  data = arr.ctypes.data_as(c_void_p)
 
-  # Set the argument types of Copy2df
-  pyeps.PyepsCopy2df.argtypes=[POINTER(epsarray2df),c_void_p]
-  pyeps.PyepsCopy2df.restype=c_int
+  # Create an eps array
+  epsp=config.pylib.Desc2df(nx,ny,data)
+  return(epsp)
 
-  # Copy the numpy array into the eps array
-  pyeps.PyepsCopy2df(epsarr,out)
+def num2df(arr):
+
+  '''eps converts a 2d eps float array to a numpy array
   
+      Parameters:
+        arr     : 2D eps float array
+  '''
+  # Get the dimension of a 2d float eps array
+  dimension=Dims2df(arr)
+
+  # Get the data  of a 2d float eps array
+  data=Data2df(arr)
+
+  # Get a pointer to that memory
+  data  = cast(data, POINTER(c_float))
+
+  # Create the numpy array using the np constructor
+  out = np.ctypeslib.as_array(data,shape=dimension)
   return(out)
 
-def Get2df(pyeps,arr,out):
-  ''' Get2df copies a 2D eps float array into a numpy float array
+def eps1dc(arr):
+
+  ''' eps1dc allocates memory and copies 1D char array into memory
   
       Parameters:
-        pyeps   : Shared library containg c-functions
-        arr     : 2D eps array
-        out     : Output numpy array
-        
-      Return :
-        returns 2D numpy float array
-          
-  '''
-
-  # Fill in the eps array descriptor with
-  # dimensions and data
-
-  dim=Dims2df(arr)
-  epsarr = epsarray2df()
-  epsarr.a = out.ctypes.data_as(POINTER(c_float))
-  epsarr.d[0]=dim[0]
-  epsarr.d[1]=dim[1]
-  epsarrp = pointer(epsarr)
-
-  # Set the argument types of Copy2df
-  pyeps.PyepsCopy2df.argtypes=[c_void_p,POINTER(epsarray2df)]
-  pyeps.PyepsCopy2df.restype=c_int
-
-  # Copy eps array into numpy array
-  pyeps.PyepsCopy2df(arr,epsarrp)
-
-  # Set the argument types of Del1df
-  pyeps.PyepsDel2df.argtypes=[c_void_p]
-  pyeps.PyepsDel2df.restype=c_int
-
-  # Delete the eps array
-  pyeps.PyepsDel2df(arr)
-  return(out)
-
-def Dims2df(arr):
-  ''' Dims2df get the length of a 2d float array
-  
-      Parameters:
-        pyeps         : Shared library containg c-functions
-        arr           : 2D eps array
-        
-      Return :
-        returns a tuple with first and second dimension
-          
-  '''
-
-  narr = cast(arr,POINTER(epsarray2df))
-  n1 = (narr.contents).d[0]
-  n2 = (narr.contents).d[1]
-  return (n1,n2)
-
-
-def Store1dc(pyeps,arr):
-  ''' Store1dc allocates memory and copies 1D char array into memory
-  
-      Parameters:
-        pyeps   : Shared library containg c-functions
+        pylib   : Shared library containg c-functions
         arr     : python string
   '''
 
+  pylib=config.pylib
+
   # Set the argument and return type of the memory allocator
-  pyeps.PyepsCre1ds.argtypes=[c_int]
-  pyeps.PyepsCre1ds.restype=c_void_p
+  pylib.PyepsCre1ds.argtypes=[c_int]
+  pylib.PyepsCre1ds.restype=c_void_p
   nx = len(arr)
 
   # Allocate memory for the eps array
-  out = pyeps.PyepsCre1ds(nx) 
+  out = pylib.PyepsCre1ds(nx) 
   
   # Fill in the eps array descriptor with
   # dimensions and data
@@ -486,21 +481,20 @@ def Store1dc(pyeps,arr):
   epsarrp = pointer(epsarr)
 
   # Set the argument types of Copy1ds
-  pyeps.PyepsCopy1ds.argtypes=[POINTER(epsarrays),c_void_p]
-  pyeps.PyepsCopy1ds.restype=c_int
+  pylib.PyepsCopy1ds.argtypes=[POINTER(epsarrays),c_void_p]
+  pylib.PyepsCopy1ds.restype=c_int
 
   # Copy the numpy array into the eps array
-  pyeps.PyepsCopy1ds(epsarr,out)
+  pylib.PyepsCopy1ds(epsarr,out)
   
   return(out)
 
-def Get1dc(pyeps,arr):
-  ''' Get1dc copies a 1D eps array into a string
+def num1dc(arr):
+
+  '''  num1dc converts a 1D eps char array into a string
   
       Parameters:
-        pyeps   : Shared library containg c-functions
-        arr     : 1D eps array
-        out     : output string
+        arr     : 1D eps char array
         
       Return :
         out     : copy of input eps string array
@@ -519,20 +513,87 @@ def Get1dc(pyeps,arr):
   epsarrp = pointer(epsarr)
 
   # Set the argument types of Copy1ds
-  pyeps.PyepsCopy1ds.argtypes=[c_void_p,POINTER(epsarrays)]
-  pyeps.PyepsCopy1ds.restype=c_int
+  config.pylib.PyepsCopy1ds.argtypes=[c_void_p,POINTER(epsarrays)]
+  config.pylib.PyepsCopy1ds.restype=c_int
 
   # Copy eps array into string
-  pyeps.PyepsCopy1ds(arr,epsarrp)
+  config.pylib.PyepsCopy1ds(arr,epsarrp)
   bs=epsarrp.contents
   bss=bs.a
   return(bss.decode('utf-8'))
 
-def Dims1dc(str):
-  ''' Dims get the length of a string
+def Dims1di(arr):
+
+  ''' 
   
       Parameters:
-        str           : 2D eps array
+        arr           : 1D eps array
+        
+      Return :
+        returns the length
+          
+  '''
+
+  narr = cast(arr,POINTER(epsarray1di))
+  nx = (narr.contents).d[0]
+  return(nx,)
+
+def Dims2di(arr):
+
+  ''' Dims2di get the length of a 2d int array
+  
+      Parameters:
+        arr           : 2D eps array
+        
+      Return :
+        returns a tuple with first and second dimension
+          
+  '''
+
+  narr = cast(arr,POINTER(epsarray2di))
+  n1 = (narr.contents).d[0]
+  n2 = (narr.contents).d[1]
+  return (n1,n2)
+
+def Dims1df(arr):
+
+  ''' Dims1df get the length of a 1d float array
+  
+      Parameters:
+        arr : 1D eps array
+        
+      Return :
+        returns the length
+          
+  '''
+
+  narr = cast(arr,POINTER(epsarray1df))
+  nx = (narr.contents).d[0]
+  return(nx)
+
+def Dims2df(arr):
+  ''' Dims2df get the length of a 2d float array
+  
+      Parameters:
+        arr : 2D eps array
+        
+      Return :
+        returns a tuple with first and second dimension
+          
+  '''
+
+  narr = cast(arr,POINTER(epsarray2df))
+  n1 = (narr.contents).d[0]
+  n2 = (narr.contents).d[1]
+  return (n1,n2)
+
+
+def Dims1dc(str):
+
+  ''' Dims1dc get the length of a string
+  
+      Parameters:
+        str : 1D eps array
         
       Return :
         returns the length of the string
@@ -543,4 +604,68 @@ def Dims1dc(str):
   n1 = (nstr.contents).d[0]
   return (n1)
 
+def Data1di(arr):
 
+  ''' Data1di gets the data pointer from a 1D integer eps array 
+
+      Parameters:
+        arr  : 1D eps array
+        
+      Return :
+        returns the data pointer
+          
+  '''
+
+  narr = cast(arr,POINTER(epsarray1di))
+  data = (narr.contents).a
+  data = cast(data,POINTER(c_void_p))
+  return(data)
+
+def Data2di(arr):
+
+  ''' Data2di gets the data pointer from a 2D integer eps array 
+      Parameters:
+        arr : 2D eps array
+        
+      Return :
+        returns the data pointer
+          
+  '''
+
+  narr = cast(arr,POINTER(epsarray2di))
+  data = (narr.contents).a
+  data = cast(data,POINTER(c_void_p))
+  return(data)
+
+def Data1df(arr):
+
+  ''' Data1df gets the data pointer from a 1D float eps array 
+
+      Parameters:
+        arr  : 1D eps array
+        
+      Return :
+        returns the data pointer
+          
+  '''
+
+  narr = cast(arr,POINTER(epsarray1df))
+  data = (narr.contents).a
+  data = cast(data,POINTER(c_void_p))
+  return(data)
+
+def Data2df(arr):
+
+  ''' Data2df gets the data pointer from a 2D float eps array 
+      Parameters:
+        arr : 2D eps array
+        
+      Return :
+        returns the data pointer
+          
+  '''
+
+  narr = cast(arr,POINTER(epsarray2df))
+  data = (narr.contents).a
+  data = cast(data,POINTER(c_void_p))
+  return(data)

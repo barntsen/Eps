@@ -3358,7 +3358,7 @@ def char [*] CodeStorefunc(char [*] type, int rank):
 
   str=LibeStrsave(" ")
   LibeItoa(rank,str)
-  tmp = LibeStradd("Store",str)
+  tmp = LibeStradd("eps",str)
   funcname = LibeStradd(tmp,extension)
   delete(tmp)
 
@@ -3377,10 +3377,12 @@ def int CodeCrerval(struct tree p,int rank, char [*] type):
 
   CodeEind(p)
   if(LibeStrcmp(type,"int")) :
-    CodeEs(p,"rval=pyeps.Izeros(pyeps.Dims"); CodeEd(rank); CodeEs(p,"di(r_val))\n")
+    CodeEs(p,"rval=pyeps.Izeros(pyeps.Dims"); CodeEd(rank); 
+    CodeEs(p,"di(r_val))\n")
     return(OK)
   else if(LibeStrcmp(type,"float")) :
-    CodeEs(p,"rval=pyeps.Fzeros(pyeps.Dims"); CodeEd(rank); CodeEs(p,"df(r_val))\n")
+    CodeEs(p,"rval=pyeps.Fzeros(pyeps.Dims"); CodeEd(rank); 
+    CodeEs(p,"df(r_val))\n")
     return(OK)
   else :
     return(OK) 
@@ -3414,7 +3416,7 @@ def char [*] CodeGetfunc(char [*] type, int rank):
 
   str=LibeStrsave(" ")
   LibeItoa(rank,str)
-  tmp = LibeStradd("Get",str)
+  tmp = LibeStradd("num",str)
   funcname = LibeStradd(tmp,extension)
   delete(tmp)
 
@@ -3437,16 +3439,15 @@ def int CodePyreturn(struct tree functionode):
    &&(LibeStrcmp(PtreeGetarray(functionode),"array") == OK)):   
      rank=PtreeGetrank(functionode)
      type=PtreeGetype(functionode)
-     CodeCrerval(functionode,rank,type)
      CodeEind(functionode)
      if(LibeStrcmp(type,"char")==OK):
        CodeEs(functionode,"rval=pyeps.")
        CodeEs(functionode,CodeGetfunc(type,rank))
        CodeEs(functionode,"(pylib,r_val)\n")
      else:
-       CodeEs(functionode,"pyeps.")
+       CodeEs(functionode,"rval=pyeps.")
        CodeEs(functionode,CodeGetfunc(type,rank))
-       CodeEs(functionode,"(pylib,r_val,rval)\n")
+       CodeEs(functionode,"(r_val)\n")
   else : 
     CodeEind(functionode)
     CodeEs(functionode,"rval=r_val\n")
@@ -3525,7 +3526,7 @@ def int CodeFdefwrapperpy(struct tree p) :
     noarg=ERR
 
   if(noarg == OK):
-    CodeEs(p, "(pylib) :\n");
+    CodeEs(p, "() :\n");
     CodePyreturntype(functionode) 
     CodeEind(p)
     CodeEs(p,"r_val=pylib."); CodeEs(p,fname); CodeEs(p,"()\n")
@@ -3535,7 +3536,7 @@ def int CodeFdefwrapperpy(struct tree p) :
     CodeSetfdout(fdcout)
     return(OK)
   else :
-    CodeEs(p, "(pylib,");
+    CodeEs(p, "(");
 
   #Get the global symbol table
   tp = SymGetetp()
@@ -3558,6 +3559,9 @@ def int CodeFdefwrapperpy(struct tree p) :
       CodeEs(p,",");
   CodeEs(p,")"); CodeEs(p,":"); CodeEs(p,"\n")
 
+  # Emit the value of pylib
+  CodeEind(p); CodeEs(p,"pylib=config.pylib\n")
+
   # Loop through the table and emit all symbols and set argument types
   tp=tbl
   CodeEind(p)
@@ -3575,6 +3579,7 @@ def int CodeFdefwrapperpy(struct tree p) :
 
   CodePyreturntype(functionode)
 
+
   # Loop through the table and
   # convert all numpy arrays to eps
   tp=tbl
@@ -3587,8 +3592,9 @@ def int CodeFdefwrapperpy(struct tree p) :
       storefunc=CodeStorefunc(type,rank)
       CodeEind(p)
       CodeEs(p, name); CodeEs(p,"_eps="); CodeEs(p,"pyeps.");
-      CodeEs(p,storefunc);CodeEs(p,"(pylib,")
-      CodeEs(p,name); CodeEs(p, ")"); CodeEs(p,"\n") 
+      CodeEs(p,storefunc);CodeEs(p,"("); CodeEs(p,name); CodeEs(p, ")"); 
+      CodeEs(p,"\n") 
+      
 
   # Loop through the table and create the eps function call
   tp=tbl
@@ -3616,9 +3622,9 @@ def int CodeFdefwrapperpy(struct tree p) :
       rank = SymGetrank(tp)
       getfunc=CodeGetfunc(type,rank)
       CodeEind(p)
-      CodeEs(p,"pyeps."); 
-      CodeEs(p,getfunc);CodeEs(p,"(pylib,")
-      CodeEs(p,name);CodeEs(p,"_eps,");CodeEs(p,name); CodeEs(p,")\n") 
+      CodeEs(p,name); CodeEs(p,"=")
+      CodeEs(p,"pyeps."); CodeEs(p,getfunc);CodeEs(p,"("); 
+      CodeEs(p,name);CodeEs(p,"_eps");CodeEs(p,")\n") 
       
   CodePyreturn(functionode)
   CodeEind(p); CodeEs(p,"return rval\n")
