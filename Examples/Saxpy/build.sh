@@ -2,8 +2,6 @@
 # Script to build saxpy
 #
 
-#./clean.sh
-
 ec  saxpy.e
 ec  tsaxpy.e
 el  -o tsaxpycpu tsaxpy.o saxpy.o

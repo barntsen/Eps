@@ -18,7 +18,7 @@ for arg in sys.argv[1:] :
   args = args+arg
 
 if(pyflag == True) :
-  cmdline ="gcc "+args+"$EPS/Lib/libecpu.o $EPS/Lib/runcpu.o $EPS/Lib/pyeps.o $EPS/Lib/pyepsccpu.o" 
+  cmdline ="gcc "+args+"$EPS/Lib/libecpu.o $EPS/Lib/runcpu.o $EPS/Lib/pyeps.o $EPS/Lib/pyepsc.o" 
 else :
   cmdline ="gcc "+args+"$EPS/Lib/libecpu.o $EPS/Lib/runcpu.o " 
 

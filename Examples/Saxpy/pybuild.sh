@@ -3,7 +3,7 @@
 #
  
 # single core cpu
-ec -d -z -saxpy.e
+ec -d -z saxpy.e
 el -shared -o  pylibcpu.so saxpy.o
 
 # multicore core cpu

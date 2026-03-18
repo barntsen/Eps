@@ -59,6 +59,7 @@ nctempfloat2 *Desc2df(int nx, int ny, float *data)
   nctempfloat2 *descr;
   descr=(nctempfloat2 *)RunMalloc(sizeof(nctempfloat2));
   descr->d[0]=nx;
+  descr->d[1]=ny;
   descr->a=data;
 
   return(descr);

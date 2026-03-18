@@ -21,10 +21,11 @@ def int Main(struct MainArg [*] MainArgs):
     x[i]=1.0
     y[i]=1.0
 
-  niter=10000
+  niter=1000
 
   t0=LibeClock()
-  runsaxpy(a,x,y,z,niter)
+  for i in range(0,niter) :
+    saxpy(a,x,y,z)
   t=LibeClock()
 
   LibePs("Time for saxpy:"); LibePf(t-t0); 

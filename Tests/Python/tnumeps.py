@@ -13,7 +13,7 @@ if len(sys.argv) == 1 :
   exit()
 
 if sys.argv[1] == "cpu" :
-  pyeps.setup("/home/barn/Dropbox/Src/Eps/Tests/Python/pylibcpu.so")
+  pyeps.setup("/home/barn/Dropbox/Src/Eps/Tests/Python/pylib.so")
 elif sys.argv[1] == "cuda" :
   pyeps.setup("/home/barn/Dropbox/Src/Eps/Tests/Python/pylibcuda.so")
 else:
@@ -46,13 +46,14 @@ pylib.int2d(arr_eps)
 arr = pyeps.num2di(arr_eps)
 print(arr)
 
-exit()
-
 print("*** Test 3: 1d float arrays (result: 2...2)", "(", sys.argv[1], ")")
 n=4
 arr = pyeps.Fzeros((n,))
-arr[:]=1.0
+arr[:]=1
+print(arr)
 arr_eps=pyeps.eps1df(arr)
+pylib.float1d.argtypes=[c_void_p]
+pylib.float1d.restype=c_int
 pylib.float1d(arr_eps)
 arr = pyeps.num1df(arr_eps)
 print(arr)
@@ -61,8 +62,12 @@ print("*** Test 4: 2d float arrays (result: 2...2)", "(", sys.argv[1], ")")
 n=4
 arr = pyeps.Fzeros((n,n))
 arr[:,:]=1.0
+print(arr)
 arr_eps=pyeps.eps2df(arr)
+pylib.float2d.argtypes=[c_void_p]
+pylib.float2d.restype=c_int
 pylib.float2d(arr_eps)
 arr = pyeps.num2df(arr_eps)
 print(arr)
+exit()
 

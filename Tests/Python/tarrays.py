@@ -12,7 +12,7 @@ if len(sys.argv) <2 :
 
 arch=sys.argv[1]
 if arch      == "cpu" :
-  libpath="/home/barn/Dropbox/Src/Eps/Tests/Python/pylibcpu.so"
+  libpath="/home/barn/Dropbox/Src/Eps/Tests/Python/pylib.so"
 elif arch == "omp" :
   libpath="/home/barn/Dropbox/Src/Eps/Tests/Python/pylibomp.so"
 elif arch == "cuda" :
@@ -27,56 +27,28 @@ print("Test 1: 1d int array (result: all ones)")
 n=2000000
 a = pyeps.Izeros((n,))
 a[:]=0
-print(a)
 int1d(a)
 print(a)
 
-exit()
-
-print("Test 2: 1d int array return value (result: all ones)")
-n=4
-a = pyeps.Izeros((n,))
-b=int1da(a)
-print(b)
-
-print("Test 3: 2d int array (result: all ones)")
+print("Test 2: 2d int array (result: all ones)")
 n=4
 a = pyeps.Izeros((n,n))
 int2d(a)
 print(a)
 
-print("Test 4: 2d int array return value (result: all ones)")
-n=4
-a = pyeps.Izeros((n,n))
-b=int2da(a)
-print(b)
-
-
-print("Test 5: 1d float array (result: all ones)")
+print("Test 3: 1d float array (result: all ones)")
 n=4
 a = pyeps.Fzeros((n,))
 a[:]=0
 float1d(a)
 print(a)
 
-print("Test 6: 1d float array return value (result: all ones)")
-n=4
-a = pyeps.Fzeros((n,))
-a[:] = 0
-b=float1da(a)
-print(b)
-
-print("Test 7: 2d float array (result: all ones)")
+print("Test 4: 2d float array (result: all ones)")
 n=4
 a = pyeps.Fzeros((n,n))
+a[:]=0
 float2d(a)
 print(a)
-
-print("Test 8: 2d float array return value (result: all ones)")
-n=4
-a = pyeps.Fzeros((n,n))
-b=float2da(a)
-print(b)
 
 
 

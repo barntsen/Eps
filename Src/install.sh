@@ -8,7 +8,7 @@ cp runcpu.o     ../Lib
 cp libecuda.o   ../Lib
 cp runcuda.o    ../Lib
 cp pyeps.o      ../Lib
-cp pyepsccpu.o  ../Lib
+cp pyepsc.o     ../Lib
 cp pyepsccuda.o ../Lib
 cp pyepscuda.o  ../Lib
 cp version.txt  ../Lib
