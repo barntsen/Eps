@@ -29,14 +29,15 @@ gcc -L. -o ec1 main.o code.o scanpath.o scan.o sem.o parse.o sym.o ptree.o err.o
 mv libe.o libecpu.o
 ec -x cuda libe.e
 mv libe.o libecuda.o
-cp pyepsc.e pyepsc.c
-gcc -c -fPIC pyepsc.c
-rm pyepsc.c
 cp pyeps.e pyepscuda.e
 ec -x cuda pyepscuda.e
+cp pyeps.e pyepscudaum.e
+ec -x cuda pyepscudaum.e
 rm pyepscuda.e
 cp runcuda.e runcuda.cpp
 nvcc --compiler-options -fPIC -c -x cu runcuda.cpp
+cp runcudaum.e runcudaum.cpp
+nvcc --compiler-options -fPIC -c -x cu runcudaum.cpp
 cp pyepsccuda.e pyepsccuda.cpp
 nvcc --compiler-options -fPIC -c -x cu pyepsccuda.cpp
 rm -rf *.c *.cpp

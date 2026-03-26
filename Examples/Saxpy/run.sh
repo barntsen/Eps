@@ -11,8 +11,11 @@ export NBLOCKS=4096
 
 echo "=== Saxpy eps code     ==="
 ./tsaxpycpu cpu
-#./tsaxpyomp
-./tsaxpycuda cuda
+export OMP_TARGET_OFFLOAD=MANDATORY
+./tsaxpyomp omp
+#./tsaxpycuda cuda
+
+exit
 
 echo "=== Saxpy python code ==="
 python3 tsaxpy.py cpu

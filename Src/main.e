@@ -131,6 +131,10 @@ def char [*] MainFout(char [*] infile, int arch):
     outfile[l-2] = cast(char,'c') 
     outfile[l-1] = cast(char,'p') 
     outfile[l-0] = cast(char,'p') 
+  else if(arch == GOMP):
+    outfile=new(char [l]) 
+    LibeStrcpy(infile,outfile) 
+    outfile[l-2] = cast(char,'c') 
   else:
    MainError("Unknow architecture\n") 
      
@@ -184,6 +188,64 @@ def int MainCcompcpu(char [*] file, int debug, int optimize, int openmp, int sho
   char [*] cmd          # Command line for compiling
                         # input file name
   cmd = "gcc -c -ffast-math -fPIC" 
+
+  if(debug == OK):
+    cmd=LibeStradd(cmd," -g ") 
+
+  if(optimize == OK):
+    cmd=LibeStradd(cmd," -O3 ") 
+  else :
+    cmd=LibeStradd(cmd," -O2 ") 
+    
+
+  if(openmp == OK):
+    cmd=LibeStradd(cmd," -fopenmp ") 
+      
+  cmd=LibeStradd(cmd,file)
+
+  tmp=cmd
+  cmd=LibeStradd(tmp,"\n")
+  delete(tmp)
+
+  if(show == OK):
+    LibePuts(stderr,cmd) 
+    LibeFlush(stderr) 
+      
+  LibeSystem(cmd) 
+
+  cmd = LibeStradd("rm ",file) 
+
+  tmp=cmd
+  cmd = LibeStradd(cmd,"\n") 
+  delete(tmp)
+
+  if(show == OK):
+    LibePuts(stderr,cmd) 
+    LibeFlush(stderr) 
+      
+  LibeSystem(cmd) 
+  delete(cmd) 
+  return(OK) 
+    
+def int MainCcompgomp(char [*] file, int debug, int optimize, int openmp, int show):
+
+  # MainCcompcpu invokes the gccc-compiler to generate object code for gpu
+  #
+  # Parameters:
+  #   file    : Output c/c++ file name.
+  #   debug   :  = 1 Generate debug info 
+  #   optimize : = 1 Turn on optimization
+  #   openmp   : = 1 Generate OpenMp code
+  #   show     : = 1 Show command line
+  #   
+  # Returns : 
+  #   OK
+  
+
+  char [*] tmp          # String temporary 
+  char [*] cmd          # Command line for compiling
+                        # input file name
+  cmd = "nvc -c -fast -mp=gpu -gpu=managed "
 
   if(debug == OK):
     cmd=LibeStradd(cmd," -g ") 
@@ -450,6 +512,10 @@ def int Main(struct MainArg [*] MainArgs) :
           CodeSetarch(CPU)
         else if(LibeStrcmp(MainArgs[i+1].arg,"cuda")==OK): 
           CodeSetarch(CUDA)
+        else if(LibeStrcmp(MainArgs[i+1].arg,"gomp")==OK): 
+          LibePs("Not implemented\n")
+          LibeExit()
+          LibePi(CodeGetarch()); LibePs("\n")
         else :
           MainError("Illegal option value\n")
       else :
@@ -559,6 +625,9 @@ def int Main(struct MainArg [*] MainArgs) :
         
     else if(CodeGetarch()==CUDA):
       MainCcompcuda(outfile,debug,optimize,openmp,show,dev) 
+      
+    else if(CodeGetarch()==GOMP):
+      MainCcompgomp(outfile,debug,optimize,openmp,show) 
       
     else if(CodeGetarch()==HIP):
       MainCcomphip(outfile,debug,optimize,openmp,show) 

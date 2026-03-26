@@ -2543,7 +2543,9 @@ def int CodeParallelfor(struct tree p , int level, int rank) :
   rrp=PtreeMvsister(rp);        # Find 
   cond=CodeExpr(rrp);           # Get 
   if(level == rank):
-    CodeEs(p, "\n #pragma omp parallel for\n");  # Emit OMP pragma
+    #CodeEs(p, "\n #pragma omp parallel for\n");  # Emit OMP pragma
+    CodeEs(p, "\n #pragma omp target teams distribute parallel for\n");  
+    # Emit OMP pragma
 
   CodeEs(rp,"for(");            # Emit inital part of for 
   CodeEs(rp,index);             # Emit index variable
@@ -2555,14 +2557,13 @@ def int CodeParallelfor(struct tree p , int level, int rank) :
   CodeEs(p,cond);
   CodeEs(rp,";");                    # End of second part of slice  
   if((rp=PtreeMvsister(rp))!= NULL): # Emit increment expression    
-    CodeEs(rp,index); CodeEs(rp,"=");    
-    CodeEs(rp,index); CodeEs(rp,"+"); 
-    CodeExpr(rp); 
-
+    CodeEs(rp,index); CodeEs(rp,"++");    
+    #CodeEs(rp,index); CodeEs(rp,"+"); 
+    #CodeExpr(rp); 
   else:
-    CodeEs(rp,index); CodeEs(rp,"=");    
-    CodeEs(rp,index); CodeEs(rp,"+"); 
-    CodeEs(rp,"1");
+    CodeEs(rp,index); CodeEs(rp,"++");    
+    #CodeEs(rp,index); CodeEs(rp,"+"); 
+    #CodeEs(rp,"1");
 
   CodeEs(rp,"){");
 
@@ -3054,7 +3055,7 @@ def int CodeParallelstmntgpu(struct tree p) :
       CodeEs(p,"("); CodeEs(p,pno); CodeEs(p,"/") 
       CodeEs(p,"("); CodeEs(p,qk); CodeEs(p,")") 
       CodeEs(p,")"); CodeEs(p,"%"); CodeEs(p,m[l].s) 
-      CodeEs(p,"+"); CodeEs(p,nl[l].s);
+      CodeEs(p,"+"); CodeEs(p,nl[l].s)
       delete(nl[l].s)
       CodeEs(p,";\n")
     
@@ -3081,7 +3082,7 @@ def int CodeParallelstmnt(struct tree p):
   # CodeParallelstmnt generates code for the parallel
   # statement
 
-  if(CodeGetarch() == CPU):
+  if((CodeGetarch() == CPU) || (CodeGetarch()==GOMP)):
     CodeParallelstmntcpu(p);
 
   else if(CodeGetarch() == CUDA):
@@ -3634,7 +3635,7 @@ def int CodeFdef(struct tree p):
 
   #CodeFdef generates code for a function.
 
-  if(CodeGetarch() == CPU):
+  if((CodeGetarch() == CPU) || (CodeGetarch()==GOMP)):
     CodeFdefcpu(p) 
     if(CodeGetpython() == OK):
       CodeFdefwrapperpy(p) 
@@ -3966,7 +3967,7 @@ def int CodePreamble():
 
   # CodePreamble() emits declarations needed for each compilation unit
 
-  if (CodeGetarch() == CPU):
+  if ((CodeGetarch() == CPU) || (CodeGetarch() == GOMP)):
     CodePreamblecpu();
     return(OK);
   else if(CodeGetarch() == CUDA):

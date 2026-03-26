@@ -16,7 +16,7 @@
 #   extdecl = 
 #       import 
 #     | fdef
-#     | type   idseq (SEMICOLON | NL) | (COLON IND structdeclar) 
+#     | type ID  [idseq] (SEMICOLON | NL) | (COLON IND structdeclar) 
 #     | ID ASSIGN RCONSTANT|SCONSTANT|ICONSTANT (SEMICOLON|NL)
 #
 #   import = IMPORT ID NL
@@ -99,7 +99,7 @@
 #      | IM '(' expr ')'
 #      | RE '(' expr ')'
 #
-#    ident =  ID  [ '['exprlist ']' ] ['.' ident] 
+#    ident =  [module '.'] ID  [ '['exprlist ']' ] ['.' ident] 
 
 import libe     # Library interface              
 import ptree    # Parse Tree routines interface  

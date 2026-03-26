@@ -17,6 +17,7 @@ const FBITS   = 8
 const CPU     = 1 
 const CUDA    = 2 
 const HIP     = 3 
+const GOMP    = 4 
 const ARCH    = 1 
 
 const NB      = 1024 
