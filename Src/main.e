@@ -296,7 +296,7 @@ def int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int sh
   #int l                 # Temp varibale to hold string length of 
                         # input file name
   l=len(file,0) 
-  cmd= "nvcc  -use_fast_math --compiler-options -O2 --compiler-options -fPIC"
+  cmd= "nvcc  -D__Float32x4_t=float32x4_t -use_fast_math --compiler-options -O2 --compiler-options -fPIC"
 
   if(LibeStrcmp(dev,"none") !=OK):
     cmd= LibeStradd(cmd," -arch ") 
@@ -513,9 +513,7 @@ def int Main(struct MainArg [*] MainArgs) :
         else if(LibeStrcmp(MainArgs[i+1].arg,"cuda")==OK): 
           CodeSetarch(CUDA)
         else if(LibeStrcmp(MainArgs[i+1].arg,"gomp")==OK): 
-          LibePs("Not implemented\n")
-          LibeExit()
-          LibePi(CodeGetarch()); LibePs("\n")
+          CodeSetarch(GOMP) 
         else :
           MainError("Illegal option value\n")
       else :

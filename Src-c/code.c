@@ -1,4 +1,4 @@
-//  Translated by epsc  version: Thu Mar 26 16:05:47 2026
+//  Translated by epsc  version: Fri Apr 24 15:59:15 2026
 
 #include <stddef.h>
 #include <stdio.h>
@@ -10833,7 +10833,7 @@ int nctemp15045= 1;
 int nctemp15047=PtreeSetline(nctemp15043,nctemp15045);
 struct tree* nctemp15049= p;
 struct nctempchar1 *nctemp15053;
-static struct nctempchar1 nctemp15054 = {{ 50}, (char*)"//  Translated by epsc  version December 2021  \n\0"};
+static struct nctempchar1 nctemp15054 = {{ 24}, (char*)"//  Translated by eps\n\0"};
 nctemp15053=&nctemp15054;
 nctempchar1* nctemp15051= nctemp15053;
 int nctemp15055=CodeEs(nctemp15049,nctemp15051);

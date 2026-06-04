@@ -666,7 +666,6 @@ def int CodeFdeclkernel(struct tree p) :
   return(OK);
 
 
-
 def int CodeFdefgpu(struct tree p) :
 
   # CodeFdefgpu generates code for gpu global functions.
@@ -3767,7 +3766,7 @@ def int CodePreamblecuda() :
   p = PtreeMknode("dummy", "dummy");
 
   PtreeSetline(p,1);
-  CodeEs(p, "//  Translated by epsc  version December 2021  \n");
+  CodeEs(p, "//  Translated by eps\n");
   PtreeSetline(p,2);
   PtreeSetline(p,3);
 
