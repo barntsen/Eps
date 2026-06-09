@@ -1456,7 +1456,7 @@ def int SemWhilestmnt(struct tree p) :
   SemExpr(p);
   PtreeSetopexpr(p,OK);
   p = PtreeMvsister(p);
-  SemStmnt(p);
+  SemCompstmnt(p);
   SemCopyparallel(q,p);
   return(OK);
  
@@ -1481,7 +1481,7 @@ def int SemForstmnt(struct tree p) :
   SemSetsimple(OK)
   SemExpr(p);
   p = PtreeMvsister(p);
-  SemStmnt(p);
+  SemCompstmnt(p);
   SemCopyparallel(q,p);
   return(OK);
  
@@ -1512,7 +1512,7 @@ def int SemParallelstmnt(struct tree p) :
   PtreeSetrank(p,rank);
   sp = PtreeMvchild(p);
   sp = PtreeMvsister(sp);
-  SemStmnt(sp);
+  SemCompstmnt(sp);
   return(OK);
  
 def int SemIfstmnt(struct tree p) :
@@ -1526,7 +1526,7 @@ def int SemIfstmnt(struct tree p) :
   SemExpr(p);
   PtreeSetopexpr(p,OK);
   p = PtreeMvsister(p);
-  SemStmnt(p);
+  SemCompstmnt(p);
   SemCopyparallel(q,p);
   if((p = PtreeMvsister(p)) != NULL):
     if(LibeStrcmp(PtreeGetname(p), "else")):
@@ -1567,9 +1567,9 @@ def int SemStmnt(struct tree p) :
   parflag=ERR;
   q = p; # Save top node  
 
-  if(LibeStrcmp(PtreeGetname(p), "declarations")):
-    SemDeclarations(p, SymGetltp());
-    p = PtreeMvsister(p);
+# if(LibeStrcmp(PtreeGetname(p), "declarations")):
+#   SemDeclarations(p, SymGetltp());
+#   p = PtreeMvsister(p);
  
   while(p != NULL):
     if(LibeStrcmp(PtreeGetname(p), "expr")):
@@ -1577,9 +1577,6 @@ def int SemStmnt(struct tree p) :
       SemSetsimple(OK)
       SemExpr(p);
       PtreeSetopexpr(p,OK);
- 
-    if(LibeStrcmp(PtreeGetname(p), "compstmnt")):
-      SemCompstmnt(p);
  
     if(LibeStrcmp(PtreeGetname(p), "while")):
       SemWhilestmnt(p);
@@ -1620,28 +1617,9 @@ def int SemCompstmnt(struct tree p) :
   if(LibeStrcmp(PtreeGetname(p), "declarations")):
     SemDeclarations(PtreeMvchild(p), SymGetltp());
     p = PtreeMvsister(p);
+
+  SemStmnt(p)
  
-  while(p != NULL):
-    if(LibeStrcmp(PtreeGetname(p), "expr")):
-      PtreeSetopexpr(p,OK);
-      SemSetsimple(OK)
-      SemExpr(p);
-    if(LibeStrcmp(PtreeGetname(p), "while")):
-      SemWhilestmnt(p);
-    if(LibeStrcmp(PtreeGetname(p), "for")):
-      SemForstmnt(p);
-    if(LibeStrcmp(PtreeGetname(p), "parallel")):
-      SemParallelstmnt(p);
-      PtreeSetparallel(p,"parallel");
-    if(LibeStrcmp(PtreeGetname(p), "if")):
-      SemIfstmnt(p);
-    if(LibeStrcmp(PtreeGetname(p), "return")):
-      SemReturnstmnt(p);
-    if(LibeStrcmp(PtreeGetparallel(p),"parallel")):
-      parflag=OK;
- 
-    p = PtreeMvsister(p);
-  
   if(parflag == OK):
     PtreeSetparallel(q,"parallel"); 
   return(OK);
