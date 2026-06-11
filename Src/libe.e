@@ -351,7 +351,9 @@ def float LibeFscale(float x, int n) :
     n = -n 
     for(i=0; i<n; i=i+1):
       rval = rval*0.1 
-  return(rval*x) 
+
+  rval=rval*x
+  return(rval) 
  
 def int LibeGetfman(float f, int maxdig) :
 
@@ -376,7 +378,8 @@ def int LibeGetfman(float f, int maxdig) :
 
   # Record sign  
 
-  if(f==0.0) return(0) 
+  if(f==0.0): 
+    return(0) 
 
   sign=1 
   if(f< 0.0):  
@@ -402,7 +405,8 @@ def int LibeGetfman(float f, int maxdig) :
     f=f*10.0 
  
   n=cast(int,f+0.5) 
-  if(sign <0) n=-n 
+  if(sign <0): 
+    n=-n 
   return(n) 
  
 def float LibeGetffman(float f) :
@@ -426,7 +430,8 @@ def float LibeGetffman(float f) :
 
   # Record sign  
 
-  if(f==0.0) return(0.0) 
+  if(f==0.0): 
+    return(0.0) 
 
   sign=1 
   if(f< 0.0):  
@@ -466,7 +471,8 @@ def int LibeGetmaxdig(float f) :
 
   # Record sign  
 
-  if(f==0.0) return(0) 
+  if(f==0.0): 
+    return(0) 
 
   sign=1 
   if(f< 0.0):  
@@ -497,7 +503,8 @@ def int LibeGetmaxdig(float f) :
     else:
       f=f*10.0 
     i=i+1  
-    if(i >= 10)loop=0  
+    if(i >= 10):
+      loop=0  
       
   return(i) 
     
@@ -520,7 +527,8 @@ def int LibeGetfexp(float f) :
 
  # Normalize such that  1.0 < f <= 10.0  
  
-  if(f==0.0) return(0) 
+  if(f==0.0): 
+    return(0) 
 
   nexp = 0 	
   if(f <  0.0):
@@ -584,7 +592,8 @@ def int LibeMod(int n, int r) :
   #   where the division is an integer division.
   #
 
-  if(r==0) return (n) 
+  if(r==0): 
+    return (n) 
   return ( n - (n/r) * r ) 
  
 def float LibeSqrt(float x) :
@@ -605,7 +614,8 @@ def float LibeSqrt(float x) :
   const P0 = 0.41731 
   const P1 = 0.59016 
 
-  if(x==0.0) return (0.0) 
+  if(x==0.0): 
+    return (0.0) 
   if(x < 0.0): 
     LibeErrno = DOMAINERR 
     LibeErrstr = "Sqrt input argument < 0 " 
@@ -861,8 +871,10 @@ def float LibeArcsin(float x) :
   float res 
   int i 
 
-  P1=0.933935835E+0; P2=-0.504400557E+0 
-  Q0=0.560363004E+1; Q1=-0.554846723E+1 
+  P1=0.933935835E+0 
+  P2=-0.504400557E+0 
+  Q0=0.560363004E+1 
+  Q1=-0.554846723E+1 
 
   y = LibeFabs(x) 
   if( y> 0.5):
@@ -914,8 +926,10 @@ def float LibeArccos(float x) :
   float res 
   int i 
 
-  P1=0.933935835E+0; P2=-0.504400557E+0
-  Q0=0.560363004E+1; Q1=-0.554846723E+1 
+  P1=0.933935835E+0 
+  P2=-0.504400557E+0
+  Q0=0.560363004E+1
+  Q1=-0.554846723E+1 
 
   y = LibeFabs(x) 
   if( y> 0.5):
@@ -981,7 +995,9 @@ def float LibeAtan(float f) :
   rt32=0.26794919243112270647 
   rt3=1.73205080756887729353 
   a=rt3-1.0 
-  P0=-0.4708325141E+0; P1=-0.5090958253E-1; Q0=0.1412500740E+1 
+  P0=-0.4708325141E+0
+  P1=-0.5090958253E-1
+  Q0=0.1412500740E+1 
 
   if( f>1.0):
     f=1.0/f  
@@ -1162,7 +1178,8 @@ def int LibeStrcpy(char [*] s, char [*] t) :
   ls = LibeStrlen(s) 
   if(ls == 0):
     return(OK) 
-  if(len(t,0) <=ls) return(ERR) 
+  if(len(t,0) <=ls): 
+    return(ERR) 
 
   for(i=0; i<=ls; i=i+1):
     t[i] = s[i] 
@@ -1189,7 +1206,8 @@ def int LibeStrcat(char [*] s, char [*] t) :
 
   ls = LibeStrlen(s) 
   lt = LibeStrlen(t) 
-  if(len(t,0) < (lt+ls)) return(ERR) 
+  if(len(t,0) < (lt+ls)): 
+    return(ERR) 
   for(i=lt; i<ls+lt;i=i+1):
     t[i] = s[i-lt] 
  
@@ -1376,7 +1394,8 @@ def int LibeItoa(int n, char [*] s) :
   int sign    # Sign of the integer  
   int i       # Index variable       
 	
-  if(s==NULL) return (ERR) 
+  if(s==NULL): 
+    return (ERR) 
 
   if((sign = n) < 0):  # record sign  
     n = -n 
@@ -1384,14 +1403,17 @@ def int LibeItoa(int n, char [*] s) :
   i = 0 	
   s[0] = cast(char, LibeMod(n, 10)+ZERO) 
   while((n = n/10) > 0):
-    if((i+1) > (len(s,0)-1)) return(ERR) 
+    if((i+1) > (len(s,0)-1)): 
+      return(ERR) 
     s[i = i + 1] =  cast(char, LibeMod(n, 10) + ZERO)    
   
   if (sign < 0):
-    if((i+1) > (len(s,0)-1)) return(ERR) 
+    if((i+1) > (len(s,0)-1)): 
+      return(ERR) 
     s[i= i+1] = cast(char, MINUS) 
  
-  if((i+1) > (len(s,0)-1)) return(ERR) 
+  if((i+1) > (len(s,0)-1)): 
+    return(ERR) 
   s[i= i+1] = cast(char, EOS) 
   LibeStrev(s) 
 
@@ -1417,7 +1439,7 @@ def int LibeItoh(int n, char [*] s) :
 
   int i, sign 
 	
-  if((sign = n) < 0): # record sign  
+  if((sign = n) < 0): 
     n = -n 
 
   i = 0 	
@@ -1466,7 +1488,8 @@ def float LibeAtof(char [*] s) :
   while(s[i] == cast(char, ' ')):
     i = i + 1 
   if((s[i] == cast(char,'+'))||(s[i] == cast(char,'-'))):
-    if(s[i] == cast(char,'-')) sign = -1 
+    if(s[i] == cast(char,'-')) :
+      sign = -1 
     i = i + 1 
  
   while(LibeIsdigit(cast(int,s[i]))):
@@ -1483,7 +1506,8 @@ def float LibeAtof(char [*] s) :
   if((s[i] == cast(char,'e'))||(s[i] == cast(char,'E'))):
     i = i + 1 
     if((s[i] == cast(char,'+'))||(s[i] == cast(char,'-'))):
-      if(s[i] == cast(char,'-')) esign = -1 
+      if(s[i] == cast(char,'-')): 
+        esign = -1 
       i = i + 1 
  
     while(LibeIsdigit(cast(int,s[i]))):    
@@ -1522,7 +1546,8 @@ def int LibeFtoaf(int mant, int nexp, int nfield, int nfrac, char [*] s) :
     return(ERR) 
 
   l = nexp+1+1+nfrac 
-  if(sign < 0) l=l+1 
+  if(sign < 0): 
+    l=l+1 
 
   if(nfield < l):
     for(i=0; i<nfield; i=i+1):
@@ -1565,15 +1590,12 @@ def int LibeFtoaf(int mant, int nexp, int nfield, int nfrac, char [*] s) :
     if(sign == -1):
       s[tp] = cast(char,'-') 
       tp = tp+1 
- 
     s[tp] = cast(char,'0') 
     s[tp+1] = cast(char,'.') 
     for(i=0; i< nexp-1; i=i+1):
       s[i+tp+2] = cast(char,'0') 
- 
     for(i=0; i<nfrac-nexp+1; i=i+1):
       s[tp+2+i+nexp-1] = t[i] 
- 
     s[tp+2+nfrac] = cast(char,EOS) 
       
   return(OK) 
@@ -1617,7 +1639,8 @@ def int LibeFtoae(int mant, int nexp, int nfield, int nfrac, char [*] s) :
   t = new(char[len(s,0)]) 
 
   l = 1+1+nfrac+1+1+2+1   
-  if(sign < 0) l=l+1 
+  if(sign < 0): 
+    l=l+1 
    
   if(nfield < l):
     for(i=0; i<nfield; i=i+1):
@@ -2353,7 +2376,8 @@ def int LibePutc(int fp, int c) :
 
   int rval 
 
-  if(LibeFarr[fp].cnt == 0) LibeFlushbuff(fp)     
+  if(LibeFarr[fp].cnt == 0): 
+    LibeFlushbuff(fp)     
  
   if(LibeFarr[fp].cnt == LibeFarr[fp].bufsize):
     rval = LibeFlushbuff(fp) 
@@ -2741,15 +2765,20 @@ def int LibeArrayex(int line, char [*] name, int ival, int index, int bound) :
   # The definition of input parameters is obvious.
 
   LibePuts(stderr,"Array index out of bond at line no: ") 
-  LibePuti(stderr,line); LibePuts(stderr,"\n") 
+  LibePuti(stderr,line)
+  LibePuts(stderr,"\n") 
   LibePuts(stderr,"Array name: ") 
-  LibePuts(stderr, name); LibePuts(stderr,"\n") 
+  LibePuts(stderr, name)
+  LibePuts(stderr,"\n") 
   LibePuts(stderr,"Index no: ") 
-  LibePuti(stderr,index); LibePuts(stderr,"\n") 
+  LibePuti(stderr,index)
+  LibePuts(stderr,"\n") 
   LibePuts(stderr,"Index value: ") 
-  LibePuti(stderr,ival); LibePuts(stderr,"\n") 
+  LibePuti(stderr,ival)
+  LibePuts(stderr,"\n") 
   LibePuts(stderr,"Index bound: 0-") 
-  LibePuti(stderr,bound-1); LibePuts(stderr,"\n") 
+  LibePuti(stderr,bound-1)
+  LibePuts(stderr,"\n") 
   LibeFlush(stderr) 
 
   RunExit()   # Routine defined in the run module.  

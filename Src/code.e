@@ -1107,7 +1107,7 @@ def int CodeArrayex(int line, char [*] qual, char [*] sel, \
   # 
   #   line:  Line no
   #   qual:  Struct name
-  #   sel :  Struct member
+  #   sel :  "->" or "."
   #   name:  Array name 
   #   ival:  Index value
   #   index: rank (0,1,..)
@@ -1125,7 +1125,7 @@ def int CodeArrayex(int line, char [*] qual, char [*] sel, \
 
   qname = name
   if(qual != NULL) :
-    tmp   = LibeStradd(qual,"->") 
+    tmp   = LibeStradd(qual,sel) 
     qname = LibeStradd(tmp,name)
     delete(tmp)
 
@@ -2450,7 +2450,7 @@ def int CodeSforstmnt(struct tree p):
   CodeSexpr(p);
   CodeEs(p,")");
   p = PtreeMvsister(p);
-  CodeStmnt(p);
+  CodeCompstmnt(p);
   return(OK);
 
 
@@ -2476,7 +2476,7 @@ def int CodeWhilestmnt(struct tree p) :
   CodeEs(p, ")\n");
   CodeEs(p, "{");
   p = PtreeMvsister(p);
-  CodeStmnt(p);
+  CodeCompstmnt(p);
   cond2=CodeExpr(sp);
   CodeEs(p,tmp);
   CodeEs(p,"=" );
@@ -2505,7 +2505,7 @@ def int CodeForstmnt(struct tree p) :
   p = PtreeMvsister(p);
   sp = p;
   p = PtreeMvsister(p);
-  CodeStmnt(p);
+  CodeCompstmnt(p);
   CodeExpr(sp);
   tmp = CodeExpr(np);
   CodeEs(p,cond);
@@ -2586,7 +2586,7 @@ def int CodeParallelstmntcpu(struct tree p):
   # Emit body of loop
   sp = PtreeMvchild(sp);
   sp = PtreeMvsister(sp);
-  CodeStmnt(sp); 
+  CodeCompstmnt(sp); 
   for(i=0;i<rank;i=i+1):
     CodeEs(sp,"}");
 
@@ -3105,13 +3105,13 @@ def int CodeIfstmnt(struct tree p) :
   CodeEs(p, cond); 
   CodeEs(p, ")\n");
   p = PtreeMvsister(p);
-  CodeStmnt(p);
+  CodeCompstmnt(p);
 
   if((p = PtreeMvsister(p)) != NULL):
     if(LibeStrcmp(PtreeGetname(p), "else") == OK):
       p = PtreeMvchild(p);
       CodeEs(p, "else"); 
-      CodeStmnt(p);
+      CodeCompstmnt(p);
 
   return(OK);
  
@@ -3157,53 +3157,7 @@ def int CodeCompstmnt(struct tree p) :
   if(LibeStrcmp(PtreeGetname(p), "declarations") == OK):
     p = PtreeMvsister(p);
 
-  #Main loop over all statements in this compound statement    
-
-  while(p != NULL):
-
-  #  Emit expression or "while" or "for" or "if" or "return"
-  #  statements    
-   
-    if(LibeStrcmp(PtreeGetname(p),"expr") == OK):
-      if(CodeGetbreak() == OK):
-        CodeExpr(p);
-      else :
-        if(PtreeGetsimple(p)== OK):
-          CodeSexpr(p);
-          CodeEs(p,";\n")
-        else :
-          CodeExpr(p);
-
-    if(LibeStrcmp(PtreeGetname(p),"while") == OK):
-        CodeWhilestmnt(p);
-
-    if(LibeStrcmp(PtreeGetname(p),"for") == OK):
-      #q=PtreeMvchild(p);
-      #PtreeMvsister(q);
-      #CodeForstmnt(p);
-
-      q=PtreeMvchild(p);
-      r=PtreeMvsister(q);
-      if(PtreeGetsimple(q) && PtreeGetsimple(r) && \
-        PtreeGetsimple(PtreeMvsister(r))):
-        CodeSforstmnt(p);
-      else:
-        PtreeSetsimple(q,ERR);
-        PtreeSetsimple(r,ERR);
-        PtreeSetsimple(PtreeMvsister(r),ERR);
-        CodeForstmnt(p);
-
-    if(LibeStrcmp(PtreeGetname(p),"parallel") == OK):
-        CodeParallelstmnt(p);
-
-    if(LibeStrcmp(PtreeGetname(p),"if") == OK):
-        CodeIfstmnt(p);
-
-    if(LibeStrcmp(PtreeGetname(p),"return") == OK):
-        CodeReturnstmnt(p);
-
-    p = PtreeMvsister(p);
-  
+  CodeStmnt(p)
 
   # Emit trailing right brace  
 
@@ -3225,11 +3179,11 @@ def int CodeStmnt(struct tree p) :
 
   # Emit declarations        
 
-  if(LibeStrcmp(PtreeGetname(p),"compstmnt")==OK):
-    p = PtreeMvchild(p);    
-    CodeDeclarations(p,SymGetltp());
-    if(LibeStrcmp(PtreeGetname(p), "declarations") == OK):
-      p = PtreeMvsister(p);
+# if(LibeStrcmp(PtreeGetname(p),"compstmnt")==OK):
+#   p = PtreeMvchild(p);    
+#   CodeDeclarations(p,SymGetltp());
+#   if(LibeStrcmp(PtreeGetname(p), "declarations") == OK):
+#     p = PtreeMvsister(p);
 
   #Main loop over all statements in this compound statement    
 

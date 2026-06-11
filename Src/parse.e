@@ -57,12 +57,13 @@
 #      |return NL
 #      |expr NL
 #
-#   ifstmnt        = IF '(' expr')' stmnt elsestmnt
-#   elsestmnt      = ELSE stmnt 
-#   whilestmnt     = WHILE '(' expr')' stmnt 
-#   forstmnt       = FOR '(' expr ';' expr ';' expr')' stmnt 
-#   forinstmnt     = FOR IN RANGE(expr1,expr) stmnt
-#   parallelstmnt  = PARALLEL '('  sliceseq ')' stmnt 
+#   ifstmnt        = IF '(' expr')' compstmnt [elif] [elsestmnt]
+#   elif           = ELSE ifstmnt
+#   elsestmnt      = ELSE compstmnt 
+#   whilestmnt     = WHILE '(' expr')' compstmnt 
+#   forstmnt       = FOR '(' expr ';' expr ';' expr')' compstmnt 
+#   forinstmnt     = FOR IN RANGE(expr1,expr) compstmnt
+#   parallelstmnt  = PARALLEL '('  sliceseq ')' compstmnt 
 #   sliceseq       = slice [, sliceseq]
 #   slice          = expr ':' expr [':' expr ] 
 #   returnstmnt    = RETURN  expr
@@ -132,6 +133,9 @@ def struct tree ParseStmnt() :
   pass
 
 def struct tree ParseElsestmnt() : 
+  pass
+
+def struct tree ParseIfstmnt() : 
   pass
 
 def struct tree ParseCompstmnt() : 
@@ -288,12 +292,41 @@ def int ParseIdseq(struct tree p) :
 
 def int ParseConstdecl(struct tree p) :
 
-  struct tree np;
+  # Parse constant declaration
+  #
+  # Parameters:
+  #   p: Tree identifier node
+  #
+  # Returns: 
+  #  OK
+  #  The constant node is added as a child to node p.
+  #
 
-  np=ParseExpr();
+  char [*] sign
+  sign=NULL
+
+  if(lookahead == MINUS):
+    ParseMatch(MINUS)
+    sign="-"
+
+  tmp=ScanGetext()
+  if(sign != NULL):
+    value=LibeStradd(sign,tmp)
+  else :
+    value=tmp
+
+  if(lookahead==ICONST):
+    np=ParseMknode("iconstant",value)
+  else if(lookahead==RCONST):
+    np=ParseMknode("rconstant",value)
+  else if(lookahead==SCONST):
+    np=ParseMknode("sconstant",value)
   if(np != NULL):
-   PtreeAddchild(p,np);
-  return(OK);
+    PtreeAddchild(p,np)
+
+  ParseMatch(lookahead)
+  return(OK)
+
 
 def struct tree ParseType() :
 
@@ -1082,8 +1115,12 @@ def struct tree ParseElsestmnt() :
 
   struct tree np, sp;
   if(lookahead == ELSE):
-    ParseMatch(ELSE);
     np = ParseMknode("else", "void");
+    ParseMatch(ELSE)
+    if(lookahead == IF):
+      sp=ParseIfstmnt()
+      PtreeAddchild(np,sp)
+      return(np) 
     sp = ParseCompstmnt();
     PtreeAddchild(np, sp);
  
@@ -1178,7 +1215,7 @@ def struct tree ParseCompstmnt() :
       PtreeAddchild(np, sp)
     ParseMatch(DIND)
   else :
-    np = NULL;
+    ParseError("Empty code block")
   return (np);
 
 def int ParseFdef(struct tree p) :
@@ -1262,10 +1299,10 @@ def struct tree ParseExtdecl() :
 
     if(lookahead == ASSIGN): 
       ParseMatch(lookahead)
-      ParseConstdecl(np)
+      ParseConstdecl(mp)
     
     ParseMatch(NL)
-    return(np)  
+    return(p)  
 
   if(lookahead == COLON):     
     ParseMatch(lookahead)

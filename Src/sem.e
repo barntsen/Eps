@@ -237,7 +237,6 @@ def int SemDeclaration(struct tree p, struct symbol tp) :
 
       if(LibeStrcmp(PtreeGetype(p),"const")==OK):
         sp = PtreeMvchild(np);
-        sp = PtreeMvchild(sp);
         if(LibeStrcmp(PtreeGetname(sp),"unexpr")==OK):
           sp = PtreeMvchild(sp);
           l = LibeStrlen(PtreeGetdef(sp))+1+3;
