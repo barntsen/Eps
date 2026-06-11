@@ -1125,7 +1125,7 @@ def int CodeArrayex(int line, char [*] qual, char [*] sel, \
 
   qname = name
   if(qual != NULL) :
-    tmp   = LibeStradd(qual,"->") 
+    tmp   = LibeStradd(qual,sel) 
     qname = LibeStradd(tmp,name)
     delete(tmp)
 
