@@ -1527,10 +1527,12 @@ def int SemIfstmnt(struct tree p) :
   p = PtreeMvsister(p);
   SemCompstmnt(p);
   SemCopyparallel(q,p);
-  if((p = PtreeMvsister(p)) != NULL):
-    if(LibeStrcmp(PtreeGetname(p), "else")):
-      p = PtreeMvchild(p);
-      SemStmnt(p);
+  if((p=PtreeMvsister(p))==NULL):
+    return(OK)
+
+  if(LibeStrcmp(PtreeGetname(p), "else")):
+    p = PtreeMvchild(p)
+    SemCompstmnt(p)
   return(OK);
  
 def int SemReturnstmnt(struct tree p) :
@@ -1565,10 +1567,6 @@ def int SemStmnt(struct tree p) :
 
   parflag=ERR;
   q = p; # Save top node  
-
-# if(LibeStrcmp(PtreeGetname(p), "declarations")):
-#   SemDeclarations(p, SymGetltp());
-#   p = PtreeMvsister(p);
  
   while(p != NULL):
     if(LibeStrcmp(PtreeGetname(p), "expr")):

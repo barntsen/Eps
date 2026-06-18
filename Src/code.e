@@ -3051,10 +3051,17 @@ def int CodeParallelstmntgpu(struct tree p) :
       CodeEs(p,";\n")
     else :
       CodeEs(p,i[l].s); CodeEs(p, "=")
-      CodeEs(p,"("); CodeEs(p,pno); CodeEs(p,"/") 
-      CodeEs(p,"("); CodeEs(p,qk); CodeEs(p,")") 
-      CodeEs(p,")"); CodeEs(p,"%"); CodeEs(p,m[l].s) 
-      CodeEs(p,"+"); CodeEs(p,nl[l].s)
+      CodeEs(p,"(") 
+      CodeEs(p,pno)
+      CodeEs(p,"/") 
+      CodeEs(p,"(") 
+      CodeEs(p,qk)
+      CodeEs(p,")") 
+      CodeEs(p,")") 
+      CodeEs(p,"%") 
+      CodeEs(p,m[l].s) 
+      CodeEs(p,"+") 
+      CodeEs(p,nl[l].s)
       delete(nl[l].s)
       CodeEs(p,";\n")
     
@@ -3092,13 +3099,23 @@ def int CodeParallelstmnt(struct tree p):
 
   return(OK);
  
+def int CodeElifstmnts(struct tree p) :
+
+  # CodeElifstmnts generates code for
+  # elif statements
+ 
+  char [*] cond;
+  np = PtreeMvchild(p);
+  CodeEs(np, "else if"); 
+  CodeCompstmnt(p)
+  return(OK);
+ 
 
 def int CodeIfstmnt(struct tree p) :
 
   # CodeIfstmnt generates code for if statement.
  
   char [*] cond;
-
   p = PtreeMvchild(p);
   cond = CodeExpr(p);
   CodeEs(p, "if("); 
@@ -3107,11 +3124,13 @@ def int CodeIfstmnt(struct tree p) :
   p = PtreeMvsister(p);
   CodeCompstmnt(p);
 
-  if((p = PtreeMvsister(p)) != NULL):
-    if(LibeStrcmp(PtreeGetname(p), "else") == OK):
-      p = PtreeMvchild(p);
-      CodeEs(p, "else"); 
-      CodeCompstmnt(p);
+  if((p = PtreeMvsister(p)) == NULL):
+    return(OK)
+
+  if(LibeStrcmp(PtreeGetname(p), "else") == OK):
+    CodeEs(p,"else")
+    p=PtreeMvchild(p)
+    CodeCompstmnt(p)
 
   return(OK);
  
@@ -3179,11 +3198,6 @@ def int CodeStmnt(struct tree p) :
 
   # Emit declarations        
 
-# if(LibeStrcmp(PtreeGetname(p),"compstmnt")==OK):
-#   p = PtreeMvchild(p);    
-#   CodeDeclarations(p,SymGetltp());
-#   if(LibeStrcmp(PtreeGetname(p), "declarations") == OK):
-#     p = PtreeMvsister(p);
 
   #Main loop over all statements in this compound statement    
 

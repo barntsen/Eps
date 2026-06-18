@@ -27,6 +27,7 @@ const PARALLEL= 31        # The 'parallel' keyword
 const RETURN  = 30        # The 'return'  keyword   
 const IF      = 14        # The 'if'      keyword   
 const ELSE    = 15        # The 'else'    keyword   
+const ELIF    = 300
 const THEN    = 16        # The 'then'    keyword   
 const ICONST  = 17        # Integer constant token  
 const SCONST  = 18        # String  constant token  
@@ -628,6 +629,8 @@ def int ScanLex() :
       rval = IF 
     else if(LibeStrcmp(ScanText,"else")):
       rval = ELSE 
+    else if(LibeStrcmp(ScanText,"elif")):
+      rval = ELIF
     else if(LibeStrcmp(ScanText,"sizeof")):
       rval = SIZEOF 
     else if(LibeStrcmp(ScanText,"cast")):

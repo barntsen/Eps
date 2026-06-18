@@ -137,6 +137,7 @@ def int PtreePrtree(struct tree p, int level) :
     else:
       LibePuts(fp, "nonsimple") 
       LibePuts(fp," ") 
+
     if(p.topexpr==OK):
       LibePuts(fp, "topexpr")   
       LibePuts(fp," ") 
@@ -256,6 +257,7 @@ def struct tree PtreeMknode( char [*] name, char [*] defn ) :
   p.simple = EMPTY 
   p.child = NULL 
   p.sister = NULL 
+  p.topexpr = ERR
   return (p) 
  
 def int PtreeAddchild(struct tree parent, struct tree child): 

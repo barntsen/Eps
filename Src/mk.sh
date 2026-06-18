@@ -8,7 +8,7 @@ cp runcpu.e runcpu.c
 gcc -c runcpu.c
 rm runcpu.c
 
-opt="-x cpu "
+opt="-x cpu -g -C"
 
 ./ec $opt run.e
 ./ec $opt m.e

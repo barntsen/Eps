@@ -17,7 +17,8 @@
 #       import 
 #     | fdef
 #     | const 
-#     | type ID  (| [idseq]  NL) | (ASSIGN  constdecl) NL | (COLON NL IND structdeclar) 
+#     | type ID  (| [idseq]  NL) | (ASSIGN  constdecl) NL 
+#                 | (COLON NL IND structdeclar) 
 #     
 #   constdecl = RCONSTANT|SCONSTANT|ICONSTANT 
 #     
@@ -49,16 +50,15 @@
 #   stmntlist = stmnt [stmntlist]
 #
 #   stmnt  = 
-#      |ifstmnt
-#      |elsestmnt
+#      |ifstmnt 
 #      |whilestmnt
 #      |forstmnt 
 #      |parallelstmnt
 #      |return NL
 #      |expr NL
 #
-#   ifstmnt        = IF '(' expr')' compstmnt [elif] [elsestmnt]
-#   elif           = ELSE ifstmnt
+#   ifstmnt        = IF '(' expr')' compstmnt [elif] [else}
+#   elif           = ELIF compstmnt [elif]
 #   elsestmnt      = ELSE compstmnt 
 #   whilestmnt     = WHILE '(' expr')' compstmnt 
 #   forstmnt       = FOR '(' expr ';' expr ';' expr')' compstmnt 
@@ -1107,23 +1107,33 @@ def struct tree ParseParallelstmnt() :
     return(rp=NULL);
   return(rp=NULL);
  
-def struct tree ParseElsestmnt() :
+def struct tree ParseElifstmnt() :
 
-  # ParseElsestmnt parses an else statement
-  # The following part of the grammar is implemented:
-  #   elsestmnt      = ELSE stmnt
+  if(lookahead == ELIF):
+    ParseMatch(ELIF);
+    sp = ParseMknode("else", "void")
+    np = ParseMknode("compstmnt","void")
+    PtreeAddchild(sp,np)
+    rp = ParseMknode("if","void")
+    PtreeAddchild(np,rp)
+    ParseMatch(LP);
+    if((qp = ParseExpr()) != NULL):
+      PtreeAddchild(rp, qp);
+    ParseMatch(RP);
+    tp = ParseCompstmnt();
+    PtreeAddchild(rp, tp);
+  else:
+    sp = NULL;
+  return (sp);
+ 
+def struct tree ParseElsestmnt() :
 
   struct tree np, sp;
   if(lookahead == ELSE):
     np = ParseMknode("else", "void");
     ParseMatch(ELSE)
-    if(lookahead == IF):
-      sp=ParseIfstmnt()
-      PtreeAddchild(np,sp)
-      return(np) 
     sp = ParseCompstmnt();
     PtreeAddchild(np, sp);
- 
   else:
     np = NULL;
 
@@ -1131,24 +1141,28 @@ def struct tree ParseElsestmnt() :
  
 def struct tree ParseIfstmnt() :
 
-  # ParseIfstmnt parses an if statement.
-  # The following part of the grammar is implemented:
-  #  ifstmnt = IF '(' expr')' stmnt elsestmnt
-
   struct tree np, sp;
 
   if(lookahead == IF):
-    np = ParseMknode("if", "void");
-    ParseMatch(IF);
-    ParseMatch(LP);
-    if((sp = ParseExpr()) != NULL):
-      PtreeAddchild(np, sp);
+    sp = ParseMknode("if", "void")
+    ParseMatch(IF)
+    ParseMatch(LP)
+    if((np = ParseExpr()) != NULL):
+      PtreeAddchild(sp, np)
     ParseMatch(RP);
-    sp = ParseCompstmnt();
-    PtreeAddchild(np, sp);
-    if((sp = ParseElsestmnt()) != NULL):
-      PtreeAddchild(np, sp);
-    sp = np;
+    np = ParseCompstmnt()
+    PtreeAddchild(sp, np)
+
+    if(lookahead == ELIF):
+      if((qp=ParseElifstmnt()) != NULL): 
+        PtreeAddchild(sp, qp)
+    if(lookahead == ELSE):
+      np = ParseElsestmnt()
+      qp=PtreeMvchild(qp)
+      if(qp != NULL):
+        PtreeAddchild(qp, np)
+      else:
+        PtreeAddchild(sp, np)
   else:
     sp = NULL;
   return (sp);
