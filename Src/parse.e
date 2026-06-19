@@ -1122,6 +1122,14 @@ def struct tree ParseElifstmnt() :
     ParseMatch(RP);
     tp = ParseCompstmnt();
     PtreeAddchild(rp, tp);
+
+    if(lookahead == ELIF):
+      tp=ParseElifstmnt()
+      PtreeAddchild(rp, tp);
+
+    if(lookahead == ELSE):
+      up=ParseElsestmnt()
+      PtreeAddchild(rp, up);
   else:
     sp = NULL;
   return (sp);
@@ -1158,11 +1166,7 @@ def struct tree ParseIfstmnt() :
         PtreeAddchild(sp, qp)
     if(lookahead == ELSE):
       np = ParseElsestmnt()
-      qp=PtreeMvchild(qp)
-      if(qp != NULL):
-        PtreeAddchild(qp, np)
-      else:
-        PtreeAddchild(sp, np)
+      PtreeAddchild(sp, np)
   else:
     sp = NULL;
   return (sp);
