@@ -33,11 +33,8 @@ x.fill(1.0)
 y.fill(1.0)
 
 t2=time.perf_counter()
-saxpy.runsaxpy(a,x,y,z,niter)
-#for i in range(0,niter):
-#  saxpy.saxpy(a,x,y,z)
-
-#print(z[0],z[n-1])
+for i in range(0,niter):
+  saxpy.saxpy(a,x,y,z)
 
 t3=time.perf_counter()
 print("time for saxpy ",t3-t2, "(", arch, ")")

@@ -1582,6 +1582,7 @@ def int SemStmnt(struct tree p) :
       SemForstmnt(p) 
  
     if(LibeStrcmp(PtreeGetname(p), "parallel")):
+      SemParallelstmnt(p)
       parflag=OK 
  
     if(LibeStrcmp(PtreeGetname(p), "if")):
@@ -1604,8 +1605,6 @@ def int SemCompstmnt(struct tree p) :
   struct tree q 
   int parflag 
 
-  parflag=ERR 
-
   q = p  # Save top node  
   p = PtreeMvchild(p)     
   if(p==NULL):   # If empty compund stament, accept it
@@ -1616,7 +1615,6 @@ def int SemCompstmnt(struct tree p) :
     p = PtreeMvsister(p) 
 
   SemStmnt(p)
- 
-  if(parflag == OK):
-    PtreeSetparallel(q,"parallel")  
+  SemCopyparallel(q,p)
+
   return(OK) 

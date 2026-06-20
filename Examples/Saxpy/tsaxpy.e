@@ -28,6 +28,9 @@ def int Main(struct MainArg [*] MainArgs):
     saxpy(a,x,y,z)
   t=LibeClock()
 
-  LibePs("Time for saxpy:"); LibePf(t-t0); 
-  LibePs(" ("); LibePs(arch); LibePs(") \n") 
+  LibePs("Time for saxpy:")
+  LibePf(t-t0) 
+  LibePs(" (")
+  LibePs(arch)
+  LibePs(") \n") 
   return(OK)

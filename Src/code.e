@@ -2637,9 +2637,7 @@ def int CodeParallelfor(struct tree p , int level, int rank) :
   rrp=PtreeMvsister(rp)        # Find
   cond=CodeExpr(rrp)           # Get
   if(level == rank):
-    #CodeEs(p, "\n #pragma omp parallel for\n");  # Emit OMP pragma
-    CodeEs(p, "\n #pragma omp target teams distribute parallel for\n")
-    # Emit OMP pragma
+    CodeEs(p, "\n #pragma omp parallel for\n")  
 
   CodeEs(rp,"for(")            # Emit inital part of for
   CodeEs(rp,index)             # Emit index variable

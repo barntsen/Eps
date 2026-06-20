@@ -1,4 +1,4 @@
-//  Translated by epsc  version: Thu Jun 11 16:27:56 2026
+//  Translated by epsc  version: Sat Jun 20 16:48:06 2026
 
 #include <stddef.h>
 #include <stdio.h>
@@ -150,21 +150,26 @@ struct nctemptree3 {int d[3]; struct tree *a; } ;
 struct nctemptree4 {int d[4]; struct tree *a; } ;
 int PtreeInit ()
 {
+{
 return 1;
+}
 }
 int PtreePrtree (struct tree* p,int level)
 {
 int i;
 int fp;
+{
 fp = 3;
 int nctemp2 = (p !=0);
 if(nctemp2)
+{
 {
 i = 0;
 int nctemp6 = (i < level);
 int nctemp10=nctemp6;
 while(nctemp10)
 {{
+{
 int nctemp12= fp;
 struct nctempchar1 *nctemp16;
 static struct nctempchar1 nctemp17 = {{ 2}, (char*)" \0"};
@@ -172,6 +177,7 @@ nctemp16=&nctemp17;
 nctempchar1* nctemp14= nctemp16;
 int nctemp18=LibePuts(nctemp12,nctemp14);
 i = (i + 1);
+}
 }
 int nctemp19 = (i < level);
 nctemp10=nctemp19;}int nctemp24= fp;
@@ -258,6 +264,7 @@ int nctemp156=LibePuts(nctemp150,nctemp152);
 int nctemp157 = (p->simple ==1);
 if(nctemp157)
 {
+{
 int nctemp162= fp;
 struct nctempchar1 *nctemp166;
 static struct nctempchar1 nctemp167 = {{ 7}, (char*)"simple\0"};
@@ -271,9 +278,12 @@ nctemp174=&nctemp175;
 nctempchar1* nctemp172= nctemp174;
 int nctemp176=LibePuts(nctemp170,nctemp172);
 }
+}
 else{
+{
 int nctemp177 = (p->simple ==2);
 if(nctemp177)
+{
 {
 int nctemp182= fp;
 struct nctempchar1 *nctemp186;
@@ -288,7 +298,9 @@ nctemp194=&nctemp195;
 nctempchar1* nctemp192= nctemp194;
 int nctemp196=LibePuts(nctemp190,nctemp192);
 }
+}
 else{
+{
 int nctemp198= fp;
 struct nctempchar1 *nctemp202;
 static struct nctempchar1 nctemp203 = {{ 10}, (char*)"nonsimple\0"};
@@ -303,8 +315,11 @@ nctempchar1* nctemp208= nctemp210;
 int nctemp212=LibePuts(nctemp206,nctemp208);
 }
 }
+}
+}
 int nctemp213 = (p->topexpr ==1);
 if(nctemp213)
+{
 {
 int nctemp218= fp;
 struct nctempchar1 *nctemp222;
@@ -319,9 +334,12 @@ nctemp230=&nctemp231;
 nctempchar1* nctemp228= nctemp230;
 int nctemp232=LibePuts(nctemp226,nctemp228);
 }
+}
 else{
+{
 int nctemp233 = (p->topexpr ==0);
 if(nctemp233)
+{
 {
 int nctemp238= fp;
 struct nctempchar1 *nctemp242;
@@ -336,7 +354,9 @@ nctemp250=&nctemp251;
 nctempchar1* nctemp248= nctemp250;
 int nctemp252=LibePuts(nctemp246,nctemp248);
 }
+}
 else{
+{
 int nctemp254= fp;
 struct nctempchar1 *nctemp258;
 static struct nctempchar1 nctemp259 = {{ 10}, (char*)"nonsimple\0"};
@@ -349,6 +369,8 @@ static struct nctempchar1 nctemp267 = {{ 2}, (char*)" \0"};
 nctemp266=&nctemp267;
 nctempchar1* nctemp264= nctemp266;
 int nctemp268=LibePuts(nctemp262,nctemp264);
+}
+}
 }
 }
 int nctemp270= fp;
@@ -420,16 +442,21 @@ struct tree* nctemp373= p->sister;
 int nctemp375= level;
 int nctemp377=PtreePrtree(nctemp373,nctemp375);
 }
+}
 int nctemp379= fp;
 int nctemp381=LibeFlush(nctemp379);
 return 1;
 }
+}
 int PtreeRmnode (struct tree* p)
+{
 {
 int nctemp383 = (p ==0);
 if(nctemp383)
 {
+{
 return 1;
+}
 }
 RunFree(p->name->a);
 RunFree(p->name);
@@ -453,10 +480,13 @@ RunFree(p->descr->a);
 RunFree(p->descr);
 return 1;
 }
+}
 int PtreeRmtree (struct tree* p)
+{
 {
 int nctemp421 = (p !=0);
 if(nctemp421)
+{
 {
 struct tree* nctemp426= p->child;
 int nctemp428=PtreeRmtree(nctemp426);
@@ -465,11 +495,14 @@ int nctemp432=PtreeRmtree(nctemp430);
 struct tree* nctemp434= p;
 int nctemp436=PtreeRmnode(nctemp434);
 }
+}
 return 1;
+}
 }
 struct tree* PtreeMknode (nctempchar1 *name,nctempchar1 *defn)
 {
 struct tree* p;
+{
 struct tree *nctemp442=(struct tree*)RunMalloc(sizeof(struct tree));
 p =nctemp442;
 nctempchar1* nctemp449= defn;
@@ -555,18 +588,23 @@ p->rank = 0;
 p->simple = 2;
 p->child = 0;
 p->sister = 0;
+p->topexpr = 0;
 return p;
+}
 }
 int PtreeAddchild (struct tree* parent,struct tree* child)
 {
 struct tree* p;
 struct tree* prev;
+{
 p =parent->child;
 int nctemp583 = (p ==0);
 if(nctemp583)
 {
+{
 parent->child = child;
 return 1;
+}
 }
 prev = parent->child;
 p =p->sister;
@@ -574,17 +612,21 @@ int nctemp592 = (p !=0);
 int nctemp600=nctemp592;
 while(nctemp600)
 {{
+{
 prev = p;
+}
 }
 p =p->sister;
 int nctemp601 = (p !=0);
 nctemp600=nctemp601;}prev->sister = child;
 return 1;
 }
+}
 int PtreeAddsister (struct tree* sister,struct tree* newnode)
 {
 struct tree* p;
 struct tree* prev;
+{
 p = sister;
 prev = p;
 p =p->sister;
@@ -592,24 +634,32 @@ int nctemp610 = (p !=0);
 int nctemp618=nctemp610;
 while(nctemp618)
 {{
+{
 prev = p;
+}
 }
 p =p->sister;
 int nctemp619 = (p !=0);
 nctemp618=nctemp619;}prev->sister = newnode;
 return 1;
 }
+}
 struct tree* PtreeMvsister (struct tree* p)
+{
 {
 return p->sister;
 }
+}
 struct tree* PtreeMvchild (struct tree* p)
 {
+{
 return p->child;
+}
 }
 nctempchar1 * PtreeSetfield (nctempchar1 *field,nctempchar1 *value)
 {
 nctempchar1 *t;
+{
 t = field;
 nctempchar1* nctemp635= value;
 nctempchar1* nctemp638=LibeStrsave(nctemp635);
@@ -618,7 +668,9 @@ RunFree(t->a);
 RunFree(t);
 return field;
 }
+}
 int PtreeSetname (struct tree* p,nctempchar1 *name)
+{
 {
 nctempchar1 *nctemp648 =name;
 int nctemp647 =(nctemp648!=0);
@@ -626,19 +678,25 @@ int nctemp653 = (p !=0);
 int nctemp644 = (nctemp647 && nctemp653);
 if(nctemp644)
 {
+{
 RunFree(p->name->a);
 RunFree(p->name);
 nctempchar1* nctemp665= name;
 nctempchar1* nctemp668=LibeStrsave(nctemp665);
 p->name=nctemp668;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetname (struct tree* p)
 {
+{
 return p->name;
 }
+}
 int PtreeSetdef (struct tree* p,nctempchar1 *defn)
+{
 {
 nctempchar1 *nctemp676 =defn;
 int nctemp675 =(nctemp676!=0);
@@ -646,19 +704,25 @@ int nctemp681 = (p !=0);
 int nctemp672 = (nctemp675 && nctemp681);
 if(nctemp672)
 {
+{
 RunFree(p->defn->a);
 RunFree(p->defn);
 nctempchar1* nctemp693= defn;
 nctempchar1* nctemp696=LibeStrsave(nctemp693);
 p->defn=nctemp696;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetdef (struct tree* p)
 {
+{
 return p->defn;
 }
+}
 int PtreeSetype (struct tree* p,nctempchar1 *type)
+{
 {
 nctempchar1 *nctemp704 =type;
 int nctemp703 =(nctemp704!=0);
@@ -666,19 +730,25 @@ int nctemp709 = (p !=0);
 int nctemp700 = (nctemp703 && nctemp709);
 if(nctemp700)
 {
+{
 RunFree(p->type->a);
 RunFree(p->type);
 nctempchar1* nctemp721= type;
 nctempchar1* nctemp724=LibeStrsave(nctemp721);
 p->type=nctemp724;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetype (struct tree* p)
 {
+{
 return p->type;
 }
+}
 int PtreeSetstruct (struct tree* p,nctempchar1 *structure)
+{
 {
 nctempchar1 *nctemp732 =structure;
 int nctemp731 =(nctemp732!=0);
@@ -686,19 +756,25 @@ int nctemp737 = (p !=0);
 int nctemp728 = (nctemp731 && nctemp737);
 if(nctemp728)
 {
+{
 RunFree(p->structure->a);
 RunFree(p->structure);
 nctempchar1* nctemp749= structure;
 nctempchar1* nctemp752=LibeStrsave(nctemp749);
 p->structure=nctemp752;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetstruct (struct tree* p)
 {
+{
 return p->structure;
 }
+}
 int PtreeSetempr (struct tree* p,nctempchar1 *tempr)
+{
 {
 nctempchar1 *nctemp760 =tempr;
 int nctemp759 =(nctemp760!=0);
@@ -706,19 +782,25 @@ int nctemp765 = (p !=0);
 int nctemp756 = (nctemp759 && nctemp765);
 if(nctemp756)
 {
+{
 RunFree(p->tempr->a);
 RunFree(p->tempr);
 nctempchar1* nctemp777= tempr;
 nctempchar1* nctemp780=LibeStrsave(nctemp777);
 p->tempr=nctemp780;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetempr (struct tree* p)
 {
+{
 return p->tempr;
 }
+}
 int PtreeSetempi (struct tree* p,nctempchar1 *tempi)
+{
 {
 nctempchar1 *nctemp788 =tempi;
 int nctemp787 =(nctemp788!=0);
@@ -726,32 +808,44 @@ int nctemp793 = (p !=0);
 int nctemp784 = (nctemp787 && nctemp793);
 if(nctemp784)
 {
+{
 RunFree(p->tempi->a);
 RunFree(p->tempi);
 nctempchar1* nctemp805= tempi;
 nctempchar1* nctemp808=LibeStrsave(nctemp805);
 p->tempi=nctemp808;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetempi (struct tree* p)
 {
+{
 return p->tempi;
+}
 }
 int PtreeGetline (struct tree* p)
 {
+{
 return p->line;
 }
+}
 int PtreeSetline (struct tree* p,int line)
+{
 {
 p->line = line;
 return 1;
 }
+}
 nctempchar1 * PtreeGetfile (struct tree* p)
+{
 {
 return p->file;
 }
+}
 int PtreeSetfile (struct tree* p,nctempchar1 *file)
+{
 {
 nctempchar1 *nctemp820 =file;
 int nctemp819 =(nctemp820!=0);
@@ -759,24 +853,32 @@ int nctemp825 = (p !=0);
 int nctemp816 = (nctemp819 && nctemp825);
 if(nctemp816)
 {
+{
 RunFree(p->file->a);
 RunFree(p->file);
 nctempchar1* nctemp837= file;
 nctempchar1* nctemp840=LibeStrsave(nctemp837);
 p->file=nctemp840;
 }
+}
 return 1;
 }
+}
 int PtreeSetrank (struct tree* p,int rank)
+{
 {
 p->rank = rank;
 return 1;
 }
+}
 int PtreeGetrank (struct tree* p)
+{
 {
 return p->rank;
 }
+}
 int PtreeSetlval (struct tree* p,nctempchar1 *lval)
+{
 {
 nctempchar1 *nctemp848 =lval;
 int nctemp847 =(nctemp848!=0);
@@ -784,19 +886,25 @@ int nctemp853 = (p !=0);
 int nctemp844 = (nctemp847 && nctemp853);
 if(nctemp844)
 {
+{
 RunFree(p->lval->a);
 RunFree(p->lval);
 nctempchar1* nctemp865= lval;
 nctempchar1* nctemp868=LibeStrsave(nctemp865);
 p->lval=nctemp868;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetlval (struct tree* p)
 {
+{
 return p->lval;
 }
+}
 int PtreeSetarray (struct tree* p,nctempchar1 *array)
+{
 {
 nctempchar1 *nctemp876 =array;
 int nctemp875 =(nctemp876!=0);
@@ -804,19 +912,25 @@ int nctemp881 = (p !=0);
 int nctemp872 = (nctemp875 && nctemp881);
 if(nctemp872)
 {
+{
 RunFree(p->array->a);
 RunFree(p->array);
 nctempchar1* nctemp893= array;
 nctempchar1* nctemp896=LibeStrsave(nctemp893);
 p->array=nctemp896;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetarray (struct tree* p)
 {
+{
 return p->array;
 }
+}
 int PtreeSetparallel (struct tree* p,nctempchar1 *paral)
+{
 {
 nctempchar1 *nctemp904 =paral;
 int nctemp903 =(nctemp904!=0);
@@ -824,19 +938,25 @@ int nctemp909 = (p !=0);
 int nctemp900 = (nctemp903 && nctemp909);
 if(nctemp900)
 {
+{
 RunFree(p->paral->a);
 RunFree(p->paral);
 nctempchar1* nctemp921= paral;
 nctempchar1* nctemp924=LibeStrsave(nctemp921);
 p->paral=nctemp924;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetparallel (struct tree* p)
 {
+{
 return p->paral;
 }
+}
 int PtreeSetref (struct tree* p,nctempchar1 *ref)
+{
 {
 nctempchar1 *nctemp932 =ref;
 int nctemp931 =(nctemp932!=0);
@@ -844,19 +964,25 @@ int nctemp937 = (p !=0);
 int nctemp928 = (nctemp931 && nctemp937);
 if(nctemp928)
 {
+{
 RunFree(p->ref->a);
 RunFree(p->ref);
 nctempchar1* nctemp949= ref;
 nctempchar1* nctemp952=LibeStrsave(nctemp949);
 p->ref=nctemp952;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetref (struct tree* p)
 {
+{
 return p->ref;
 }
+}
 int PtreeSetdescr (struct tree* p,nctempchar1 *descr)
+{
 {
 nctempchar1 *nctemp960 =descr;
 int nctemp959 =(nctemp960!=0);
@@ -864,19 +990,25 @@ int nctemp965 = (p !=0);
 int nctemp956 = (nctemp959 && nctemp965);
 if(nctemp956)
 {
+{
 RunFree(p->descr->a);
 RunFree(p->descr);
 nctempchar1* nctemp977= descr;
 nctempchar1* nctemp980=LibeStrsave(nctemp977);
 p->descr=nctemp980;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetdescr (struct tree* p)
 {
+{
 return p->descr;
 }
+}
 int PtreeSetglobal (struct tree* p,nctempchar1 *global)
+{
 {
 nctempchar1 *nctemp988 =global;
 int nctemp987 =(nctemp988!=0);
@@ -884,37 +1016,51 @@ int nctemp993 = (p !=0);
 int nctemp984 = (nctemp987 && nctemp993);
 if(nctemp984)
 {
+{
 RunFree(p->global->a);
 RunFree(p->global);
 nctempchar1* nctemp1005= global;
 nctempchar1* nctemp1008=LibeStrsave(nctemp1005);
 p->global=nctemp1008;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetglobal (struct tree* p)
 {
+{
 return p->global;
 }
+}
 int PtreeSetopexpr (struct tree* p,int topexpr)
+{
 {
 p->topexpr = 1;
 return 1;
 }
+}
 int PtreeGetopexpr (struct tree* p)
+{
 {
 return p->topexpr;
 }
+}
 int PtreeSetsimple (struct tree* p,int simple)
+{
 {
 p->simple = simple;
 return 1;
 }
+}
 int PtreeGetsimple (struct tree* p)
+{
 {
 return p->simple;
 }
+}
 int PtreeSetforw (struct tree* p,nctempchar1 *forw)
+{
 {
 nctempchar1 *nctemp1020 =forw;
 int nctemp1019 =(nctemp1020!=0);
@@ -922,15 +1068,20 @@ int nctemp1025 = (p !=0);
 int nctemp1016 = (nctemp1019 && nctemp1025);
 if(nctemp1016)
 {
+{
 RunFree(p->forw->a);
 RunFree(p->forw);
 nctempchar1* nctemp1037= forw;
 nctempchar1* nctemp1040=LibeStrsave(nctemp1037);
 p->forw=nctemp1040;
 }
+}
 return 1;
+}
 }
 nctempchar1 * PtreeGetforw (struct tree* p)
 {
+{
 return p->forw;
+}
 }

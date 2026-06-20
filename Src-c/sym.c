@@ -1,4 +1,4 @@
-//  Translated by epsc  version: Thu Jun 11 16:27:56 2026
+//  Translated by epsc  version: Sat Jun 20 16:48:06 2026
 
 #include <stddef.h>
 #include <stdio.h>
@@ -148,49 +148,66 @@ static struct symbol* SymLtp;
 static struct symbol* SymStp;
 int SymSetetp (struct symbol* tp)
 {
+{
 SymEtp = tp;
 return 1;
 }
+}
 struct symbol* SymGetetp ()
+{
 {
 return SymEtp;
 }
+}
 int SymSetltp (struct symbol* tp)
+{
 {
 SymLtp = tp;
 return 1;
 }
+}
 struct symbol* SymGetltp ()
+{
 {
 return SymLtp;
 }
+}
 struct symbol* SymGetstp ()
+{
 {
 return SymStp;
 }
+}
 struct symbol* SymSetstp (struct symbol* stp)
+{
 {
 SymStp = stp;
 return SymStp;
+}
 }
 int SymPrsym (int fp,struct symbol* p,int level)
 {
 int i;
 struct symbol* tp;
+{
 int nctemp7 = (p ==0);
 if(nctemp7)
 {
+{
 return 0;
+}
 }
 int nctemp12 = (p !=0);
 int nctemp16=nctemp12;
 while(nctemp16)
 {{
+{
 i = 0;
 int nctemp17 = (i <= level);
 int nctemp21=nctemp17;
 while(nctemp21)
 {{
+{
 int nctemp23= fp;
 struct nctempchar1 *nctemp27;
 static struct nctempchar1 nctemp28 = {{ 2}, (char*)" \0"};
@@ -198,6 +215,7 @@ nctemp27=&nctemp28;
 nctempchar1* nctemp25= nctemp27;
 int nctemp29=LibePuts(nctemp23,nctemp25);
 i = (i + 1);
+}
 }
 int nctemp30 = (i <= level);
 nctemp21=nctemp30;}int nctemp35= fp;
@@ -337,6 +355,7 @@ int nctemp253=LibeFlush(nctemp251);
 int nctemp254 = (p->tbl !=0);
 if(nctemp254)
 {
+{
 tp = p->tbl;
 level = (level + 1);
 int nctemp259= fp;
@@ -345,18 +364,22 @@ int nctemp263= level;
 int nctemp265=SymPrsym(nctemp259,nctemp261,nctemp263);
 level = (level - 1);
 }
+}
 p = p->next;
 int nctemp267= fp;
 int nctemp269=LibeFlush(nctemp267);
 }
+}
 int nctemp270 = (p !=0);
 nctemp16=nctemp270;}return 1;
+}
 }
 int SymIstemp (nctempchar1 *name)
 {
 int lnc;
 nctempchar1 *t;
 int i;
+{
 struct nctempchar1 *nctemp284;
 static struct nctempchar1 nctemp285 = {{ 7}, (char*)"nctemp\0"};
 nctemp284=&nctemp285;
@@ -365,7 +388,9 @@ lnc =nctemp288;
 int nctemp292=name->d[0];int nctemp289 = (nctemp292 < lnc);
 if(nctemp289)
 {
+{
 return 0;
+}
 }
 struct nctempchar1 *nctemp305;
 static struct nctempchar1 nctemp306 = {{ 7}, (char*)"nctemp\0"};
@@ -374,48 +399,62 @@ nctempchar1* nctemp303= nctemp305;
 nctempchar1* nctemp307=LibeStrsave(nctemp303);
 t=nctemp307;
 for(i = 0;i < lnc;i = (i + 1)){
+{
 int nctemp311=i;
 int nctemp314=i;
 int nctemp308 = (name->a[nctemp311] !=t->a[nctemp314]);
 if(nctemp308)
 {
+{
 return 0;
+}
+}
 }
 }
 RunFree(t->a);
 RunFree(t);
 return 1;
 }
+}
 struct symbol* SymLookup (nctempchar1 *s,struct symbol* tp)
 {
 struct symbol* np;
+{
 np = tp;
 int nctemp321 = (np !=0);
 int nctemp325=nctemp321;
 while(nctemp325)
 {{
+{
 nctempchar1* nctemp329= s;
 nctempchar1* nctemp332= np->name;
 int nctemp335=LibeStrcmp(nctemp329,nctemp332);
 int nctemp326 = (nctemp335 ==1);
 if(nctemp326)
 {
+{
 return np;
 }
+}
 np = np->next;
+}
 }
 int nctemp338 = (np !=0);
 nctemp325=nctemp338;}np =0;
 return np;
 }
+}
 struct symbol* SymGetable (struct symbol* np)
 {
+{
 return np->tbl;
+}
 }
 struct symbol* SymMkname (nctempchar1 *name,struct symbol* tp)
 {
 struct symbol* np;
 struct symbol* lp;
+{
 struct nctempchar1 *nctemp356;
 static struct nctempchar1 nctemp357 = {{ 9}, (char*)"#arglist\0"};
 nctemp356=&nctemp357;
@@ -425,6 +464,7 @@ struct symbol* nctemp360=SymLookup(nctemp354,nctemp358);
 np =nctemp360;
 int nctemp347 = (np !=0);
 if(nctemp347)
+{
 {
 struct symbol* nctemp366= np;
 struct symbol* nctemp368=SymGetable(nctemp366);
@@ -436,8 +476,11 @@ np =nctemp381;
 int nctemp369 = (np !=0);
 if(nctemp369)
 {
+{
 np =0;
 return np;
+}
+}
 }
 }
 nctempchar1* nctemp394= name;
@@ -447,12 +490,15 @@ np =nctemp399;
 int nctemp387 = (np ==0);
 if(nctemp387)
 {
+{
 struct symbol *nctemp405=(struct symbol*)RunMalloc(sizeof(struct symbol));
 np =nctemp405;
 int nctemp407 = (np ==0);
 if(nctemp407)
 {
+{
 return np;
+}
 }
 nctempchar1* nctemp420= name;
 nctempchar1* nctemp423=LibeStrsave(nctemp420);
@@ -461,8 +507,10 @@ nctempchar1 *nctemp413 =np->name;
 int nctemp412 =(nctemp413==0);
 if(nctemp412)
 {
+{
 np =0;
 return np;
+}
 }
 lp = tp->last;
 lp->next = np;
@@ -538,16 +586,21 @@ nctempchar1* nctemp538=LibeStrsave(nctemp534);
 np->forw=nctemp538;
 np->emit = 1;
 }
+}
 else{
+{
 np = 0;
 }
+}
 return np;
+}
 }
 struct symbol* SymRmname (nctempchar1 *name,struct symbol* tp)
 {
 struct symbol* np;
 struct symbol* sp;
 struct symbol* prev;
+{
 np = tp;
 sp = 0;
 prev = np;
@@ -555,18 +608,24 @@ int nctemp540 = (np !=0);
 int nctemp544=nctemp540;
 while(nctemp544)
 {{
+{
 nctempchar1* nctemp548= name;
 nctempchar1* nctemp551= np->name;
 int nctemp554=LibeStrcmp(nctemp548,nctemp551);
 int nctemp545 = (nctemp554 ==1);
 if(nctemp545)
 {
+{
 sp = np;
 np = 0;
 }
+}
 else{
+{
 prev = np;
 np = np->next;
+}
+}
 }
 }
 int nctemp556 = (np !=0);
@@ -574,12 +633,16 @@ nctemp544=nctemp556;}np = sp;
 int nctemp560 = (np ==0);
 if(nctemp560)
 {
+{
 return np;
+}
 }
 int nctemp565 = (np->next ==0);
 if(nctemp565)
 {
+{
 prev->last = prev;
+}
 }
 prev->next = np->next;
 RunFree(np->name->a);
@@ -602,19 +665,25 @@ RunFree(np->descr->a);
 RunFree(np->descr);
 return prev;
 }
+}
 nctempchar1 * SymGetname (struct symbol* np)
 {
+{
 return np->name;
+}
 }
 struct symbol* SymMktable ()
 {
 struct symbol* tp;
+{
 struct symbol *nctemp605=(struct symbol*)RunMalloc(sizeof(struct symbol));
 tp =nctemp605;
 int nctemp607 = (tp ==0);
 if(nctemp607)
 {
+{
 return tp;
+}
 }
 struct nctempchar1 *nctemp619;
 static struct nctempchar1 nctemp620 = {{ 7}, (char*)"#first\0"};
@@ -694,23 +763,33 @@ tp->next = 0;
 tp->last = tp;
 return tp;
 }
+}
 struct symbol* SymMvnext (struct symbol* np)
+{
 {
 int nctemp733 = (np ==0);
 if(nctemp733)
 {
+{
 return np;
 }
+}
 else{
+{
 return np->next;
+}
+}
 }
 }
 struct symbol* SymSetable (struct symbol* np,struct symbol* tp)
 {
+{
 np->tbl = tp;
 return np;
 }
+}
 int SymSetname (struct symbol* p,nctempchar1 *name)
+{
 {
 nctempchar1 *nctemp744 =name;
 int nctemp743 =(nctemp744!=0);
@@ -718,15 +797,19 @@ int nctemp749 = (p !=0);
 int nctemp740 = (nctemp743 && nctemp749);
 if(nctemp740)
 {
+{
 RunFree(p->name->a);
 RunFree(p->name);
 nctempchar1* nctemp761= name;
 nctempchar1* nctemp764=LibeStrsave(nctemp761);
 p->name=nctemp764;
 }
+}
 return 1;
 }
+}
 int SymSetype (struct symbol* p,nctempchar1 *type)
+{
 {
 nctempchar1 *nctemp770 =type;
 int nctemp769 =(nctemp770!=0);
@@ -734,19 +817,25 @@ int nctemp775 = (p !=0);
 int nctemp766 = (nctemp769 && nctemp775);
 if(nctemp766)
 {
+{
 RunFree(p->type->a);
 RunFree(p->type);
 nctempchar1* nctemp787= type;
 nctempchar1* nctemp790=LibeStrsave(nctemp787);
 p->type=nctemp790;
 }
+}
 return 1;
+}
 }
 nctempchar1 * SymGetype (struct symbol* np)
 {
+{
 return np->type;
 }
+}
 int SymSetfunc (struct symbol* p,nctempchar1 *func)
+{
 {
 nctempchar1 *nctemp798 =func;
 int nctemp797 =(nctemp798!=0);
@@ -754,19 +843,25 @@ int nctemp803 = (p !=0);
 int nctemp794 = (nctemp797 && nctemp803);
 if(nctemp794)
 {
+{
 RunFree(p->func->a);
 RunFree(p->func);
 nctempchar1* nctemp815= func;
 nctempchar1* nctemp818=LibeStrsave(nctemp815);
 p->func=nctemp818;
 }
+}
 return 1;
+}
 }
 nctempchar1 * SymGetfunc (struct symbol* np)
 {
+{
 return np->func;
 }
+}
 int SymSetarray (struct symbol* p,nctempchar1 *array)
+{
 {
 nctempchar1 *nctemp826 =array;
 int nctemp825 =(nctemp826!=0);
@@ -774,19 +869,25 @@ int nctemp831 = (p !=0);
 int nctemp822 = (nctemp825 && nctemp831);
 if(nctemp822)
 {
+{
 RunFree(p->array->a);
 RunFree(p->array);
 nctempchar1* nctemp843= array;
 nctempchar1* nctemp846=LibeStrsave(nctemp843);
 p->array=nctemp846;
 }
+}
 return 1;
+}
 }
 nctempchar1 * SymGetarray (struct symbol* np)
 {
+{
 return np->array;
 }
+}
 int SymSetstruct (struct symbol* p,nctempchar1 *structure)
+{
 {
 nctempchar1 *nctemp854 =structure;
 int nctemp853 =(nctemp854!=0);
@@ -794,19 +895,25 @@ int nctemp859 = (p !=0);
 int nctemp850 = (nctemp853 && nctemp859);
 if(nctemp850)
 {
+{
 RunFree(p->structure->a);
 RunFree(p->structure);
 nctempchar1* nctemp871= structure;
 nctempchar1* nctemp874=LibeStrsave(nctemp871);
 p->structure=nctemp874;
 }
+}
 return 1;
+}
 }
 nctempchar1 * SymGetstruct (struct symbol* np)
 {
+{
 return np->structure;
 }
+}
 int SymSetident (struct symbol* p,nctempchar1 *ident)
+{
 {
 nctempchar1 *nctemp882 =ident;
 int nctemp881 =(nctemp882!=0);
@@ -814,19 +921,25 @@ int nctemp887 = (p !=0);
 int nctemp878 = (nctemp881 && nctemp887);
 if(nctemp878)
 {
+{
 RunFree(p->ident->a);
 RunFree(p->ident);
 nctempchar1* nctemp899= ident;
 nctempchar1* nctemp902=LibeStrsave(nctemp899);
 p->ident=nctemp902;
 }
+}
 return 1;
+}
 }
 nctempchar1 * SymGetident (struct symbol* np)
 {
+{
 return np->ident;
 }
+}
 int SymSetlval (struct symbol* p,nctempchar1 *lval)
+{
 {
 nctempchar1 *nctemp910 =lval;
 int nctemp909 =(nctemp910!=0);
@@ -834,37 +947,51 @@ int nctemp915 = (p !=0);
 int nctemp906 = (nctemp909 && nctemp915);
 if(nctemp906)
 {
+{
 RunFree(p->lval->a);
 RunFree(p->lval);
 nctempchar1* nctemp927= lval;
 nctempchar1* nctemp930=LibeStrsave(nctemp927);
 p->lval=nctemp930;
 }
+}
 return 1;
+}
 }
 nctempchar1 * SymGetlval (struct symbol* np)
 {
+{
 return np->lval;
 }
+}
 int SymSetrank (struct symbol* np,int rank)
+{
 {
 np->rank = rank;
 return 1;
 }
+}
 int SymGetrank (struct symbol* np)
+{
 {
 return np->rank;
 }
+}
 int SymSetemit (struct symbol* np,int emit)
+{
 {
 np->emit = emit;
 return 1;
 }
+}
 int SymGetemit (struct symbol* np)
+{
 {
 return np->emit;
 }
+}
 int SymSetref (struct symbol* p,nctempchar1 *ref)
+{
 {
 nctempchar1 *nctemp942 =ref;
 int nctemp941 =(nctemp942!=0);
@@ -872,19 +999,25 @@ int nctemp947 = (p !=0);
 int nctemp938 = (nctemp941 && nctemp947);
 if(nctemp938)
 {
+{
 RunFree(p->ref->a);
 RunFree(p->ref);
 nctempchar1* nctemp959= ref;
 nctempchar1* nctemp962=LibeStrsave(nctemp959);
 p->ref=nctemp962;
 }
+}
 return 1;
+}
 }
 nctempchar1 * SymGetref (struct symbol* np)
 {
+{
 return np->ref;
 }
+}
 int SymSetmodule (struct symbol* p,nctempchar1 *module)
+{
 {
 nctempchar1 *nctemp970 =module;
 int nctemp969 =(nctemp970!=0);
@@ -892,19 +1025,25 @@ int nctemp975 = (p !=0);
 int nctemp966 = (nctemp969 && nctemp975);
 if(nctemp966)
 {
+{
 RunFree(p->module->a);
 RunFree(p->module);
 nctempchar1* nctemp987= module;
 nctempchar1* nctemp990=LibeStrsave(nctemp987);
 p->module=nctemp990;
 }
+}
 return 1;
+}
 }
 nctempchar1 * SymGetmodule (struct symbol* np)
 {
+{
 return np->module;
 }
+}
 int SymSetforw (struct symbol* p,nctempchar1 *forw)
+{
 {
 nctempchar1 *nctemp998 =forw;
 int nctemp997 =(nctemp998!=0);
@@ -912,19 +1051,25 @@ int nctemp1003 = (p !=0);
 int nctemp994 = (nctemp997 && nctemp1003);
 if(nctemp994)
 {
+{
 RunFree(p->forw->a);
 RunFree(p->forw);
 nctempchar1* nctemp1015= forw;
 nctempchar1* nctemp1018=LibeStrsave(nctemp1015);
 p->forw=nctemp1018;
 }
+}
 return 1;
+}
 }
 nctempchar1 * SymGetforw (struct symbol* np)
 {
+{
 return np->forw;
 }
+}
 int SymSetdescr (struct symbol* p,nctempchar1 *descr)
+{
 {
 nctempchar1 *nctemp1026 =descr;
 int nctemp1025 =(nctemp1026!=0);
@@ -932,19 +1077,25 @@ int nctemp1031 = (p !=0);
 int nctemp1022 = (nctemp1025 && nctemp1031);
 if(nctemp1022)
 {
+{
 RunFree(p->descr->a);
 RunFree(p->descr);
 nctempchar1* nctemp1043= descr;
 nctempchar1* nctemp1046=LibeStrsave(nctemp1043);
 p->descr=nctemp1046;
 }
+}
 return 1;
+}
 }
 nctempchar1 * SymGetdescr (struct symbol* np)
 {
+{
 return np->descr;
 }
+}
 int SymSetglobal (struct symbol* p,nctempchar1 *global)
+{
 {
 nctempchar1 *nctemp1054 =global;
 int nctemp1053 =(nctemp1054!=0);
@@ -952,32 +1103,41 @@ int nctemp1059 = (p !=0);
 int nctemp1050 = (nctemp1053 && nctemp1059);
 if(nctemp1050)
 {
+{
 RunFree(p->global->a);
 RunFree(p->global);
 nctempchar1* nctemp1071= global;
 nctempchar1* nctemp1074=LibeStrsave(nctemp1071);
 p->global=nctemp1074;
 }
+}
 return 1;
+}
 }
 nctempchar1 * SymGetglobal (struct symbol* np)
 {
+{
 return np->global;
+}
 }
 int SymRmtable (struct symbol* p)
 {
 struct symbol* next;
 struct symbol* prev;
+{
 int nctemp1078 = (p ==0);
 if(nctemp1078)
 {
+{
 return 0;
+}
 }
 prev = 0;
 int nctemp1083 = (p !=0);
 int nctemp1087=nctemp1083;
 while(nctemp1087)
 {{
+{
 next = p->next;
 struct nctempchar1 *nctemp1093;
 static struct nctempchar1 nctemp1094 = {{ 9}, (char*)"#arglist\0"};
@@ -988,6 +1148,7 @@ int nctemp1098=LibeStrcmp(nctemp1091,nctemp1095);
 int nctemp1088 = (nctemp1098 ==0);
 if(nctemp1088)
 {
+{
 struct nctempchar1 *nctemp1105;
 static struct nctempchar1 nctemp1106 = {{ 6}, (char*)"#self\0"};
 nctemp1105=&nctemp1106;
@@ -996,6 +1157,7 @@ nctempchar1* nctemp1107= p->name;
 int nctemp1110=LibeStrcmp(nctemp1103,nctemp1107);
 int nctemp1100 = (nctemp1110 ==0);
 if(nctemp1100)
+{
 {
 struct nctempchar1 *nctemp1117;
 static struct nctempchar1 nctemp1118 = {{ 7}, (char*)"#first\0"};
@@ -1006,17 +1168,22 @@ int nctemp1122=LibeStrcmp(nctemp1115,nctemp1119);
 int nctemp1112 = (nctemp1122 ==0);
 if(nctemp1112)
 {
+{
 int nctemp1124 = (p->tbl !=0);
 if(nctemp1124)
+{
 {
 struct symbol* nctemp1129= p->tbl;
 int nctemp1131=SymRmtable(nctemp1129);
 p->tbl = 0;
 }
+}
 int nctemp1132 = (prev !=0);
 if(nctemp1132)
 {
+{
 prev->next = next;
+}
 }
 RunFree(p->name->a);
 RunFree(p->name);
@@ -1039,18 +1206,26 @@ RunFree(p->descr);
 }
 }
 }
+}
+}
+}
 else{
+{
 prev = p;
+}
 }
 p = next;
 }
+}
 int nctemp1167 = (p !=0);
 nctemp1087=nctemp1167;}return 1;
+}
 }
 struct symbol* SymLook (nctempchar1 *name)
 {
 struct symbol* tp;
 struct symbol* ap;
+{
 nctempchar1* nctemp1179= name;
 struct symbol* nctemp1184=SymGetetp();
 struct symbol* nctemp1182= nctemp1184;
@@ -1059,6 +1234,7 @@ tp =nctemp1185;
 int nctemp1172 = (tp ==0);
 if(nctemp1172)
 {
+{
 nctempchar1* nctemp1194= name;
 struct symbol* nctemp1199=SymGetltp();
 struct symbol* nctemp1197= nctemp1199;
@@ -1066,6 +1242,7 @@ struct symbol* nctemp1200=SymLookup(nctemp1194,nctemp1197);
 tp =nctemp1200;
 int nctemp1187 = (tp ==0);
 if(nctemp1187)
+{
 {
 struct nctempchar1 *nctemp1208;
 static struct nctempchar1 nctemp1209 = {{ 9}, (char*)"#arglist\0"};
@@ -1078,7 +1255,9 @@ tp =nctemp1213;
 int nctemp1214 = (tp ==0);
 if(nctemp1214)
 {
+{
 return tp;
+}
 }
 struct symbol* nctemp1223= tp;
 struct symbol* nctemp1225=SymGetable(nctemp1223);
@@ -1086,7 +1265,9 @@ ap =nctemp1225;
 int nctemp1226 = (ap ==0);
 if(nctemp1226)
 {
+{
 return ap;
+}
 }
 nctempchar1* nctemp1238= name;
 struct symbol* nctemp1241= ap;
@@ -1094,6 +1275,7 @@ struct symbol* nctemp1243=SymLookup(nctemp1238,nctemp1241);
 tp =nctemp1243;
 int nctemp1231 = (tp ==0);
 if(nctemp1231)
+{
 {
 nctempchar1* nctemp1249= name;
 struct symbol* nctemp1254=SymGetetp();
@@ -1103,11 +1285,16 @@ tp =nctemp1255;
 }
 }
 }
+}
+}
+}
 return tp;
+}
 }
 int SymCpytble (struct symbol* tp,struct symbol* up)
 {
 struct symbol* wp;
+{
 struct symbol* nctemp1261= tp;
 struct symbol* nctemp1263=SymMvnext(nctemp1261);
 tp =nctemp1263;
@@ -1115,6 +1302,7 @@ int nctemp1264 = (tp !=0);
 int nctemp1268=nctemp1264;
 while(nctemp1268)
 {{
+{
 struct symbol* nctemp1275= tp;
 nctempchar1* nctemp1277=SymGetname(nctemp1275);
 nctempchar1* nctemp1273= nctemp1277;
@@ -1185,30 +1373,39 @@ struct symbol* nctemp1393= tp;
 struct symbol* nctemp1395=SymMvnext(nctemp1393);
 tp =nctemp1395;
 }
+}
 int nctemp1396 = (tp !=0);
 nctemp1268=nctemp1396;}return 1;
+}
 }
 struct symbol* SymAddtble (struct symbol* tp,struct symbol* sp)
 {
 struct symbol* start;
 struct symbol* prev;
+{
 start = tp;
 int nctemp1401 = (sp ==0);
 if(nctemp1401)
 {
+{
 return start;
+}
 }
 int nctemp1406 = (tp ==0);
 if(nctemp1406)
 {
+{
 return start;
+}
 }
 struct symbol* nctemp1414= sp;
 struct symbol* nctemp1416=SymMvnext(nctemp1414);
 int nctemp1411 = (nctemp1416 ==0);
 if(nctemp1411)
 {
+{
 return start;
+}
 }
 tp->last = sp->last;
 struct symbol* nctemp1423= tp;
@@ -1217,19 +1414,23 @@ tp =nctemp1425;
 int nctemp1426 = (tp ==0);
 if(nctemp1426)
 {
+{
 struct symbol* nctemp1434= sp;
 struct symbol* nctemp1436=SymMvnext(nctemp1434);
 start->next =nctemp1436;
 return start;
 }
+}
 int nctemp1438 = (tp !=0);
 int nctemp1442=nctemp1438;
 while(nctemp1442)
 {{
+{
 prev = tp;
 struct symbol* nctemp1447= tp;
 struct symbol* nctemp1449=SymMvnext(nctemp1447);
 tp =nctemp1449;
+}
 }
 int nctemp1450 = (tp !=0);
 nctemp1442=nctemp1450;}tp = prev;
@@ -1238,13 +1439,17 @@ struct symbol* nctemp1460=SymMvnext(nctemp1458);
 tp->next =nctemp1460;
 return start;
 }
+}
 int SymExport (int fp,struct symbol* p,int level)
 {
 struct symbol* tq;
+{
 int nctemp1462 = (p ==0);
 if(nctemp1462)
 {
+{
 return 0;
+}
 }
 struct symbol* nctemp1471=SymMktable();
 tq =nctemp1471;
@@ -1257,10 +1462,12 @@ int nctemp1480 = (p !=0);
 int nctemp1484=nctemp1480;
 while(nctemp1484)
 {{
+{
 nctempchar1* nctemp1488= p->name;
 int nctemp1491=SymIstemp(nctemp1488);
 int nctemp1485 = (nctemp1491 ==0);
 if(nctemp1485)
+{
 {
 nctempchar1* nctemp1496= p->module;
 struct nctempchar1 *nctemp1501;
@@ -1270,6 +1477,7 @@ nctempchar1* nctemp1499= nctemp1501;
 int nctemp1503=LibeStrcmp(nctemp1496,nctemp1499);
 int nctemp1493 = (nctemp1503 ==1);
 if(nctemp1493)
+{
 {
 int nctemp1506= fp;
 struct nctempchar1 *nctemp1510;
@@ -1410,12 +1618,16 @@ int nctemp1726= 1;
 int nctemp1728=SymPrsym(nctemp1719,nctemp1721,nctemp1726);
 }
 }
+}
+}
 p = p->next;
+}
 }
 int nctemp1729 = (p !=0);
 nctemp1484=nctemp1729;}int nctemp1734= fp;
 int nctemp1736=LibeFlush(nctemp1734);
 return 1;
+}
 }
 int Symgetline (int fp,struct symbol* np,nctempchar1 *module)
 {
@@ -1423,6 +1635,7 @@ int indent;
 int ch;
 nctempchar1 *field;
 int tmp;
+{
 int nctemp1744=400;
 nctempchar1 *nctemp1743;
 nctemp1743=(nctempchar1*)RunMalloc(sizeof(nctempchar1));
@@ -1434,15 +1647,19 @@ ch = 1;
 int nctemp1754= fp;
 int nctemp1756=LibeGetc(nctemp1754);
 ch =nctemp1756;
-int nctemp1747 = (ch ==(-1));
+int nctemp1747 = (ch ==-1);
 if(nctemp1747)
+{
 {
 int nctemp1758= -1;
 return nctemp1758;
 }
+}
 else{
+{
 int nctemp1760= fp;
 int nctemp1762=LibeUngetc(nctemp1760);
+}
 }
 int nctemp1770= fp;
 int nctemp1772=LibeGetc(nctemp1770);
@@ -1451,7 +1668,9 @@ int nctemp1763 = (ch ==32);
 int nctemp1774=nctemp1763;
 while(nctemp1774)
 {{
+{
 indent = (indent + 1);
+}
 }
 int nctemp1782= fp;
 int nctemp1784=LibeGetc(nctemp1782);
@@ -1548,14 +1767,17 @@ int nctemp1978 = (ch !=10);
 int nctemp1989=nctemp1978;
 while(nctemp1989)
 {{
+{
 tmp = 0;
 tmp = (0 + tmp);
+}
 }
 int nctemp1997= fp;
 int nctemp1999=LibeGetc(nctemp1997);
 ch =nctemp1999;
 int nctemp1990 = (ch !=10);
 nctemp1989=nctemp1990;}return indent;
+}
 }
 int SymReadsym (int fp,struct symbol* rtbl,nctempchar1 *module)
 {
@@ -1567,6 +1789,7 @@ struct symbol* np;
 struct symbol* mp;
 struct symbol* ttbl;
 int i;
+{
 tbl = rtbl;
 struct symbol* nctemp2006=SymMktable();
 ttbl =nctemp2006;
@@ -1590,6 +1813,7 @@ indent = 1;
 int nctemp2038=1;
 while(nctemp2038)
 {{
+{
 int nctemp2043= fp;
 struct symbol* nctemp2045= mp;
 nctempchar1* nctemp2047= module;
@@ -1598,7 +1822,9 @@ indent =nctemp2050;
 int nctemp2051 = (indent < 0);
 if(nctemp2051)
 {
+{
 return 1;
+}
 }
 nctempchar1* nctemp2059= mp->name;
 struct nctempchar1 *nctemp2064;
@@ -1609,22 +1835,27 @@ int nctemp2066=LibeStrcmp(nctemp2059,nctemp2062);
 int nctemp2056 = (nctemp2066 ==1);
 if(nctemp2056)
 {
+{
 int nctemp2072= fp;
 struct symbol* nctemp2074= mp;
 nctempchar1* nctemp2076= module;
 int nctemp2079=Symgetline(nctemp2072,nctemp2074,nctemp2076);
 indent =nctemp2079;
 }
+}
 int nctemp2080 = (indent ==oldindent);
 if(nctemp2080)
+{
 {
 struct symbol* nctemp2085= ttbl;
 struct symbol* nctemp2087= tbl;
 int nctemp2089=SymCpytble(nctemp2085,nctemp2087);
 oldindent = indent;
 }
+}
 int nctemp2090 = (indent > oldindent);
 if(nctemp2090)
+{
 {
 struct symbol* nctemp2098=SymMktable();
 ntbl =nctemp2098;
@@ -1641,20 +1872,28 @@ struct symbol* nctemp2115= tbl;
 int nctemp2117=SymCpytble(nctemp2113,nctemp2115);
 oldindent = indent;
 }
+}
 int nctemp2118 = (indent < oldindent);
 if(nctemp2118)
+{
 {
 tbl = rtbl;
 int nctemp2122 = (indent ==1);
 if(nctemp2122)
 {
+{
 tbl = rtbl;
 }
+}
 else{
+{
 for(i = 0;i < indent;i = (i + 1)){
+{
 struct symbol* nctemp2130= tbl->last;
 struct symbol* nctemp2132=SymGetable(nctemp2130);
 tbl =nctemp2132;
+}
+}
 }
 }
 struct symbol* nctemp2134= ttbl;
@@ -1663,7 +1902,10 @@ int nctemp2138=SymCpytble(nctemp2134,nctemp2136);
 oldindent = indent;
 }
 }
+}
+}
 nctemp2038=1;}int nctemp2141= fp;
 int nctemp2143=LibeClose(nctemp2141);
 return 1;
+}
 }
