@@ -125,13 +125,13 @@ def char [*] MainFout(char [*] infile, int arch):
     outfile=new(char [l]) 
     LibeStrcpy(infile,outfile) 
     outfile[l-2] = cast(char,'c') 
-  else if(arch == CUDA):
+  elif(arch == CUDA):
     outfile=new(char [l+2]) 
     LibeStrcpy(infile,outfile) 
     outfile[l-2] = cast(char,'c') 
     outfile[l-1] = cast(char,'p') 
     outfile[l-0] = cast(char,'p') 
-  else if(arch == GOMP):
+  elif(arch == GOMP):
     outfile=new(char [l]) 
     LibeStrcpy(infile,outfile) 
     outfile[l-2] = cast(char,'c') 
@@ -329,7 +329,7 @@ def int MainCcompcuda(char [*] file, int debug, int optimize, int openmp, int sh
   cmd = new(char[len("rm ",0)+l+2]) 
   cmd=LibeStradd("rm ",file) 
   tmp=cmd
-  cmd=LibeStradd(cmd,"\n");
+  cmd=LibeStradd(cmd,"\n") 
   if(show == OK):
     LibePuts(stderr,cmd) 
     LibeFlush(stderr) 
@@ -442,7 +442,7 @@ def int Main(struct MainArg [*] MainArgs) :
     MainError("Missing input file name\n") 
 
   # Main loop over command line arguments
-  for(i=1; i<len(MainArgs,0);i=i+1):
+  for(i=1;  i<len(MainArgs,0); i=i+1):
 
     if(LibeStrcmp(MainArgs[i].arg, "-h") == OK):  
       MainHelp(CodeGetarch()) 
@@ -451,24 +451,33 @@ def int Main(struct MainArg [*] MainArgs) :
     if(LibeStrcmp(MainArgs[i].arg, "-t") == OK):  
 
       # Print parse tree  
-      btree = OK; parse = OK 
+      btree = OK
+      parse = OK 
 
     # Print annotated parse tree 
     if(LibeStrcmp(MainArgs[i].arg, "-a") == OK):  
-      atree = OK; semantic = OK; parse = OK 
+      atree = OK
+      semantic = OK
+      parse = OK 
 
     # Print local symbol table 
 
     if(LibeStrcmp(MainArgs[i].arg, "-s") == OK ):  
-      table = OK; parse = OK; semantic = OK 
+      table = OK
+      parse = OK 
+      semantic = OK 
 
     # Print external symbol table 
     if(LibeStrcmp(MainArgs[i].arg, "-r") == OK ):  
-      etable = OK; parse = OK; semantic = OK 
+      etable = OK
+      parse = OK 
+      semantic = OK 
 
     # Emit code         
     if(LibeStrcmp(MainArgs[i].arg, "-e") == OK):  
-      emit = OK; parse = OK; semantic = OK 
+      emit = OK 
+      parse = OK 
+      semantic = OK 
 
     # Syntactic analysis only
     if(LibeStrcmp(MainArgs[i].arg, "-p") == OK):  
@@ -476,7 +485,8 @@ def int Main(struct MainArg [*] MainArgs) :
 
     # Syntactic and semantic analysis only
     if(LibeStrcmp(MainArgs[i].arg, "-q") == OK):      
-      semantic = OK; parse = OK 
+      semantic = OK
+      parse = OK 
 
     # Turn on array check  
     if(LibeStrcmp(MainArgs[i].arg, "-C") == OK):      
@@ -510,9 +520,9 @@ def int Main(struct MainArg [*] MainArgs) :
       if(len(MainArgs,0) > i):
         if(LibeStrcmp(MainArgs[i+1].arg,"cpu")==OK): 
           CodeSetarch(CPU)
-        else if(LibeStrcmp(MainArgs[i+1].arg,"cuda")==OK): 
+        elif(LibeStrcmp(MainArgs[i+1].arg,"cuda")==OK): 
           CodeSetarch(CUDA)
-        else if(LibeStrcmp(MainArgs[i+1].arg,"gomp")==OK): 
+        elif(LibeStrcmp(MainArgs[i+1].arg,"gomp")==OK): 
           CodeSetarch(GOMP) 
         else :
           MainError("Illegal option value\n")
@@ -621,13 +631,13 @@ def int Main(struct MainArg [*] MainArgs) :
     if(CodeGetarch() == CPU):
       MainCcompcpu(outfile,debug,optimize,openmp,show) 
         
-    else if(CodeGetarch()==CUDA):
+    elif(CodeGetarch()==CUDA):
       MainCcompcuda(outfile,debug,optimize,openmp,show,dev) 
       
-    else if(CodeGetarch()==GOMP):
+    elif(CodeGetarch()==GOMP):
       MainCcompgomp(outfile,debug,optimize,openmp,show) 
       
-    else if(CodeGetarch()==HIP):
+    elif(CodeGetarch()==HIP):
       MainCcomphip(outfile,debug,optimize,openmp,show) 
       
     else :

@@ -131,7 +131,7 @@ def int PtreePrtree(struct tree p, int level) :
     if(p.simple==OK):
       LibePuts(fp, "simple")    
       LibePuts(fp," ") 
-    else if(p.simple==EMPTY):
+    elif(p.simple==EMPTY):
       LibePuts(fp, "empty")     
       LibePuts(fp," ") 
     else:
@@ -141,7 +141,7 @@ def int PtreePrtree(struct tree p, int level) :
     if(p.topexpr==OK):
       LibePuts(fp, "topexpr")   
       LibePuts(fp," ") 
-    else if(p.topexpr==ERR):
+    elif(p.topexpr==ERR):
       LibePuts(fp, "void")      
       LibePuts(fp," ") 
     else:

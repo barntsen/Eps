@@ -202,13 +202,13 @@ def float LibeMach(int flag) :
 
   if(flag == MFMIN):      # Minimum floating point value  
     return(FMIN) 
-  else if(flag == MFMAX): # Maximum floating point value  
+  elif(flag == MFMAX): # Maximum floating point value  
     return(FMAX) 
-  else if(flag == MEPSMIN): # Minimum floating point accuracy  
+  elif(flag == MEPSMIN): # Minimum floating point accuracy  
     return(EPSMIN) 
-  else if(flag == MEPSMAX): # Maximum floating point accuracy  
+  elif(flag == MEPSMAX): # Maximum floating point accuracy  
     return(EPSMAX) 
-  else if(flag == MLOG2):   # value of ln(2)                   
+  elif(flag == MLOG2):   # value of ln(2)                   
     return(LOG2) 
   else :
     return(cast(float,ERR)) 
@@ -393,7 +393,7 @@ def int LibeGetfman(float f, int maxdig) :
     while(((f/10.0)+EPS) >= 1.0):
       f = f/10.0 
       nexp = nexp+1  
-  else if((f+EPS) < 1.0):
+  elif((f+EPS) < 1.0):
     while((f+EPS) < 1.0):
       f = f*10.0 
       nexp = nexp-1  
@@ -445,7 +445,7 @@ def float LibeGetffman(float f) :
     while(((f/10.0)+EPS) >= 1.0):
       f = f/10.0 
       nexp = nexp+1  
-  else if((f+EPS) < 1.0):
+  elif((f+EPS) < 1.0):
     while((f+EPS) < 1.0):
       f = f*10.0 
       nexp = nexp-1  
@@ -486,7 +486,7 @@ def int LibeGetmaxdig(float f) :
     while(((f/10.0)+EPS) >= 1.0):
       f = f/10.0 
       nexp = nexp+1  
-  else if((f+EPS) < 1.0):
+  elif((f+EPS) < 1.0):
     while((f+EPS) < 1.0):
       f = f*10.0 
       nexp = nexp-1  
@@ -537,7 +537,7 @@ def int LibeGetfexp(float f) :
     while(((f/10.0)+EPS) >= 1.0):
       f = f/10.0 
       nexp = nexp+1  
-  else if((f+EPS) < 1.0):
+  elif((f+EPS) < 1.0):
     while((f+EPS) < 1.0):
       f = f*10.0 
       nexp = nexp-1  
@@ -1023,9 +1023,9 @@ def float LibeAtan(float f) :
   
   if(n==1):
     res=res+PIBYSIX 
-  else if(n==2):
+  elif(n==2):
     res=res+PIHALF 
-  else if(n==3):
+  elif(n==3):
     res=res+PIBYTHREE 
 
   return(res) 
@@ -1328,7 +1328,7 @@ def int LibeIsalnum(int c) :
 
   if(((c>='a')&&(c<= 'z')) || ((c>='A')&&(c<='Z'))):
     return(OK) 
-  else if((c >= '0') && (c <= '9')):
+  elif((c >= '0') && (c <= '9')):
     return(OK) 
   else:
     return(ERR) 
@@ -1362,7 +1362,7 @@ def int LibeAtoi(char [*] s) :
   if(s[i] == cast(char,'-')):
     sign=-1 
     i=i+1 
-  else if(s[i] == cast(char,'+')):
+  elif(s[i] == cast(char,'+')):
     sign = 1 
     i=i+1 
   else:
@@ -1775,7 +1775,7 @@ def int LibeFtoa(float f, char [*] fmt, char [*] s) :
 
     if(c == 'f'):
       mode = 'f' 
-    else if(c == 'e'):
+    elif(c == 'e'):
       mode = 'e' 
     else :
       return(ERR) 
@@ -1790,13 +1790,13 @@ def int LibeFtoa(float f, char [*] fmt, char [*] s) :
     nexp = LibeGetfexp(f) 
     LibeFtoae(mant, nexp, nfield, nfrac, s) 
  
-  else if(mode == 'e'):
+  elif(mode == 'e'):
     ndigit = nfrac+1 
     mant = LibeGetfman(f,ndigit) 
     nexp = LibeGetfexp(f) 
     LibeFtoae(mant, nexp, nfield, nfrac, s) 
  
-  else if(mode == 'f'):
+  elif(mode == 'f'):
     nexp = LibeGetfexp(f) 
     ndigit = nexp+nfrac+1  
     mant = LibeGetfman(f,ndigit) 
@@ -2120,12 +2120,12 @@ def int LibeOpen(char [*] name, char [*] mode) :
 
   if(cast(int, mode[0]) == 'w'):
     fd = RunCreate(name) 
-  else if(cast(int, mode[0]) == 'a'):
+  elif(cast(int, mode[0]) == 'a'):
     if((fd = RunOpen(name, mode)) == ERR):
       fd = RunCreate(name) 
     else:
       fd = RunOpen(name,mode) 
-  else if(cast(int, mode[0]) == 'r'):
+  elif(cast(int, mode[0]) == 'r'):
     fd = RunOpen(name,mode) 
   else:
     LibeErrstr = "Unknown file mode\n" 
@@ -2344,7 +2344,7 @@ def int LibeGetw(int fp, char [*] text) :
     return(ERR) 
       
  
-  else if(ch == EOF):
+  elif(ch == EOF):
     return(EOF) 
   else:
     return(OK) 
@@ -2566,7 +2566,7 @@ def int LibeRead(int fp, int n, char [*] buffer) :
     LibeFarr[fp].eoflg = OK 
     rval = EOF 
  
-  else if(rval == ERR):
+  elif(rval == ERR):
     LibeFarr[fp].errflg = OK 
     LibeErrstr = "read error" 
     LibeErrno = ERR 
