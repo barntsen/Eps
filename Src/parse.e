@@ -220,8 +220,6 @@ def struct tree ParseExprseq(struct tree p) :
   #   NULL reference
   #
   # An expression node is added to the input node.
-  # The following part of the grammar is implemented
-  #    exprseq        = ',' expr [ exprseq ]
 
   if(lookahead == COMMA):
     ParseMatch(lookahead) 
@@ -232,8 +230,6 @@ def struct tree ParseExprseq(struct tree p) :
 def struct tree ParseExprlist() :
 
   # ParseExprlist parses a list of expressions.
-  #  The following part of the grammar is implemented:
-  #    exprlist    = [ expr exprseq ]
 
   struct tree np, sp 
 
@@ -249,8 +245,6 @@ def struct tree ParseExprlist() :
 def int ParseArrayarg(struct tree p) :
 
   # ParseArrayarg parses dummy array arguments      
-  # The following part of the grammar is implemented:
-  #   arrayarg          = '*' [ ',' arrayarg ]
 
   struct tree np, sp 
 
@@ -276,9 +270,7 @@ def int ParseArrayarg(struct tree p) :
 
 def int ParseIdseq(struct tree p) :
 
-  # ParseIdseq -- parse identifier sequence      
-  # The following part of the grammar is implemented:
-  #   idseq          = ',' ID  [ idseq ]
+  # ParseIdseq  parses identifier sequence      
 
   struct tree sp 
 
@@ -332,9 +324,7 @@ def int ParseConstdecl(struct tree p) :
 
 def struct tree ParseType() :
 
-  # This function implements the following part of the grammar:
-  #   type  = [( INT | REAL | CONST | COMPLEX | CHAR  
-  #           | STRUCT ID )] [ '['arrayarg']']
+  # Parsetype parses type statements
 
   struct tree np, sp 
 
@@ -432,7 +422,7 @@ def struct tree ParseCast() :
 
 def struct tree ParseNew() :
 
-  # Parse new 
+  # Parse new operator
   #
   # Returns:
   #   new  parse tree
@@ -451,7 +441,7 @@ def struct tree ParseNew() :
 
 def struct tree ParseDelete() :
 
-  # Parse delete
+  # Parse delete operator
   #
   # Returns:
   #   delete  parse tree
@@ -462,7 +452,7 @@ def struct tree ParseDelete() :
   ParseMatch(LP) 
   np=ParseExpr() 
   if(np == NULL) :
-    ParseError("xSyntax error") 
+    ParseError("Syntax error") 
   else:
     PtreeAddchild(sp,np) 
     ParseMatch(RP)
@@ -471,7 +461,7 @@ def struct tree ParseDelete() :
 
 def struct tree ParseCmplx() :
 
-  # Parse cmplx 
+  # Parse cmplx operator
   #
   # Returns:
   #   cmplx  parse tree
@@ -492,7 +482,7 @@ def struct tree ParseCmplx() :
 
 def struct tree ParseRe() :
 
-  # Parse re
+  # Parse re operator
   #
   # Returns:
   #   re  parse tree
@@ -513,7 +503,7 @@ def struct tree ParseRe() :
 
 def struct tree ParseIm() :
 
-  # Parse im
+  # Parse im operator
   #
   # Returns:
   #   im  parse tree
@@ -534,7 +524,7 @@ def struct tree ParseIm() :
 
 def struct tree ParseLen() :
 
-  # Parse len
+  # Parses len operator
   #
   # Returns:
   #   len  parse tree
@@ -562,9 +552,10 @@ def struct tree ParseLen() :
 
 def struct tree ParsePrimexpr(struct tree p) :
 
-  # ParsePrimexpr -- parse primary expressions
+  # ParsePrimexpr parses primary expressions
   #
-  # Returns primary expression tree
+  # Returns:
+  #  primary expression tree
   #
 
   if(lookahead == ID):
@@ -608,8 +599,6 @@ def struct tree ParsePrimexpr(struct tree p) :
 def struct tree ParseUnexpr(struct tree p) :
 
   # ParseUnexpr parses unary expressions. 
-  # The following part of the grammar is implemented:
-  #   unexpr   = primexpr | '-' unexpr
 
   struct tree np, sp 
 
@@ -626,8 +615,6 @@ def struct tree ParseUnexpr(struct tree p) :
 def struct tree ParseMultexprseq(struct tree p) :
 
   # Pmultexprseq parses sequence of multiplicative expressions.
-  # The following part of the grammar is implemented:
-  #   multexprseq    = ['*'|'/' unexpr multexprseq]
             
   struct tree np, rp, sp 
 
@@ -645,8 +632,6 @@ def struct tree ParseMultexprseq(struct tree p) :
 def struct tree ParseMultexpr(struct tree p) :
 
   # Pmultexpr  parses multiplicative expressions.
-  # The following part of the grammar is implemented:
-  #   multexpr       = unexpr  multexprseq
 
   struct tree np 
 
@@ -657,8 +642,6 @@ def struct tree ParseMultexpr(struct tree p) :
 def struct tree ParseAddexprseq(struct tree p) :
 
   # PaddexprSeq parses sequence of additive expressions.
-  # The following part of the grammar is implemented:
-  #    addexpseq      = ['+'|'-'  multexpr addexprseq]
 
   struct tree np, rp, sp 
 
@@ -676,8 +659,6 @@ def struct tree ParseAddexprseq(struct tree p) :
 def struct tree ParseAddexpr(struct tree p) :
 
   # ParseAddexpr parses additive expressions. 
-  # The following part of the grammar is implemented:
-  #    addexpr        = multexpr addexprseq
 
   struct tree np 
 
@@ -688,9 +669,6 @@ def struct tree ParseAddexpr(struct tree p) :
 def struct tree ParseRelexprseq(struct tree p) :
 
   # ParseRelexprseq parses sequence of relational expressions.
-  # The part of the grammar implemented is :
-  #    relexprseq     = ( '<' | '>' | '<=' | '>=' '||'
-  #                 | "&&" | "!=" | "==" )
             
   struct tree np, rp, sp 
 
@@ -708,8 +686,6 @@ def struct tree ParseRelexprseq(struct tree p) :
 def struct tree ParseRelexpr(struct tree p) :
 
   # ParseRelexpr parses relational expressions.
-  # The following part of the grammar is implemented:
-  #    relexpr        = addexpr relexprseq
 
   struct tree np 
 
@@ -720,8 +696,6 @@ def struct tree ParseRelexpr(struct tree p) :
 def struct tree ParseAsgexprseq(struct tree p) :
 
   # PraseAsgexprseq parses sequence of assignment expressions
-  # The following part of the grammar is implemented:
-  #  asgexprSeq        = '='    relexpr asgexprseq 
 
   struct tree np, rp, sp 
 
@@ -738,15 +712,13 @@ def struct tree ParseAsgexprseq(struct tree p) :
  
 def struct tree ParseAsgexpr(struct tree p) :
 
+  # Pasgexpr parses assignmnet expressions    
+  #
   # Parameters :
   #   p: Expression tree node
   #
   # Returns:
   #   np : Tree nodes with assignment expression sequence
-
-  # Pasgexpr parses assignmnet expressions    
-  # The following part of the grammar is implemented
-  #  asgexpr        : relexpr asgexprseq 
 
   struct tree np 
 
@@ -757,8 +729,6 @@ def struct tree ParseAsgexpr(struct tree p) :
 def struct tree ParseExpr() :
 
   # ParseExpr  parses expressions      
-  # The following part of the grammar is implemented
-  #   expr           = asgexpr
  
   struct tree np, sp, rp 
 
@@ -773,8 +743,6 @@ def struct tree ParseExpr() :
 def struct tree ParseDeclaration() :
 
   # ParseDeclaration parses a declaration
-  # The following part of the grammar is implemented:
-  #   declaration    = type ID idseq' '
 
   struct tree mp, np 
 
@@ -799,8 +767,6 @@ def struct tree ParseDeclaration() :
 def struct tree ParseDeclarations():
 
   # ParseDeclarations parses declarations
-  # The following part of the grammar is implemented:
-  #   declarations   = declaration [declarations]
 
   struct tree np, sp 
 
@@ -817,8 +783,6 @@ def struct tree ParseDeclarations():
 def int ParseArgseq(struct tree p) :
 
   # ParseArgseq parses argument sequence       
-  # The following part of the grammar is implemented:
-  #    argseq         = ',' [ID]  argseq  
  
   struct tree np, sp 
 
@@ -836,8 +800,6 @@ def int ParseArgseq(struct tree p) :
 def struct tree ParseArglist() :
 
   # ParseArglist parses function argument list      
-  # The following part of the grammar is implemented:
-  #    arglist        = type [ID] [argseq] ' '
 
   struct tree mp, np, sp 
 
@@ -855,8 +817,7 @@ def struct tree ParseArglist() :
  
 def int ParseStructdeclar(struct tree p) :
 
-  # This function implements the following part of the grammar:
-  #   structdeclar   = declarations END 
+  # ParseStructdeclar parses structure declaration
  
   struct tree sp, np 
 
@@ -870,8 +831,6 @@ def int ParseStructdeclar(struct tree p) :
 def struct tree ParseWhilestmnt() :
 
   # Parsewhilestmnt  parses while statement.      
-  # The following part of the grammar is implmented:
-  #   whilestmnt     = WHILE '(' expr')' stmnt
 
   struct tree np, sp 
   if(lookahead == WHILE):
@@ -891,8 +850,6 @@ def struct tree ParseWhilestmnt() :
 def struct tree ParseReturnstmnt() :
 
   # ParseReturnstmnt  parses return statement      
-  # The following part of the grammar is implemented
-  #   returnstmnt    = RETURN  expr
 
   struct tree np, sp 
 
@@ -910,8 +867,6 @@ def struct tree ParseReturnstmnt() :
 def struct tree ParseForstmntc (struct tree np) :
 
   # ParseForstmnt parses a for statement
-  # The following part of the grammar is implemented:
-  # forstmnt       = '(' expr ' ' expr ' ' expr')' stmnt 
 
   struct tree sp, rp 
   ParseMatch(LP) 
@@ -941,10 +896,6 @@ def struct tree ParseForstmntpy(struct tree np) :
   # Returns:
   # 
   # The np node on return contains a parse tree for a for loop.
-  #
-  # The following part of the grammar is implemented:
-  #   forstmntpy = ID IN RANGE '(' expr ',' expr ')'  compstmnt      
-  #
   # The strategy for implementing the Python style for loop
   # is to create a parse tree identical to the for c-style loop.
   # This avoids extra code for semantic check and code generation.
@@ -1022,8 +973,6 @@ def struct tree ParseForstmntpy(struct tree np) :
 def struct tree ParseForstmnt() :
 
   # ParseForstmnt parses a for statement
-  # The following part of the grammar is implemented:
-  #    forstmnt       = FOR 
 
   struct tree np, sp 
   if(lookahead == FOR):
@@ -1042,8 +991,6 @@ def struct tree ParseForstmnt() :
 def struct tree ParseSlice() :
 
   # ParseSlice parses a slice list
-  # The following part of the grammar is implemented:
-  #   slice          = expr ':' expr [':' expr ]
 
    struct tree np, sp, rp 
 
@@ -1066,8 +1013,6 @@ def struct tree ParseSlice() :
 def struct tree ParseSliceseq(struct tree np) :
 
    # ParseSliceseq  parses slice sequence.      
-   # The following part of the grammar is implemented:
-   #   sliceseq       = slice [, sliceseq]
 
    struct tree sp 
 
@@ -1085,8 +1030,6 @@ def struct tree ParseSliceseq(struct tree np) :
 def struct tree ParseParallelstmnt() :
 
   # ParseParallelstmnt parses a prallel statement
-  # The following part of the grammar is implemented:
-  # parallelstmnt  = PARALLEL '('  sliceseq ')' stmnt
 
   struct tree np, rp, sp 
 
@@ -1203,8 +1146,6 @@ def struct tree ParseStmnt() :
 def struct tree ParseStmntlist() :
 
   # ParseStmntlist parses a list of statements
-  # The following part of the grammar is implemented:
-  #   stmntlist      = stmnt | stmntlist   
 
   struct tree np, sp 
 
@@ -1240,10 +1181,7 @@ def struct tree ParseCompstmnt() :
 
 def int ParseFdef(struct tree p) :
 
-  # ParseFdef -- parse function declaration      
-  # This routine parses definition and declaration of functions according
-  # to the following rule:
-  #   fdecl  = [arglist] ')'  [compstmnt]
+  # ParseFdef  parses function declaration      
 
   struct tree np,sp 
 

@@ -3582,8 +3582,8 @@ def int CodeFdefwrapperpy(struct tree p) :
   #   Arrays corresponds to an equivalent numpy array.
   #   Structures (or arrays of structures) correspond to
   #   a general python object reference.
-  #   Note that numpy arrays are copied into an eps array
-  #   when an eps function is called, and copied back on return.
+  #   Note that numpy arrays are converted into an eps array
+  #   when an eps function is called, and converted back on return.
   #
 
   fdcout=CodeGetfdout()
