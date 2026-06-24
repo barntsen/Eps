@@ -27,6 +27,7 @@ const PARALLEL= 31        # The 'parallel' keyword
 const RETURN  = 30        # The 'return'  keyword   
 const IF      = 14        # The 'if'      keyword   
 const ELSE    = 15        # The 'else'    keyword   
+const ELIF    = 300
 const THEN    = 16        # The 'then'    keyword   
 const ICONST  = 17        # Integer constant token  
 const SCONST  = 18        # String  constant token  
@@ -246,7 +247,7 @@ def int ScanBlank()  :
   # In case of end-of-file return inital indent 
   if(c == EOF):
     indent = ScanIndentinit 
-    #LibePs("Indent at EOF: "); LibePi(indent); LibePs("\n")
+    #LibePs("Indent at EOF: ")  LibePi(indent)  LibePs("\n")
     return(indent) 
 
   # Read a comment line
@@ -261,7 +262,7 @@ def int ScanBlank()  :
     return(indent) 
 
   # Read a blank line
-  else if(c == NL):
+  elif(c == NL):
     indent = -1 
     ScanIncline() 
     return(indent) 
@@ -444,41 +445,41 @@ def int ScanLex() :
 
   if (c == PLUS):             # '+'  
     rval = PLUS 
-  else if (c == STAR):         # '*'  
+  elif (c == STAR):         # '*'  
     rval = STAR 
-  else if (c == SLASH):        # '/'  
+  elif (c == SLASH):        # '/'  
     rval = SLASH 
-  else if (c == BSLASH):        # '\'  
+  elif (c == BSLASH):        # '\'  
     rval = SPACE 
     ScanGetch() 
     ScanContline=ScanContline+1 
-  else if (c == LP):          # '('  
+  elif (c == LP):          # '('  
     rval = LP 
-  else if (c == RP):          # ')'  
+  elif (c == RP):          # ')'  
     rval = RP 
-  else if (c == RB):          # '   '  
+  elif (c == RB):          # '   '  
     rval = RB 
-  else if (c == LB):          # ':'  
+  elif (c == LB):          # ':'  
     rval = LB 
-  else if (c == LBR):         # '['  
+  elif (c == LBR):         # '['  
     rval = LBR 
-  else if (c == RBR):         # ']'  
+  elif (c == RBR):         # ']'  
     rval = RBR 
-  else if (c == COLON):       # ':'  
+  elif (c == COLON):       # ':'  
     rval = COLON 
-  else if (c == SEMICOLON):   # ' '  
+  elif (c == SEMICOLON):   # ' '  
     rval = SEMICOLON 
-  else if (c == COMMA):       # ','  
+  elif (c == COMMA):       # ','  
     rval = COMMA 
-  else if (c == POINT):       # '.'   
+  elif (c == POINT):       # '.'   
     rval = POINT 
-  else if (c == NL   ):       # '\n'   
+  elif (c == NL   ):       # '\n'   
     rval = NL 
     ScanIncline() 
 
   # Start processing of complex tokens  
 
-  else if (c == LT):                    
+  elif (c == LT):                    
     if((c = ScanGetch()) == ASSIGN):     # '<='  
       rval =  LE 
       p = p + 1 
@@ -487,7 +488,7 @@ def int ScanLex() :
       ScanUngetch() 
       rval = LT 
        
-  else if (c == GT):                   
+  elif (c == GT):                   
     if((c = ScanGetch()) == ASSIGN):     # '>='  
        rval =  GE 
        p = p + 1 
@@ -495,7 +496,7 @@ def int ScanLex() :
     else:
       ScanUngetch()                      # '>'  
       rval = GT 
-  else if (c == MINUS):            
+  elif (c == MINUS):            
     if((c = ScanGetch()) == GT):        # '->'  
       rval =  RARROW 
       p = p + 1 
@@ -503,28 +504,28 @@ def int ScanLex() :
     else:
       ScanUngetch()                     # '-'   
       rval = MINUS 
-  else if (c == VBAR):                  # '||'  
+  elif (c == VBAR):                  # '||'  
     if((c = ScanGetch()) == VBAR):
       rval =  OR 
       p = p +1 
       ScanText[p] = cast(char, c) 
     else:
       ScanError("Illegal character") 
-  else if (c == ADRESS):                  # '&&'  
+  elif (c == ADRESS):                  # '&&'  
     if((c = ScanGetch()) == ADRESS):
       rval =  AND 
       p = p +1 
       ScanText[p] = cast(char, c) 
     else:
       ScanError("Illegal character") 
-  else if (c == EXLAM):                 # '!='  
+  elif (c == EXLAM):                 # '!='  
     if((c = ScanGetch()) == ASSIGN):
       rval =  NE 
       p = p + 1 
       ScanText[p] = cast(char, c) 
     else:
       ScanError("Illegal character") 
-  else if (c == ASSIGN):                # '=='  
+  elif (c == ASSIGN):                # '=='  
     if((c = ScanGetch()) == ASSIGN):
       rval =  EQ 
       p = p+1 
@@ -535,7 +536,7 @@ def int ScanLex() :
   
   # String  
 
-  else if (c == DFN):               
+  elif (c == DFN):               
     ScanText[p] = cast(char, DFN)  
     p = p + 1 
     string = 1 
@@ -558,7 +559,7 @@ def int ScanLex() :
 
   # Character constant  
 
-  else if (c == SFN):
+  elif (c == SFN):
     ScanText[p] = cast(char, SFN)  
     p = p + 1 
     ScanText[p] = cast(char, ScanGetch()) 
@@ -574,7 +575,7 @@ def int ScanLex() :
 
   # Decimal or floating point number   
 
-  else if(LibeIsdigit(c)):
+  elif(LibeIsdigit(c)):
     while (LibeIsdigit(c=ScanGetch())) :
       p = p + 1 
       ScanText[p] = cast(char, c) 
@@ -594,7 +595,7 @@ def int ScanLex() :
 
   # Keywords  and identifiers  
 
-  else if(LibeIsalnum(c)):
+  elif(LibeIsalnum(c)):
     while (LibeIsalnum(c=ScanGetch())):
       p = p + 1 
       ScanText[p] = cast(char, c) 
@@ -604,55 +605,57 @@ def int ScanLex() :
     ScanText[p+1] = cast(char, EOS) 
     if(LibeStrcmp(ScanText,"int")):
       rval = INT 
-    else if(LibeStrcmp(ScanText,"char")):
+    elif(LibeStrcmp(ScanText,"char")):
       rval = CHAR 
-    else if(LibeStrcmp(ScanText,"float")):
+    elif(LibeStrcmp(ScanText,"float")):
       rval = REAL 
-    else if(LibeStrcmp(ScanText,"const")):
+    elif(LibeStrcmp(ScanText,"const")):
       rval = CONST 
-    else if(LibeStrcmp(ScanText,"complex")):
+    elif(LibeStrcmp(ScanText,"complex")):
       rval = COMPLEX 
-    else if(LibeStrcmp(ScanText,"struct")):
+    elif(LibeStrcmp(ScanText,"struct")):
       rval = STRUCT 
-    else if(LibeStrcmp(ScanText,"class")):
+    elif(LibeStrcmp(ScanText,"class")):
       rval = STRUCT 
-    else if(LibeStrcmp(ScanText,"import")):
+    elif(LibeStrcmp(ScanText,"import")):
       rval = IMPORT 
-    else if(LibeStrcmp(ScanText,"while")):
+    elif(LibeStrcmp(ScanText,"while")):
       rval = WHILE 
-    else if(LibeStrcmp(ScanText,"return")):
+    elif(LibeStrcmp(ScanText,"return")):
       rval = RETURN 
-    else if(LibeStrcmp(ScanText,"def")):
+    elif(LibeStrcmp(ScanText,"def")):
       rval = DEF 
-    else if(LibeStrcmp(ScanText,"if")):
+    elif(LibeStrcmp(ScanText,"if")):
       rval = IF 
-    else if(LibeStrcmp(ScanText,"else")):
+    elif(LibeStrcmp(ScanText,"else")):
       rval = ELSE 
-    else if(LibeStrcmp(ScanText,"sizeof")):
+    elif(LibeStrcmp(ScanText,"elif")):
+      rval = ELIF
+    elif(LibeStrcmp(ScanText,"sizeof")):
       rval = SIZEOF 
-    else if(LibeStrcmp(ScanText,"cast")):
+    elif(LibeStrcmp(ScanText,"cast")):
       rval = CAST 
-    else if(LibeStrcmp(ScanText,"new")):
+    elif(LibeStrcmp(ScanText,"new")):
       rval = NEW 
-    else if(LibeStrcmp(ScanText,"delete")):
+    elif(LibeStrcmp(ScanText,"delete")):
       rval = DELETE 
-    else if(LibeStrcmp(ScanText,"len")):
+    elif(LibeStrcmp(ScanText,"len")):
       rval = LEN 
-    else if(LibeStrcmp(ScanText,"cmplx")):
+    elif(LibeStrcmp(ScanText,"cmplx")):
       rval = CMPLX 
-    else if(LibeStrcmp(ScanText,"re")):
+    elif(LibeStrcmp(ScanText,"re")):
       rval = RE 
-    else if(LibeStrcmp(ScanText,"im")):
+    elif(LibeStrcmp(ScanText,"im")):
       rval = IM 
-    else if(LibeStrcmp(ScanText,"for")):
+    elif(LibeStrcmp(ScanText,"for")):
       rval = FOR 
-    else if(LibeStrcmp(ScanText,"parallel")):
+    elif(LibeStrcmp(ScanText,"parallel")):
       rval = PARALLEL 
-    else if(LibeStrcmp(ScanText,"pass")):
+    elif(LibeStrcmp(ScanText,"pass")):
       rval = PASS 
-    else if(LibeStrcmp(ScanText,"in")):
+    elif(LibeStrcmp(ScanText,"in")):
       rval = IN 
-    else if(LibeStrcmp(ScanText,"range")):
+    elif(LibeStrcmp(ScanText,"range")):
       rval = RANGE 
     else:
       rval = ID 
@@ -767,7 +770,7 @@ def int ScanGetok() :
   # token on each subsequent call until the
   # current level is reached.
   # Indentation level is taken from the stack.
-  else if(ScanIndent < ScanIndentsave) :
+  elif(ScanIndent < ScanIndentsave) :
     level = ScanPop()  
     ScanIndentsave = level 
     #LibePs("DIND\n")

@@ -167,20 +167,34 @@ def int SymPrsym(int fp,struct symbol p, int level) :
       LibePuts(fp, " ") 
       i = i + 1 
 
-    LibePuts(fp, p.name);  LibePuts(fp, " ")     
-    LibePuts(fp, p.type);  LibePuts(fp, " ")     
-    LibePuts(fp, p.func);  LibePuts(fp, " ")     
-    LibePuts(fp, p.array); LibePuts(fp, " ")     
-    LibePuti(fp, p.rank);  LibePuts(fp, " ")     
-    LibePuti(fp, p.emit);  LibePuts(fp, " ")     
-    LibePuts(fp, p.structure); LibePuts(fp, " ")     
-    LibePuts(fp, p.ident);     LibePuts(fp, " ")     
-    LibePuts(fp, p.lval);      LibePuts(fp, " ")     
-    LibePuts(fp, p.ref);       LibePuts(fp, " ")     
-    LibePuts(fp, p.descr);     LibePuts(fp, " ")     
-    LibePuts(fp, p.global);    LibePuts(fp, " ")     
-    LibePuts(fp, p.module);    LibePuts(fp, " ")     
-    LibePuts(fp, p.forw);      LibePuts(fp, " ")     
+    LibePuts(fp, p.name)   
+    LibePuts(fp, " ")     
+    LibePuts(fp, p.type)   
+    LibePuts(fp, " ")     
+    LibePuts(fp, p.func)   
+    LibePuts(fp, " ")     
+    LibePuts(fp, p.array)  
+    LibePuts(fp, " ")     
+    LibePuti(fp, p.rank)   
+    LibePuts(fp, " ")     
+    LibePuti(fp, p.emit)   
+    LibePuts(fp, " ")     
+    LibePuts(fp, p.structure)  
+    LibePuts(fp, " ")     
+    LibePuts(fp, p.ident)      
+    LibePuts(fp, " ")     
+    LibePuts(fp, p.lval)       
+    LibePuts(fp, " ")     
+    LibePuts(fp, p.ref)        
+    LibePuts(fp, " ")     
+    LibePuts(fp, p.descr)      
+    LibePuts(fp, " ")     
+    LibePuts(fp, p.global)     
+    LibePuts(fp, " ")     
+    LibePuts(fp, p.module)     
+    LibePuts(fp, " ")     
+    LibePuts(fp, p.forw)       
+    LibePuts(fp, " ")     
     LibePuts(fp,"\n") 
     LibeFlush(fp) 
  
@@ -208,7 +222,7 @@ def int SymIstemp(char [*] name):
     return(ERR) 
      
   t = LibeStrsave("nctemp") 
-  for (i=0; i<lnc;  i=i+1):
+  for (i=0; i<lnc; i=i+1):
     if(name[i] != t[i]):
       return(ERR) 
      
@@ -593,7 +607,8 @@ def int SymRmtable(struct symbol p) :
 
   struct symbol next, prev 
 
-  if(p==NULL)return(ERR) 
+  if(p==NULL):
+    return(ERR) 
   prev=NULL 
   while(p != NULL):
     next=p.next 
@@ -639,9 +654,11 @@ def struct symbol SymLook(char [*] name) :
   if((tp = SymLookup(name, SymGetetp())) == NULL):
     if((tp = SymLookup(name, SymGetltp())) == NULL):
       tp = SymLookup("#arglist", SymGetltp())
-      if(tp==0) return(tp) 
+      if(tp==0): 
+        return(tp) 
       ap = SymGetable(tp) 
-      if(ap==0) return(ap) 
+      if(ap==0): 
+        return(ap) 
       if((tp = SymLookup(name,ap)) == NULL): 
         tp = SymLookup(name, SymGetetp())
 
@@ -744,19 +761,32 @@ def int SymExport(int fp,struct symbol p, int level) :
     if(SymIstemp(p.name) == ERR):
       if(LibeStrcmp(p.module,"void") == OK):
         LibePuts(fp," ") 
-        LibePuts(fp, p.name);  LibePuts(fp, " ") 
-        LibePuts(fp, p.type);  LibePuts(fp, " ") 
-        LibePuts(fp, p.func);  LibePuts(fp, " ") 
-        LibePuts(fp, p.array); LibePuts(fp, " ") 
-        LibePuti(fp, p.rank);  LibePuts(fp, " ") 
-        LibePuti(fp, p.emit);  LibePuts(fp, " ") 
-        LibePuts(fp, p.structure); LibePuts(fp, " ") 
-        LibePuts(fp, p.ident);     LibePuts(fp, " ") 
-        LibePuts(fp, p.lval);      LibePuts(fp, " ") 
-        LibePuts(fp, p.ref);       LibePuts(fp, " ") 
-        LibePuts(fp, p.descr);     LibePuts(fp, " ") 
-        LibePuts(fp, p.global);    LibePuts(fp, " ") 
-        LibePuts(fp, p.module);    LibePuts(fp, " ") 
+        LibePuts(fp, p.name)   
+        LibePuts(fp, " ") 
+        LibePuts(fp, p.type)   
+        LibePuts(fp, " ") 
+        LibePuts(fp, p.func)   
+        LibePuts(fp, " ") 
+        LibePuts(fp, p.array)  
+        LibePuts(fp, " ") 
+        LibePuti(fp, p.rank)   
+        LibePuts(fp, " ") 
+        LibePuti(fp, p.emit)   
+        LibePuts(fp, " ") 
+        LibePuts(fp, p.structure)  
+        LibePuts(fp, " ") 
+        LibePuts(fp, p.ident)      
+        LibePuts(fp, " ") 
+        LibePuts(fp, p.lval)       
+        LibePuts(fp, " ") 
+        LibePuts(fp, p.ref)        
+        LibePuts(fp, " ") 
+        LibePuts(fp, p.descr)      
+        LibePuts(fp, " ") 
+        LibePuts(fp, p.global)     
+        LibePuts(fp, " ") 
+        LibePuts(fp, p.module)     
+        LibePuts(fp, " ") 
         LibePuts(fp,"\n") 
         LibeFlush(fp) 
         SymPrsym(fp,SymGetable(p),1) 

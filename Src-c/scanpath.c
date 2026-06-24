@@ -1,4 +1,4 @@
-//  Translated by epsc  version: Fri Apr 24 15:59:15 2026
+//  Translated by epsc  version: Sat Jun 20 16:48:06 2026
 
 #include <stddef.h>
 #include <stdio.h>
@@ -128,6 +128,7 @@ nctempchar1 *tmp;
 nctempchar1 *path;
 int l1;
 int l2;
+{
 struct nctempchar1 *nctemp8;
 static struct nctempchar1 nctemp9 = {{ 4}, (char*)"EPS\0"};
 nctemp8=&nctemp9;
@@ -157,4 +158,5 @@ nctempchar1* nctemp70= tmp;
 nctempchar1* nctemp73= path;
 int nctemp76=LibeStrcat(nctemp70,nctemp73);
 return path;
+}
 }

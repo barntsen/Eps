@@ -12,14 +12,17 @@
 # Literal     : 'a'
 # Grouping    : ()
 #
-#   parse =  extdecl
+#   parse =  extdecl 
 #   extdecl = 
 #       import 
 #     | fdef
-#     | type ID  [idseq] (SEMICOLON | NL) | (COLON IND structdeclar) 
-#     | ID ASSIGN RCONSTANT|SCONSTANT|ICONSTANT (SEMICOLON|NL)
-#
-#   import = IMPORT ID NL
+#     | const 
+#     | type ID  (| [idseq]  NL) | (ASSIGN  constdecl) NL 
+#                 | (COLON NL IND structdeclar) 
+#     
+#   constdecl = RCONSTANT|SCONSTANT|ICONSTANT 
+#     
+#   import = IMPORT ID 
 #   fdef   = DEF type ID '(' [arglist] ')' compstmnt
 #   type = 
 #        INT 
@@ -35,34 +38,32 @@
 #   arrayarg     = *  | ',' arrayarg
 #   arglist      = type [ID] [argseq] 
 #   argseq       = ',' [ID]  argseq  
-#   declarations = declaration [';'] NL [declarations]
+#   declarations = declaration NL [declarations]
 #   declaration  = type ID 
 #      | [idseq] 
-#      | constdecl  
-#
-#   constdecl    = "=" expr [';'] NL
+#      | const  
 #
 #   compstmnt      = 
-#       ':'  NL IND declarations 
-#      | stmntlist DIND 
+#       ':'  NL IND declarations stmntlist DIND [compstmnt] 
+#      
 #
-#   stmntlist = stmnt [';'] NL [stmntlist]
+#   stmntlist = stmnt [stmntlist]
 #
 #   stmnt  = 
-#      |ifstmnt
-#      |compstmnt
+#      |ifstmnt 
 #      |whilestmnt
 #      |forstmnt 
 #      |parallelstmnt
 #      |return NL
-#      |PASS NL
-#      |expr 
+#      |expr NL
 #
-#   ifstmnt        = IF '(' expr')' stmnt elsestmnt
-#   elsestmnt      = ELSE stmnt 
-#   whilestmnt     = WHILE '(' expr')' stmnt 
-#   forstmnt       = FOR '(' expr ';' expr ';' expr')' stmnt 
-#   parallelstmnt  = PARALLEL '('  sliceseq ')' stmnt 
+#   ifstmnt        = IF '(' expr')' compstmnt [elif] [else}
+#   elif           = ELIF compstmnt [elif]
+#   elsestmnt      = ELSE compstmnt 
+#   whilestmnt     = WHILE '(' expr')' compstmnt 
+#   forstmnt       = FOR '(' expr ' ' expr ' ' expr')' compstmnt 
+#   forinstmnt     = FOR IN RANGE(expr1,expr) compstmnt
+#   parallelstmnt  = PARALLEL '('  sliceseq ')' compstmnt 
 #   sliceseq       = slice [, sliceseq]
 #   slice          = expr ':' expr [':' expr ] 
 #   returnstmnt    = RETURN  expr
@@ -88,18 +89,22 @@
 #    multexprseq    = ['*'|'/' unexpr multexprseq] 
 #    unexpr         = primexpr | '-' unexpr 
 #    primexpr = 
-#      | ident
-#      | '(' exprlist ')'] ) 
-#      | CAST '(' type ',' asgexpr ')'  
-#      | SCONST 
-#      | ICONST 
-#      | RCONST 
-#      | NEW '(' type ')'  
-#      | CMPLX '(' expr ')' 
-#      | IM '(' expr ')'
-#      | RE '(' expr ')'
+#      | ident [fcall]
+#      | cast
+#      | const 
+#      | new
+#      | cmplx
+#      | im
+#      | re
+#    ident =  ID  [ '['exprlist ']' ] ['.' ident] 
+#    fcall ='(' exprlist ')'] ) 
+#    cast  = CAST '(' type ',' asgexpr ')'  
+#    const = ASSIGN SCONST|RCONST|ICONST 
+#    new   = NEW '(' type ')'  
+#    cmplx = CMPLX '(' expr ')' 
+#    im    = IM '(' expr ')'
+#    re    = RE '(' expr ')'
 #
-#    ident =  [module '.'] ID  [ '['exprlist ']' ] ['.' ident] 
 
 import libe     # Library interface              
 import ptree    # Parse Tree routines interface  
@@ -107,14 +112,14 @@ import err      # Error routines interface
 import scan     # Lexical scanner interface      
 
 
-int lookahead;            # Look ahead token 
+int lookahead             # Look ahead token 
 
 def int ParseIniparse() :
 
   # ParseIniparse initializes the parser. 
 
- lookahead = ScanGetok();
- return(OK);
+ lookahead = ScanGetok() 
+ return(OK) 
 
 # Forward declarations
 def struct tree ParseExpr() : 
@@ -127,6 +132,9 @@ def struct tree ParseStmnt() :
   pass
 
 def struct tree ParseElsestmnt() : 
+  pass
+
+def struct tree ParseIfstmnt() : 
   pass
 
 def struct tree ParseCompstmnt() : 
@@ -142,9 +150,9 @@ def int ParseError(char [*] s) :
   # Returns : Exits
   #
 
-  ErrError(ScanGetfile(),ScanGetline(), s);
+  ErrError(ScanGetfile(),ScanGetline(), s) 
 
-  return(OK);
+  return(OK) 
 
 def int ParseGetlookahead() :
   
@@ -153,7 +161,7 @@ def int ParseGetlookahead() :
   # Returns: lookahead token
   #
 
-  return (lookahead);       # Return lookahead token     
+  return (lookahead)        # Return lookahead token     
 
 def int ParseMatch(int t) :
   
@@ -170,8 +178,11 @@ def int ParseMatch(int t) :
   if(lookahead == t):
     lookahead = ScanGetok()
   else :
-    LibePs("Was expecting: "); LibePi(t); LibePs(", but got: "); 
-    LibePi(lookahead); LibePs("\n");
+    LibePs("Was expecting: ")  
+    LibePi(t)  
+    LibePs(", but got: ")  
+    LibePi(lookahead)  
+    LibePs("\n") 
     ParseError("syntax error")
     lookahead = ScanGetok()
   return(OK)
@@ -191,12 +202,12 @@ def struct tree ParseMknode(char [*] name, char [*] defn) :
   # the input file name field and the 
   # line no field of the node.
 
-  struct tree p; 
+  struct tree p  
 
-  p = PtreeMknode(name,defn);
-  PtreeSetline(p,ScanGetline());
-  PtreeSetfile(p,ScanGetfile());
-  return(p);
+  p = PtreeMknode(name,defn) 
+  PtreeSetline(p,ScanGetline()) 
+  PtreeSetfile(p,ScanGetfile()) 
+  return(p) 
 
 def struct tree ParseExprseq(struct tree p) :
 
@@ -209,636 +220,671 @@ def struct tree ParseExprseq(struct tree p) :
   #   NULL reference
   #
   # An expression node is added to the input node.
-  # The following part of the grammar is implemented
-  #    exprseq        = ',' expr [ exprseq ]
 
   if(lookahead == COMMA):
-    ParseMatch(lookahead);
-    PtreeAddsister(p, ParseExpr());
-    ParseExprseq(p);
-  return p=NULL;
+    ParseMatch(lookahead) 
+    PtreeAddsister(p, ParseExpr()) 
+    ParseExprseq(p) 
+  return p=NULL 
 
 def struct tree ParseExprlist() :
 
   # ParseExprlist parses a list of expressions.
-  #  The following part of the grammar is implemented:
-  #    exprlist    = [ expr exprseq ]
 
-  struct tree np, sp;
+  struct tree np, sp 
 
-  np = ParseExpr();
+  np = ParseExpr() 
   if(np != NULL):
-    sp = ParseMknode("exprlist", "void");
-    PtreeAddchild(sp, np);
-    ParseExprseq(np);
+    sp = ParseMknode("exprlist", "void") 
+    PtreeAddchild(sp, np) 
+    ParseExprseq(np) 
   else:
-    sp = NULL;
-  return sp;
+    sp = NULL 
+  return sp 
 
 def int ParseArrayarg(struct tree p) :
 
   # ParseArrayarg parses dummy array arguments      
-  # The following part of the grammar is implemented:
-  #   arrayarg          = '*' [ ',' arrayarg ]
 
-  struct tree np, sp;
+  struct tree np, sp 
 
   if(lookahead == STAR):
-    ParseMatch(STAR);
-    sp = ParseMknode("arrayargs", "void");
-    PtreeAddchild(p,sp);
+    ParseMatch(STAR) 
+    sp = ParseMknode("arrayargs", "void") 
+    PtreeAddchild(p,sp) 
     if(lookahead == COMMA):            
-      ParseMatch(lookahead);
-      ParseArrayarg(p);
+      ParseMatch(lookahead) 
+      ParseArrayarg(p) 
     else:
-      return(OK);
+      return(OK) 
   else:
-    sp = ParseMknode("arrayargs", "void");
-    PtreeAddchild(p,sp);
-    np = ParseExprlist();
+    sp = ParseMknode("arrayargs", "void") 
+    PtreeAddchild(p,sp) 
+    np = ParseExprlist() 
     if(sp != NULL):
-      PtreeAddchild(sp,np);
+      PtreeAddchild(sp,np) 
     else:
-      ParseError("Syntax error");
-    return(OK);
-  return(OK);
+      ParseError("Syntax error") 
+    return(OK) 
+  return(OK) 
 
 def int ParseIdseq(struct tree p) :
 
-  # ParseIdseq -- parse identifier sequence      
-  # The following part of the grammar is implemented:
-  #   idseq          = ',' ID  [ idseq ]
+  # ParseIdseq  parses identifier sequence      
 
-  struct tree sp;
+  struct tree sp 
 
   if(lookahead == COMMA):
-    ParseMatch(lookahead);
-    sp = ParseMknode("identifier", ScanGetext());
-    PtreeAddchild(p, sp);
-    ParseMatch(ID);        
-    ParseIdseq(p);
+    ParseMatch(lookahead) 
+    sp = ParseMknode("identifier", ScanGetext()) 
+    PtreeAddchild(p, sp) 
+    ParseMatch(ID)         
+    ParseIdseq(p) 
   else:
-    return(OK);
-  return(OK);
+    return(OK) 
+  return(OK) 
 
 def int ParseConstdecl(struct tree p) :
 
-  # ParseConstdecl  parses constant declaration    
-  # The following part of the grammar is implemented
-  #    constdecl      = "=" expr ';'
+  # Parse constant declaration
+  #
+  # Parameters:
+  #   p: Tree identifier node
+  #
+  # Returns: 
+  #  OK
+  #  The constant node is added as a child to node p.
+  #
 
-  struct tree np;
+  char [*] sign
+  sign=NULL
 
-  np=ParseExpr();
+  if(lookahead == MINUS):
+    ParseMatch(MINUS)
+    sign="-"
+
+  tmp=ScanGetext()
+  if(sign != NULL):
+    value=LibeStradd(sign,tmp)
+  else :
+    value=tmp
+
+  if(lookahead==ICONST):
+    np=ParseMknode("iconstant",value)
+  elif(lookahead==RCONST):
+    np=ParseMknode("rconstant",value)
+  elif(lookahead==SCONST):
+    np=ParseMknode("sconstant",value)
   if(np != NULL):
-   PtreeAddchild(p,np);
-  return(OK);
+    PtreeAddchild(p,np)
 
-def struct tree ParseIdent() :
+  ParseMatch(lookahead)
+  return(OK)
 
-  # ParseIdent parses identifier
-  # The following part of the grammar is implemented:
-  # ident         =  ID  [ '['exprlist ']' ] 
-
-  struct tree np, sp;
-
-  if(lookahead == ID):
-    sp = ParseMknode("identifier", ScanGetext()); 
-    ParseMatch(ID); 
-    if(lookahead == LB):                 
-      ParseMatch(lookahead);
-      PtreeSetarray(sp, "array");
-      np = ParseExprlist();
-      PtreeAddchild(sp, np);
-      ParseMatch(RB);
-  else:
-    sp = NULL;
-  return sp;
 
 def struct tree ParseType() :
 
-  # This function implements the following part of the grammar:
-  #   type  = [( INT | REAL | CONST | COMPLEX | CHAR  
-  #           | STRUCT ID )] [ '['arrayarg']']
+  # Parsetype parses type statements
 
-  struct tree np, sp;
+  struct tree np, sp 
 
   if((lookahead == INT)   || \
     (lookahead == REAL)   || \
     (lookahead == CHAR)   || \
     (lookahead == CONST)  || \
     (lookahead == COMPLEX)):
-    np = ParseMknode("type", ScanGetext());
-    ParseMatch(lookahead);
+    np = ParseMknode("type", ScanGetext()) 
+    ParseMatch(lookahead) 
 
-  else if(lookahead == STRUCT) : 
-    ParseMatch(lookahead);
-    np = ParseMknode("type", ScanGetext());
-    PtreeSetstruct(np, "struct");
-    ParseMatch(ID);
+  elif(lookahead == STRUCT) : 
+    ParseMatch(lookahead) 
+    np = ParseMknode("type", ScanGetext()) 
+    PtreeSetstruct(np, "struct") 
+    ParseMatch(ID) 
   else :
-    np = NULL;
+    np = NULL 
 
   if(lookahead == LB):
     if(np==NULL):
-      ParseError("Missing type");
-    ParseMatch(lookahead);
-    PtreeSetarray(np, "array");
-    sp = ParseMknode("arrayargs", "void");
-    PtreeAddchild(np,sp);
-    ParseArrayarg(sp);
-    ParseMatch(RB);
-  return (np);
+      ParseError("Missing type") 
+    ParseMatch(lookahead) 
+    PtreeSetarray(np, "array") 
+    sp = ParseMknode("arrayargs", "void") 
+    PtreeAddchild(np,sp) 
+    ParseArrayarg(sp) 
+    ParseMatch(RB) 
+  return (np) 
+
+def struct tree ParseFcall(struct tree p) :
+
+  # Parse function call
+  #
+  # Returns:
+  #   Function call  parse tree
+  #
+  struct tree np
+
+  sp=PtreeMknode("fcall",PtreeGetdef(p))
+  ParseMatch(LP) 
+  np=NULL 
+  if(lookahead != RP):
+    np = ParseExprlist() 
+  ParseMatch(RP) 
+  if(np != NULL):
+    PtreeAddchild(sp,np) 
+  return(sp)
+
+def struct tree ParseIdent() :
+
+  # Parse identifier
+  #
+  # Returns:
+  #   Identifier parse tree
+  #
+
+   sp = ParseMknode("identifier", ScanGetext())  # Identifier           
+   ParseMatch(ID)  
+   if(lookahead == LB):      
+     ParseMatch(lookahead) 
+     PtreeSetarray(sp, "array") 
+     np = ParseExprlist() 
+     PtreeAddchild(sp, np) 
+     ParseMatch(RB) 
+   if(lookahead == POINT):  
+     ParseMatch(POINT) 
+     np = ParseIdent() 
+     PtreeAddchild(sp,np) 
+     PtreeSetname(np, "selector") 
+   return(sp)
+
+def struct tree ParseCast() :
+
+  # Parse cast
+  #
+  # Returns:
+  #   cast  parse tree
+  #
+
+  ParseMatch(CAST) 
+  sp=ParseMknode("cast", "void") 
+  ParseMatch(LP) 
+  np=ParseType() 
+  if(np == NULL):
+    ParseError("Syntax error") 
+  else:
+    PtreeAddchild(sp,np) 
+  ParseMatch(COMMA) 
+  np = ParseExpr() 
+  PtreeAddchild(sp,np) 
+  ParseMatch(RP) 
+
+  return(sp)
+
+def struct tree ParseNew() :
+
+  # Parse new operator
+  #
+  # Returns:
+  #   new  parse tree
+  #
+
+  ParseMatch(lookahead) 
+  sp=ParseMknode("new", "void") 
+  ParseMatch(LP) 
+  np=ParseType() 
+  if(np == NULL):
+    ParseError("Syntax error") 
+  else:
+    ParseMatch(RP) 
+    PtreeAddchild(sp,np)
+  return(sp)
+
+def struct tree ParseDelete() :
+
+  # Parse delete operator
+  #
+  # Returns:
+  #   delete  parse tree
+  #
+
+  ParseMatch(lookahead) 
+  sp=ParseMknode("delete", "void") 
+  ParseMatch(LP) 
+  np=ParseExpr() 
+  if(np == NULL) :
+    ParseError("Syntax error") 
+  else:
+    PtreeAddchild(sp,np) 
+    ParseMatch(RP)
+  return(sp)
+
+
+def struct tree ParseCmplx() :
+
+  # Parse cmplx operator
+  #
+  # Returns:
+  #   cmplx  parse tree
+  #
+
+  ParseMatch(lookahead) 
+  sp=ParseMknode("cmplx", "void") 
+  ParseMatch(LP) 
+  np = ParseExprlist() 
+  if(np == NULL) :
+    ParseError("Syntax error") 
+  else:
+    PtreeAddchild(sp,np) 
+
+  ParseMatch(RP) 
+
+  return(sp)
+
+def struct tree ParseRe() :
+
+  # Parse re operator
+  #
+  # Returns:
+  #   re  parse tree
+  #
+
+   ParseMatch(lookahead)
+   ParseMatch(LP)
+   sp=ParseMknode("re", "void")
+   np = ParseExpr()
+   if(np == NULL):
+     ParseError("Syntax error")
+   else:
+     PtreeAddchild(sp,np)
+     ParseMatch(RP)
+
+   return(sp)
+
+
+def struct tree ParseIm() :
+
+  # Parse im operator
+  #
+  # Returns:
+  #   im  parse tree
+  #
+
+  ParseMatch(lookahead) 
+  sp=ParseMknode("im", "void") 
+  ParseMatch(LP) 
+  np = ParseExpr() 
+  if(np == NULL):
+    ParseError("Syntax error") 
+  else:
+    PtreeAddchild(sp,np) 
+    ParseMatch(RP) 
+   
+  return(sp)
+
+
+def struct tree ParseLen() :
+
+  # Parses len operator
+  #
+  # Returns:
+  #   len  parse tree
+  #
+
+  ParseMatch(lookahead) 
+  sp=ParseMknode("len", "void") 
+  ParseMatch(LP) 
+  np = ParseExpr() 
+  if(np == NULL) :
+    ParseError("Syntax error") 
+  else:
+    PtreeAddchild(sp,np) 
+    ParseMatch(COMMA) 
+    rp = ParseExpr() 
+    if(rp == NULL) :
+      ParseError("Syntax error") 
+    else:
+      PtreeAddsister(np,rp) 
+
+    ParseMatch(RP) 
+
+    return(sp)
+ 
 
 def struct tree ParsePrimexpr(struct tree p) :
 
-  # ParsePrimexpr -- parse primary expressions
- 
-  # The following part of the grammar is implemented:
-  #  primexpr       = ID ['[' exprlist ']'] | '(' exprlist ')'] ) | ['.' ident]
-  #              | CAST '(' type ',' asgexpr ')'  
-  #              | SCONST | ICONST | RCONST | NEW '(' type ')'  
-  #              | CMPLX '(' expr ')' | IM '(' expr ')'| RE '(' expr ')'
-  #              | LEN '(' expr, expr ')' | SIZEOF '(' type ')'
-
-  struct tree np, sp, rp;
+  # ParsePrimexpr parses primary expressions
+  #
+  # Returns:
+  #  primary expression tree
+  #
 
   if(lookahead == ID):
-    sp = ParseMknode("identifier", ScanGetext()); # Identifier           
-    ParseMatch(ID); 
-    if(lookahead == LB):                 # Array Reference      
-      ParseMatch(lookahead);
-      PtreeSetarray(sp, "array");
-      np = ParseExprlist();
-      PtreeAddchild(sp, np);
-      ParseMatch(RB);
-      if(lookahead == POINT):            # Structure reference  
-        ParseMatch(POINT);
-        np = ParseIdent();
-        PtreeAddchild(sp,np);
-        PtreeSetname(np, "selector");
-
-    else if(lookahead == LP):           # Function call         
-      ParseMatch(lookahead);
-      PtreeSetname(sp,"fcall");
-      np=NULL;
-      if(lookahead != RP):
-        np = ParseExprlist();
-      ParseMatch(RP);
-      if(np != NULL): 
-        PtreeAddchild(sp,np);
-
-    else if(lookahead == POINT):         # Structure reference  
-      ParseMatch(POINT);
-      np = ParseIdent();
-      PtreeAddchild(sp,np);
-      PtreeSetname(np, "selector");
-
-  else if(lookahead == CAST):           # Cast         
-      ParseMatch(lookahead);
-      sp=ParseMknode("cast", "void");
-      ParseMatch(LP);
-      np=ParseType();
-      if(np == NULL):
-       ParseError("Syntax error");
-      else:
-       PtreeAddchild(sp,np);
-      ParseMatch(COMMA);
-      np = ParseExpr();
-      PtreeAddchild(sp,np);
-      ParseMatch(RP);
-  
-  else if(lookahead == NEW):           # The new operator   
-      ParseMatch(lookahead);
-      sp=ParseMknode("new", "void");
-      ParseMatch(LP);
-      np=ParseType();
-      if(np == NULL):
-        ParseError("Syntax error");
-      else:
-        PtreeAddchild(sp,np);
-
-      ParseMatch(RP);
-  
-  else if(lookahead == DELETE):         # The delete operator   
-      ParseMatch(lookahead);
-      sp=ParseMknode("delete", "void");
-      ParseMatch(LP);
-      np=ParseExpr();
-      if(np == NULL) :
-        ParseError("Syntax error");
-      else:
-        PtreeAddchild(sp,np);
-
-      ParseMatch(RP);
-
-  else if(lookahead == CMPLX):           # The cmplx operator   
-      ParseMatch(lookahead);
-      sp=ParseMknode("cmplx", "void");
-      ParseMatch(LP);
-      np = ParseExprlist();
-      if(np == NULL) :
-        ParseError("Syntax error");
-      else:
-        PtreeAddchild(sp,np);
-
-      ParseMatch(RP);
- 
-  else if(lookahead == RE):           # The re operator   
-      ParseMatch(lookahead);
-      sp=ParseMknode("re", "void");
-      ParseMatch(LP);
-      np = ParseExpr();
-      if(np == NULL):
-        ParseError("Syntax error");
-      else:
-        PtreeAddchild(sp,np);
-
-      ParseMatch(RP);
- 
-  else if(lookahead == IM):           # The im operator   
-      ParseMatch(lookahead);
-      sp=ParseMknode("im", "void");
-      ParseMatch(LP);
-      np = ParseExpr();
-      if(np == NULL):
-        ParseError("Syntax error");
-      else:
-        PtreeAddchild(sp,np);
-
-      ParseMatch(RP);
- 
-  else if(lookahead == LEN):           # The im operator   
-      ParseMatch(lookahead);
-      sp=ParseMknode("len", "void");
-      ParseMatch(LP);
-      np = ParseExpr();
-      if(np == NULL) :
-        ParseError("Syntax error");
-      else:
-       PtreeAddchild(sp,np);
-
-      ParseMatch(COMMA);
-
-      rp = ParseExpr();
-      if(rp == NULL) :
-        ParseError("Syntax error");
-      else:
-       PtreeAddsister(np,rp);
-
-      ParseMatch(RP);
- 
-  else if(lookahead == ICONST) :           # Integer constant  
-      sp = ParseMknode("iconstant", ScanGetext());
-      ParseMatch(ICONST); 
-  
-  else if(lookahead == RCONST) :           # Float   constant  
-      sp = ParseMknode("rconstant", ScanGetext());
-      ParseMatch(RCONST); 
- 
-  else if(lookahead == SCONST) :          # String constant   
-      sp = ParseMknode("sconstant", ScanGetext());
-      ParseMatch(SCONST); 
-  
-  else if(lookahead == LP):           # Parenthized expression  
-      ParseMatch(LP); 
-      sp = ParseAsgexpr(p); 
-      ParseMatch(RP); 
+    sp=ParseIdent()
+    if(lookahead==LP):
+      np=ParseFcall(sp)
+      delete(sp)
+      sp=np
+  elif(lookahead == CAST):          
+    sp=ParseCast()
+  elif(lookahead == NEW):          
+    sp=ParseNew()
+  elif(lookahead == DELETE):      
+    sp=ParseDelete()
+  elif(lookahead == CMPLX):  
+    sp=ParseCmplx()
+  elif(lookahead == RE):    
+    sp=ParseRe()
+  elif(lookahead == IM):   
+    sp=ParseIm()
+  elif(lookahead == LEN):   
+    sp=ParseLen()
+  elif(lookahead == ICONST) :   
+      sp = ParseMknode("iconstant", ScanGetext()) 
+      ParseMatch(ICONST)  
+  elif(lookahead == RCONST) :    
+      sp = ParseMknode("rconstant", ScanGetext()) 
+      ParseMatch(RCONST)  
+  elif(lookahead == SCONST) :     
+      sp = ParseMknode("sconstant", ScanGetext()) 
+      ParseMatch(SCONST)  
+  elif(lookahead == LP):           
+      ParseMatch(LP)  
+      sp = ParseAsgexpr(p) 
+      ParseMatch(RP) 
   else :
-      ParseError("Syntax error");              # No match  
+      ParseError("Syntax error") 
 
-  return sp;
+  return sp 
 
 def struct tree ParseUnexpr(struct tree p) :
 
   # ParseUnexpr parses unary expressions. 
-  # The following part of the grammar is implemented:
-  #   unexpr   = primexpr | '-' unexpr
 
-  struct tree np, sp;
+  struct tree np, sp 
 
   if(lookahead == MINUS):             # Unary minus          
-    sp = ParseMknode("unexpr", ScanGetext());
-    ParseMatch(lookahead); 
-    np = ParseUnexpr(p);
-    PtreeAddchild(sp, np);
- 
+    sp = ParseMknode("unexpr", ScanGetext()) 
+    ParseMatch(lookahead)  
+    np = ParseUnexpr(p) 
+    PtreeAddchild(sp, np) 
   else:
-    sp = ParsePrimexpr(p);
+    sp = ParsePrimexpr(p) 
 
-  return (sp); 
+  return (sp)  
 
 def struct tree ParseMultexprseq(struct tree p) :
 
   # Pmultexprseq parses sequence of multiplicative expressions.
-  # The following part of the grammar is implemented:
-  #   multexprseq    = ['*'|'/' unexpr multexprseq]
             
-  struct tree np, rp, sp;
+  struct tree np, rp, sp 
 
   if((lookahead == STAR)  || (lookahead == SLASH)): 
-     np = ParseMknode("binexpr", ScanGetext());   
-     ParseMatch(lookahead); 
-     PtreeAddchild(np, p);           
-     rp = ParseUnexpr(np);
-     PtreeAddchild(np, rp);         
-     sp = ParseMultexprseq(np);            
+     np = ParseMknode("binexpr", ScanGetext())    
+     ParseMatch(lookahead)  
+     PtreeAddchild(np, p)            
+     rp = ParseUnexpr(np) 
+     PtreeAddchild(np, rp)          
+     sp = ParseMultexprseq(np)             
   else:
-    sp = p;
-  return (sp);
+    sp = p 
+  return (sp) 
  
 def struct tree ParseMultexpr(struct tree p) :
 
   # Pmultexpr  parses multiplicative expressions.
-  # The following part of the grammar is implemented:
-  #   multexpr       = unexpr  multexprseq
 
-  struct tree np;
+  struct tree np 
 
-  np = ParseUnexpr(p);   
-  np = ParseMultexprseq(np);  
-  return (np);
+  np = ParseUnexpr(p)    
+  np = ParseMultexprseq(np)   
+  return (np) 
 
 def struct tree ParseAddexprseq(struct tree p) :
 
   # PaddexprSeq parses sequence of additive expressions.
-  # The following part of the grammar is implemented:
-  #    addexpseq      = ['+'|'-'  multexpr addexprseq]
 
-  struct tree np, rp, sp;
+  struct tree np, rp, sp 
 
   if((lookahead == PLUS)  || (lookahead == MINUS)):
-     np = ParseMknode("binexpr", ScanGetext()); 
-     ParseMatch(lookahead);      
-     PtreeAddchild(np, p);      
-     rp = ParseMultexpr(np); 
-     PtreeAddchild(np, rp);
-     sp = ParseAddexprseq(np); 
+     np = ParseMknode("binexpr", ScanGetext())  
+     ParseMatch(lookahead)       
+     PtreeAddchild(np, p)       
+     rp = ParseMultexpr(np)  
+     PtreeAddchild(np, rp) 
+     sp = ParseAddexprseq(np)  
   else:
-     sp = p;
-  return (sp);
+     sp = p 
+  return (sp) 
  
 def struct tree ParseAddexpr(struct tree p) :
 
   # ParseAddexpr parses additive expressions. 
-  # The following part of the grammar is implemented:
-  #    addexpr        = multexpr addexprseq
 
-  struct tree np;
+  struct tree np 
 
-  np = ParseMultexpr(p);             
-  np = ParseAddexprseq(np);  
-  return (np);
+  np = ParseMultexpr(p)              
+  np = ParseAddexprseq(np)   
+  return (np) 
 
 def struct tree ParseRelexprseq(struct tree p) :
 
   # ParseRelexprseq parses sequence of relational expressions.
-  # The part of the grammar implemented is :
-  #    relexprseq     = ( '<' | '>' | '<=' | '>=' '||'
-  #                 | "&&" | "!=" | "==" )
             
-  struct tree np, rp, sp;
+  struct tree np, rp, sp 
 
   if((lookahead == LT) || (lookahead == GT)  ||  (lookahead == GE)  ||  (lookahead == EQ)  || (lookahead == NE)  ||   (lookahead == OR)  ||  (lookahead == AND) ||  (lookahead == LE)):
-      np = ParseMknode("binexpr", ScanGetext()); 
-      ParseMatch(lookahead);      
-      PtreeAddchild(np, p);      
-      rp = ParseAddexpr(np); 
-      PtreeAddchild(np, rp);
-      sp = ParseRelexprseq(np); 
+      np = ParseMknode("binexpr", ScanGetext())  
+      ParseMatch(lookahead)       
+      PtreeAddchild(np, p)       
+      rp = ParseAddexpr(np)  
+      PtreeAddchild(np, rp) 
+      sp = ParseRelexprseq(np)  
   else:
-      sp = p;
-  return (sp);
+      sp = p 
+  return (sp) 
 
 def struct tree ParseRelexpr(struct tree p) :
 
   # ParseRelexpr parses relational expressions.
-  # The following part of the grammar is implemented:
-  #    relexpr        = addexpr relexprseq
 
-  struct tree np;
+  struct tree np 
 
-  np = ParseAddexpr(p);             
-  np = ParseRelexprseq(np);  
-  return (np);
+  np = ParseAddexpr(p)              
+  np = ParseRelexprseq(np)   
+  return (np) 
 
 def struct tree ParseAsgexprseq(struct tree p) :
 
   # PraseAsgexprseq parses sequence of assignment expressions
-  # The following part of the grammar is implemented:
-  #  asgexprSeq        = '='    relexpr asgexprseq 
 
-  struct tree np, rp, sp;
+  struct tree np, rp, sp 
 
   if((lookahead == ASSIGN)):           
-    np = ParseMknode("binexpr", ScanGetext()); 
-    ParseMatch(lookahead);      
-    PtreeAddchild(np, p);           
-    rp = ParseRelexpr(np); 
-    sp = ParseAsgexprseq(rp);
-    PtreeAddchild(np, sp);
+    np = ParseMknode("binexpr", ScanGetext())  
+    ParseMatch(lookahead)       
+    PtreeAddchild(np, p)            
+    rp = ParseRelexpr(np)  
+    sp = ParseAsgexprseq(rp) 
+    PtreeAddchild(np, sp) 
   else:
-    np = p;
-  return (np);
+    np = p 
+  return (np) 
  
 def struct tree ParseAsgexpr(struct tree p) :
 
+  # Pasgexpr parses assignmnet expressions    
+  #
   # Parameters :
   #   p: Expression tree node
   #
   # Returns:
   #   np : Tree nodes with assignment expression sequence
 
-  # Pasgexpr parses assignmnet expressions    
-  # The following part of the grammar is implemented
-  #  asgexpr        : relexpr asgexprseq 
+  struct tree np 
 
-  struct tree np;
-
-  np = ParseRelexpr(p);             
-  np = ParseAsgexprseq(np);  
-  return np;
+  np = ParseRelexpr(p)              
+  np = ParseAsgexprseq(np)   
+  return np 
 
 def struct tree ParseExpr() :
 
   # ParseExpr  parses expressions      
-  # The following part of the grammar is implemented
-  #   expr           = asgexpr
  
-  struct tree np, sp, rp;
+  struct tree np, sp, rp 
 
-  rp = NULL;
-  np = ParseAsgexpr(rp);
+  rp = NULL 
+  np = ParseAsgexpr(rp) 
   if(np != NULL):
-     sp = ParseMknode("expr","void");
-     PtreeAddchild(sp, np);
-     np = sp;
-  return (np);
+     sp = ParseMknode("expr","void") 
+     PtreeAddchild(sp, np) 
+     np = sp 
+  return (np) 
 
 def struct tree ParseDeclaration() :
 
   # ParseDeclaration parses a declaration
-  # The following part of the grammar is implemented:
-  #   declaration    = type ID idseq';'
 
-  struct tree mp, np;
+  struct tree mp, np 
 
-  np = ParseType();             # type  
+  np = ParseType()              # type  
   if(np == NULL):
-    return(np);
+    return(np) 
 
   if(lookahead == ID):        # ID   
-    mp=ParseMknode("identifier", ScanGetext());  
-    PtreeAddchild(np,mp);
-    ParseMatch(lookahead);
+    mp=ParseMknode("identifier", ScanGetext())   
+    PtreeAddchild(np,mp) 
+    ParseMatch(lookahead) 
     if(lookahead == COMMA):
-      ParseIdseq(np);
-    else if(lookahead == ASSIGN):
-      ParseMatch(lookahead);
-      ParseConstdecl(mp);
-    if(lookahead == SEMICOLON):
-      ParseMatch(SEMICOLON);
-    ParseMatch(NL);
+      ParseIdseq(np) 
+    elif(lookahead == ASSIGN):
+      ParseMatch(lookahead) 
+      ParseConstdecl(mp) 
+    ParseMatch(NL) 
   else:
-    ParseError("Missing variable in type statement");
-  return (np);
+    ParseError("Missing variable in type statement") 
+  return (np) 
 
 def struct tree ParseDeclarations():
 
   # ParseDeclarations parses declarations
-  # The following part of the grammar is implemented:
-  #   declarations   = declaration [declarations]
 
-  struct tree np, sp;
+  struct tree np, sp 
 
-  np=ParseDeclaration();
+  np=ParseDeclaration() 
   if(np != NULL):
-    sp = ParseMknode("declarations", "void");
-    PtreeAddchild(sp,np);
+    sp = ParseMknode("declarations", "void") 
+    PtreeAddchild(sp,np) 
   else:
-    return np=NULL;
+    return np=NULL 
   while((np=ParseDeclaration()) != NULL):
-    PtreeAddchild(sp,np);
-  return(sp);
+    PtreeAddchild(sp,np) 
+  return(sp) 
 
 def int ParseArgseq(struct tree p) :
 
   # ParseArgseq parses argument sequence       
-  # The following part of the grammar is implemented:
-  #    argseq         = ',' [ID]  argseq  
  
-  struct tree np, sp;
+  struct tree np, sp 
 
   if(lookahead == COMMA):
-    ParseMatch(lookahead);
+    ParseMatch(lookahead) 
     if((np=ParseType()) != NULL):
-      PtreeAddchild(p,np);
+      PtreeAddchild(p,np) 
       if(lookahead == ID):            
-        sp = ParseMknode("identifier", ScanGetext());
-        PtreeAddchild(np, sp);
-        ParseMatch(ID);        
-      ParseArgseq(p);
-  return (OK);
+        sp = ParseMknode("identifier", ScanGetext()) 
+        PtreeAddchild(np, sp) 
+        ParseMatch(ID)         
+      ParseArgseq(p) 
+  return (OK) 
 
 def struct tree ParseArglist() :
 
   # ParseArglist parses function argument list      
-  # The following part of the grammar is implemented:
-  #    arglist        = type [ID] [argseq] ';'
 
-  struct tree mp, np, sp;
+  struct tree mp, np, sp 
 
   if((np=ParseType()) != NULL):
-    sp = ParseMknode("arglist", "void");
-    PtreeAddchild(sp, np);
+    sp = ParseMknode("arglist", "void") 
+    PtreeAddchild(sp, np) 
     if(lookahead == ID):            
-       mp = ParseMknode("identifier", ScanGetext());
-       PtreeAddchild(np, mp);
-       ParseMatch(ID);        
-    ParseArgseq(sp);      
+       mp = ParseMknode("identifier", ScanGetext()) 
+       PtreeAddchild(np, mp) 
+       ParseMatch(ID)         
+    ParseArgseq(sp)       
   else:
-    sp = NULL;
-  return (sp);
+    sp = NULL 
+  return (sp) 
  
 def int ParseStructdeclar(struct tree p) :
 
-  # This function implements the following part of the grammar:
-  #   structdeclar   = declarations END 
+  # ParseStructdeclar parses structure declaration
  
-  struct tree sp, np;
+  struct tree sp, np 
 
-  np = ParseMknode("structdec","void");
-  PtreeAddchild(p,np);
-  sp = ParseDeclarations();
-  PtreeAddchild(np,sp);
-  ParseMatch(DIND);
-  return (OK);
+  np = ParseMknode("structdec","void") 
+  PtreeAddchild(p,np) 
+  sp = ParseDeclarations() 
+  PtreeAddchild(np,sp) 
+  ParseMatch(DIND) 
+  return (OK) 
 
 def struct tree ParseWhilestmnt() :
 
   # Parsewhilestmnt  parses while statement.      
-  # The following part of the grammar is implmented:
-  #   whilestmnt     = WHILE '(' expr')' stmnt
 
-  struct tree np, sp;
+  struct tree np, sp 
   if(lookahead == WHILE):
-    np = ParseMknode("while", "void");
-    ParseMatch(WHILE);
-    ParseMatch(LP);
+    np = ParseMknode("while", "void") 
+    ParseMatch(WHILE) 
+    ParseMatch(LP) 
     if((sp = ParseExpr()) != NULL):
-      PtreeAddchild(np, sp);
-    ParseMatch(RP);
-    sp = ParseStmnt();
-    PtreeAddchild(np, sp);
-    sp = np;
+      PtreeAddchild(np, sp) 
+    ParseMatch(RP) 
+    sp = ParseCompstmnt() 
+    PtreeAddchild(np, sp) 
+    sp = np 
   else:
-    sp = NULL;
-  return (sp);
+    sp = NULL 
+  return (sp) 
 
 def struct tree ParseReturnstmnt() :
 
   # ParseReturnstmnt  parses return statement      
-  # The following part of the grammar is implemented
-  #   returnstmnt    = RETURN  expr
 
-  struct tree np, sp;
+  struct tree np, sp 
 
   if(lookahead == RETURN):
-    np = ParseMknode("return", "void");
-    ParseMatch(RETURN);
+    np = ParseMknode("return", "void") 
+    ParseMatch(RETURN) 
     if((sp = ParseExpr()) != NULL):
-      PtreeAddchild(np, sp);
-      sp = np;
-      if(lookahead == SEMICOLON):
-        ParseMatch(SEMICOLON);
-      ParseMatch(NL);
+      PtreeAddchild(np, sp) 
+      sp = np 
+      ParseMatch(NL) 
   else:
-    sp = NULL;
-  return (sp);
+    sp = NULL 
+  return (sp) 
 
 def struct tree ParseForstmntc (struct tree np) :
 
   # ParseForstmnt parses a for statement
-  # The following part of the grammar is implemented:
-  # forstmnt       = '(' expr ';' expr ';' expr')' stmnt 
 
-  struct tree sp, rp;
-  ParseMatch(LP);
+  struct tree sp, rp 
+  ParseMatch(LP) 
   if((sp = ParseExpr()) != NULL):
-    PtreeAddchild(np, sp);
-    ParseMatch(SEMICOLON);
+    PtreeAddchild(np, sp) 
+    ParseMatch(SEMICOLON) 
     if((rp = ParseExpr()) != NULL):
-       PtreeAddsister(sp, rp);
-    ParseMatch(SEMICOLON);
+       PtreeAddsister(sp, rp) 
+    ParseMatch(SEMICOLON) 
     if((rp = ParseExpr()) != NULL):
-      PtreeAddsister(sp, rp);
-    ParseMatch(RP);
-    sp = ParseStmnt();
-    PtreeAddchild(np, sp);
-    sp = np;
+      PtreeAddsister(sp, rp) 
+    ParseMatch(RP) 
+    sp = ParseCompstmnt() 
+    PtreeAddchild(np, sp) 
+    sp = np 
   else:
-    sp = NULL;
-  return (sp);
+    sp = NULL 
+  return (sp) 
 
 def struct tree ParseForstmntpy(struct tree np) :
 
@@ -850,16 +896,12 @@ def struct tree ParseForstmntpy(struct tree np) :
   # Returns:
   # 
   # The np node on return contains a parse tree for a for loop.
-  #
-  # The following part of the grammar is implemented:
-  #   forstmntpy = ID IN RANGE '(' expr ',' expr ')'  compstmnt      
-  #
   # The strategy for implementing the Python style for loop
   # is to create a parse tree identical to the for c-style loop.
   # This avoids extra code for semantic check and code generation.
 
   struct tree sp  # Root of subtree for the for loop
-  struct tree ap, bp, cp, dp, ep, fp, gp, hp, ip, jp, mp, qp, rp, tp;
+  struct tree ap, bp, cp, dp, ep, fp, gp, hp, ip, jp, mp, qp, rp, tp 
   char [*] id     # Name of loop variable
 
   sp=NULL
@@ -925,19 +967,17 @@ def struct tree ParseForstmntpy(struct tree np) :
     jp=ParseCompstmnt()
     PtreeAddsister(sp,jp)
 
-  return (np);
+  return (np) 
 
 
 def struct tree ParseForstmnt() :
 
   # ParseForstmnt parses a for statement
-  # The following part of the grammar is implemented:
-  #    forstmnt       = FOR 
 
-  struct tree np, sp;
+  struct tree np, sp 
   if(lookahead == FOR):
-    np = ParseMknode("for", "void");
-    ParseMatch(FOR);
+    np = ParseMknode("for", "void") 
+    ParseMatch(FOR) 
     if(lookahead == '(') :
       sp = ParseForstmntc(np)
     else :
@@ -945,214 +985,212 @@ def struct tree ParseForstmnt() :
   else :
     sp=NULL
   
-  return (sp);
+  return (sp) 
 
 
 def struct tree ParseSlice() :
 
   # ParseSlice parses a slice list
-  # The following part of the grammar is implemented:
-  #   slice          = expr ':' expr [':' expr ]
 
-   struct tree np, sp, rp;
+   struct tree np, sp, rp 
 
    if((sp = ParseExpr()) != NULL):
-      np=ParseMknode("slice","void");
-      PtreeAddchild(np,sp);
-      ParseMatch(COLON);
+      np=ParseMknode("slice","void") 
+      PtreeAddchild(np,sp) 
+      ParseMatch(COLON) 
       if((rp = ParseExpr()) != NULL):
-         PtreeAddchild(np, rp);
+         PtreeAddchild(np, rp) 
       if(lookahead == COLON):
-        ParseMatch(COLON);
+        ParseMatch(COLON) 
         if((rp = ParseExpr()) != NULL):
-          PtreeAddchild(np, rp);
+          PtreeAddchild(np, rp) 
         else :
-          ParseError("Syntax error");
+          ParseError("Syntax error") 
    else :
-     ParseError("Syntax error");
-   return (np);
+     ParseError("Syntax error") 
+   return (np) 
 
 def struct tree ParseSliceseq(struct tree np) :
 
    # ParseSliceseq  parses slice sequence.      
-   # The following part of the grammar is implemented:
-   #   sliceseq       = slice [, sliceseq]
 
-   struct tree sp;
+   struct tree sp 
 
    if((sp = ParseSlice()) != NULL):
-       PtreeAddchild(np,sp);
+       PtreeAddchild(np,sp) 
    else:
-     ParseError("Syntax error");
+     ParseError("Syntax error") 
    if(lookahead == COMMA):
-     ParseMatch(COMMA);
-     ParseSliceseq(np);
+     ParseMatch(COMMA) 
+     ParseSliceseq(np) 
    else :
-     return(np);
-   return(np);
+     return(np) 
+   return(np) 
 
 def struct tree ParseParallelstmnt() :
 
   # ParseParallelstmnt parses a prallel statement
-  # The following part of the grammar is implemented:
-  # parallelstmnt  = PARALLEL '('  sliceseq ')' stmnt
 
-  struct tree np, rp, sp;
+  struct tree np, rp, sp 
 
   if(lookahead == PARALLEL):
-    np = ParseMknode("parallel", "void");
-    ParseMatch(PARALLEL);
-    ParseMatch(LP);
-    rp = ParseMknode("sliceseq", "void");
-    PtreeAddchild(np,rp);
+    np = ParseMknode("parallel", "void") 
+    ParseMatch(PARALLEL) 
+    ParseMatch(LP) 
+    rp = ParseMknode("sliceseq", "void") 
+    PtreeAddchild(np,rp) 
     if((sp = ParseSliceseq(rp)) == NULL):
-      ParseError("Syntax error");
+      ParseError("Syntax error") 
     if(lookahead == RP):
-      ParseMatch(RP);
-      sp = ParseStmnt();
-      PtreeAddchild(np, sp);
-      return(np);
+      ParseMatch(RP) 
+      sp = ParseCompstmnt() 
+      PtreeAddchild(np, sp) 
+      return(np) 
     else :
-      ParseError("Syntax error");
+      ParseError("Syntax error") 
   else:
-    return(rp=NULL);
-  return(rp=NULL);
+    return(rp=NULL) 
+  return(rp=NULL) 
+ 
+def struct tree ParseElifstmnt() :
+
+  if(lookahead == ELIF):
+    ParseMatch(ELIF) 
+    sp = ParseMknode("else", "void")
+    np = ParseMknode("compstmnt","void")
+    PtreeAddchild(sp,np)
+    rp = ParseMknode("if","void")
+    PtreeAddchild(np,rp)
+    ParseMatch(LP) 
+    if((qp = ParseExpr()) != NULL):
+      PtreeAddchild(rp, qp) 
+    ParseMatch(RP) 
+    tp = ParseCompstmnt() 
+    PtreeAddchild(rp, tp) 
+
+    if(lookahead == ELIF):
+      tp=ParseElifstmnt()
+      PtreeAddchild(rp, tp) 
+
+    if(lookahead == ELSE):
+      up=ParseElsestmnt()
+      PtreeAddchild(rp, up) 
+  else:
+    sp = NULL 
+  return (sp) 
  
 def struct tree ParseElsestmnt() :
 
-  # ParseElsestmnt parses an else statement
-  # The following part of the grammar is implemented:
-  #   elsestmnt      = ELSE stmnt
-
-  struct tree np, sp;
+  struct tree np, sp 
   if(lookahead == ELSE):
-    ParseMatch(ELSE);
-    np = ParseMknode("else", "void");
-    sp = ParseStmnt();
-    PtreeAddchild(np, sp);
- 
+    np = ParseMknode("else", "void") 
+    ParseMatch(ELSE)
+    sp = ParseCompstmnt() 
+    PtreeAddchild(np, sp) 
   else:
-    np = NULL;
+    np = NULL 
 
-  return  (np);
+  return  (np) 
  
 def struct tree ParseIfstmnt() :
 
-  # ParseIfstmnt parses an if statement.
-  # The following part of the grammar is implemented:
-  #  ifstmnt = IF '(' expr')' stmnt elsestmnt
-
-  struct tree np, sp;
+  struct tree np, sp 
 
   if(lookahead == IF):
-    np = ParseMknode("if", "void");
-    ParseMatch(IF);
-    ParseMatch(LP);
-    if((sp = ParseExpr()) != NULL):
-      PtreeAddchild(np, sp);
-    ParseMatch(RP);
-    sp = ParseStmnt();
-    PtreeAddchild(np, sp);
-    if((sp = ParseElsestmnt()) != NULL):
-      PtreeAddchild(np, sp);
-    sp = np;
+    sp = ParseMknode("if", "void")
+    ParseMatch(IF)
+    ParseMatch(LP)
+    if((np = ParseExpr()) != NULL):
+      PtreeAddchild(sp, np)
+    ParseMatch(RP) 
+    np = ParseCompstmnt()
+    PtreeAddchild(sp, np)
+
+    if(lookahead == ELIF):
+      if((qp=ParseElifstmnt()) != NULL): 
+        PtreeAddchild(sp, qp)
+    if(lookahead == ELSE):
+      np = ParseElsestmnt()
+      PtreeAddchild(sp, np)
   else:
-    sp = NULL;
-  return (sp);
+    sp = NULL 
+  return (sp) 
  
 def struct tree ParseStmnt() :
 
   # ParseStmnt parses a statement.
-  # The following part of the grammar is implemented:
-  #   stmnt = (ifstmnt| compstmnt| whilestmnt| forstmnt
-  #            | parallelstmnt|return| expr) ';'
 
-  struct tree np;
+  struct tree np 
 
   if((np = ParseWhilestmnt())!= NULL):
-    return np;
-  else if((np = ParseReturnstmnt())!= NULL):
-    return np;
-  else if((np = ParseForstmnt())!= NULL):
-    return np;
-  else if((np = ParseParallelstmnt())!= NULL):
-    return np;
-  else if((np = ParseIfstmnt())!= NULL):
-    return np;
-  else if((np = ParseCompstmnt()) != NULL):
-    return np;
-  else if(lookahead == DIND):
-    return (np=NULL);
-  else if(lookahead == PASS):
-    ParseMatch(PASS);
-    ParseMatch(NL);
-    return (np=NULL);
+    return np 
+  elif((np = ParseReturnstmnt())!= NULL):
+    return np 
+  elif((np = ParseForstmnt())!= NULL):
+    return np 
+  elif((np = ParseParallelstmnt())!= NULL):
+    return np 
+  elif((np = ParseIfstmnt())!= NULL):
+    return np 
+  elif(lookahead == DIND):
+    return (np=NULL) 
+  elif(lookahead == PASS):
+    ParseMatch(PASS) 
+    ParseMatch(NL) 
+    return (np=NULL) 
   else: 
-    np = ParseExpr(); 
-    if(lookahead == SEMICOLON):
-      ParseMatch(SEMICOLON);
-    if(lookahead == NL):
-      ParseMatch(NL);
-#   else:
-#     ParseMatch(NL);
-#   
-    return (np);
+    np = ParseExpr()  
+    ParseMatch(NL) 
+    return (np) 
 
 def struct tree ParseStmntlist() :
 
   # ParseStmntlist parses a list of statements
-  # The following part of the grammar is implemented:
-  #   stmntlist      = stmnt | stmntlist   
 
-  struct tree np, sp;
+  struct tree np, sp 
 
-  np = ParseStmnt();       # stmnt       
-  sp = np;
+  np = ParseStmnt()        # stmnt       
+  sp = np 
   while(sp != NULL):       # stmntlist   
-    sp = ParseStmnt();
-    PtreeAddsister(np, sp);
-  return (np);
+    sp = ParseStmnt() 
+    PtreeAddsister(np, sp) 
+  return (np) 
 
 def struct tree ParseCompstmnt() :
 
   # ParseCompstmnt parses a compund statement
-  # This function implements the production
-  # compstmnt    = ':' declarations | stmntlist 'END'
 
-  struct tree np, sp;
+  struct tree np, sp 
 
-  if(lookahead == COLON):                         #  ':'              
+  if(lookahead == COLON):   
 
-    np = ParseMknode("compstmnt","void");
-    ParseMatch(COLON);                     
-    ParseMatch(NL);
-    ParseMatch(IND);
-    sp = ParseDeclarations();                     # declarations    
+    np = ParseMknode("compstmnt","void") 
+    ParseMatch(COLON)                      
+    ParseMatch(NL) 
+    ParseMatch(IND) 
+    sp = ParseDeclarations()
     if(sp != NULL):
-      PtreeAddchild(np, sp);
-    sp = ParseStmntlist();                      # stmntlist       
+      PtreeAddchild(np, sp)
+    sp = ParseStmntlist()
     if(sp != NULL):
-      PtreeAddchild(np, sp);
-    ParseMatch(DIND);                            # ':'             
+      PtreeAddchild(np, sp)
+    ParseMatch(DIND)
   else :
-    np = NULL;
-  return (np);
+    ParseError("Empty code block")
+  return (np) 
 
 def int ParseFdef(struct tree p) :
 
-  # ParseFdef -- parse function declaration      
-  # This routine parses definition and declaration of functions according
-  # to the following rule:
-  #   fdecl  = [arglist] ')'  [compstmnt]
+  # ParseFdef  parses function declaration      
 
-  struct tree np,sp;
+  struct tree np,sp 
 
   np = ParseType()
 
   if(np != NULL) :
     PtreeAddchild(p,np)
   else :
-    ParseError("Missing function type declaration");
+    ParseError("Missing function type declaration") 
 
   if(lookahead == ID):
     sp=ParseMknode("fdef", ScanGetext())
@@ -1160,83 +1198,81 @@ def int ParseFdef(struct tree p) :
     PtreeAddchild(np,sp)
 
   ParseMatch(LP)
-  np = ParseArglist();
+  np = ParseArglist() 
   if( np!= NULL) :
-    PtreeAddchild(sp, np);
-  ParseMatch(RP);
-  np = NULL;
-  np = ParseCompstmnt();
+    PtreeAddchild(sp, np) 
+  ParseMatch(RP) 
+  np = NULL 
+  np = ParseCompstmnt() 
   if( np!= NULL):
-    PtreeAddchild(sp, np);
+    PtreeAddchild(sp, np) 
   else:
-    ParseError("Missing function body");
-  return (OK);
+    ParseError("Missing function body") 
+  return (OK) 
+
+def struct tree ParseImport() :
+   
+  # Parse import statement
+  #
+  # Returns
+  #   Import node
+
+  ParseMatch(lookahead) 
+  imp = ParseMknode("import",ScanGetext()) 
+  ParseMatch(ID) 
+  ParseMatch(NL) 
+  return(imp) 
 
 def struct tree ParseExtdecl() :
 
   # ParseExtdecl parses external declarations      
-  #
-  # The following part of the grammar is implemented:
-  #
-  #   extdecl = 
-  #       import 
-  #     | fdef
-  #     | type   idseq (SEMICOLON | NL) | COLON IND structdeclar) 
-  #     | ID ASSIGN RCONSTANT|SCONSTANT|ICONSTANT (SEMICOLON|NL)
 
-  struct tree mp, np, sp, imp;
+  if(lookahead == IMPORT ): 
+    p=PtreeMknode("extdecl","void")
+    imp=ParseImport()
+    PtreeAddchild(p,imp)
+    return(p)
 
-  np = ParseType();                  
-  if(np == NULL):
-    if(lookahead == IMPORT ): # Import
-      ParseMatch(lookahead);
-      if(lookahead == ID) :
-        imp = ParseMknode("import",ScanGetext());
-        ParseMatch(ID);
-        ParseMatch(NL);
-        sp  = ParseMknode("extdecl","void");
-        PtreeAddchild(sp,imp);
-      return(sp);
-    else if(lookahead == DEF):
-      ParseMatch(DEF);
-      sp  = ParseMknode("extdecl","void");
-      ParseFdef(sp);
-      return(sp)
-    else :
-      ParseError("Syntax error");
+  if(lookahead == DEF):
+    ParseMatch(DEF) 
+    p  = ParseMknode("extdecl","void") 
+    ParseFdef(p) 
+    return(p)
+
+  np = ParseType()
+  if(np == NULL) :
+    return(np)
+
+  if(lookahead == ID):   
+    p = ParseMknode("extdecl", "void") 
+    PtreeAddchild(p,np) 
+    mp=ParseMknode("identifier", ScanGetext())   
+    PtreeAddchild(np,mp)
+    ParseMatch(lookahead)
+
+    if(lookahead == COMMA):   
+      ParseIdseq(np)
+      ParseMatch(NL)
+      return(p)
+
+    if(lookahead == ASSIGN): 
+      ParseMatch(lookahead)
+      ParseConstdecl(mp)
     
-  if(lookahead == COLON):            # ":"  
-    ParseMatch(lookahead);
-    ParseMatch(NL);
-    ParseMatch(IND);
-    sp = ParseMknode("extdecl", "void");
-    PtreeAddchild(sp,np);
-    ParseStructdeclar(np);
-    return(sp);
+    ParseMatch(NL)
+    return(p)  
 
-  if(lookahead == ID):        # ID  
-   sp = ParseMknode("extdecl", "void");
-   PtreeAddchild(sp,np);
-   mp=ParseMknode("identifier", ScanGetext());  
-   PtreeAddchild(np,mp);
-   ParseMatch(lookahead);
-   if(lookahead == COMMA):        # idseq 
-     ParseIdseq(np);
-     if(lookahead == SEMICOLON):
-       ParseMatch(SEMICOLON);
-     ParseMatch(NL);
-   else if(lookahead == ASSIGN): # Constant  
-     ParseMatch(lookahead);
-     ParseConstdecl(mp);
-     ParseMatch(NL);
-   else :
-     if(lookahead == SEMICOLON):
-       ParseMatch(SEMICOLON);
-     ParseMatch(NL);
-  else : 
-   ParseError("Syntax error")
-
-  return (sp);
+  if(lookahead == COLON):     
+    ParseMatch(lookahead)
+    ParseMatch(NL)
+    ParseMatch(IND)
+    p = ParseMknode("extdecl", "void") 
+    PtreeAddchild(p,np)
+    ParseStructdeclar(np)
+    return(p) 
+    
+  return(p=NULL)
+  
 
 def struct tree ParseParse() :
 
@@ -1245,13 +1281,11 @@ def struct tree ParseParse() :
   # which parses structure definitions, function
   # definitions and external variables.
 
-  struct tree np;
+  struct tree np
 
-  np = NULL;
+  np = NULL 
   if(lookahead == STOP):
-    return np;                 
+    return np                 
   else:
-    if(lookahead == IND) :
-      ParseMatch(IND)
-    np = ParseExtdecl();                        
-  return (np);                
+    np = ParseExtdecl()                        
+  return (np)                 

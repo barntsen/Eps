@@ -64,7 +64,7 @@ struct tree :        # Basic node
   int topexpr        # Top level expr field   
   char [*] descr     # Descriptor field       
   struct tree child  # Child node            
-  struct tree sister  # Sister node           
+  struct tree sister # Sister node           
     
   
 def int PtreeInit() :
@@ -110,34 +110,56 @@ def int PtreePrtree(struct tree p, int level) :
       LibePuts(fp, " ") 
       i = i + 1 
  
-    LibePuts(fp, p.name); LibePuts(fp," ") 
-    LibePuts(fp, p.defn) ; LibePuts(fp," ") 
-    LibePuts(fp, p.type); LibePuts(fp," ") 
-    LibePuts(fp, p.structure); LibePuts(fp," ") 
-    LibePuts(fp, p.array);     LibePuts(fp," ") 
-    LibePuts(fp, p.paral);     LibePuts(fp," ") 
-    LibePuts(fp, p.global);    LibePuts(fp," ") 
-    LibePuti(fp, p.rank);      LibePuts(fp," ") 
-    LibePuts(fp, p.forw);      LibePuts(fp," ") 
+    LibePuts(fp, p.name) 
+    LibePuts(fp," ") 
+    LibePuts(fp, p.defn) 
+    LibePuts(fp," ") 
+    LibePuts(fp, p.type) 
+    LibePuts(fp," ") 
+    LibePuts(fp, p.structure) 
+    LibePuts(fp," ") 
+    LibePuts(fp, p.array)     
+    LibePuts(fp," ") 
+    LibePuts(fp, p.paral)     
+    LibePuts(fp," ") 
+    LibePuts(fp, p.global)    
+    LibePuts(fp," ") 
+    LibePuti(fp, p.rank)      
+    LibePuts(fp," ") 
+    LibePuts(fp, p.forw)      
+    LibePuts(fp," ") 
     if(p.simple==OK):
-      LibePuts(fp, "simple");    LibePuts(fp," ") 
-    else if(p.simple==EMPTY):
-      LibePuts(fp, "empty");     LibePuts(fp," ") 
+      LibePuts(fp, "simple")    
+      LibePuts(fp," ") 
+    elif(p.simple==EMPTY):
+      LibePuts(fp, "empty")     
+      LibePuts(fp," ") 
     else:
-      LibePuts(fp, "nonsimple"); LibePuts(fp," ") 
+      LibePuts(fp, "nonsimple") 
+      LibePuts(fp," ") 
+
     if(p.topexpr==OK):
-      LibePuts(fp, "topexpr");   LibePuts(fp," ") 
-    else if(p.topexpr==ERR):
-      LibePuts(fp, "void");      LibePuts(fp," ") 
+      LibePuts(fp, "topexpr")   
+      LibePuts(fp," ") 
+    elif(p.topexpr==ERR):
+      LibePuts(fp, "void")      
+      LibePuts(fp," ") 
     else:
-      LibePuts(fp, "nonsimple"); LibePuts(fp," ") 
+      LibePuts(fp, "nonsimple") 
+      LibePuts(fp," ") 
  
-    LibePuti(fp, p.line);  LibePuts(fp," ") 
-    LibePuts(fp, p.tempr); LibePuts(fp," ") 
-    LibePuts(fp, p.tempi); LibePuts(fp," ") 
-    LibePuts(fp, p.lval);  LibePuts(fp," ") 
-    LibePuts(fp, p.ref);   LibePuts(fp," ") 
-    LibePuts(fp, p.descr); LibePuts(fp," ") 
+    LibePuti(fp, p.line)  
+    LibePuts(fp," ") 
+    LibePuts(fp, p.tempr) 
+    LibePuts(fp," ") 
+    LibePuts(fp, p.tempi) 
+    LibePuts(fp," ") 
+    LibePuts(fp, p.lval)  
+    LibePuts(fp," ") 
+    LibePuts(fp, p.ref)   
+    LibePuts(fp," ") 
+    LibePuts(fp, p.descr) 
+    LibePuts(fp," ") 
     LibePuts(fp, "\n") 
 
     level = level + 1 
@@ -235,6 +257,7 @@ def struct tree PtreeMknode( char [*] name, char [*] defn ) :
   p.simple = EMPTY 
   p.child = NULL 
   p.sister = NULL 
+  p.topexpr = ERR
   return (p) 
  
 def int PtreeAddchild(struct tree parent, struct tree child): 
@@ -320,10 +343,9 @@ def struct tree PtreeMvchild(struct tree p):
   return(p.child) 
 
     
-
 def char [*] PtreeSetfield(char [*] field, char [*] value) :    
 
-  #PtreeSetfield sets a field.
+  # PtreeSetfield sets a field.
   #
   # Parameters: 
   #   field     : field
@@ -339,7 +361,6 @@ def char [*] PtreeSetfield(char [*] field, char [*] value) :
   field=LibeStrsave(value) 
   delete(t) 
   return(field) 
-
     
                       
 def int PtreeSetname(struct tree p, char [*] name) :
@@ -359,7 +380,6 @@ def int PtreeSetname(struct tree p, char [*] name) :
      
   return(OK) 
 
-    
    
 def char  [*] PtreeGetname(struct tree p): 
 
@@ -406,7 +426,6 @@ def char [*] PtreeGetdef(struct tree p) :
 
   return(p.defn) 
 
-    
    
 def int PtreeSetype(struct tree p, char [*] type) :
    
@@ -438,7 +457,6 @@ def char [*] PtreeGetype(struct tree p) :
   #   
 
   return(p.type) 
-
     
    
 def int PtreeSetstruct(struct tree p, char [*] structure) :
@@ -457,7 +475,6 @@ def int PtreeSetstruct(struct tree p, char [*] structure) :
     p.structure=LibeStrsave(structure) 
      
   return(OK) 
-
     
    
 def char [*] PtreeGetstruct(struct tree p) :    
@@ -492,7 +509,6 @@ def int PtreeSetempr(struct tree p, char [*] tempr) :
      
   return(OK) 
 
-    
    
 def char  [*] PtreeGetempr(struct tree p) : 
 
@@ -536,7 +552,6 @@ def char  [*] PtreeGetempi(struct tree p) :
   #
 
    return(p.tempi) 
-
     
    
 def int PtreeGetline(struct tree p):    
@@ -550,7 +565,6 @@ def int PtreeGetline(struct tree p):
   #
 
   return(p.line) 
-
     
    
 def int PtreeSetline(struct tree p, int line):    
@@ -596,7 +610,6 @@ def int PtreeSetfile(struct tree p, char [*] file) :
     p.file=LibeStrsave(file) 
      
   return(OK) 
-
     
    
 def int PtreeSetrank(struct tree p, int rank) :   
@@ -612,7 +625,6 @@ def int PtreeSetrank(struct tree p, int rank) :
  
   p.rank = rank 
   return(OK) 
-
     
    
 def int PtreeGetrank(struct tree p) :    
@@ -626,7 +638,6 @@ def int PtreeGetrank(struct tree p) :
   #
 
   return(p.rank) 
-
     
    
 def int PtreeSetlval(struct tree p, char [*] lval) :
@@ -645,7 +656,6 @@ def int PtreeSetlval(struct tree p, char [*] lval) :
     p.lval=LibeStrsave(lval) 
      
   return(OK) 
-
     
  
 def char  [*] PtreeGetlval(struct tree p) :
@@ -659,7 +669,6 @@ def char  [*] PtreeGetlval(struct tree p) :
   #
 
   return(p.lval) 
-
     
    
 def int PtreeSetarray(struct tree p, char [*] array) :   
@@ -691,7 +700,6 @@ def char [*] PtreeGetarray(struct tree p) :
   #
 
   return(p.array) 
-
     
    
 def int PtreeSetparallel(struct tree p, char [*] paral) :    
@@ -710,7 +718,6 @@ def int PtreeSetparallel(struct tree p, char [*] paral) :
     p.paral=LibeStrsave(paral) 
      
   return(OK) 
-
     
    
 def char [*] PtreeGetparallel(struct tree p) :    
@@ -724,7 +731,6 @@ def char [*] PtreeGetparallel(struct tree p) :
   #
 
   return(p.paral) 
-
     
    
 def int PtreeSetref(struct tree p, char [*] ref) :   
@@ -756,7 +762,6 @@ def char [*] PtreeGetref(struct tree p) :
   #
  
   return(p.ref) 
-
     
    
 def int PtreeSetdescr(struct tree p, char [*] descr) :    
@@ -788,7 +793,6 @@ def char [*] PtreeGetdescr(struct tree p) :
   #
  
   return(p.descr) 
-
     
    
 def int PtreeSetglobal(struct tree p, char [*] global) :    
@@ -811,7 +815,7 @@ def int PtreeSetglobal(struct tree p, char [*] global) :
    
 def char [*] PtreeGetglobal(struct tree p) :   
 
-  # PtreeGetglobal  -- Get the global field. 
+  # PtreeGetglobal gets the global field. 
   #
   # Parameters: 
   #   p    : tree node
@@ -820,12 +824,11 @@ def char [*] PtreeGetglobal(struct tree p) :
   #
  
   return(p.global) 
-
     
    
 def int PtreeSetopexpr(struct tree p, int topexpr) :    
 
-  # PtreeSetopexr  sest the topexpr field of the node.
+  # PtreeSetopexr sets the topexpr field of the node.
   #
   # Parameters: 
   #   p         : tree node
@@ -837,7 +840,6 @@ def int PtreeSetopexpr(struct tree p, int topexpr) :
   p.topexpr = OK 
 
   return(OK) 
-
     
    
 def int PtreeGetopexpr(struct tree p) :    
@@ -851,7 +853,6 @@ def int PtreeGetopexpr(struct tree p) :
   #
 
     return(p.topexpr) 
-
     
    
 def int PtreeSetsimple(struct tree p, int simple) :    
@@ -867,7 +868,6 @@ def int PtreeSetsimple(struct tree p, int simple) :
  
   p.simple = simple 
   return(OK) 
-
     
    
 def int PtreeGetsimple(struct tree p) :   
@@ -882,11 +882,16 @@ def int PtreeGetsimple(struct tree p) :
  
   return(p.simple) 
 
-    
 
 def int PtreeSetforw(struct tree p, char [*] forw) :
 
   # PtreeSetforw sets the forward field.
+  #
+  # Parameters: 
+  #   p : Node
+  #   
+  # Returns: OK
+  #
 
   if((forw != NULL) && (p != NULL)):
     delete(p.forw) 
@@ -897,7 +902,12 @@ def int PtreeSetforw(struct tree p, char [*] forw) :
 
 def char [*] PtreeGetforw(struct tree p) :
 
-  #PtreeGetforw  -- Get the forward field
-
+  # PtreeGetforw gets the forward field.
+  #
+  # Parameters: 
+  #   p : Node
+  #   
+  # Returns: 
+  #  Returns the forward field
 
   return(p.forw) 

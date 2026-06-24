@@ -1,4 +1,4 @@
-//  Translated by epsc  version: Fri Apr 24 15:59:15 2026
+//  Translated by epsc  version: Sat Jun 20 16:48:06 2026
 
 #include <stddef.h>
 #include <stdio.h>
@@ -219,6 +219,7 @@ struct tree* ParseExpr ();
 struct tree* ParseAsgexpr (struct tree* p);
 struct tree* ParseStmnt ();
 struct tree* ParseElsestmnt ();
+struct tree* ParseIfstmnt ();
 struct tree* ParseCompstmnt ();
 int ParseError (nctempchar1 *s);
 int ParseGetlookahead ();
@@ -229,8 +230,16 @@ struct tree* ParseExprlist ();
 int ParseArrayarg (struct tree* p);
 int ParseIdseq (struct tree* p);
 int ParseConstdecl (struct tree* p);
-struct tree* ParseIdent ();
 struct tree* ParseType ();
+struct tree* ParseFcall (struct tree* p);
+struct tree* ParseIdent ();
+struct tree* ParseCast ();
+struct tree* ParseNew ();
+struct tree* ParseDelete ();
+struct tree* ParseCmplx ();
+struct tree* ParseRe ();
+struct tree* ParseIm ();
+struct tree* ParseLen ();
 struct tree* ParsePrimexpr (struct tree* p);
 struct tree* ParseUnexpr (struct tree* p);
 struct tree* ParseMultexprseq (struct tree* p);
@@ -253,9 +262,10 @@ struct tree* ParseForstmnt ();
 struct tree* ParseSlice ();
 struct tree* ParseSliceseq (struct tree* np);
 struct tree* ParseParallelstmnt ();
-struct tree* ParseIfstmnt ();
+struct tree* ParseElifstmnt ();
 struct tree* ParseStmntlist ();
 int ParseFdef (struct tree* p);
+struct tree* ParseImport ();
 struct tree* ParseExtdecl ();
 struct tree* ParseParse ();
 struct symbol {nctempchar1 *name;
@@ -482,6 +492,7 @@ struct nctempcharr4 {int d[4]; struct charr *a; } ;
 nctempchar1 * CodeParnsize (struct tree* p,struct nctempcharr1 *m);
 int CodeParallelstmntgpu (struct tree* p);
 int CodeParallelstmnt (struct tree* p);
+int CodeElifstmnts (struct tree* p);
 int CodeIfstmnt (struct tree* p);
 int CodeReturnstmnt (struct tree* p);
 int CodeNewdescr (struct tree* p,nctempchar1 *pointer);
@@ -499,6 +510,7 @@ int CodePreamble ();
 int CodePostamble ();
 int MainError (nctempchar1 *s)
 {
+{
 nctempchar1* nctemp7=ScanGetfile();
 nctempchar1 *nctemp5 =nctemp7;
 int nctemp4 =(nctemp5!=0);
@@ -507,6 +519,7 @@ int nctemp10 = (nctemp13 !=0);
 int nctemp1 = (nctemp4 && nctemp10);
 if(nctemp1)
 {
+{
 nctempchar1* nctemp18=ScanGetfile();
 nctempchar1* nctemp16= nctemp18;
 int nctemp21=ScanGetline();
@@ -514,15 +527,20 @@ int nctemp19= nctemp21;
 nctempchar1* nctemp22= s;
 int nctemp25=ErrError(nctemp16,nctemp19,nctemp22);
 }
+}
 else{
+{
 int nctemp27= 4;
 nctempchar1* nctemp29= s;
 int nctemp32=LibePuts(nctemp27,nctemp29);
 int nctemp34=LibeExit();
 }
+}
 return 1;
 }
+}
 int MainHelp (int arch)
+{
 {
 int nctemp37= 4;
 struct nctempchar1 *nctemp41;
@@ -678,13 +696,16 @@ int nctemp237= 4;
 int nctemp239=LibeFlush(nctemp237);
 return 1;
 }
+}
 nctempchar1 * MainPythonout (nctempchar1 *infile)
 {
 nctempchar1 *outfile;
 int l;
+{
 int nctemp245=infile->d[0];l =nctemp245;
 int nctemp249 = (l < 3);
 if(nctemp249)
+{
 {
 struct nctempchar1 *nctemp256;
 static struct nctempchar1 nctemp257 = {{ 21}, (char*)" Illegal file name\n\0"};
@@ -692,17 +713,20 @@ nctemp256=&nctemp257;
 nctempchar1* nctemp254= nctemp256;
 int nctemp258=MainError(nctemp254);
 }
+}
 int nctemp267 = l - 2;
 int nctemp262=nctemp267;
 char nctemp269=(char)('e');
 int nctemp259 = (infile->a[nctemp262] !=nctemp269);
 if(nctemp259)
 {
+{
 struct nctempchar1 *nctemp275;
 static struct nctempchar1 nctemp276 = {{ 31}, (char*)"File extension have to be .e\n\0"};
 nctemp275=&nctemp276;
 nctempchar1* nctemp273= nctemp275;
 int nctemp277=MainError(nctemp273);
+}
 }
 int nctemp289 = l + 1;
 int nctemp284=nctemp289;
@@ -725,13 +749,16 @@ char nctemp326=(char)('y');
 outfile->a[nctemp319] =nctemp326;
 return outfile;
 }
+}
 nctempchar1 * MainFout (nctempchar1 *infile,int arch)
 {
 nctempchar1 *outfile;
 int l;
+{
 int nctemp335=infile->d[0];l =nctemp335;
 int nctemp339 = (l < 3);
 if(nctemp339)
+{
 {
 struct nctempchar1 *nctemp346;
 static struct nctempchar1 nctemp347 = {{ 21}, (char*)" Illegal file name\n\0"};
@@ -739,11 +766,13 @@ nctemp346=&nctemp347;
 nctempchar1* nctemp344= nctemp346;
 int nctemp348=MainError(nctemp344);
 }
+}
 int nctemp357 = l - 2;
 int nctemp352=nctemp357;
 char nctemp359=(char)('e');
 int nctemp349 = (infile->a[nctemp352] !=nctemp359);
 if(nctemp349)
+{
 {
 struct nctempchar1 *nctemp365;
 static struct nctempchar1 nctemp366 = {{ 31}, (char*)"File extension have to be .e\n\0"};
@@ -751,8 +780,10 @@ nctemp365=&nctemp366;
 nctempchar1* nctemp363= nctemp365;
 int nctemp367=MainError(nctemp363);
 }
+}
 int nctemp368 = (arch ==1);
 if(nctemp368)
+{
 {
 int nctemp378=l;
 nctempchar1 *nctemp377;
@@ -768,9 +799,12 @@ int nctemp392=nctemp397;
 char nctemp399=(char)('c');
 outfile->a[nctemp392] =nctemp399;
 }
+}
 else{
+{
 int nctemp402 = (arch ==2);
 if(nctemp402)
+{
 {
 int nctemp417 = l + 2;
 int nctemp412=nctemp417;
@@ -796,9 +830,12 @@ int nctemp460=nctemp465;
 char nctemp467=(char)('p');
 outfile->a[nctemp460] =nctemp467;
 }
+}
 else{
+{
 int nctemp470 = (arch ==4);
 if(nctemp470)
+{
 {
 int nctemp480=l;
 nctempchar1 *nctemp479;
@@ -814,7 +851,9 @@ int nctemp494=nctemp499;
 char nctemp501=(char)('c');
 outfile->a[nctemp494] =nctemp501;
 }
+}
 else{
+{
 struct nctempchar1 *nctemp507;
 static struct nctempchar1 nctemp508 = {{ 22}, (char*)"Unknow architecture\n\0"};
 nctemp507=&nctemp508;
@@ -823,15 +862,21 @@ int nctemp509=MainError(nctemp505);
 }
 }
 }
+}
+}
+}
 return outfile;
+}
 }
 nctempchar1 * MainFmod (nctempchar1 *infile)
 {
 nctempchar1 *outfile;
 int l;
+{
 int nctemp516=infile->d[0];l =nctemp516;
 int nctemp520 = (l < 3);
 if(nctemp520)
+{
 {
 struct nctempchar1 *nctemp527;
 static struct nctempchar1 nctemp528 = {{ 21}, (char*)" Illegal file name\n\0"};
@@ -839,17 +884,20 @@ nctemp527=&nctemp528;
 nctempchar1* nctemp525= nctemp527;
 int nctemp529=MainError(nctemp525);
 }
+}
 int nctemp538 = l - 2;
 int nctemp533=nctemp538;
 char nctemp540=(char)('e');
 int nctemp530 = (infile->a[nctemp533] !=nctemp540);
 if(nctemp530)
 {
+{
 struct nctempchar1 *nctemp546;
 static struct nctempchar1 nctemp547 = {{ 31}, (char*)"File extension have to be .e\n\0"};
 nctemp546=&nctemp547;
 nctempchar1* nctemp544= nctemp546;
 int nctemp548=MainError(nctemp544);
+}
 }
 int nctemp555=l;
 nctempchar1 *nctemp554;
@@ -866,16 +914,19 @@ char nctemp576=(char)('m');
 outfile->a[nctemp569] =nctemp576;
 return outfile;
 }
+}
 int MainCcompcpu (nctempchar1 *file,int debug,int optimize,int openmp,int show)
 {
 nctempchar1 *tmp;
 nctempchar1 *cmd;
+{
 struct nctempchar1 *nctemp586;
 static struct nctempchar1 nctemp587 = {{ 25}, (char*)"gcc -c -ffast-math -fPIC\0"};
 nctemp586=&nctemp587;
 cmd=nctemp586;
 int nctemp588 = (debug ==1);
 if(nctemp588)
+{
 {
 nctempchar1* nctemp597= cmd;
 struct nctempchar1 *nctemp602;
@@ -885,8 +936,10 @@ nctempchar1* nctemp600= nctemp602;
 nctempchar1* nctemp604=LibeStradd(nctemp597,nctemp600);
 cmd=nctemp604;
 }
+}
 int nctemp605 = (optimize ==1);
 if(nctemp605)
+{
 {
 nctempchar1* nctemp614= cmd;
 struct nctempchar1 *nctemp619;
@@ -896,7 +949,9 @@ nctempchar1* nctemp617= nctemp619;
 nctempchar1* nctemp621=LibeStradd(nctemp614,nctemp617);
 cmd=nctemp621;
 }
+}
 else{
+{
 nctempchar1* nctemp627= cmd;
 struct nctempchar1 *nctemp632;
 static struct nctempchar1 nctemp633 = {{ 6}, (char*)" -O2 \0"};
@@ -905,8 +960,10 @@ nctempchar1* nctemp630= nctemp632;
 nctempchar1* nctemp634=LibeStradd(nctemp627,nctemp630);
 cmd=nctemp634;
 }
+}
 int nctemp635 = (openmp ==1);
 if(nctemp635)
+{
 {
 nctempchar1* nctemp644= cmd;
 struct nctempchar1 *nctemp649;
@@ -915,6 +972,7 @@ nctemp649=&nctemp650;
 nctempchar1* nctemp647= nctemp649;
 nctempchar1* nctemp651=LibeStradd(nctemp644,nctemp647);
 cmd=nctemp651;
+}
 }
 nctempchar1* nctemp657= cmd;
 nctempchar1* nctemp660= file;
@@ -933,11 +991,13 @@ RunFree(tmp);
 int nctemp680 = (show ==1);
 if(nctemp680)
 {
+{
 int nctemp685= 4;
 nctempchar1* nctemp687= cmd;
 int nctemp690=LibePuts(nctemp685,nctemp687);
 int nctemp692= 4;
 int nctemp694=LibeFlush(nctemp692);
+}
 }
 nctempchar1* nctemp696= cmd;
 int nctemp699=LibeSystem(nctemp696);
@@ -961,11 +1021,13 @@ RunFree(tmp);
 int nctemp729 = (show ==1);
 if(nctemp729)
 {
+{
 int nctemp734= 4;
 nctempchar1* nctemp736= cmd;
 int nctemp739=LibePuts(nctemp734,nctemp736);
 int nctemp741= 4;
 int nctemp743=LibeFlush(nctemp741);
+}
 }
 nctempchar1* nctemp745= cmd;
 int nctemp748=LibeSystem(nctemp745);
@@ -973,16 +1035,19 @@ RunFree(cmd->a);
 RunFree(cmd);
 return 1;
 }
+}
 int MainCcompgomp (nctempchar1 *file,int debug,int optimize,int openmp,int show)
 {
 nctempchar1 *tmp;
 nctempchar1 *cmd;
+{
 struct nctempchar1 *nctemp758;
 static struct nctempchar1 nctemp759 = {{ 35}, (char*)"nvc -c -fast -mp=gpu -gpu=managed \0"};
 nctemp758=&nctemp759;
 cmd=nctemp758;
 int nctemp760 = (debug ==1);
 if(nctemp760)
+{
 {
 nctempchar1* nctemp769= cmd;
 struct nctempchar1 *nctemp774;
@@ -992,8 +1057,10 @@ nctempchar1* nctemp772= nctemp774;
 nctempchar1* nctemp776=LibeStradd(nctemp769,nctemp772);
 cmd=nctemp776;
 }
+}
 int nctemp777 = (optimize ==1);
 if(nctemp777)
+{
 {
 nctempchar1* nctemp786= cmd;
 struct nctempchar1 *nctemp791;
@@ -1003,7 +1070,9 @@ nctempchar1* nctemp789= nctemp791;
 nctempchar1* nctemp793=LibeStradd(nctemp786,nctemp789);
 cmd=nctemp793;
 }
+}
 else{
+{
 nctempchar1* nctemp799= cmd;
 struct nctempchar1 *nctemp804;
 static struct nctempchar1 nctemp805 = {{ 6}, (char*)" -O2 \0"};
@@ -1012,8 +1081,10 @@ nctempchar1* nctemp802= nctemp804;
 nctempchar1* nctemp806=LibeStradd(nctemp799,nctemp802);
 cmd=nctemp806;
 }
+}
 int nctemp807 = (openmp ==1);
 if(nctemp807)
+{
 {
 nctempchar1* nctemp816= cmd;
 struct nctempchar1 *nctemp821;
@@ -1022,6 +1093,7 @@ nctemp821=&nctemp822;
 nctempchar1* nctemp819= nctemp821;
 nctempchar1* nctemp823=LibeStradd(nctemp816,nctemp819);
 cmd=nctemp823;
+}
 }
 nctempchar1* nctemp829= cmd;
 nctempchar1* nctemp832= file;
@@ -1040,11 +1112,13 @@ RunFree(tmp);
 int nctemp852 = (show ==1);
 if(nctemp852)
 {
+{
 int nctemp857= 4;
 nctempchar1* nctemp859= cmd;
 int nctemp862=LibePuts(nctemp857,nctemp859);
 int nctemp864= 4;
 int nctemp866=LibeFlush(nctemp864);
+}
 }
 nctempchar1* nctemp868= cmd;
 int nctemp871=LibeSystem(nctemp868);
@@ -1068,11 +1142,13 @@ RunFree(tmp);
 int nctemp901 = (show ==1);
 if(nctemp901)
 {
+{
 int nctemp906= 4;
 nctempchar1* nctemp908= cmd;
 int nctemp911=LibePuts(nctemp906,nctemp908);
 int nctemp913= 4;
 int nctemp915=LibeFlush(nctemp913);
+}
 }
 nctempchar1* nctemp917= cmd;
 int nctemp920=LibeSystem(nctemp917);
@@ -1080,11 +1156,13 @@ RunFree(cmd->a);
 RunFree(cmd);
 return 1;
 }
+}
 int MainCcompcuda (nctempchar1 *file,int debug,int optimize,int openmp,int show,nctempchar1 *dev)
 {
 int l;
 nctempchar1 *cmd;
 nctempchar1 *tmp;
+{
 int nctemp929=file->d[0];l =nctemp929;
 struct nctempchar1 *nctemp938;
 static struct nctempchar1 nctemp939 = {{ 97}, (char*)"nvcc  -D__Float32x4_t=float32x4_t -use_fast_math --compiler-options -O2 --compiler-options -fPIC\0"};
@@ -1098,6 +1176,7 @@ nctempchar1* nctemp946= nctemp948;
 int nctemp950=LibeStrcmp(nctemp943,nctemp946);
 int nctemp940 = (nctemp950 !=1);
 if(nctemp940)
+{
 {
 nctempchar1* nctemp957= cmd;
 struct nctempchar1 *nctemp962;
@@ -1118,6 +1197,7 @@ nctempchar1* nctemp985= nctemp987;
 nctempchar1* nctemp989=LibeStradd(nctemp982,nctemp985);
 cmd=nctemp989;
 }
+}
 nctempchar1* nctemp995= cmd;
 struct nctempchar1 *nctemp1000;
 static struct nctempchar1 nctemp1001 = {{ 43}, (char*)" --compiler-options -ffast-math  -c -x cu \0"};
@@ -1128,6 +1208,7 @@ cmd=nctemp1002;
 int nctemp1003 = (debug ==1);
 if(nctemp1003)
 {
+{
 nctempchar1* nctemp1012= cmd;
 struct nctempchar1 *nctemp1017;
 static struct nctempchar1 nctemp1018 = {{ 5}, (char*)" -g \0"};
@@ -1136,8 +1217,10 @@ nctempchar1* nctemp1015= nctemp1017;
 nctempchar1* nctemp1019=LibeStradd(nctemp1012,nctemp1015);
 cmd=nctemp1019;
 }
+}
 int nctemp1020 = (optimize ==1);
 if(nctemp1020)
+{
 {
 nctempchar1* nctemp1029= cmd;
 struct nctempchar1 *nctemp1034;
@@ -1147,7 +1230,9 @@ nctempchar1* nctemp1032= nctemp1034;
 nctempchar1* nctemp1036=LibeStradd(nctemp1029,nctemp1032);
 cmd=nctemp1036;
 }
+}
 else{
+{
 nctempchar1* nctemp1042= cmd;
 struct nctempchar1 *nctemp1047;
 static struct nctempchar1 nctemp1048 = {{ 6}, (char*)" -O2 \0"};
@@ -1156,8 +1241,10 @@ nctempchar1* nctemp1045= nctemp1047;
 nctempchar1* nctemp1049=LibeStradd(nctemp1042,nctemp1045);
 cmd=nctemp1049;
 }
+}
 int nctemp1050 = (openmp ==1);
 if(nctemp1050)
+{
 {
 nctempchar1* nctemp1059= cmd;
 struct nctempchar1 *nctemp1064;
@@ -1166,6 +1253,7 @@ nctemp1064=&nctemp1065;
 nctempchar1* nctemp1062= nctemp1064;
 nctempchar1* nctemp1066=LibeStradd(nctemp1059,nctemp1062);
 cmd=nctemp1066;
+}
 }
 nctempchar1* nctemp1072= cmd;
 nctempchar1* nctemp1075= file;
@@ -1184,11 +1272,13 @@ RunFree(tmp);
 int nctemp1095 = (show ==1);
 if(nctemp1095)
 {
+{
 int nctemp1100= 4;
 nctempchar1* nctemp1102= cmd;
 int nctemp1105=LibePuts(nctemp1100,nctemp1102);
 int nctemp1107= 4;
 int nctemp1109=LibeFlush(nctemp1107);
+}
 }
 nctempchar1* nctemp1111= cmd;
 int nctemp1114=LibeSystem(nctemp1111);
@@ -1228,11 +1318,13 @@ cmd=nctemp1180;
 int nctemp1181 = (show ==1);
 if(nctemp1181)
 {
+{
 int nctemp1186= 4;
 nctempchar1* nctemp1188= cmd;
 int nctemp1191=LibePuts(nctemp1186,nctemp1188);
 int nctemp1193= 4;
 int nctemp1195=LibeFlush(nctemp1193);
+}
 }
 nctempchar1* nctemp1197= cmd;
 int nctemp1200=LibeSystem(nctemp1197);
@@ -1240,11 +1332,13 @@ RunFree(cmd->a);
 RunFree(cmd);
 return 1;
 }
+}
 int MainCcomphip (nctempchar1 *file,int debug,int optimize,int openmp,int show)
 {
 int l;
 nctempchar1 *tmp;
 nctempchar1 *cmd;
+{
 int nctemp1209=file->d[0];l =nctemp1209;
 struct nctempchar1 *nctemp1218;
 static struct nctempchar1 nctemp1219 = {{ 10}, (char*)"hipcc -c \0"};
@@ -1262,6 +1356,7 @@ int nctemp1236=LibeStrcpy(nctemp1230,nctemp1233);
 int nctemp1237 = (debug ==1);
 if(nctemp1237)
 {
+{
 struct nctempchar1 *nctemp1244;
 static struct nctempchar1 nctemp1245 = {{ 5}, (char*)" -g \0"};
 nctemp1244=&nctemp1245;
@@ -1269,8 +1364,10 @@ nctempchar1* nctemp1242= nctemp1244;
 nctempchar1* nctemp1246= cmd;
 int nctemp1249=LibeStrcat(nctemp1242,nctemp1246);
 }
+}
 int nctemp1250 = (optimize ==1);
 if(nctemp1250)
+{
 {
 struct nctempchar1 *nctemp1257;
 static struct nctempchar1 nctemp1258 = {{ 6}, (char*)" -O3 \0"};
@@ -1279,8 +1376,10 @@ nctempchar1* nctemp1255= nctemp1257;
 nctempchar1* nctemp1259= cmd;
 int nctemp1262=LibeStrcat(nctemp1255,nctemp1259);
 }
+}
 int nctemp1263 = (openmp ==1);
 if(nctemp1263)
+{
 {
 struct nctempchar1 *nctemp1270;
 static struct nctempchar1 nctemp1271 = {{ 11}, (char*)" -fopenmp \0"};
@@ -1288,6 +1387,7 @@ nctemp1270=&nctemp1271;
 nctempchar1* nctemp1268= nctemp1270;
 nctempchar1* nctemp1272= cmd;
 int nctemp1275=LibeStrcat(nctemp1268,nctemp1272);
+}
 }
 nctempchar1* nctemp1277= file;
 nctempchar1* nctemp1280= cmd;
@@ -1301,11 +1401,13 @@ int nctemp1292=LibeStrcat(nctemp1285,nctemp1289);
 int nctemp1293 = (show ==1);
 if(nctemp1293)
 {
+{
 int nctemp1298= 4;
 nctempchar1* nctemp1300= cmd;
 int nctemp1303=LibePuts(nctemp1298,nctemp1300);
 int nctemp1305= 4;
 int nctemp1307=LibeFlush(nctemp1305);
+}
 }
 nctempchar1* nctemp1309= cmd;
 int nctemp1312=LibeSystem(nctemp1309);
@@ -1345,17 +1447,20 @@ int nctemp1378=LibeStrcat(nctemp1371,nctemp1375);
 int nctemp1379 = (show ==1);
 if(nctemp1379)
 {
+{
 int nctemp1384= 4;
 nctempchar1* nctemp1386= cmd;
 int nctemp1389=LibePuts(nctemp1384,nctemp1386);
 int nctemp1391= 4;
 int nctemp1393=LibeFlush(nctemp1391);
 }
+}
 nctempchar1* nctemp1395= cmd;
 int nctemp1398=LibeSystem(nctemp1395);
 RunFree(cmd->a);
 RunFree(cmd);
 return 1;
+}
 }
 int Main (struct nctempMainArg1 *MainArgs)
 {
@@ -1381,6 +1486,7 @@ nctempchar1 *outfile;
 int fd;
 nctempchar1 *outfilepy;
 struct tree* p;
+{
 int nctemp1404=LibeInit();
 struct nctempchar1 *nctemp1412;
 static struct nctempchar1 nctemp1413 = {{ 5}, (char*)"none\0"};
@@ -1404,15 +1510,18 @@ int nctemp1431=MainArgs->d[0];l =nctemp1431;
 int nctemp1435 = (l <= 1);
 if(nctemp1435)
 {
+{
 struct nctempchar1 *nctemp1442;
 static struct nctempchar1 nctemp1443 = {{ 26}, (char*)"Missing input file name\n\0"};
 nctemp1442=&nctemp1443;
 nctempchar1* nctemp1440= nctemp1442;
 int nctemp1444=MainError(nctemp1440);
 }
+}
 i =1;
 int nctemp1453=MainArgs->d[0];int nctemp1449 = (i < nctemp1453);
 while(nctemp1449){
+{
 {
 int nctemp1462=i;
 nctempchar1* nctemp1460= MainArgs->a[nctemp1462].arg;
@@ -1424,10 +1533,12 @@ int nctemp1469=LibeStrcmp(nctemp1460,nctemp1465);
 int nctemp1457 = (nctemp1469 ==1);
 if(nctemp1457)
 {
+{
 int nctemp1474=CodeGetarch();
 int nctemp1472= nctemp1474;
 int nctemp1475=MainHelp(nctemp1472);
 int nctemp1477=LibeExit();
+}
 }
 int nctemp1483=i;
 nctempchar1* nctemp1481= MainArgs->a[nctemp1483].arg;
@@ -1439,8 +1550,10 @@ int nctemp1490=LibeStrcmp(nctemp1481,nctemp1486);
 int nctemp1478 = (nctemp1490 ==1);
 if(nctemp1478)
 {
+{
 btree = 1;
 parse = 1;
+}
 }
 int nctemp1497=i;
 nctempchar1* nctemp1495= MainArgs->a[nctemp1497].arg;
@@ -1452,9 +1565,11 @@ int nctemp1504=LibeStrcmp(nctemp1495,nctemp1500);
 int nctemp1492 = (nctemp1504 ==1);
 if(nctemp1492)
 {
+{
 atree = 1;
 semantic = 1;
 parse = 1;
+}
 }
 int nctemp1511=i;
 nctempchar1* nctemp1509= MainArgs->a[nctemp1511].arg;
@@ -1466,9 +1581,11 @@ int nctemp1518=LibeStrcmp(nctemp1509,nctemp1514);
 int nctemp1506 = (nctemp1518 ==1);
 if(nctemp1506)
 {
+{
 table = 1;
 parse = 1;
 semantic = 1;
+}
 }
 int nctemp1525=i;
 nctempchar1* nctemp1523= MainArgs->a[nctemp1525].arg;
@@ -1480,9 +1597,11 @@ int nctemp1532=LibeStrcmp(nctemp1523,nctemp1528);
 int nctemp1520 = (nctemp1532 ==1);
 if(nctemp1520)
 {
+{
 etable = 1;
 parse = 1;
 semantic = 1;
+}
 }
 int nctemp1539=i;
 nctempchar1* nctemp1537= MainArgs->a[nctemp1539].arg;
@@ -1494,9 +1613,11 @@ int nctemp1546=LibeStrcmp(nctemp1537,nctemp1542);
 int nctemp1534 = (nctemp1546 ==1);
 if(nctemp1534)
 {
+{
 emit = 1;
 parse = 1;
 semantic = 1;
+}
 }
 int nctemp1553=i;
 nctempchar1* nctemp1551= MainArgs->a[nctemp1553].arg;
@@ -1508,7 +1629,9 @@ int nctemp1560=LibeStrcmp(nctemp1551,nctemp1556);
 int nctemp1548 = (nctemp1560 ==1);
 if(nctemp1548)
 {
+{
 parse = 1;
+}
 }
 int nctemp1567=i;
 nctempchar1* nctemp1565= MainArgs->a[nctemp1567].arg;
@@ -1520,8 +1643,10 @@ int nctemp1574=LibeStrcmp(nctemp1565,nctemp1570);
 int nctemp1562 = (nctemp1574 ==1);
 if(nctemp1562)
 {
+{
 semantic = 1;
 parse = 1;
+}
 }
 int nctemp1581=i;
 nctempchar1* nctemp1579= MainArgs->a[nctemp1581].arg;
@@ -1533,8 +1658,10 @@ int nctemp1588=LibeStrcmp(nctemp1579,nctemp1584);
 int nctemp1576 = (nctemp1588 ==1);
 if(nctemp1576)
 {
+{
 int nctemp1591=CodeArraycheckon();
 int nctemp1593=CodeBreakon();
+}
 }
 int nctemp1599=i;
 nctempchar1* nctemp1597= MainArgs->a[nctemp1599].arg;
@@ -1546,7 +1673,9 @@ int nctemp1606=LibeStrcmp(nctemp1597,nctemp1602);
 int nctemp1594 = (nctemp1606 ==1);
 if(nctemp1594)
 {
+{
 int nctemp1609=CodeBreakon();
+}
 }
 int nctemp1615=i;
 nctempchar1* nctemp1613= MainArgs->a[nctemp1615].arg;
@@ -1558,8 +1687,10 @@ int nctemp1622=LibeStrcmp(nctemp1613,nctemp1618);
 int nctemp1610 = (nctemp1622 ==1);
 if(nctemp1610)
 {
+{
 debug = 1;
 int nctemp1625=CodeDebugon();
+}
 }
 int nctemp1631=i;
 nctempchar1* nctemp1629= MainArgs->a[nctemp1631].arg;
@@ -1571,7 +1702,9 @@ int nctemp1638=LibeStrcmp(nctemp1629,nctemp1634);
 int nctemp1626 = (nctemp1638 ==1);
 if(nctemp1626)
 {
+{
 show = 1;
+}
 }
 int nctemp1645=i;
 nctempchar1* nctemp1643= MainArgs->a[nctemp1645].arg;
@@ -1583,7 +1716,9 @@ int nctemp1652=LibeStrcmp(nctemp1643,nctemp1648);
 int nctemp1640 = (nctemp1652 ==1);
 if(nctemp1640)
 {
+{
 optimize = 1;
+}
 }
 int nctemp1659=i;
 nctempchar1* nctemp1657= MainArgs->a[nctemp1659].arg;
@@ -1595,7 +1730,9 @@ int nctemp1666=LibeStrcmp(nctemp1657,nctemp1662);
 int nctemp1654 = (nctemp1666 ==1);
 if(nctemp1654)
 {
+{
 openmp = 1;
+}
 }
 int nctemp1673=i;
 nctempchar1* nctemp1671= MainArgs->a[nctemp1673].arg;
@@ -1607,7 +1744,9 @@ int nctemp1680=LibeStrcmp(nctemp1671,nctemp1676);
 int nctemp1668 = (nctemp1680 ==1);
 if(nctemp1668)
 {
+{
 obj = 0;
+}
 }
 int nctemp1687=i;
 nctempchar1* nctemp1685= MainArgs->a[nctemp1687].arg;
@@ -1619,8 +1758,10 @@ int nctemp1694=LibeStrcmp(nctemp1685,nctemp1690);
 int nctemp1682 = (nctemp1694 ==1);
 if(nctemp1682)
 {
+{
 int nctemp1699=MainArgs->d[0];int nctemp1696 = (nctemp1699 > i);
 if(nctemp1696)
+{
 {
 int nctemp1714 = i + 1;
 int nctemp1709=nctemp1714;
@@ -1633,10 +1774,13 @@ int nctemp1720=LibeStrcmp(nctemp1707,nctemp1716);
 int nctemp1704 = (nctemp1720 ==1);
 if(nctemp1704)
 {
+{
 int nctemp1723= 1;
 int nctemp1725=CodeSetarch(nctemp1723);
 }
+}
 else{
+{
 int nctemp1736 = i + 1;
 int nctemp1731=nctemp1736;
 nctempchar1* nctemp1729= MainArgs->a[nctemp1731].arg;
@@ -1648,10 +1792,13 @@ int nctemp1742=LibeStrcmp(nctemp1729,nctemp1738);
 int nctemp1726 = (nctemp1742 ==1);
 if(nctemp1726)
 {
+{
 int nctemp1745= 2;
 int nctemp1747=CodeSetarch(nctemp1745);
 }
+}
 else{
+{
 int nctemp1758 = i + 1;
 int nctemp1753=nctemp1758;
 nctempchar1* nctemp1751= MainArgs->a[nctemp1753].arg;
@@ -1663,10 +1810,13 @@ int nctemp1764=LibeStrcmp(nctemp1751,nctemp1760);
 int nctemp1748 = (nctemp1764 ==1);
 if(nctemp1748)
 {
+{
 int nctemp1767= 4;
 int nctemp1769=CodeSetarch(nctemp1767);
 }
+}
 else{
+{
 struct nctempchar1 *nctemp1773;
 static struct nctempchar1 nctemp1774 = {{ 23}, (char*)"Illegal option value\n\0"};
 nctemp1773=&nctemp1774;
@@ -1676,9 +1826,16 @@ int nctemp1775=MainError(nctemp1771);
 }
 }
 }
+}
+}
+}
+}
 else{
+{
 int nctemp1777= 1;
 int nctemp1779=CodeSetarch(nctemp1777);
+}
+}
 }
 }
 int nctemp1785=i;
@@ -1691,14 +1848,18 @@ int nctemp1792=LibeStrcmp(nctemp1783,nctemp1788);
 int nctemp1780 = (nctemp1792 ==1);
 if(nctemp1780)
 {
+{
 int nctemp1797=MainArgs->d[0];int nctemp1794 = (nctemp1797 > i);
 if(nctemp1794)
+{
 {
 int nctemp1814 = i + 1;
 int nctemp1809=nctemp1814;
 nctempchar1* nctemp1807= MainArgs->a[nctemp1809].arg;
 nctempchar1* nctemp1816=LibeStrsave(nctemp1807);
 dev=nctemp1816;
+}
+}
 }
 }
 int nctemp1822=i;
@@ -1711,7 +1872,9 @@ int nctemp1829=LibeStrcmp(nctemp1820,nctemp1825);
 int nctemp1817 = (nctemp1829 ==1);
 if(nctemp1817)
 {
+{
 python = 1;
+}
 }
 int nctemp1837=i;
 int nctemp1839=0;
@@ -1720,7 +1883,10 @@ int nctemp1834 = (MainArgs->a[nctemp1837].arg->a[nctemp1839] ==nctemp1842);
 int nctemp1831 = (nctemp1834 ==1);
 if(nctemp1831)
 {
+{
 options = (options + 1);
+}
+}
 }
 }
 int nctemp1854 = i + 1;
@@ -1735,11 +1901,14 @@ int nctemp1879 = (emit ==0);
 int nctemp1863 = (nctemp1866 && nctemp1879);
 if(nctemp1863)
 {
+{
 parse = (semantic = (emit = 1));
+}
 }
 int nctemp1890 = options + 1;
 int nctemp1892=MainArgs->d[0];int nctemp1883 = (nctemp1890 >= nctemp1892);
 if(nctemp1883)
+{
 {
 struct nctempchar1 *nctemp1899;
 static struct nctempchar1 nctemp1900 = {{ 26}, (char*)"Missing input file name\n\0"};
@@ -1747,13 +1916,17 @@ nctemp1899=&nctemp1900;
 nctempchar1* nctemp1897= nctemp1899;
 int nctemp1901=MainError(nctemp1897);
 }
+}
 else{
+{
 int nctemp1911=MainArgs->d[0];int nctemp1916 = nctemp1911 - 1;
 int nctemp1907=nctemp1916;
 infile=MainArgs->a[nctemp1907].arg;
 }
+}
 int nctemp1918 = (emit ==1);
 if(nctemp1918)
+{
 {
 nctempchar1* nctemp1927= infile;
 int nctemp1932=CodeGetarch();
@@ -1770,15 +1943,19 @@ fd =nctemp1945;
 int nctemp1947= fd;
 int nctemp1949=CodeSetfdout(nctemp1947);
 }
+}
 int nctemp1950 = (emit ==1);
 if(nctemp1950)
+{
 {
 nctempchar1* nctemp1959= infile;
 nctempchar1* nctemp1962=MainPythonout(nctemp1959);
 outfilepy=nctemp1962;
 }
+}
 int nctemp1963 = (python ==1);
 if(nctemp1963)
+{
 {
 nctempchar1* nctemp1971= outfilepy;
 struct nctempchar1 *nctemp1976;
@@ -1816,12 +1993,15 @@ int nctemp2014=CodeSetpython(nctemp2012);
 int nctemp2016= fd;
 int nctemp2018=CodeSetfdpython(nctemp2016);
 }
+}
 nctempchar1* nctemp2022= infile;
 int nctemp2025=ScanInit(nctemp2022);
 int nctemp2019 = (nctemp2025 ==0);
 if(nctemp2019)
 {
+{
 int nctemp2028=LibeExit();
+}
 }
 int nctemp2030= 1;
 int nctemp2032=ScanSetline(nctemp2030);
@@ -1829,7 +2009,9 @@ int nctemp2034=ParseIniparse();
 int nctemp2035 = (emit ==1);
 if(nctemp2035)
 {
+{
 int nctemp2040=CodePreamble();
+}
 }
 struct symbol* nctemp2044=SymMktable();
 struct symbol* nctemp2042= nctemp2044;
@@ -1837,44 +2019,56 @@ int nctemp2045=SymSetetp(nctemp2042);
 int nctemp2046 = (parse ==1);
 if(nctemp2046)
 {
+{
 struct tree* nctemp2054=ParseParse();
 p =nctemp2054;
 }
+}
 int nctemp2055 = (btree ==1);
 if(nctemp2055)
+{
 {
 struct tree* nctemp2060= p;
 int nctemp2062= 0;
 int nctemp2064=PtreePrtree(nctemp2060,nctemp2062);
 }
+}
 int nctemp2065 = (p !=0);
 int nctemp2069=nctemp2065;
 while(nctemp2069)
 {{
+{
 int nctemp2070 = (semantic ==1);
 if(nctemp2070)
 {
+{
 int nctemp2074 = (p !=0);
 if(nctemp2074)
+{
 {
 struct tree* nctemp2079= p;
 struct symbol* nctemp2083=SymGetetp();
 struct symbol* nctemp2081= nctemp2083;
 int nctemp2084=SemSem(nctemp2079,nctemp2081);
 }
+}
 int nctemp2085 = (atree ==1);
 if(nctemp2085)
+{
 {
 struct tree* nctemp2090= p;
 int nctemp2092= 0;
 int nctemp2094=PtreePrtree(nctemp2090,nctemp2092);
 }
+}
 int nctemp2095 = (table ==1);
 if(nctemp2095)
+{
 {
 struct symbol* nctemp2102=SymGetltp();
 int nctemp2099 = (nctemp2102 !=0);
 if(nctemp2099)
+{
 {
 int nctemp2105= 3;
 struct symbol* nctemp2109=SymGetltp();
@@ -1884,16 +2078,23 @@ int nctemp2112=SymPrsym(nctemp2105,nctemp2107,nctemp2110);
 }
 }
 }
+}
+}
+}
 int nctemp2113 = (emit ==1);
 if(nctemp2113)
 {
+{
 int nctemp2117 = (p !=0);
 if(nctemp2117)
+{
 {
 struct tree* nctemp2122= p;
 struct symbol* nctemp2126=SymGetetp();
 struct symbol* nctemp2124= nctemp2126;
 int nctemp2127=CodeCode(nctemp2122,nctemp2124);
+}
+}
 }
 }
 struct tree* nctemp2129= p;
@@ -1904,14 +2105,19 @@ int nctemp2136=SymRmtable(nctemp2133);
 int nctemp2137 = (parse ==1);
 if(nctemp2137)
 {
+{
 struct tree* nctemp2145=ParseParse();
 p =nctemp2145;
 int nctemp2146 = (btree ==1);
 if(nctemp2146)
 {
+{
 struct tree* nctemp2151= p;
 int nctemp2153= 0;
 int nctemp2155=PtreePrtree(nctemp2151,nctemp2153);
+}
+}
+}
 }
 }
 }
@@ -1920,20 +2126,24 @@ nctemp2069=nctemp2156;}int nctemp2163=ParseGetlookahead();
 int nctemp2160 = (nctemp2163 !=19);
 if(nctemp2160)
 {
+{
 struct nctempchar1 *nctemp2168;
 static struct nctempchar1 nctemp2169 = {{ 36}, (char*)"Parsing ended before reaching EOF\n\0"};
 nctemp2168=&nctemp2169;
 nctempchar1* nctemp2166= nctemp2168;
 int nctemp2170=MainError(nctemp2166);
 }
+}
 int nctemp2171 = (etable ==1);
 if(nctemp2171)
+{
 {
 int nctemp2176= 4;
 int nctemp2178=LibeFlush(nctemp2176);
 struct symbol* nctemp2182=SymGetetp();
 int nctemp2179 = (nctemp2182 !=0);
 if(nctemp2179)
+{
 {
 int nctemp2185= 3;
 struct symbol* nctemp2189=SymGetetp();
@@ -1942,19 +2152,25 @@ int nctemp2190= 0;
 int nctemp2192=SymPrsym(nctemp2185,nctemp2187,nctemp2190);
 }
 }
+}
+}
 int nctemp2193 = (emit ==1);
 if(nctemp2193)
 {
+{
 int nctemp2198=CodePostamble();
+}
 }
 int nctemp2202 = (emit ==1);
 int nctemp2207 = (obj ==1);
 int nctemp2199 = (nctemp2202 && nctemp2207);
 if(nctemp2199)
 {
+{
 int nctemp2214=CodeGetarch();
 int nctemp2211 = (nctemp2214 ==1);
 if(nctemp2211)
+{
 {
 nctempchar1* nctemp2217= outfile;
 int nctemp2220= debug;
@@ -1963,10 +2179,13 @@ int nctemp2224= openmp;
 int nctemp2226= show;
 int nctemp2228=MainCcompcpu(nctemp2217,nctemp2220,nctemp2222,nctemp2224,nctemp2226);
 }
+}
 else{
+{
 int nctemp2232=CodeGetarch();
 int nctemp2229 = (nctemp2232 ==2);
 if(nctemp2229)
+{
 {
 nctempchar1* nctemp2235= outfile;
 int nctemp2238= debug;
@@ -1976,10 +2195,13 @@ int nctemp2244= show;
 nctempchar1* nctemp2246= dev;
 int nctemp2249=MainCcompcuda(nctemp2235,nctemp2238,nctemp2240,nctemp2242,nctemp2244,nctemp2246);
 }
+}
 else{
+{
 int nctemp2253=CodeGetarch();
 int nctemp2250 = (nctemp2253 ==4);
 if(nctemp2250)
+{
 {
 nctempchar1* nctemp2256= outfile;
 int nctemp2259= debug;
@@ -1988,10 +2210,13 @@ int nctemp2263= openmp;
 int nctemp2265= show;
 int nctemp2267=MainCcompgomp(nctemp2256,nctemp2259,nctemp2261,nctemp2263,nctemp2265);
 }
+}
 else{
+{
 int nctemp2271=CodeGetarch();
 int nctemp2268 = (nctemp2271 ==3);
 if(nctemp2268)
+{
 {
 nctempchar1* nctemp2274= outfile;
 int nctemp2277= debug;
@@ -2000,7 +2225,9 @@ int nctemp2281= openmp;
 int nctemp2283= show;
 int nctemp2285=MainCcomphip(nctemp2274,nctemp2277,nctemp2279,nctemp2281,nctemp2283);
 }
+}
 else{
+{
 struct nctempchar1 *nctemp2289;
 static struct nctempchar1 nctemp2290 = {{ 23}, (char*)"Unknown architecture\n\0"};
 nctemp2289=&nctemp2290;
@@ -2011,13 +2238,20 @@ int nctemp2291=MainError(nctemp2287);
 }
 }
 }
+}
+}
+}
+}
+}
 int nctemp2292 = (emit ==1);
 if(nctemp2292)
+{
 {
 RunFree(outfile->a);
 RunFree(outfile);
 int nctemp2300= fd;
 int nctemp2302=LibeClose(nctemp2300);
+}
 }
 nctempchar1* nctemp2309= infile;
 nctempchar1* nctemp2312=MainFmod(nctemp2309);
@@ -2036,4 +2270,5 @@ int nctemp2326=SymExport(nctemp2319,nctemp2321,nctemp2324);
 int nctemp2328= 3;
 int nctemp2330=LibeFlush(nctemp2328);
 return 1;
+}
 }
